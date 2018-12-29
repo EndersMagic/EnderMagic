@@ -1,1 +1,1 @@
-# Ender'sMagic
+# EnderMagic
