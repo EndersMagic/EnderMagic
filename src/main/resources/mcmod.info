@@ -1,0 +1,16 @@
+[
+{
+  "modid": "endmagic",
+  "name": "Ender's Magic",
+  "description": "",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["mousecray"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

@@ -1,0 +1,1 @@
+gradlew -Dorg.gradle.jvmargs=-Xmx2048M setupDecompWorkspace eclipse
