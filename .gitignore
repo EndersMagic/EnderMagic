@@ -32,3 +32,7 @@ hs_err_pid*
 /run/
 /libs/
 .gradle/
+.classpath
+.project
+.settings/
+*.launch
