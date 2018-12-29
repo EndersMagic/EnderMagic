@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XFX",
+    "#G#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stonebrick",
+      "data": 3
+    },
+    "X": {
+      "item": "minecraft:dye",
+      "data": 4
+    },
+    "G": {
+      "item": "minecraft:cauldron"
+    },
+    "F": {
+      "item": "minecraft:lapis_block"
+    }
+  },
+  "result": {
+    "item": "endmagic:generator"
+  }
+}

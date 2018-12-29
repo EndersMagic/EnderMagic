@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "##",
+        "##"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:tech_enderite",
+            "data": 1
+        }
+    },
+    "result": {
+        "item": "endmagic:tech_enderite",
+        "data": 2
+    }
+}

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XFX",
+    "#G#",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stonebrick",
+      "data": 3
+    },
+    "X": {
+      "item": "minecraft:magma"
+    },
+    "G": {
+      "item": "minecraft:cauldron"
+    },
+    "F": {
+      "item": "minecraft:magma_cream"
+    }
+  },
+  "result": {
+    "item": "endmagic:generatorn"
+  }
+}

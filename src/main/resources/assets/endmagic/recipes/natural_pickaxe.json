@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "###",
+    " X ",
+    " X "
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:ender_coals",
+            "data": 1
+        },
+        "X": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "endmagic:natural_pickaxe"
+    }
+}

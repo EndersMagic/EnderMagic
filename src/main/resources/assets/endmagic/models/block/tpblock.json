@@ -1,0 +1,8 @@
+{
+    "parent": "endmagic:block/tpblock_base",
+    "textures": {
+        "all": "endmagic:blocks/stonebrick_carved",
+        "particles": "endmagic:blocks/tpblock",
+        "upblock": "endmagic:blocks/tpblock"
+    }
+}

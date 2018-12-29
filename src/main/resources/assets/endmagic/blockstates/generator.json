@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "layers=1":  { "model": "endmagic:generators/generator1" },
+        "layers=2":  { "model": "endmagic:generators/generator2" },
+        "layers=3":  { "model": "endmagic:generators/generator3" },
+        "layers=4":  { "model": "endmagic:generators/generator4" },
+        "layers=5":  { "model": "endmagic:generators/generator5" }
+    }
+}

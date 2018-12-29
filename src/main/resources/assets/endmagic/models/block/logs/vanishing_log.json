@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_column",
+    "textures": {
+        "end": "endmagic:blocks/vanishing_log_top",
+        "side": "endmagic:blocks/vanishing_log"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube_all"
+    },
+    "variants": {
+        "type": {
+            "hardened": {
+                "textures": {
+                    "all": "endmagic:blocks/hardened_enderite"
+                }
+            },
+            "bricks": {
+                "textures": {
+                    "all": "endmagic:blocks/bricks_enderite"
+                }
+            },
+            "bricks_chiseled": {
+                "textures": {
+                    "all": "endmagic:blocks/bricks_chiseled_enderite"
+                }
+            }
+        }
+    }
+}

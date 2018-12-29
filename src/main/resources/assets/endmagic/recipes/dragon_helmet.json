@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "###",
+    "# #"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:ender_coals",
+            "data": 0
+        }
+    },
+    "result": {
+        "item": "endmagic:dragon_helmet"
+    }
+}

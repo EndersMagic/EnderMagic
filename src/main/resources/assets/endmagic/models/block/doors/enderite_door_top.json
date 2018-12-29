@@ -1,0 +1,7 @@
+{
+    "parent": "block/door_top",
+    "textures": {
+        "bottom": "endmagic:blocks/door_enderite_lower",
+        "top": "endmagic:blocks/door_enderite_upper"
+    }
+}

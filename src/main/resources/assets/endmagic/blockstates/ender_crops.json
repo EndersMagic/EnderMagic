@@ -1,0 +1,50 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cross"
+    },
+    "variants": {
+        "age": {
+            "0": {
+                "textures": {
+                    "cross": "endmagic:blocks/ender_crops0"
+                }
+            },
+            "1": {
+                "textures": {
+                    "cross": "endmagic:blocks/ender_crops1"
+                }
+            },
+            "2": {
+                "textures": {
+                    "cross": "endmagic:blocks/ender_crops2"
+                }
+            },
+            "3": {
+                "textures": {
+                    "cross": "endmagic:blocks/ender_crops3"
+                }
+            },
+            "4": {
+                "textures": {
+                    "cross": "endmagic:blocks/ender_crops4"
+                }
+            },
+            "5": {
+                "textures": {
+                    "cross": "endmagic:blocks/ender_crops5"
+                }
+            },
+            "6": {
+                "textures": {
+                    "cross": "endmagic:blocks/ender_crops6"
+                }
+            },
+            "7": {
+                "textures": {
+                    "cross": "endmagic:blocks/ender_crops7"
+                }
+            }
+        }
+    }
+}

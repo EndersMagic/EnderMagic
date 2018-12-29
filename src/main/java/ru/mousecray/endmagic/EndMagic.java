@@ -9,18 +9,13 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import ru.mousecray.endmagic.proxy.CommonProxy;
 
-@Mod(modid = EM.ID, name = EM.NAME, version = EM.VERSION)
-public class EM {
-    public static final String ID = "endmagic";
-	public static final String VERSION = "@version@";
-	public static final String NAME = "Ender's Magic";
-	public static final String SERVER = "ru.mousecray.endmagic.proxy.CommonProxy";
-	public static final String CLIENT = "ru.mousecray.endmagic.proxy.ClientProxy";
+@Mod(modid=EndMagicData.ID, name=EndMagicData.NAME, version=EndMagicData.VERSION)
+public class EndMagic {
 	
-	@Instance(EM.ID)
-	public static EM instance;
+	@Instance(EndMagicData.ID)
+	public static EndMagic instance;
 	
-	@SidedProxy(clientSide=EM.CLIENT, serverSide=EM.SERVER)
+	@SidedProxy(clientSide=EndMagicData.CLIENT, serverSide=EndMagicData.SERVER)
 	public static CommonProxy proxy;
 
 	@EventHandler

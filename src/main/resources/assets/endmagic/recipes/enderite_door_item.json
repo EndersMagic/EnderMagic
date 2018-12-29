@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "##",
+    "##",
+    "##"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:rough_enderite"
+        }
+    },
+    "result": {
+        "item": "endmagic:enderite_door_item"
+    }
+}

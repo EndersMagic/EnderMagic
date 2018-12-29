@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "#G#",
+    "XXX"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stone",
+      "data": 0
+    },
+    "X": {
+      "item": "minecraft:gold_ingot"
+    },
+    "G": {
+      "item": "minecraft:paper"
+    }
+  },
+  "result": {
+    "item": "endmagic:portal_activatorh"
+  }
+}

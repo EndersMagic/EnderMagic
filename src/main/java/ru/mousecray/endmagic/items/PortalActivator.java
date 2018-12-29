@@ -1,0 +1,54 @@
+package ru.mousecray.endmagic.items;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
+import ru.mousecray.endmagic.blocks.ListBlock;
+import ru.mousecray.endmagic.tileentity.TileTPBlock;
+
+public class PortalActivator extends ActivatorBase {
+	
+	public PortalActivator() {
+		super("portal_activator");
+	}
+	
+	@Override
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(!world.isRemote) {
+			ItemStack itemstack = player.getHeldItem(hand);
+			if(!itemstack.hasTagCompound()) {
+				if(world.getBlockState(pos).getBlock() == Blocks.BONE_BLOCK) {
+					NBTTagCompound nbt = new NBTTagCompound();
+					nbt.setIntArray("position", new int[]{pos.getX(), pos.getY(), pos.getZ()});
+					itemstack.setTagCompound(nbt);
+				}
+			}
+			else {
+				if(world.getBlockState(pos).getBlock() == ListBlock.TP) {
+					if(world.getTileEntity(pos) instanceof TileTPBlock) {
+						TileTPBlock tile = (TileTPBlock)world.getTileEntity(pos);
+						int[] toPosM = itemstack.getTagCompound().getIntArray("position");
+						BlockPos toPos = new BlockPos(toPosM[0], toPosM[1], toPosM[2]);
+						if(!(pos.equals(toPos))) {	
+							if(tile.getToPos() == null) {
+								tile.setToPos(toPos);
+								if(itemstack.getCount() > 1) itemstack.shrink(1);
+								else player.inventory.removeStackFromSlot(player.inventory.currentItem);
+							}
+							else player.sendMessage(new TextComponentTranslation("tooltip.portal_activators.already_connected"));
+						}
+						else player.sendMessage(new TextComponentTranslation("tooltip.portal_activators.point_of_departure"));
+					}
+				}
+			}
+		}
+		return EnumActionResult.SUCCESS;
+	}
+}

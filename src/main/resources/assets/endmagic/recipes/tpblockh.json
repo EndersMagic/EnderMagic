@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "#G#",
+    "FFF"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:stone",
+      "data": 0
+    },
+    "X": {
+      "item": "minecraft:gold_ingot"
+    },
+    "G": {
+      "item": "minecraft:paper"
+    },
+    "F": {
+      "item": "endmagic:rough_enderite"
+    }
+  },
+  "result": {
+    "item": "endmagic:tpblockh"
+  }
+}

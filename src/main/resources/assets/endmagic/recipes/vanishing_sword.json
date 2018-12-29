@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "#",
+    "#",
+    "X"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:ender_coals",
+            "data": 3
+        },
+        "X": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "endmagic:vanishing_sword"
+    }
+}

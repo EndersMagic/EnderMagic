@@ -1,0 +1,13 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "all": "endmagic:blocks/rough_enderite"
+        }
+    },
+    "variants": {
+        "normal": {
+            "model": "cube_all"
+        }
+    }
+}
