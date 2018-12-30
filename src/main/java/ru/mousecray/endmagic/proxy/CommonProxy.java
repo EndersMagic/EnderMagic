@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.common.MinecraftForge;
@@ -16,6 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.util.NameUtils;
 
 public class CommonProxy {
@@ -26,16 +26,22 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
 
+        //Registration Blocks
         for (Field field : EMBlocks.class.getFields()) {
             try {
                 Block block = (Block) field.get(null);
-
-                String name = NameUtils.getName(block.getClass());
-                block.setRegistryName(name);
-                block.setUnlocalizedName(name);
-                block.setCreativeTab(EM.EM_CREATIVE);
-
                 registerBlock(block);
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        //Registration Items
+        for (Field field : EMItems.class.getFields()) {
+            try {
+                Item item = (Item) field.get(null);
+                String name = NameUtils.getName(item);
+                registerItem(item, name);
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -43,15 +49,17 @@ public class CommonProxy {
     }
 
     private void registerBlock(Block block) {
+        String name = NameUtils.getName(block);
+        block.setRegistryName(name);
+        block.setUnlocalizedName(name);
+        block.setCreativeTab(EM.EM_CREATIVE);
+
         blocksToRegister.add(block);
-        registerItem(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+        registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 
-    private void registerItem(Item item) {
-
-        String name = NameUtils.getName(item.getClass());
-        if (item.getRegistryName() == null)
-            item.setRegistryName(name);
+    private void registerItem(Item item, String name) {
+        item.setRegistryName(name);
         item.setUnlocalizedName(name);
         item.setCreativeTab(EM.EM_CREATIVE);
 

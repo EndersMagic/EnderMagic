@@ -9,7 +9,6 @@ import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -30,7 +29,6 @@ import ru.mousecray.endmagic.render.IModelRegistration;
 import ru.mousecray.endmagic.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.util.IEMModel;
 
-//This is example
 public class EnderGrass extends BlockBush implements IShearable, IEMModel {
 	
     protected static final AxisAlignedBB END_GRASS_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
@@ -38,7 +36,7 @@ public class EnderGrass extends BlockBush implements IShearable, IEMModel {
     public EnderGrass() {
         super(Material.VINE);
         setSoundType(SoundType.PLANT);
-		setLightLevel(0.01F);
+		setLightLevel(0.1F);
     }
     
     @Override

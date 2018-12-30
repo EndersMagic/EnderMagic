@@ -36,13 +36,23 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 			 if(block instanceof IEMModel) {
 				 ((IEMModel) block).registerModels(this);
 			 }
+			 else {
+				 ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, 
+						 	new ModelResourceLocation(block.getRegistryName(), "inventory"));
+			 }
 		 }
 		 
-//		 for (Item item : itemsToRegister) {
-//			 if (item instanceof IEMItem) {
-//				 ((IEMItem) item).registerModels(this);
-//			 }
-//		 }
+		 for (Item item : itemsToRegister) {
+			 if (item instanceof IEMModel) {
+				 ((IEMModel) item).registerModels(this);
+			 }
+			 else {
+				 ModelLoader.setCustomModelResourceLocation(item, 0, 
+						 	new ModelResourceLocation(item.getRegistryName(), "inventory"));
+			 }
+		 }
+		 
+		 
 	}
 
 	@SubscribeEvent
