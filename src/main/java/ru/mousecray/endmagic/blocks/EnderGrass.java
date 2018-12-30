@@ -38,9 +38,6 @@ public class EnderGrass extends BlockBush implements IShearable, IEMModel {
     public EnderGrass() {
         super(Material.VINE);
         setSoundType(SoundType.PLANT);
-        setUnlocalizedName("ender_grass");
-        setRegistryName("ender_grass");
-        setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 		setLightLevel(0.01F);
     }
     
