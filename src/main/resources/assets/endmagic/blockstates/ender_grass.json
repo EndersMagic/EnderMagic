@@ -1,0 +1,13 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "cross": "endmagic:blocks/ender_grass"
+        }
+    },
+    "variants": {
+        "normal": {
+            "model": "tinted_cross"
+        }
+    }
+}
