@@ -5,6 +5,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -16,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.blocks.BlockWithTile;
+import ru.mousecray.endmagic.teleport.TeleportUtils;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 
 import java.util.Random;
@@ -23,6 +25,11 @@ import java.util.Random;
 public class BlockPortal extends BlockWithTile<TilePortal> {
     public BlockPortal() {
         super(Material.PORTAL);
+    }
+
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+        if (!worldIn.isRemote)
+            TeleportUtils.teleportToLocation(entityIn, tile(worldIn, pos).distination);
     }
 
     @Override

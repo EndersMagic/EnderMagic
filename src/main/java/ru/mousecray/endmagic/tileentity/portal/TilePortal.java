@@ -15,11 +15,5 @@ public class TilePortal extends TileWithLocation implements ITickable {
         tick++;
         if (tick >= 80)
             world.setBlockToAir(pos);
-
-        if (!world.isRemote) {
-            List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(getPos()));
-
-            list.forEach(it -> TeleportUtils.teleportToLocation(it, distination));
-        }
     }
 }
