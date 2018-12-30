@@ -3,9 +3,13 @@ package ru.mousecray.endmagic.teleport;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 
 public class Location {
-    final int x, y, z, dim;
+
+    public static Location spawn = new Location(0, 100, 0, 0);
+
+    public final int x, y, z, dim;
 
     public Location(int x, int y, int z, int dim) {
         this.x = x;

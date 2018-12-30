@@ -1,11 +1,13 @@
-package ru.mousecray.endmagic.blocks.portal;
+package ru.mousecray.endmagic.tileentity.portal;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import ru.mousecray.endmagic.teleport.Location;
 
+import static ru.mousecray.endmagic.teleport.Location.spawn;
+
 public class TileWithLocation extends TileEntity {
-    Location distination;
+    public Location distination = spawn;
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
@@ -18,7 +20,7 @@ public class TileWithLocation extends TileEntity {
         if (compound.hasKey("distination", 10))
             distination = Location.fromNbt(compound.getCompoundTag("distination"));
         else
-            distination = new Location(pos, world);
+            distination = spawn;
 
         super.readFromNBT(compound);
     }

@@ -4,14 +4,14 @@ import net.minecraft.block.Block;
 import ru.mousecray.endmagic.blocks.*;
 import ru.mousecray.endmagic.blocks.portal.BlockPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockTopMark;
-import ru.mousecray.endmagic.blocks.portal.MaterBlockPortal;
+import ru.mousecray.endmagic.blocks.portal.MasterBlockPortal;
 
 public final class EMBlocks {
-    public static final Block ENDER_GRASS = new EnderGrass();
+    public static final EnderGrass enderGrass = new EnderGrass();
 
-    public static final Block PORTAL = new BlockPortal();
+    public static final BlockPortal blockPortal = new BlockPortal();
 
-    public static final Block materBlockPortal = new MaterBlockPortal();
+    public static final MasterBlockPortal materBlockPortal = new MasterBlockPortal();
 
-    public static final Block blockTopMark = new BlockTopMark();
+    public static final BlockTopMark blockTopMark = new BlockTopMark();
 }
