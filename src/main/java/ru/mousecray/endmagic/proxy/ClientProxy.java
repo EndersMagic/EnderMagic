@@ -7,6 +7,7 @@ import java.util.function.Function;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -50,9 +51,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 				 ModelLoader.setCustomModelResourceLocation(item, 0, 
 						 	new ModelResourceLocation(item.getRegistryName(), "inventory"));
 			 }
-		 }
-		 
-		 
+		 }	 
 	}
 
 	@SubscribeEvent
@@ -78,5 +77,10 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     @Override
     public void setModel(Item item, int meta, ModelResourceLocation resource) {
         ModelLoader.setCustomModelResourceLocation(item, meta, resource);
+    }
+    
+    @Override
+    public void setStateMapper(Block block, IStateMapper stateMapper) {
+        ModelLoader.setCustomStateMapper(block, stateMapper);
     }
 }
