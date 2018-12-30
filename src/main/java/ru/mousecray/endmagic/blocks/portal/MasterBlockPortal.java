@@ -12,6 +12,8 @@ import ru.mousecray.endmagic.teleport.Location;
 import ru.mousecray.endmagic.tileentity.portal.TileMasterBlockPortal;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MasterBlockPortal extends BlockWithTile<TileMasterBlockPortal> {
     public MasterBlockPortal() {
@@ -28,18 +30,28 @@ public class MasterBlockPortal extends BlockWithTile<TileMasterBlockPortal> {
     }
 
     private void openPortal(BlockPos pos, World worldIn) {
-        int limit = 10;
+        int limit = 10;//todo: extract to config
         int length = 0;
         BlockPos cur = pos.up();
 
         Location distination = tile(worldIn, pos).distination;
 
+        List<BlockPos> portalPos = new ArrayList<>();
+
         while (worldIn.isAirBlock(cur) && length < limit) {
-            setPortal(worldIn, cur, distination);
+            portalPos.add(cur);
 
             cur = cur.up();
             length++;
         }
+
+        if (worldIn.getBlockState(cur).getBlock() == EMBlocks.blockTopMark && !portalPos.isEmpty())
+            portalPos.forEach(it -> setPortal(worldIn, it, distination));
+        else
+            doError();
+    }
+
+    private void doError() {
     }
 
     private void setPortal(World worldIn, BlockPos cur, Location distination) {
