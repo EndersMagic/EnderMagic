@@ -5,11 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-<<<<<<< HEAD
-=======
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.creativetab.CreativeTabs;
->>>>>>> e9b52afd49edf698c26d432b5696be6468b7cd0b
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
@@ -58,33 +54,25 @@ public class CommonProxy {
     }
 
     private void registerBlock(Block block) {
-<<<<<<< HEAD
-=======
-
->>>>>>> e9b52afd49edf698c26d432b5696be6468b7cd0b
         String name = NameUtils.getName(block);
         block.setRegistryName(name);
         block.setUnlocalizedName(name);
         block.setCreativeTab(EM.EM_CREATIVE);
 
-<<<<<<< HEAD
-=======
         if (block instanceof ITileEntityProvider) {
             Class<? extends TileEntity> tile = ((ITileEntityProvider) block).createNewTileEntity(null, 0).getClass();
             registerTile(tile);
         }
->>>>>>> e9b52afd49edf698c26d432b5696be6468b7cd0b
+        
         blocksToRegister.add(block);
         registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 
-<<<<<<< HEAD
-=======
     private void registerTile(Class<? extends TileEntity> tile) {
         tilesToRegister.add(tile);
     }
 
->>>>>>> e9b52afd49edf698c26d432b5696be6468b7cd0b
+
     private void registerItem(Item item, String name) {
         item.setRegistryName(name);
         item.setUnlocalizedName(name);
