@@ -6,7 +6,14 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class NameUtils {
-    public static String getName(Class c) {
+    public static String getName(Object c) {
+        if (c instanceof NameProvider)
+            return ((NameProvider) c).name();
+        else
+            return getName(c.getClass());
+    }
+
+    private static String getName(Class c) {
         String r = c.getSimpleName()
                 .chars()
                 .flatMap(i -> {

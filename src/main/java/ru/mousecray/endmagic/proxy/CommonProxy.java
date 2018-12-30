@@ -29,12 +29,6 @@ public class CommonProxy {
         for (Field field : EMBlocks.class.getFields()) {
             try {
                 Block block = (Block) field.get(null);
-
-                String name = NameUtils.getName(block.getClass());
-                block.setRegistryName(name);
-                block.setUnlocalizedName(name);
-                block.setCreativeTab(EM.EM_CREATIVE);
-
                 registerBlock(block);
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 e.printStackTrace();
@@ -43,19 +37,26 @@ public class CommonProxy {
     }
 
     private void registerBlock(Block block) {
+
+        String name = NameUtils.getName(block);
+        block.setRegistryName(name);
+        block.setUnlocalizedName(name);
+        block.setCreativeTab(EM.EM_CREATIVE);
+
         blocksToRegister.add(block);
-        registerItem(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+        registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 
-    private void registerItem(Item item) {
-
-        String name = NameUtils.getName(item.getClass());
-        if (item.getRegistryName() == null)
-            item.setRegistryName(name);
+    private void registerItem(Item item, String name) {
+        item.setRegistryName(name);
         item.setUnlocalizedName(name);
         item.setCreativeTab(EM.EM_CREATIVE);
 
         itemsToRegister.add(item);
+    }
+
+    private void registerItem(Item item) {
+        registerItem(item, NameUtils.getName(item));
     }
 
     @SubscribeEvent
