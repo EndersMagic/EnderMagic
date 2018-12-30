@@ -1,0 +1,27 @@
+package ru.mousecray.endmagic.util;
+
+import ru.mousecray.endmagic.blocks.EnderGrass;
+
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+public class NameUtils {
+    public static String getName(Class c) {
+        String r = c.getSimpleName()
+                .chars()
+                .flatMap(i -> {
+                    Character a = (char) i;
+                    if (Character.isUpperCase(i)) {
+                        return IntStream.of('_', Character.toLowerCase(i));
+                    } else
+                        return IntStream.of(i);
+                })
+                .collect(StringBuilder::new,
+                        StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        if (r.startsWith("_"))
+            return r.substring(1);
+        else
+            return r;
+    }
+}
