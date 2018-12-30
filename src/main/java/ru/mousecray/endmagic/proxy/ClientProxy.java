@@ -24,53 +24,57 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
-	
-	private Map<ResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
-	
-	@Override
-	public void preInit(FMLPreInitializationEvent event) {super.preInit(event);}
-	@Override
-	public void init(FMLInitializationEvent event) {
-    super.init(event);
-    ClientRegistry.bindTileEntitySpecialRenderer(TilePortal.class, new TileEntityPortalRenderer());
-  }
-	@Override
-	public void postInit(FMLPostInitializationEvent event) {super.postInit(event);}
-	
-	@SubscribeEvent
-	public void registerModels(ModelRegistryEvent e) {
-		 for (Block block : blocksToRegister) {
-			 if(block instanceof IEMModel) {
-				 ((IEMModel) block).registerModels(this);
-			 }
-			 else {
-				 ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, 
-						 	new ModelResourceLocation(block.getRegistryName(), "inventory"));
-			 }
-		 }
-		 
-		 for (Item item : itemsToRegister) {
-			 if (item instanceof IEMModel) {
-				 ((IEMModel) item).registerModels(this);
-			 }
-			 else {
-				 ModelLoader.setCustomModelResourceLocation(item, 0, 
-						 	new ModelResourceLocation(item.getRegistryName(), "inventory"));
-			 }
-		 }	 
-	}
 
-	@SubscribeEvent
-	public void onModelBake(ModelBakeEvent e) {
-		for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
-			ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
+    private Map<ResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
 
-			if (bakedModelOverrides.containsKey(key)) {
-				e.getModelRegistry().putObject(resource, bakedModelOverrides.get(key).apply(e.getModelRegistry().getObject(resource)));
-			}
-		}
-	}
-  
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
+    }
+
+    @Override
+    public void init(FMLInitializationEvent event) {
+        super.init(event);
+        ClientRegistry.bindTileEntitySpecialRenderer(TilePortal.class, new TileEntityPortalRenderer());
+    }
+
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        super.postInit(event);
+    }
+
+    @SubscribeEvent
+    public void registerModels(ModelRegistryEvent e) {
+        for (Block block : blocksToRegister) {
+            if (block instanceof IEMModel) {
+                ((IEMModel) block).registerModels(this);
+            } else {
+                ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
+                        new ModelResourceLocation(block.getRegistryName(), "inventory"));
+            }
+        }
+
+        for (Item item : itemsToRegister) {
+            if (item instanceof IEMModel) {
+                ((IEMModel) item).registerModels(this);
+            } else {
+                ModelLoader.setCustomModelResourceLocation(item, 0,
+                        new ModelResourceLocation(item.getRegistryName(), "inventory"));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onModelBake(ModelBakeEvent e) {
+        for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
+            ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
+
+            if (bakedModelOverrides.containsKey(key)) {
+                e.getModelRegistry().putObject(resource, bakedModelOverrides.get(key).apply(e.getModelRegistry().getObject(resource)));
+            }
+        }
+    }
+
     @Override
     public void addBakedModelOverride(ResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
         bakedModelOverrides.put(resource, override);
@@ -85,7 +89,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     public void setModel(Item item, int meta, ModelResourceLocation resource) {
         ModelLoader.setCustomModelResourceLocation(item, meta, resource);
     }
-    
+
     @Override
     public void setStateMapper(Block block, IStateMapper stateMapper) {
         ModelLoader.setCustomStateMapper(block, stateMapper);
