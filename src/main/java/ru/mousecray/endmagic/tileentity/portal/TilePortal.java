@@ -8,7 +8,7 @@ import ru.mousecray.endmagic.teleport.TeleportUtils;
 import java.util.List;
 
 public class TilePortal extends TileWithLocation implements ITickable {
-    int tick = 0;
+    private int tick = 0;
 
     @Override
     public void update() {
