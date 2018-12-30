@@ -1,6 +1,8 @@
 package ru.mousecray.endmagic.teleport;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class Location {
     final int x, y, z, dim;
@@ -10,6 +12,10 @@ public class Location {
         this.y = y;
         this.z = z;
         this.dim = dim;
+    }
+
+    public Location(BlockPos pos, World world) {
+        this(pos.getX(), pos.getY(), pos.getZ(), world.provider.getDimension());
     }
 
     public NBTTagCompound toNbt() {
