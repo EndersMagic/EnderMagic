@@ -26,6 +26,10 @@ import java.util.LinkedList;
  */
 public class TeleportUtils {
 
+    public static Entity teleportToLocation(Entity entity, Location location) {
+        return teleportEntity(entity, location.dim, location.x, location.y, location.z);
+    }
+
     /**
      * Universal method for teleporting entities of all shapes and sizes!
      * This method will teleport an entity and any entity it is riding or that are ring it recursively. If riding the riding entity will be re mounted on the other side.
@@ -85,18 +89,15 @@ public class TeleportUtils {
         if (interDimensional) {
             if (entity instanceof EntityPlayerMP) {
                 return teleportPlayerInterdimentional((EntityPlayerMP) entity, server, sourceDim, targetDim, xCoord, yCoord, zCoord, yaw, pitch);
-            }
-            else {
+            } else {
                 return teleportEntityInterdimentional(entity, server, sourceDim, targetDim, xCoord, yCoord, zCoord, yaw, pitch);
             }
-        }
-        else {
+        } else {
             if (entity instanceof EntityPlayerMP) {
                 EntityPlayerMP player = (EntityPlayerMP) entity;
                 player.connection.setPlayerLocation(xCoord, yCoord, zCoord, yaw, pitch);
                 player.setRotationYawHead(yaw);
-            }
-            else {
+            } else {
                 entity.setLocationAndAngles(xCoord, yCoord, zCoord, yaw, pitch);
                 entity.setRotationYawHead(yaw);
             }
@@ -220,14 +221,15 @@ public class TeleportUtils {
 
         /**
          * Recursively teleports the entity and all of its passengers after dismounting them.
-         * @param server The minecraft server.
+         *
+         * @param server    The minecraft server.
          * @param sourceDim The source dimension.
          * @param targetDim The target dimension.
-         * @param xCoord The target x position.
-         * @param yCoord The target y position.
-         * @param zCoord The target z position.
-         * @param yaw The target yaw.
-         * @param pitch The target pitch.
+         * @param xCoord    The target x position.
+         * @param yCoord    The target y position.
+         * @param zCoord    The target z position.
+         * @param yaw       The target yaw.
+         * @param pitch     The target pitch.
          */
         public void teleport(MinecraftServer server, int sourceDim, int targetDim, double xCoord, double yCoord, double zCoord, float yaw, float pitch) {
             entity.removePassengers();
@@ -268,6 +270,7 @@ public class TeleportUtils {
 
         /**
          * This is the method that is responsible for actually sending the update to each client.
+         *
          * @param playerMP The Player.
          */
         private void updateClient(EntityPlayerMP playerMP) {
@@ -281,11 +284,12 @@ public class TeleportUtils {
 
         /**
          * This method returns the helper for a specific entity in the stack.
+         *
          * @param passenger The passenger you are looking for.
          * @return The passenger helper for the specified passenger.
          */
         public PassengerHelper getPassenger(Entity passenger) {
-            if (this.entity == passenger) {
+            if (entity == passenger) {
                 return this;
             }
 
