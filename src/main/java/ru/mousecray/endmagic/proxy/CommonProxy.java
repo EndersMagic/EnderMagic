@@ -40,7 +40,7 @@ public class CommonProxy {
                 e.printStackTrace();
             }
         }
-        
+
         //Registration Items
         for (Field field : EMItems.class.getFields()) {
             try {
@@ -62,7 +62,7 @@ public class CommonProxy {
             Class<? extends TileEntity> tile = ((ITileEntityProvider) block).createNewTileEntity(null, 0).getClass();
             registerTile(tile);
         }
-        
+
         blocksToRegister.add(block);
         registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
