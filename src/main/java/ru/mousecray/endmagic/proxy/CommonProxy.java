@@ -45,8 +45,7 @@ public class CommonProxy {
         for (Field field : EMItems.class.getFields()) {
             try {
                 Item item = (Item) field.get(null);
-                String name = NameUtils.getName(item);
-                registerItem(item, name);
+                registerItem(item);
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 e.printStackTrace();
             }
