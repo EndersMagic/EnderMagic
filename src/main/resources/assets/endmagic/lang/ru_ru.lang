@@ -1,0 +1,7 @@
+tile.ender_grass.name=Трава края
+
+item.ender_seeds.name=Семена пурпурной жемчужины
+
+itemGroup.em_cretive_tab=Магия Края
+
+tooltip.ender_seeds=Их можно посадить на Эндерняк
