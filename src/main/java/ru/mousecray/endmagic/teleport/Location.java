@@ -3,7 +3,7 @@ package ru.mousecray.endmagic.teleport;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class Location {
-    int x, y, z, dim;
+    final int x, y, z, dim;
 
     public Location(int x, int y, int z, int dim) {
         this.x = x;
