@@ -25,6 +25,7 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.render.IModelRegistration;
 import ru.mousecray.endmagic.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.util.IEMModel;
@@ -67,7 +68,7 @@ public class EnderGrass extends BlockBush implements IShearable, IEMModel {
     
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return null;
+        return EMItems.ENDER_SEEDS;
     }
     
     @Override
@@ -99,7 +100,7 @@ public class EnderGrass extends BlockBush implements IShearable, IEMModel {
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
     	if (RANDOM.nextInt(30) != 0) return;
-        ItemStack seed = new ItemStack(Items.WHEAT_SEEDS, fortune);
+        ItemStack seed = new ItemStack(EMItems.ENDER_SEEDS, fortune);
         if (!seed.isEmpty()) drops.add(seed);
     }
 }

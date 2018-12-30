@@ -14,4 +14,7 @@ public final class EMBlocks {
     public static final MasterBlockPortal materBlockPortal = new MasterBlockPortal();
 
     public static final BlockTopMark blockTopMark = new BlockTopMark();
+  
+	  public static final EnderCrops enderCrops = new EnderCrops();
+
 }

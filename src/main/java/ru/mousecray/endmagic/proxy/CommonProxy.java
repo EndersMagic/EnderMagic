@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.util.NameUtils;
+import ru.mousecray.endmagic.util.NameAndTabUtils;
 
 public class CommonProxy {
 
@@ -53,10 +53,10 @@ public class CommonProxy {
     }
 
     private void registerBlock(Block block) {
-        String name = NameUtils.getName(block);
+        String name = NameAndTabUtils.getName(block);
         block.setRegistryName(name);
         block.setUnlocalizedName(name);
-        block.setCreativeTab(EM.EM_CREATIVE);
+        block.setCreativeTab(NameAndTabUtils.getCTab(block));
 
         if (block instanceof ITileEntityProvider) {
             Class<? extends TileEntity> tile = ((ITileEntityProvider) block).createNewTileEntity(null, 0).getClass();
@@ -75,13 +75,13 @@ public class CommonProxy {
     private void registerItem(Item item, String name) {
         item.setRegistryName(name);
         item.setUnlocalizedName(name);
-        item.setCreativeTab(EM.EM_CREATIVE);
+        item.setCreativeTab(NameAndTabUtils.getCTab(item));
 
         itemsToRegister.add(item);
     }
 
     private void registerItem(Item item) {
-        registerItem(item, NameUtils.getName(item));
+        registerItem(item, NameAndTabUtils.getName(item));
     }
 
     @SubscribeEvent
