@@ -1,9 +1,11 @@
 package ru.mousecray.endmagic.teleport;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import ru.mousecray.endmagic.tileentity.portal.TilePortal;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class Location {
 
@@ -31,7 +33,19 @@ public class Location {
         return r;
     }
 
+    public IBlockState getBlockState() {
+        return getWorld().getBlockState(toPos());
+    }
+
+    public WorldServer getWorld() {
+        return FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dim);
+    }
+
     public static Location fromNbt(NBTTagCompound tag) {
         return new Location(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"), tag.getInteger("dim"));
+    }
+
+    public BlockPos toPos() {
+        return new BlockPos(x, y, z);
     }
 }
