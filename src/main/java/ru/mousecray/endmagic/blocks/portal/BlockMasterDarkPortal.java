@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 public class BlockMasterDarkPortal extends BlockMasterPortal<TileMasterDarkPortal> {
     @Override
     public boolean isValidDistination(Location loc, int sourceLength) {
-        int length = 0;
 
         BlockPos pos = loc.toPos();
 
@@ -20,6 +19,11 @@ public class BlockMasterDarkPortal extends BlockMasterPortal<TileMasterDarkPorta
 
         World worldIn = loc.getWorld();
 
+        return worldIn.getBlockState(pos).getBlock() == EMBlocks.blockMasterDarkPortal && checkOtherBlocksOfStructure(sourceLength, cur, worldIn);
+    }
+
+    private boolean checkOtherBlocksOfStructure(int sourceLength, BlockPos cur, World worldIn) {
+        int length = 0;
         while (worldIn.isAirBlock(cur) && length < limit) {
             cur = cur.up();
             length++;
