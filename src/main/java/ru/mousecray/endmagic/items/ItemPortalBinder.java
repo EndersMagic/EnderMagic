@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.items;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +23,7 @@ import java.util.Optional;
 public class ItemPortalBinder extends Item {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(readFromItem(stack).toString());
+        tooltip.add(ChatFormatting.DARK_AQUA + readFromItem(stack).toString());
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
@@ -37,7 +38,7 @@ public class ItemPortalBinder extends Item {
             TileMasterPortal tile = (TileMasterPortal) world.getTileEntity(pos);
 
             if (tile != null)
-                tile.distination = readFromItem(item);
+                tile.updateDistination(readFromItem(item));
 
             return EnumActionResult.SUCCESS;
         } else
