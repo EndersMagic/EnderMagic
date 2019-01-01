@@ -27,7 +27,7 @@ import java.util.LinkedList;
 public class TeleportUtils {
 
     public static Entity teleportToLocation(Entity entity, Location location) {
-        return teleportEntity(entity, location.dim, location.x, location.y, location.z);
+        return teleportEntity(entity, location.dim, location.x + 0.5, location.y, location.z + 0.5);
     }
 
     /**
