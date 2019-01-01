@@ -68,7 +68,7 @@ public class EnderGrass extends BlockBush implements IShearable, IEMModel {
     
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return EMItems.ENDER_SEEDS;
+        return EMItems.enderSeeds;
     }
     
     @Override
@@ -100,7 +100,7 @@ public class EnderGrass extends BlockBush implements IShearable, IEMModel {
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
     	if (RANDOM.nextInt(30) != 0) return;
-        ItemStack seed = new ItemStack(EMItems.ENDER_SEEDS, fortune);
+        ItemStack seed = new ItemStack(EMItems.enderSeeds, fortune);
         if (!seed.isEmpty()) drops.add(seed);
     }
 }

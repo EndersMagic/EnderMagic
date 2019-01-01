@@ -57,7 +57,7 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
     
     @Override
     protected Item getSeed() {
-        return EMItems.ENDER_SEEDS;
+        return EMItems.enderSeeds;
     }
 
     @Override
