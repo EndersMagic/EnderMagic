@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.teleport;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -24,6 +25,11 @@ public class Location {
         this(pos.getX(), pos.getY(), pos.getZ(), world.provider.getDimension());
     }
 
+    @Override
+    public String toString() {
+        return "Location(x = " + x + ", y = " + y + ", z = " + z + ")";
+    }
+
     public NBTTagCompound toNbt() {
         NBTTagCompound r = new NBTTagCompound();
         r.setInteger("x", x);
@@ -42,10 +48,19 @@ public class Location {
     }
 
     public static Location fromNbt(NBTTagCompound tag) {
-        return new Location(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"), tag.getInteger("dim"));
+        return
+                (ImmutableList.of("x", "y", "z", "dim").stream().map(tag::hasKey).reduce(true, (a, b) -> a && b))
+                        ?
+                        new Location(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"), tag.getInteger("dim"))
+                        :
+                        spawn;
     }
 
     public BlockPos toPos() {
         return new BlockPos(x, y, z);
+    }
+
+    public Location add(int i, int i1, int i2) {
+        return new Location(x + i, y + i1, z + i2, dim);
     }
 }
