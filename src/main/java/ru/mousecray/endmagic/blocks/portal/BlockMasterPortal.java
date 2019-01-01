@@ -35,7 +35,7 @@ public abstract class BlockMasterPortal<A extends TileMasterPortal> extends Bloc
         int length = 0;
         BlockPos cur = pos.up();
 
-        Location distination = tile(worldIn, pos).distination;
+        Location distination = tile(worldIn, pos).distination.add(0,1,0);
 
         List<BlockPos> portalPos = new ArrayList<>();
 
