@@ -25,9 +25,12 @@ import java.util.LinkedList;
  * Also has support for teleporting mounts.
  */
 public class TeleportUtils {
+    public static Entity teleportToBlockLocation(Entity entity, Location location) {
+        return teleportEntity(entity, location.dim, location.x + 0.5, location.y+1, location.z + 0.5);
+    }
 
     public static Entity teleportToLocation(Entity entity, Location location) {
-        return teleportEntity(entity, location.dim, location.x, location.y, location.z);
+        return teleportEntity(entity, location.dim, location.x + 0.5, location.y, location.z + 0.5);
     }
 
     /**

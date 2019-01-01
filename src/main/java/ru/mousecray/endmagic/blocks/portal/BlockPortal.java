@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -29,12 +30,17 @@ public class BlockPortal extends BlockWithTile<TilePortal> {
 
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         if (!worldIn.isRemote)
-            TeleportUtils.teleportToLocation(entityIn, tile(worldIn, pos).distination);
+            TeleportUtils.teleportToBlockLocation(entityIn, tile(worldIn, pos).distination);
     }
 
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TilePortal();
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
     @SideOnly(Side.CLIENT)
