@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class BlockWithTile<A extends TileEntity> extends BlockContainer {
-    protected BlockWithTile(Material materialIn) {
+    public BlockWithTile(Material materialIn) {
         super(materialIn);
     }
 
