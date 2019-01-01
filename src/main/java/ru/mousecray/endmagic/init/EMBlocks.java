@@ -2,11 +2,17 @@ package ru.mousecray.endmagic.init;
 
 import ru.mousecray.endmagic.blocks.EnderCrops;
 import ru.mousecray.endmagic.blocks.EnderGrass;
+import ru.mousecray.endmagic.blocks.portal.BlockMasterDarkPortal;
+import ru.mousecray.endmagic.blocks.portal.BlockMasterStaticPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockTopMark;
 
 public final class EMBlocks {
     public static final EnderGrass enderGrass = new EnderGrass();
+
+    public static final BlockMasterDarkPortal blockMasterDarkPortal = new BlockMasterDarkPortal();
+
+    public static final BlockMasterStaticPortal blockMasterStaticPortal = new BlockMasterStaticPortal();
 
     public static final BlockPortal blockPortal = new BlockPortal();
 
