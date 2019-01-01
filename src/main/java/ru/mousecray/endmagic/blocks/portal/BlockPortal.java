@@ -30,7 +30,7 @@ public class BlockPortal extends BlockWithTile<TilePortal> {
 
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         if (!worldIn.isRemote)
-            TeleportUtils.teleportToLocation(entityIn, tile(worldIn, pos).distination);
+            TeleportUtils.teleportToBlockLocation(entityIn, tile(worldIn, pos).distination);
     }
 
     @Override
