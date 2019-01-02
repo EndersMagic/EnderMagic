@@ -9,12 +9,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.tileentity.TileBlastFurnace;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -23,7 +23,23 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
         recipes.add(new BlastRecipe(coal, iron, steel));
     }
 
-    private List<BlastRecipe> recipes;
+    public Optional<Item> matchRecipe(Item coal, Item iron) {
+        return Optional.ofNullable(indexed().get(Pair.of(coal, iron)));
+    }
+
+    private Map<Pair<Item, Item>, Item> indexed() {
+        if (indexed == null) {
+            indexed = recipes
+                    .stream()
+                    .map(r -> Pair.of(Pair.of(r.coal, r.iron), r.steel))
+                    .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
+        }
+        return indexed;
+    }
+
+    private Map<Pair<Item, Item>, Item> indexed;
+
+    private List<BlastRecipe> recipes = new ArrayList<>();
     private Set<Item> coal;
     private Set<Item> iron;
     private Set<Item> steel;
