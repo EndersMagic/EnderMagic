@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 
 public class TileBlastFurnace extends EMTileEntity {
-    InventoryBasic inv = new InventoryBasic("Wand Builder", true, 3);
+    public final InventoryBasic inv = new InventoryBasic("Wand Builder", true, 3);
 
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         NBTTagList list = new NBTTagList();
