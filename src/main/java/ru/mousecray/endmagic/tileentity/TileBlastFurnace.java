@@ -1,13 +1,47 @@
 package ru.mousecray.endmagic.tileentity;
 
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.common.util.Constants;
+import ru.mousecray.endmagic.init.EMBlocks;
 
-public class TileBlastFurnace extends EMTileEntity {
+import java.util.Optional;
+
+public class TileBlastFurnace extends EMTileEntity implements ITickable {
     public final InventoryBasic inv = new InventoryBasic("Wand Builder", true, 3);
+
+    private Optional<Item> result = Optional.empty();
+    private int tickProcess = 0;
+
+    public TileBlastFurnace() {
+        inv.addInventoryChangeListener(invBasic -> result = EMBlocks.blockBlastFurnace.matchRecipe(inv.getStackInSlot(0).getItem(), inv.getStackInSlot(1).getItem()));
+    }
+
+    @Override
+    public void update() {
+        if (result.isPresent()) {
+            ItemStack steel = inv.getStackInSlot(2);
+            Item r = result.get();
+            if (steel.getItem() == r || steel == ItemStack.EMPTY) {
+                tickProcess++;
+                if (tickProcess >= 20 * 60 * 5) {
+                    tickProcess = 0;
+                    inv.decrStackSize(0, 1);
+                    inv.decrStackSize(1, 1);
+                    if (steel == ItemStack.EMPTY)
+                        inv.setInventorySlotContents(2, new ItemStack(r));
+                    else
+                        steel.setCount(steel.getCount() + 1);
+                }
+            }
+        } else
+            tickProcess = 0;
+
+    }
 
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         NBTTagList list = new NBTTagList();
@@ -21,6 +55,7 @@ public class TileBlastFurnace extends EMTileEntity {
             }
         }
         tagCompound.setTag("Items", list);
+        tagCompound.setInteger("tickProcess", tickProcess);
 
         return super.writeToNBT(tagCompound);
     }
@@ -33,6 +68,7 @@ public class TileBlastFurnace extends EMTileEntity {
             comp.removeTag("Slot");
             if (j >= 0 && j < inv.getSizeInventory()) inv.setInventorySlotContents(j, new ItemStack(comp));
         }
+        tickProcess = tagCompound.getInteger("tickProcess");
 
         super.readFromNBT(tagCompound);
     }
