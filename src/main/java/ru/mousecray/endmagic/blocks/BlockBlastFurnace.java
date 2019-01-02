@@ -3,6 +3,7 @@ package ru.mousecray.endmagic.blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -46,6 +47,7 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
 
     public BlockBlastFurnace() {
         super(Material.ROCK);
+        addRecipe(Items.COAL,Items.IRON_INGOT,Items.GOLD_INGOT);
     }
 
     @Override
