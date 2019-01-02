@@ -1,28 +1,36 @@
 package ru.mousecray.endmagic.proxy;
 
-import java.lang.reflect.Field;
-import java.util.LinkedList;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
+import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
+import ru.mousecray.endmagic.inventory.GuiBlasFurnace;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
 
-public class CommonProxy {
+import javax.annotation.Nullable;
+import java.lang.reflect.Field;
+import java.util.LinkedList;
+import java.util.List;
+
+public class CommonProxy implements IGuiHandler {
 
     protected List<Item> itemsToRegister = new LinkedList<>();
     protected List<Class<? extends TileEntity>> tilesToRegister = new LinkedList<>();
@@ -50,6 +58,7 @@ public class CommonProxy {
                 e.printStackTrace();
             }
         }
+        NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
     }
 
     private void registerBlock(Block block) {
@@ -99,5 +108,25 @@ public class CommonProxy {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
+    }
+
+    public static int blastFurnaceGui = 0;
+
+    @Nullable
+    @Override
+    public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+        if (id == blastFurnaceGui)
+            return new ContainerBlastFurnace(player,EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z)));
+
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+        if (id == blastFurnaceGui)
+            return new GuiBlasFurnace(new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z))));
+
+        return null;
     }
 }
