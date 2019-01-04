@@ -19,4 +19,11 @@ public class EMEntities {
 			.id("blue_ender_pearl", 1)
 			.tracker(64, 20, true)
 			.build();
+	public static EntityEntry enderArrow = EntityEntryBuilder
+			.create()
+			.entity(EntityEnderArrow.class)
+			.name("Ender Pearl")
+			.id("ender_pearl", 2)
+			.tracker(64, 20, true)
+			.build();
 }

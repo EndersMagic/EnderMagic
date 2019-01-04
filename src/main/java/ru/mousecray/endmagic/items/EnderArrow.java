@@ -7,12 +7,12 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import ru.mousecray.endmagic.entity.EMEnderArrow;
+import ru.mousecray.endmagic.entity.EntityEnderArrow;
 
 public class EnderArrow extends ItemArrow {
 	
-	public EMEnderArrow createArrow(World world, EntityLivingBase shooter) {
-		EMEnderArrow arrow = new EMEnderArrow(world, shooter);
+	public EntityEnderArrow createArrow(World world, EntityLivingBase shooter) {
+		EntityEnderArrow arrow = new EntityEnderArrow(world, shooter);
 		return arrow;
 	}
 
