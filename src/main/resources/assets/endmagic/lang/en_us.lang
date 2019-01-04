@@ -6,6 +6,8 @@ item.ender_seeds.name=Purple Pearl Seeds
 item.purple_ender_pearl.name=Purple Pearl
 item.blue_ender_pearl.name=Blue Pearl
 item.ender_arrow.name=Ender Arrow
+item.em_book.name=Ender's Book
+item.ender_apple.name=Ender Apple
 
 itemGroup.em_cretive_tab=Ender's Magic
 
