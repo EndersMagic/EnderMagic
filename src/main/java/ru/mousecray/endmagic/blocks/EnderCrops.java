@@ -13,9 +13,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.client.render.model.IModelRegistration;
+import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.render.IModelRegistration;
-import ru.mousecray.endmagic.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.util.CreativeTabProvider;
 import ru.mousecray.endmagic.util.IEMModel;
 

@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.render.model.baked;
+package ru.mousecray.endmagic.client.render.model.baked;
 
 import java.util.List;
 

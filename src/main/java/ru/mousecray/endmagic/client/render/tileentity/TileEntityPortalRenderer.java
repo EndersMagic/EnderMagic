@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.client.render;
+package ru.mousecray.endmagic.client.render.tileentity;
 
 import net.minecraft.client.renderer.tileentity.TileEntityEndPortalRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;

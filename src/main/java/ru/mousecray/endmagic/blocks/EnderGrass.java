@@ -25,9 +25,9 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.client.render.model.IModelRegistration;
+import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.render.IModelRegistration;
-import ru.mousecray.endmagic.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.util.IEMModel;
 
 public class EnderGrass extends BlockBush implements IShearable, IEMModel {
