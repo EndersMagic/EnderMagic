@@ -9,16 +9,19 @@ public class EMItems {
     //Not finished
     public static final EMSeeds enderSeeds = new EMSeeds(EMBlocks.enderCrops, Blocks.END_STONE, "ender_seeds", "tooltip.ender_seeds");
     public static final ItemPortalBinder itemPortalBinder = new ItemPortalBinder();
-    public static final ItemNamed dragonCoal = new ItemNamed("");
-    public static final ItemNamed naturalCoal = new ItemNamed("");
-    public static final ItemNamed phantomCoal = new ItemNamed("");
-    public static final ItemNamed immortaolCoal = new ItemNamed("");
-    public static final ItemNamed dragonSteel = new ItemNamed("");
-    public static final ItemNamed naturalSteel = new ItemNamed("");
-    public static final ItemNamed phantomSteel = new ItemNamed("");
-    public static final ItemNamed immortaolSteel = new ItemNamed("");
-    public static final ItemNamed dragonDiamond = new ItemNamed("");
-    public static final ItemNamed naturalDiamond = new ItemNamed("");
-    public static final ItemNamed phantomDiamond = new ItemNamed("");
-    public static final ItemNamed immortaolDiamond = new ItemNamed("");
+
+    public static final ItemNamed dragonCoal = new ItemNamed("dragon_coal");
+    public static final ItemNamed naturalCoal = new ItemNamed("natural_coal");
+    public static final ItemNamed phantomCoal = new ItemNamed("phantom_coal");
+    public static final ItemNamed immortalCoal = new ItemNamed("immortal_coal");
+
+    public static final ItemNamed dragonSteel = new ItemNamed("dragon_steel");
+    public static final ItemNamed naturalSteel = new ItemNamed("natural_steel");
+    public static final ItemNamed phantomSteel = new ItemNamed("phantom_steel");
+    public static final ItemNamed immortalSteel = new ItemNamed("immortal_steel");
+
+    public static final ItemNamed dragonDiamond = new ItemNamed("dragon_diamond");
+    public static final ItemNamed naturalDiamond = new ItemNamed("natural_diamond");
+    public static final ItemNamed phantomDiamond = new ItemNamed("phantom_diamond");
+    public static final ItemNamed immortalDiamond = new ItemNamed("immortal_diamond");
 }
