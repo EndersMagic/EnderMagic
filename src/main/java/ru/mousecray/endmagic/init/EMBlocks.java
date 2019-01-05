@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.init;
 
 import ru.mousecray.endmagic.blocks.BlockBlastFurnace;
+import ru.mousecray.endmagic.blocks.BlockNamed;
 import ru.mousecray.endmagic.blocks.EnderCrops;
 import ru.mousecray.endmagic.blocks.EnderGrass;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterDarkPortal;
@@ -22,4 +23,9 @@ public final class EMBlocks {
     public static final BlockTopMark blockTopMark = new BlockTopMark();
 
     public static final EnderCrops enderCrops = new EnderCrops();
+
+    public static final BlockNamed dragonCoal = new BlockNamed("dragon_coal_block");
+    public static final BlockNamed naturalCoal = new BlockNamed("natural_coal_block");
+    public static final BlockNamed phantomCoal = new BlockNamed("phantom_coal_block");
+    public static final BlockNamed immortalCoal = new BlockNamed("immortal_coal_block");
 }
