@@ -9,6 +9,7 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.items.ItemNamed;
 
 import java.util.ArrayList;

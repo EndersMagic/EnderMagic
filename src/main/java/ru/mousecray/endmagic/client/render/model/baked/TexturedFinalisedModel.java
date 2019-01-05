@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.client;
+package ru.mousecray.endmagic.client.render.model.baked;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;
