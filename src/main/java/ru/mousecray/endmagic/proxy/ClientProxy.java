@@ -20,15 +20,16 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import ru.mousecray.endmagic.client.ClientEventHandler;
 import ru.mousecray.endmagic.client.render.entity.EMEntityThrowableRenderFactory;
 import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
+import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.entity.EntityBluePearl;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.EntityPurplePearl;
 import ru.mousecray.endmagic.init.EMItems;
+import ru.mousecray.endmagic.items.ItemTextured;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.IEMModel;
 
@@ -38,10 +39,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
+    public ClientProxy() {
+        addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
+    }
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
         super.preInit(event);
         RenderingRegistry.registerEntityRenderingHandler(EntityPurplePearl.class, new EMEntityThrowableRenderFactory(EMItems.purpleEnderPearl));
         RenderingRegistry.registerEntityRenderingHandler(EntityBluePearl.class, new EMEntityThrowableRenderFactory(EMItems.blueEnderPearl));
@@ -82,7 +85,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 
     private ArrayList<ResourceLocation> forRegister = new ArrayList<>();
 
-    private Map<ResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
+    private Map<ModelResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
 
     @Override
     public void registerTexture(ResourceLocation resourceLocation) {
@@ -100,17 +103,17 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 
     @SubscribeEvent
     public void onModelBake(ModelBakeEvent e) {
-        for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
-            ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
+        for (Map.Entry<ModelResourceLocation, Function<IBakedModel, IBakedModel>> override : bakedModelOverrides.entrySet()) {
+            ModelResourceLocation resource = override.getKey();
+            IBakedModel existingModel = e.getModelRegistry().getObject(resource);
+            if (existingModel != null)
+                e.getModelRegistry().putObject(resource, override.getValue().apply(existingModel));
 
-            if (bakedModelOverrides.containsKey(key)) {
-                e.getModelRegistry().putObject(resource, bakedModelOverrides.get(key).apply(e.getModelRegistry().getObject(resource)));
-            }
         }
     }
 
     @Override
-    public void addBakedModelOverride(ResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
+    public void addBakedModelOverride(ModelResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
         bakedModelOverrides.put(resource, override);
     }
 
