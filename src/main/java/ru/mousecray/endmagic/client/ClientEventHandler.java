@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.items.ItemNamed;
+import ru.mousecray.endmagic.items.ItemTextured;
 
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public void onModelBakeEvent(ModelBakeEvent event) {
-        ModelResourceLocation model = ItemNamed.companion.simpletexturemodel;
+        ModelResourceLocation model = ItemTextured.companion.simpletexturemodel;
         IBakedModel existingModel = event.getModelRegistry().getObject(model);
         if (existingModel != null) {
             IBakedModel customModel = new TexturedModel(existingModel);
