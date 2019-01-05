@@ -83,15 +83,13 @@ public class EMEvents {
         }
 	}
 
+	//TODO: Publishing standard ItemBow's method
 	private static ItemStack findAmmo(EntityPlayer player) {
-	    if (isEnderArrow(player.getHeldItem(EnumHand.OFF_HAND)) || 
-	    		isArrow(player.getHeldItem(EnumHand.OFF_HAND))) 
-	    	return player.getHeldItem(EnumHand.OFF_HAND);
-	    else if (isEnderArrow(player.getHeldItem(EnumHand.MAIN_HAND))) return player.getHeldItem(EnumHand.MAIN_HAND);
+	    if (isArrow(player.getHeldItem(EnumHand.OFF_HAND))) return player.getHeldItem(EnumHand.OFF_HAND);
+	    else if (isArrow(player.getHeldItem(EnumHand.MAIN_HAND))) return player.getHeldItem(EnumHand.MAIN_HAND);
 	    else for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
 	    	ItemStack stack = player.inventory.getStackInSlot(i);
-	
-	    	if (isEnderArrow(stack)) return stack;
+	    	if (isArrow(stack)) return stack;
 	    }
 	
 	    return ItemStack.EMPTY;
