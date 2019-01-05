@@ -24,21 +24,21 @@ import ru.mousecray.endmagic.items.EnderArrow;
 @EventBusSubscriber(modid=EM.ID)
 public class EMEvents {
 
-	//Not finished. 
-	@SubscribeEvent
-	public static void onPlayerLooseArrow(ArrowLooseEvent event) {
-		EntityPlayer player = event.getEntityPlayer();
-		//get has arrow
+    //Not finished.
+    @SubscribeEvent
+    public static void onPlayerLooseArrow(ArrowLooseEvent event) {
+        EntityPlayer player = event.getEntityPlayer();
+        //get has arrow
         boolean flag = event.hasAmmo();
         //get has ender arrow
         ItemStack stack = findAmmo(player);
-        
+
         if (flag && stack.getItem() == EMItems.enderArrow) {
-        	//canceling vanilla event 
-    		event.setCanceled(true);
-    		
-    		World world = event.getWorld();
-    		
+            //canceling vanilla event
+            event.setCanceled(true);
+
+            World world = event.getWorld();
+
             float f = ItemBow.getArrowVelocity(event.getCharge());
 
             if ((double)f >= 0.1D) {
@@ -81,27 +81,25 @@ public class EMEvents {
                 player.addStat(StatList.getObjectUseStats(stack.getItem()));
             }
         }
-	}
+    }
 
-	private static ItemStack findAmmo(EntityPlayer player) {
-	    if (isEnderArrow(player.getHeldItem(EnumHand.OFF_HAND)) || 
-	    		isArrow(player.getHeldItem(EnumHand.OFF_HAND))) 
-	    	return player.getHeldItem(EnumHand.OFF_HAND);
-	    else if (isEnderArrow(player.getHeldItem(EnumHand.MAIN_HAND))) return player.getHeldItem(EnumHand.MAIN_HAND);
-	    else for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
-	    	ItemStack stack = player.inventory.getStackInSlot(i);
-	
-	    	if (isEnderArrow(stack)) return stack;
-	    }
-	
-	    return ItemStack.EMPTY;
-	}
+    //TODO: Publishing standard ItemBow's method
+    private static ItemStack findAmmo(EntityPlayer player) {
+        if (isArrow(player.getHeldItem(EnumHand.OFF_HAND))) return player.getHeldItem(EnumHand.OFF_HAND);
+        else if (isArrow(player.getHeldItem(EnumHand.MAIN_HAND))) return player.getHeldItem(EnumHand.MAIN_HAND);
+        else for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
+                ItemStack stack = player.inventory.getStackInSlot(i);
+                if (isArrow(stack)) return stack;
+            }
 
-	private static boolean isEnderArrow(ItemStack stack) {
-	    return stack.getItem() == EMItems.enderArrow;
-	}
-	
-	private static boolean isArrow(ItemStack stack) {
-	    return stack.getItem() instanceof ItemArrow;
-	}
+        return ItemStack.EMPTY;
+    }
+
+    private static boolean isEnderArrow(ItemStack stack) {
+        return stack.getItem() == EMItems.enderArrow;
+    }
+
+    private static boolean isArrow(ItemStack stack) {
+        return stack.getItem() instanceof ItemArrow;
+    }
 }
