@@ -12,7 +12,7 @@ public class EMItems {
     public static final Item enderSeeds = new EMSeeds(EMBlocks.enderCrops, Blocks.END_STONE, "ender_seeds", "tooltip.ender_seeds");
     public static final ItemPortalBinder itemPortalBinder = new ItemPortalBinder();
 
-    public static final ItemTextured simpletexturemodel = ItemTextured.companion.simpletexturemodelItem;
+    //public static final ItemTextured simpletexturemodel = ItemTextured.companion.simpletexturemodelItem;
 
     public static final ItemNamed dragonCoal = new ItemNamed("dragon_coal");
     public static final ItemNamed naturalCoal = new ItemNamed("natural_coal");
