@@ -9,7 +9,6 @@ public class ItemNamed extends ItemTextured implements NameProvider {
 
     public ItemNamed(String name) {
         this.name = name;
-        ClientProxy.registerTexture(new ResourceLocation(textureName()));
     }
 
     private String name;
