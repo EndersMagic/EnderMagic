@@ -1,6 +1,11 @@
 tile.ender_grass.name=Трава края
+tile.block_master_static_portal.name=Статичный телепорт
+tile.block_master_dark_portal.name=Тёмный телепорт
 
 item.ender_seeds.name=Семена пурпурной жемчужины
+item.purple_ender_pearl.name=Пурпурная жемчужина
+item.blue_ender_pearl.name=Голубая жемчужина
+item.ender_arrow.name=Стрела края
 
 itemGroup.em_cretive_tab=Магия Края
 

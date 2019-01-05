@@ -1,5 +1,9 @@
 package ru.mousecray.endmagic.proxy;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -11,6 +15,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -18,12 +23,16 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.mousecray.endmagic.client.ClientEventHandler;
 import ru.mousecray.endmagic.client.render.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.render.IModelRegistration;
+import ru.mousecray.endmagic.client.render.entity.EMEntityThrowableRenderFactory;
+import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
+import ru.mousecray.endmagic.client.render.model.IModelRegistration;
+import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
+import ru.mousecray.endmagic.entity.EntityBluePearl;
+import ru.mousecray.endmagic.entity.EntityEnderArrow;
+import ru.mousecray.endmagic.entity.EntityPurplePearl;
+import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.IEMModel;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
 
@@ -33,6 +42,9 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
         super.preInit(event);
+        RenderingRegistry.registerEntityRenderingHandler(EntityPurplePearl.class, new EMEntityThrowableRenderFactory(EMItems.purpleEnderPearl));
+        RenderingRegistry.registerEntityRenderingHandler(EntityBluePearl.class, new EMEntityThrowableRenderFactory(EMItems.blueEnderPearl));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderArrow.class, manager -> new RenderEnderArrow(manager));
     }
 
     @Override

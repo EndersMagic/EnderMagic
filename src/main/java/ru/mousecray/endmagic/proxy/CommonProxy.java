@@ -1,5 +1,11 @@
 package ru.mousecray.endmagic.proxy;
 
+import java.lang.reflect.Field;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,24 +23,22 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.init.EMEntities;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlasFurnace;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
-
-import javax.annotation.Nullable;
-import java.lang.reflect.Field;
-import java.util.LinkedList;
-import java.util.List;
 
 public class CommonProxy implements IGuiHandler {
 
     protected List<Item> itemsToRegister = new LinkedList<>();
     protected List<Class<? extends TileEntity>> tilesToRegister = new LinkedList<>();
     protected List<Block> blocksToRegister = new LinkedList<>();
+    protected List<EntityEntry> entityToRegister = new LinkedList<>();
 
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
@@ -58,6 +62,17 @@ public class CommonProxy implements IGuiHandler {
                 e.printStackTrace();
             }
         }
+        
+        //Registration Entity
+        for (Field field : EMEntities.class.getFields()) {
+            try {
+                EntityEntry entity = (EntityEntry) field.get(null);
+                entityToRegister.add(entity);
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
     }
 
@@ -102,6 +117,11 @@ public class CommonProxy implements IGuiHandler {
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> e) {
         itemsToRegister.forEach(e.getRegistry()::register);
+    }
+    
+    @SubscribeEvent
+    public void registerEntities(RegistryEvent.Register<EntityEntry> e) {
+    	entityToRegister.forEach(e.getRegistry()::register);
     }
 
     public void init(FMLInitializationEvent event) {

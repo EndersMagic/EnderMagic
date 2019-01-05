@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.render;
+package ru.mousecray.endmagic.client.render.model;
 
 import java.util.function.Function;
 

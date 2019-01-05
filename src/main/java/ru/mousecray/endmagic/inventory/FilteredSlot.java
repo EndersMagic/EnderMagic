@@ -1,12 +1,11 @@
 package ru.mousecray.endmagic.inventory;
 
+import java.util.Set;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import ru.mousecray.endmagic.init.EMBlocks;
-
-import java.util.Set;
 
 public class FilteredSlot extends Slot {
 
