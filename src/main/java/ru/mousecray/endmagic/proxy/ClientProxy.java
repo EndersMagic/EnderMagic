@@ -1,49 +1,46 @@
 package ru.mousecray.endmagic.proxy;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import ru.mousecray.endmagic.client.ClientEventHandler;
+import ru.mousecray.endmagic.client.render.TileEntityPortalRenderer;
+import ru.mousecray.endmagic.render.IModelRegistration;
 import ru.mousecray.endmagic.client.render.entity.EMEntityThrowableRenderFactory;
 import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
-import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.entity.EntityBluePearl;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.EntityPurplePearl;
 import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.items.ItemTextured;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.IEMModel;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
 
     private Map<ResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
-    private static ArrayList<ResourceLocation> forRegister = new ArrayList<>();
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
         super.preInit(event);
         RenderingRegistry.registerEntityRenderingHandler(EntityPurplePearl.class, new EMEntityThrowableRenderFactory(EMItems.purpleEnderPearl));
         RenderingRegistry.registerEntityRenderingHandler(EntityBluePearl.class, new EMEntityThrowableRenderFactory(EMItems.blueEnderPearl));
@@ -59,19 +56,6 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
-    }
-    
-    public static void registerTexture(ResourceLocation resourceLocation) {
-        forRegister.add(resourceLocation);
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOW)
-    public void stitcherEventPre(TextureStitchEvent.Pre event) {
-        TextureMap map = event.getMap();
-        TextureMap map1 = Minecraft.getMinecraft().getTextureMapBlocks();
-        System.out.println(map==map1);
-        ClientProxy.forRegister.forEach(map::registerSprite);
-        System.out.println();
     }
 
     @SubscribeEvent
@@ -103,13 +87,6 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
             if (bakedModelOverrides.containsKey(key)) {
                 e.getModelRegistry().putObject(resource, bakedModelOverrides.get(key).apply(e.getModelRegistry().getObject(resource)));
             }
-        }
-        
-        ModelResourceLocation model = ItemTextured.companion.simpletexturemodel;
-        IBakedModel existingModel = e.getModelRegistry().getObject(model);
-        if (existingModel != null) {
-            IBakedModel customModel = new TexturedModel(existingModel);
-            e.getModelRegistry().putObject(model, customModel);
         }
     }
 
