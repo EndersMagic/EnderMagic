@@ -32,6 +32,7 @@ public abstract class ItemTextured extends Item implements IEMModel, CreativeTab
     }
 
     public static class companion {
+        //may be unused
         public static ItemTextured simpletexturemodelItem = new ItemTextured() {
             public String textureName() {
                 return "none";
