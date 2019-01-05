@@ -6,7 +6,7 @@ import ru.mousecray.endmagic.items.BlueEnderPearl;
 import ru.mousecray.endmagic.items.EMBook;
 import ru.mousecray.endmagic.items.EMSeeds;
 
-import ru.mousecray.endmagic.items.*
+import ru.mousecray.endmagic.items.*;
 
 public class EMItems {
     public static final Item enderSeeds = new EMSeeds(EMBlocks.enderCrops, Blocks.END_STONE, "ender_seeds", "tooltip.ender_seeds");

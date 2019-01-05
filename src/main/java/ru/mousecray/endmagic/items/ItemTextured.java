@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.client.ClientEventHandler;
-import ru.mousecray.endmagic.render.IModelRegistration;
+import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.util.CreativeTabProvider;
 import ru.mousecray.endmagic.util.IEMModel;
 
