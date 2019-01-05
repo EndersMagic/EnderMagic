@@ -9,11 +9,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import ru.mousecray.endmagic.client.ClientEventHandler;
 import ru.mousecray.endmagic.client.render.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.render.IModelRegistration;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
@@ -29,6 +31,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
         super.preInit(event);
     }
 
