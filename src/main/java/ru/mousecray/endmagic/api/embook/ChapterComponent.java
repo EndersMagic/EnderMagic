@@ -2,10 +2,8 @@ package ru.mousecray.endmagic.api.embook;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class ChapterComponent {
+public abstract class ChapterComponent implements IChapterComponent {
 	
 	protected int x;
 	protected int y;
@@ -23,9 +21,7 @@ public abstract class ChapterComponent {
 		this.height = height;
 	}
 	
-	@SideOnly(Side.CLIENT) public abstract void render(Minecraft mc);
-	
-	public abstract ComponentType getComponentType();
+	public abstract void render(Minecraft mc);
 	
 	public ChapterComponent setPosition(int x, int y) {
 		this.x = x;

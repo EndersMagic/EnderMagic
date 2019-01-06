@@ -13,7 +13,7 @@ public abstract class BookChapter {
 	}
 	
 	public abstract String getChapterTitle();
-	public abstract List<ChapterComponent> getChapterComponents();
+	public abstract List<IChapterComponent> getChapterComponents();
 	
 	public int getKey() {
 		return key;

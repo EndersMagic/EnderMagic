@@ -1,8 +1,6 @@
 package ru.mousecray.endmagic.api.embook.components;
 
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.api.embook.ChapterComponent;
 import ru.mousecray.endmagic.api.embook.ComponentType;
 
@@ -13,7 +11,6 @@ public class RecipeComponent extends ChapterComponent {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT) 
 	public void render(Minecraft mc) {
 		
 	}
