@@ -123,7 +123,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     }
     
     @Override
-    public void addBakedModelOverrideR(ResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
+    public void addBakedModelOverride(ResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
     	bakedModelOverridesR.put(resource, override);
     }
 

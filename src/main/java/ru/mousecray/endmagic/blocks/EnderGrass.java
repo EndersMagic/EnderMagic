@@ -43,7 +43,7 @@ public class EnderGrass extends BlockBush implements IShearable, IEMModel {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerModels(IModelRegistration modelRegistration) {
-        modelRegistration.addBakedModelOverrideR(this.getRegistryName(), base -> new BakedModelFullbright(base, EM.ID + ":blocks/ender_grass"));
+        modelRegistration.addBakedModelOverride(this.getRegistryName(), base -> new BakedModelFullbright(base, EM.ID + ":blocks/ender_grass"));
     }
     
     @Override
