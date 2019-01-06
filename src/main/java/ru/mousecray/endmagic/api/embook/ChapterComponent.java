@@ -2,7 +2,7 @@ package ru.mousecray.endmagic.api.embook;
 
 import net.minecraft.util.ResourceLocation;
 
-public class ChapterComponent {
+public abstract class ChapterComponent {
 	
 	private int x;
 	private int y;
@@ -10,28 +10,19 @@ public class ChapterComponent {
 	private int height;
 	private int width;
 	
-	private final ComponentType componentType;
-	private final ResourceLocation resource;
+	private ResourceLocation resource;
 	private int chapterKey;
 	
-	public ChapterComponent(ComponentType componentType, ResourceLocation resource) {
-		this.componentType = componentType;
-		this.resource = resource;
-	}
-	public ChapterComponent(ComponentType componentType, ResourceLocation resource, int x, int y, int width, int height) {
-		this(componentType, resource);
+	public ChapterComponent(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 	}
 	
-	public ChapterComponent setChapterLink(int key) {		
-		if(componentType == ComponentType.LINK) {
-			chapterKey = key;
-		}
-		return this;
-	}
+	public abstract ChapterComponent buildComponent();
+	
+	public abstract ComponentType getComponentType();
 	
 	public ChapterComponent setPosition(int x, int y) {
 		this.x = x;
@@ -53,9 +44,14 @@ public class ChapterComponent {
 		return y;
 	}
 	
-	public ComponentType getComponentType() {
-		return componentType;
+	public int getWidth() {
+		return width;
 	}
+	
+	public int getHeight() {
+		return height;
+	}
+	
 	public ResourceLocation getResource() {
 		return resource;
 	}
