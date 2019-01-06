@@ -12,7 +12,6 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -106,8 +105,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         for (Map.Entry<ModelResourceLocation, Function<IBakedModel, IBakedModel>> override : bakedModelOverrides.entrySet()) {
             ModelResourceLocation resource = override.getKey();
             IBakedModel existingModel = e.getModelRegistry().getObject(resource);
-            if (existingModel != null)
-                e.getModelRegistry().putObject(resource, override.getValue().apply(existingModel));
+            e.getModelRegistry().putObject(resource, override.getValue().apply(existingModel));
 
         }
     }
