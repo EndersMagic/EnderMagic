@@ -30,6 +30,7 @@ hs_err_pid*
 /eclipse/
 /build/
 /run/
+/bin/
 /libs/
 .gradle/
 .classpath
