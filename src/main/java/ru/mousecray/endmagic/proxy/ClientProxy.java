@@ -94,11 +94,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void stitcherEventPre(TextureStitchEvent.Pre event) {
-        TextureMap map = event.getMap();
-        TextureMap map1 = Minecraft.getMinecraft().getTextureMapBlocks();
-        System.out.println(map == map1);
-        forRegister.forEach(map::registerSprite);
-        System.out.println();
+        forRegister.forEach(event.getMap()::registerSprite);
     }
 
     @SubscribeEvent
