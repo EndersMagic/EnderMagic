@@ -10,8 +10,8 @@ public abstract class ChapterComponent {
 	private int height;
 	private int width;
 	
-	private ResourceLocation resource;
-	private int chapterKey;
+	protected ResourceLocation resource;
+	protected int chapterKey;
 	
 	public ChapterComponent(int x, int y, int width, int height) {
 		this.x = x;
