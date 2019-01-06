@@ -5,6 +5,8 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.api.embook.ChapterComponent;
 import ru.mousecray.endmagic.api.embook.ComponentType;
 
@@ -19,6 +21,7 @@ public class ItemStackComponent extends ChapterComponent {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT) 
 	public void render(Minecraft mc) {	
 		//TODO: In GUI set zLevel to 200
 		RenderItem itemRender = mc.getRenderItem();
