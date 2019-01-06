@@ -1,5 +1,10 @@
 package ru.mousecray.endmagic.proxy;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -31,11 +36,6 @@ import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.items.ItemTextured;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.IEMModel;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
     public ClientProxy() {
@@ -85,6 +85,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     private ArrayList<ResourceLocation> forRegister = new ArrayList<>();
 
     private Map<ModelResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
+    private Map<ResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverridesR = new HashMap<>();
 
     @Override
     public void registerTexture(ResourceLocation resourceLocation) {
@@ -106,13 +107,24 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
             ModelResourceLocation resource = override.getKey();
             IBakedModel existingModel = e.getModelRegistry().getObject(resource);
             e.getModelRegistry().putObject(resource, override.getValue().apply(existingModel));
-
         }
+		for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
+			ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
+
+			if (bakedModelOverridesR.containsKey(key)) {
+				e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
+			}
+		}
     }
 
     @Override
     public void addBakedModelOverride(ModelResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
         bakedModelOverrides.put(resource, override);
+    }
+    
+    @Override
+    public void addBakedModelOverrideR(ResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
+    	bakedModelOverridesR.put(resource, override);
     }
 
     @Override

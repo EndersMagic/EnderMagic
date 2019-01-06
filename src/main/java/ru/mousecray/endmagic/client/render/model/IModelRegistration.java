@@ -14,7 +14,10 @@ public interface IModelRegistration {
     void registerTexture(ResourceLocation resourceLocation);
 
     void addBakedModelOverride(ModelResourceLocation resource, Function<IBakedModel, IBakedModel> override);
+    
+    void addBakedModelOverrideR(ResourceLocation resource, Function<IBakedModel, IBakedModel> override);
 
+    //Inventory
     default void addBakedModelOverride(ResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
         addBakedModelOverride(new ModelResourceLocation(resource, "inventory"), override);
     }

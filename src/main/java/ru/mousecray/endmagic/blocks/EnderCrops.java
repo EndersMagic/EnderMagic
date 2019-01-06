@@ -34,7 +34,7 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
     
 	@Override
 	public void registerModels(IModelRegistration modelRegistration) {
-		modelRegistration.addBakedModelOverride(this.getRegistryName(), base -> new BakedModelFullbright(base, 
+		modelRegistration.addBakedModelOverrideR(this.getRegistryName(), base -> new BakedModelFullbright(base, 
 				EM.ID + ":blocks/ender_crops0",
 				EM.ID + ":blocks/ender_crops1",
 				EM.ID + ":blocks/ender_crops2",
