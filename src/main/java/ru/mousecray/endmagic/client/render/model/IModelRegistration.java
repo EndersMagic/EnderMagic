@@ -16,7 +16,7 @@ public interface IModelRegistration {
     void addBakedModelOverride(ModelResourceLocation resource, Function<IBakedModel, IBakedModel> override);
 
     default void addBakedModelOverride(ResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
-        addBakedModelOverride(new ModelResourceLocation(resource.getResourceDomain(), resource.getResourcePath()), override);
+        addBakedModelOverride(new ModelResourceLocation(resource, "inventory"), override);
     }
 
     void setModel(Block block, int meta, ModelResourceLocation resource);
