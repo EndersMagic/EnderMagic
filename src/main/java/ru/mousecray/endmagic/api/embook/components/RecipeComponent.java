@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic.api.embook.components;
 
-import net.minecraft.client.Minecraft;
 import ru.mousecray.endmagic.api.embook.ChapterComponent;
 import ru.mousecray.endmagic.api.embook.ComponentType;
 
@@ -11,7 +10,7 @@ public class RecipeComponent extends ChapterComponent {
 	}
 
 	@Override
-	public void render(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+	public void render(int mouseX, int mouseY, float partialTicks) {
 		
 	}
 

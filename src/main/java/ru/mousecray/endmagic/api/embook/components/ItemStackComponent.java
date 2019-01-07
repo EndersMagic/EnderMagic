@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic.api.embook.components;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import ru.mousecray.endmagic.api.embook.ChapterComponent;
 import ru.mousecray.endmagic.api.embook.ComponentType;
@@ -15,12 +14,9 @@ public class ItemStackComponent extends ChapterComponent {
 		this.stack = stack;
 	}
 	
-    /**
-     *  In GUI set zLevel from this Component
-     */
 	@Override
-	public void render(Minecraft mc, int mouseX, int mouseY, float partialTicks) {	
-		this.drawItemStack(mc, stack, x, y, altText);
+	public void render(int mouseX, int mouseY, float partialTicks) {	
+		book.drawItemStack(stack, x, y, altText);
 	}
 	
 	public void setAltText(String altText) {
