@@ -29,6 +29,7 @@ import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMEntities;
 import ru.mousecray.endmagic.init.EMItems;
+import ru.mousecray.endmagic.init.EMMaterials;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlasFurnace;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
