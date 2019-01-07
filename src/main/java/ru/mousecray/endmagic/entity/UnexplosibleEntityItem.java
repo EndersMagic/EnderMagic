@@ -16,6 +16,6 @@ public class UnexplosibleEntityItem extends EntityItem {
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        return super.attackEntityFrom(source, amount) && !source.isExplosion();
+        return !source.isExplosion() && super.attackEntityFrom(source, amount);
     }
 }
