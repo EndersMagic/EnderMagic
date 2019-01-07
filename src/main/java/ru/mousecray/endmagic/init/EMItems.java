@@ -73,29 +73,29 @@ public class EMItems {
     public static final EMArmor immortalSteelBoots = new EMArmor(EMMaterials.IMMORTAL_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.FEET, "immortal_steel_boots", immortalSteel);
 
 
-    public static final EMShovel naturalDiamondShovel = new EMShovel(EMMaterials.DIAMOND_TOOL_MATERIAL, "natural_diamond_shovel");
-    public static final EMPickaxe naturalDiamondPickaxe = new EMPickaxe(EMMaterials.DIAMOND_TOOL_MATERIAL, "natural_diamond_pickaxe");
-    public static final EMAxe naturalDiamondAxe = new EMAxe(EMMaterials.DIAMOND_TOOL_MATERIAL, "natural_diamond_axe");
-    public static final EMSword naturalDiamondSword = new EMSword(EMMaterials.DIAMOND_TOOL_MATERIAL, "natural_diamond_sword");
-    public static final EMHoe naturalDiamondHoe = new EMHoe(EMMaterials.DIAMOND_TOOL_MATERIAL, "natural_diamond_hoe");
+    public static final EMShovel naturalDiamondShovel = new EMShovel(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_shovel");
+    public static final EMPickaxe naturalDiamondPickaxe = new EMPickaxe(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_pickaxe");
+    public static final EMAxe naturalDiamondAxe = new EMAxe(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_axe");
+    public static final EMSword naturalDiamondSword = new EMSword(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_sword");
+    public static final EMHoe naturalDiamondHoe = new EMHoe(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_hoe");
 
-    public static final EMShovel phantomDiamondShovel = new EMShovel(EMMaterials.DIAMOND_TOOL_MATERIAL, "phantom_diamond_shovel");
-    public static final EMPickaxe phantomDiamondPickaxe = new EMPickaxe(EMMaterials.DIAMOND_TOOL_MATERIAL, "phantom_diamond_pickaxe");
-    public static final EMAxe phantomDiamondAxe = new EMAxe(EMMaterials.DIAMOND_TOOL_MATERIAL, "phantom_diamond_axe");
-    public static final EMSword phantomDiamondSword = new EMSword(EMMaterials.DIAMOND_TOOL_MATERIAL, "phantom_diamond_sword");
-    public static final EMHoe phantomDiamondHoe = new EMHoe(EMMaterials.DIAMOND_TOOL_MATERIAL, "phantom_diamond_hoe");
+    public static final EMShovel phantomDiamondShovel = new EMShovel(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_shovel");
+    public static final EMPickaxe phantomDiamondPickaxe = new EMPickaxe(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_pickaxe");
+    public static final EMAxe phantomDiamondAxe = new EMAxe(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_axe");
+    public static final EMSword phantomDiamondSword = new EMSword(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_sword");
+    public static final EMHoe phantomDiamondHoe = new EMHoe(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_hoe");
 
-    public static final EMShovel dragonDiamondShovel = new EMShovel(EMMaterials.DIAMOND_TOOL_MATERIAL, "dragon_diamond_shovel");
-    public static final EMPickaxe dragonDiamondPickaxe = new EMPickaxe(EMMaterials.DIAMOND_TOOL_MATERIAL, "dragon_diamond_pickaxe");
-    public static final EMAxe dragonDiamondAxe = new EMAxe(EMMaterials.DIAMOND_TOOL_MATERIAL, "dragon_diamond_axe");
-    public static final EMSword dragonDiamondSword = new EMSword(EMMaterials.DIAMOND_TOOL_MATERIAL, "dragon_diamond_sword");
-    public static final EMHoe dragonDiamondHoe = new EMHoe(EMMaterials.DIAMOND_TOOL_MATERIAL, "dragon_diamond_hoe");
+    public static final EMShovel dragonDiamondShovel = new EMShovel(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_shovel");
+    public static final EMPickaxe dragonDiamondPickaxe = new EMPickaxe(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_pickaxe");
+    public static final EMAxe dragonDiamondAxe = new EMAxe(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_axe");
+    public static final EMSword dragonDiamondSword = new EMSword(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_sword");
+    public static final EMHoe dragonDiamondHoe = new EMHoe(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_hoe");
 
-    public static final EMShovel immortalDiamondShovel = new EMShovel(EMMaterials.DIAMOND_TOOL_MATERIAL, "immortal_diamond_shovel");
-    public static final EMPickaxe immortalDiamondPickaxe = new EMPickaxe(EMMaterials.DIAMOND_TOOL_MATERIAL, "immortal_diamond_pickaxe");
-    public static final EMAxe immortalDiamondAxe = new EMAxe(EMMaterials.DIAMOND_TOOL_MATERIAL, "immortal_diamond_axe");
-    public static final EMSword immortalDiamondSword = new EMSword(EMMaterials.DIAMOND_TOOL_MATERIAL, "immortal_diamond_sword");
-    public static final EMHoe immortalDiamondHoe = new EMHoe(EMMaterials.DIAMOND_TOOL_MATERIAL, "immortal_diamond_hoe");
+    public static final EMShovel immortalDiamondShovel = new EMShovel(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_shovel");
+    public static final EMPickaxe immortalDiamondPickaxe = new EMPickaxe(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_pickaxe");
+    public static final EMAxe immortalDiamondAxe = new EMAxe(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_axe");
+    public static final EMSword immortalDiamondSword = new EMSword(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_sword");
+    public static final EMHoe immortalDiamondHoe = new EMHoe(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_hoe");
 
     public static final Item purpleEnderPearl = new PurpleEnderPearl();
     public static final Item blueEnderPearl = new BlueEnderPearl();
