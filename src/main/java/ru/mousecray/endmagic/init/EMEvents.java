@@ -40,9 +40,14 @@ public class EMEvents {
     @SubscribeEvent
     public static void onPressureExplosionCoal(ExplosionEvent.Start event) {
         Vec3d vec = event.getExplosion().getPosition();
-        findPressureStructure(event.getWorld(), new BlockPos(vec.x, vec.y, vec.z))
-                .flatMap(i -> getDiamond(event.getWorld(), i))
-                .ifPresent(event.getWorld()::spawnEntity);
+        World world = event.getWorld();
+        findPressureStructure(world, new BlockPos(vec.x, vec.y, vec.z))
+                .flatMap(i -> {
+                    Optional<EntityItem> diamond = getDiamond(world, i);
+                    world.setBlockToAir(i);
+                    return diamond;
+                })
+                .ifPresent(world::spawnEntity);
     }
 
     private static ImmutableMap<Block, Item> coal2diamond = ImmutableMap.of(
@@ -53,11 +58,9 @@ public class EMEvents {
     );
 
     private static Optional<EntityItem> getDiamond(World world, BlockPos i) {
-        Optional<EntityItem> entityItem = Optional.ofNullable(coal2diamond.get(world.getBlockState(i).getBlock()))
+        return Optional.ofNullable(coal2diamond.get(world.getBlockState(i).getBlock()))
                 .map(item -> new UnexplosibleEntityItem(world, i.getX() + 0.5, i.getY() + 0.5, i.getZ() + 0.5,
                         new ItemStack(item)));
-        world.setBlockToAir(i);
-        return entityItem;
     }
 
     private static Optional<BlockPos> findPressureStructure(World world, BlockPos explosionPosition) {
