@@ -16,20 +16,6 @@ public class UnexplosibleEntityItem extends EntityItem {
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        if (world.isRemote || isDead) return false; //Forge: Fixes MC-53850
-        if (isEntityInvulnerable(source)) {
-            return false;
-        } else if (source.isExplosion()) {
-            return false;
-        } else {
-            markVelocityChanged();
-            health = (int) ((float) health - amount);
-
-            if (health <= 0) {
-                setDead();
-            }
-
-            return false;
-        }
+        return super.attackEntityFrom(source, amount) && !source.isExplosion();
     }
 }
