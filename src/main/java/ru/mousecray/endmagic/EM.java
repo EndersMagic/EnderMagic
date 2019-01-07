@@ -35,7 +35,7 @@ public class EM {
 	public static CommonProxy proxy;
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {proxy.preInit(event);}
+	public void preInit(FMLPreInitializationEvent event) throws Exception {proxy.preInit(event);}
 	@EventHandler
 	public void init(FMLInitializationEvent event) {proxy.init(event);}
 	@EventHandler

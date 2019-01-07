@@ -15,8 +15,8 @@ public abstract class BookChapter {
 	public abstract String getChapterTitle();
 	public abstract List<IChapterComponent> getChapterComponents();
 	
-	public int getKey() {
-		return key;
+	public String getKey() {
+		return String.valueOf(key);
 	}
 	public ItemStack getChapterIcon() {
 		return ItemStack.EMPTY;
