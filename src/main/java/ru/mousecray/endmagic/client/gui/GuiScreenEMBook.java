@@ -1,10 +1,13 @@
 package ru.mousecray.endmagic.client.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -12,6 +15,8 @@ import ru.mousecray.endmagic.EM;
 
 @SideOnly(Side.CLIENT)
 public class GuiScreenEMBook extends GuiScreen {
+	
+    private static final ResourceLocation BOOK_TEXTURES = new ResourceLocation(EM.ID, "textures/gui/book.png");
 	
 	@Instance(EM.ID)
 	public static GuiScreenEMBook instance;
@@ -38,5 +43,28 @@ public class GuiScreenEMBook extends GuiScreen {
     @Override
     public void renderToolTip(ItemStack stack, int x, int y) {
     	super.renderToolTip(stack, x, y);
+    }
+    
+    @SideOnly(Side.CLIENT)
+    static class NextPageButton extends GuiButton {
+    	private final boolean isForward;
+
+    	public NextPageButton(int button, int x, int y, boolean isForward) {
+    		super(button, x, y, 23, 13, "");
+    		this.isForward = isForward;
+        }
+    	
+    	@Override
+    	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+    		if (visible) {
+    			boolean flag = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+    			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    			mc.getTextureManager().bindTexture(BOOK_TEXTURES);
+    			int i = 0, j = 192;
+    			if (flag) i += 23;
+    			if (!isForward) j += 13;
+    			drawTexturedModalRect(x, y, i, j, 23, 13);
+    		}
+    	}
     }
 }

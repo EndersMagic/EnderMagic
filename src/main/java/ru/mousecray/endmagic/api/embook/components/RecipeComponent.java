@@ -11,7 +11,8 @@ public class RecipeComponent extends ChapterComponent {
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
-		
+		// You can see the code here? I do not see it)
+		// Give variant from FuelRecipeComponent
 	}
 
 	@Override
