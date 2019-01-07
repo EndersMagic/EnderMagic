@@ -1,23 +1,57 @@
 package ru.mousecray.endmagic.client.gui;
 
+import java.util.Map;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.api.embook.BookApi;
+import ru.mousecray.endmagic.api.embook.BookChapter;
 
 @SideOnly(Side.CLIENT)
 public class GuiScreenEMBook extends GuiScreen {
 	
-    private static final ResourceLocation BOOK_TEXTURES = new ResourceLocation(EM.ID, "textures/gui/book.png");
-	
 	public static GuiScreenEMBook instance = new GuiScreenEMBook();
+	
+	private int updateCount;
+	private GuiButton buttonDone;
+	private NextPageButton buttonNextPage, buttonPreviousPage;
+	
+	private static Map<String, BookChapter> bookContent = BookApi.getBookContent();
+	
+    private static final ResourceLocation BOOK_TEXTURES = new ResourceLocation(EM.ID, "textures/gui/book.png");
+    
+    @Override
+    public void initGui() {
+        buttonList.clear();
+        
+        buttonDone = addButton(new GuiButton(0, width / 2 - 100, height / 2 + 98, 200, 20, I18n.format("gui.done")));
+        
+        int i = (width - 256) / 2;
+        int j = (height - 192) / 2;
+        buttonNextPage = (NextPageButton)addButton(new NextPageButton(1, i + 215, j + 160, true));
+        
+        updateButtons();
+    }
+    
+    private void updateButtons() {
+    	
+    }
+    
+    @Override
+    public void updateScreen() {
+        super.updateScreen();
+        ++updateCount;
+    }
 	
     public void drawItemStack(ItemStack stack, int x, int y, String altText) {
 		RenderItem itemRender = mc.getRenderItem();

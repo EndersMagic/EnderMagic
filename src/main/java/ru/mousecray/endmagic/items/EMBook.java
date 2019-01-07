@@ -28,7 +28,7 @@ public class EMBook extends Item implements NameProvider {
 	@SideOnly(Side.CLIENT)
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if(world.isRemote) {
-			Minecraft.getMinecraft().displayGuiScreen(new GuiScreenEMBook());
+			Minecraft.getMinecraft().displayGuiScreen(GuiScreenEMBook.instance);
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
