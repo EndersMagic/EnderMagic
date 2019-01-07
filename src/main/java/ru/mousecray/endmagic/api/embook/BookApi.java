@@ -10,7 +10,7 @@ public class BookApi {
 	public static void addBookChapter(BookChapter chapter) {
 		String key = chapter.getKey();
 		if(!book.containsKey(key)) {
-			book.put(chapter.getKey(), chapter);
+			book.put(key, chapter);
 		}
 		else {
 			throw new IllegalArgumentException("Attempt to add two chapters with the same key to the book!");
@@ -18,7 +18,15 @@ public class BookApi {
 	}
 	
 	public static void addBookChapters(BookChapter... chapters) {
-		
+		for(BookChapter chapter : chapters) {
+			String key = chapter.getKey();
+			if(!book.containsKey(key)) {
+				book.put(key, chapter);
+			}
+			else {
+				throw new IllegalArgumentException("Attempt to add two chapters with the same key to the book!");
+			}
+		}
 	}
 	
 	public static Map<String, BookChapter> getBookContent() {
