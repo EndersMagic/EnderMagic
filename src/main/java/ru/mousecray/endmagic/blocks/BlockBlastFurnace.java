@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.tileentity.TileBlastFurnace;
 
 import javax.annotation.Nullable;
@@ -47,7 +48,10 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
 
     public BlockBlastFurnace() {
         super(Material.ROCK);
-        addRecipe(Items.COAL,Items.IRON_INGOT,Items.GOLD_INGOT);
+        addRecipe(EMItems.dragonCoal, Items.IRON_INGOT, EMItems.dragonSteel);
+        addRecipe(EMItems.immortalCoal, Items.IRON_INGOT, EMItems.immortalSteel);
+        addRecipe(EMItems.naturalCoal, Items.IRON_INGOT, EMItems.naturalSteel);
+        addRecipe(EMItems.phantomCoal, Items.IRON_INGOT, EMItems.phantomSteel);
     }
 
     @Override
