@@ -1,11 +1,9 @@
-package ru.mousecray.endmagic.client.gui;
+package ru.mousecray.endmagic.api.embook;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.resources.I18n;
-import ru.mousecray.endmagic.api.embook.BookChapter;
-import ru.mousecray.endmagic.api.embook.IChapterComponent;
 
 public class DefaultBookChapter extends BookChapter {
 	

@@ -4,10 +4,10 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
 import ru.mousecray.endmagic.EM;
 
-public class GuiBlasFurnace extends GuiContainer {
+public class GuiBlastFurnace extends GuiContainer {
     private ContainerBlastFurnace container;
 
-    public GuiBlasFurnace(ContainerBlastFurnace containerBlastFurnace) {
+    public GuiBlastFurnace(ContainerBlastFurnace containerBlastFurnace) {
         super(containerBlastFurnace);
         container = containerBlastFurnace;
     }

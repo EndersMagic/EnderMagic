@@ -12,6 +12,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
@@ -33,6 +35,7 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
 	}
     
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerModels(IModelRegistration modelRegistration) {
 		modelRegistration.addBakedModelOverride(this.getRegistryName(), base -> new BakedModelFullbright(base,
 				EM.ID + ":blocks/ender_crops0",

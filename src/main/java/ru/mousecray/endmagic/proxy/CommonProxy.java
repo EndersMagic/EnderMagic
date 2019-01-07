@@ -9,8 +9,10 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -26,12 +28,14 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.api.embook.BookApi;
+import ru.mousecray.endmagic.api.embook.DefaultBookChapter;
+import ru.mousecray.endmagic.api.embook.components.ItemStackComponent;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMEntities;
 import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.init.EMMaterials;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
-import ru.mousecray.endmagic.inventory.GuiBlasFurnace;
+import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
 
 public class CommonProxy implements IGuiHandler {
@@ -125,10 +129,11 @@ public class CommonProxy implements IGuiHandler {
     	entityToRegister.forEach(e.getRegistry()::register);
     }
 
-    public void init(FMLInitializationEvent event) {
-    }
+    public void init(FMLInitializationEvent event) {}
 
     public void postInit(FMLPostInitializationEvent event) {
+        //Add defaults book pages
+        BookApi.addBookChapter(new DefaultBookChapter(0).build(new ItemStackComponent(new ItemStack(Items.APPLE), 0, 0)));
     }
 
     public static int blastFurnaceGui = 0;
@@ -146,7 +151,7 @@ public class CommonProxy implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         if (id == blastFurnaceGui)
-            return new GuiBlasFurnace(new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z))));
+            return new GuiBlastFurnace(new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z))));
 
         return null;
     }
