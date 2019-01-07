@@ -4,6 +4,7 @@ import ru.mousecray.endmagic.blocks.BlockBlastFurnace;
 import ru.mousecray.endmagic.blocks.BlockNamed;
 import ru.mousecray.endmagic.blocks.EnderCrops;
 import ru.mousecray.endmagic.blocks.EnderGrass;
+import ru.mousecray.endmagic.blocks.EnderOre;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterDarkPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterStaticPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockPortal;
@@ -28,4 +29,7 @@ public final class EMBlocks {
     public static final BlockNamed naturalCoal = new BlockNamed("natural_coal_block");
     public static final BlockNamed phantomCoal = new BlockNamed("phantom_coal_block");
     public static final BlockNamed immortalCoal = new BlockNamed("immortal_coal_block");
+
+    public static final BlockNamed technicalEnderit = new BlockNamed("technical_enderit");
+    public static final EnderOre enderOre = new EnderOre("ender_ore");
 }
