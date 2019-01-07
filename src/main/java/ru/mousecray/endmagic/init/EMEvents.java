@@ -54,7 +54,7 @@ public class EMEvents {
 
     private static Optional<EntityItem> getDiamond(World world, BlockPos i) {
         return Optional.ofNullable(coal2diamond.get(world.getBlockState(i).getBlock()))
-                .map(item -> new UnexplosibleEntityItem(world, i.getX(), i.getY(), i.getZ(),
+                .map(item -> new UnexplosibleEntityItem(world, i.getX() + 0.5, i.getY() + 0.5, i.getZ() + 0.5,
                         new ItemStack(item)));
     }
 

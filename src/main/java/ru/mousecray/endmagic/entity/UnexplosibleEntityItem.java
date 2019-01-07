@@ -11,7 +11,7 @@ public class UnexplosibleEntityItem extends EntityItem {
         super(worldIn);
     }
 
-    public UnexplosibleEntityItem(World world, int x, int y, int z, ItemStack itemStack) {
+    public UnexplosibleEntityItem(World world, double x, double y, double z, ItemStack itemStack) {
         super(world, x, y, z, itemStack);
     }
 
