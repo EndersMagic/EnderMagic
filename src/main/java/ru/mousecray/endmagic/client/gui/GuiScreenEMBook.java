@@ -70,7 +70,7 @@ public class GuiScreenEMBook extends GuiScreen {
     	buttonPreviousPage.visible = !(chapter == 0);
     	buttonDone.visible = true;
     	
-    	for(int i = 3; i <= buttonList.size(); i++) {
+    	for(int i = 3; i < buttonList.size(); i++) {
     		GuiButton button = buttonList.get(i);
     		if(chapter == ((ChapterButton)button).getChapterVisible()) {
     			button.visible = true;
@@ -81,6 +81,15 @@ public class GuiScreenEMBook extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
     	
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        mc.getTextureManager().bindTexture(BOOK_TEXTURES);
+        int i = (width - 256) / 2;
+        int j = (height - 192) / 2;
+        drawTexturedModalRect(i, j, 0, 0, 256, 192);
+        
+    	for(BookChapter chapter : bookContent.values()) {
+    		chapter.render(i, j, mouseX, mouseY, partialTicks);
+    	}
     }
     
     public void drawItemStack(ItemStack stack, int x, int y, String altText) {

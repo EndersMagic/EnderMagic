@@ -28,4 +28,12 @@ public abstract class BookChapter {
 	public ItemStack getChapterIcon() {
 		return ItemStack.EMPTY;
 	}
+	
+	public void render(int startX, int startY, int mouseX, int mouseY, float partialTicks) {
+		for(IChapterComponent component : getChapterComponents()) {
+			if(component.getComponentType() != ComponentType.LINK) {
+				((ChapterComponent)component).setPosition(startX, startY).render(mouseX, mouseY, partialTicks);
+			}
+		}
+	}
 }
