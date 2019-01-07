@@ -131,10 +131,7 @@ public class CommonProxy implements IGuiHandler {
 
     public void init(FMLInitializationEvent event) {}
 
-    public void postInit(FMLPostInitializationEvent event) {
-        //Add defaults book pages
-        BookApi.addBookChapter(new DefaultBookChapter(0).build(new ItemStackComponent(new ItemStack(Items.APPLE), 0, 0)));
-    }
+    public void postInit(FMLPostInitializationEvent event) {}
 
     public static int blastFurnaceGui = 0;
 
