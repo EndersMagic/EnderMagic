@@ -1,6 +1,11 @@
 package ru.mousecray.endmagic.init;
 
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Random;
+
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
@@ -8,14 +13,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow.PickupStatus;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -30,10 +33,6 @@ import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
-
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Random;
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
