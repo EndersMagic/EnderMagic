@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
@@ -18,8 +17,7 @@ public class GuiScreenEMBook extends GuiScreen {
 	
     private static final ResourceLocation BOOK_TEXTURES = new ResourceLocation(EM.ID, "textures/gui/book.png");
 	
-	@Instance(EM.ID)
-	public static GuiScreenEMBook instance;
+	public static GuiScreenEMBook instance = new GuiScreenEMBook();
 	
     public void drawItemStack(ItemStack stack, int x, int y, String altText) {
 		RenderItem itemRender = mc.getRenderItem();
