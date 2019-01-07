@@ -11,7 +11,7 @@ public class RecipeComponent extends ChapterComponent {
 	}
 
 	@Override
-	public void render(Minecraft mc) {
+	public void render(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 		
 	}
 
