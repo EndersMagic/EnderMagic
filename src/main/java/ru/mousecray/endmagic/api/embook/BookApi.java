@@ -3,6 +3,10 @@ package ru.mousecray.endmagic.api.embook;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
 public class BookApi {
 	
 	private static Map<String, BookChapter> book = new HashMap();
