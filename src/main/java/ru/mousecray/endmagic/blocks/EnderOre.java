@@ -18,7 +18,7 @@ public class EnderOre extends BlockNamed {
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return EMItems.rawEnderit;
+        return EMItems.rawEnderite;
     }
 
     @Override

@@ -97,7 +97,7 @@ public class EMItems {
     public static final EMSword immortalDiamondSword = new EMSword(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_sword");
     public static final EMHoe immortalDiamondHoe = new EMHoe(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_hoe");
 
-    public static final ItemNamed rawEnderit = new ItemNamed("raw_enderit");
+    public static final ItemNamed rawEnderite = new ItemNamed("raw_enderite");
 
     public static final Item purpleEnderPearl = new PurpleEnderPearl();
     public static final Item blueEnderPearl = new BlueEnderPearl();

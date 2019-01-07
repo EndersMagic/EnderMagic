@@ -30,6 +30,6 @@ public final class EMBlocks {
     public static final BlockNamed phantomCoal = new BlockNamed("phantom_coal_block");
     public static final BlockNamed immortalCoal = new BlockNamed("immortal_coal_block");
 
-    public static final BlockNamed technicalEnderit = new BlockNamed("technical_enderit");
+    public static final BlockNamed technicalEnderite = new BlockNamed("technical_enderite");
     public static final EnderOre enderOre = new EnderOre("ender_ore");
 }
