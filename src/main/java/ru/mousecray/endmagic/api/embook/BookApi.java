@@ -10,26 +10,27 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BookApi {
 	
 	private static Map<String, BookChapter> book = new HashMap();
+	private static int idCount = 1;
 	
 	public static void addBookChapter(BookChapter chapter) {
-		String key = chapter.getKey();
-		if(!book.containsKey(key)) {
-			book.put(key, chapter);
-		}
-		else {
-			throw new IllegalArgumentException("Attempt to add two chapters with the same key to the book!");
-		}
+		String id = String.valueOf(idCount);
+//		if(!book.containsKey(id)) {
+		chapter.setKey(id);
+		book.put(id, chapter);
+		idCount++;
+//		}
+//		else throw new IllegalArgumentException("Attempt to add two chapters with the same key to the book!");
 	}
 	
 	public static void addBookChapters(BookChapter... chapters) {
 		for(BookChapter chapter : chapters) {
-			String key = chapter.getKey();
-			if(!book.containsKey(key)) {
-				book.put(key, chapter);
-			}
-			else {
-				throw new IllegalArgumentException("Attempt to add two chapters with the same key to the book!");
-			}
+			String id = String.valueOf(idCount);
+//			if(!book.containsKey(id)) {
+			chapter.setKey(id);
+			book.put(id, chapter);
+			idCount++;
+//			}
+//			else throw new IllegalArgumentException("Attempt to add two chapters with the same key to the book!");
 		}
 	}
 	

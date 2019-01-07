@@ -16,6 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.BookChapter;
+import ru.mousecray.endmagic.api.embook.ComponentType;
+import ru.mousecray.endmagic.api.embook.IChapterComponent;
+import ru.mousecray.endmagic.api.embook.components.ChapterButton;
 
 @SideOnly(Side.CLIENT)
 public class GuiScreenEMBook extends GuiScreen {
@@ -25,6 +28,8 @@ public class GuiScreenEMBook extends GuiScreen {
 	private int updateCount;
 	private GuiButton buttonDone;
 	private NextPageButton buttonNextPage, buttonPreviousPage;
+	private int chapter = 0;
+	private int currPage = 0;
 	
 	private static Map<String, BookChapter> bookContent = BookApi.getBookContent();
 	
@@ -39,12 +44,17 @@ public class GuiScreenEMBook extends GuiScreen {
         int i = (width - 256) / 2;
         int j = (height - 192) / 2;
         buttonNextPage = (NextPageButton)addButton(new NextPageButton(1, i + 215, j + 160, true));
+        buttonPreviousPage = (NextPageButton)addButton(new NextPageButton(2, i + 18, j + 160, false));
+        
+        for(BookChapter chapter : bookContent.values()) {
+        	for(IChapterComponent component : chapter.getChapterComponents()) {
+        		if(component.getComponentType() == ComponentType.LINK) {
+        			addButton((ChapterButton)component);
+        		}
+        	}
+        }
         
         updateButtons();
-    }
-    
-    private void updateButtons() {
-    	
     }
     
     @Override
@@ -52,7 +62,27 @@ public class GuiScreenEMBook extends GuiScreen {
         super.updateScreen();
         ++updateCount;
     }
+    
+    private void updateButtons() {
+    	
+    	//TODO: visible nextButtonPage
+    	
+    	buttonPreviousPage.visible = !(chapter == 0);
+    	buttonDone.visible = true;
+    	
+    	for(int i = 3; i <= buttonList.size(); i++) {
+    		GuiButton button = buttonList.get(i);
+    		if(chapter == ((ChapterButton)button).getChapterVisible()) {
+    			button.visible = true;
+    		}
+    	}
+    }
 	
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    	
+    }
+    
     public void drawItemStack(ItemStack stack, int x, int y, String altText) {
 		RenderItem itemRender = mc.getRenderItem();
 		FontRenderer fontRenderer = mc.fontRenderer;

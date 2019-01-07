@@ -64,7 +64,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         super.postInit(event);
         
         //Add default book chapters
-        BookApi.addBookChapter(new DefaultBookChapter(0).build(new ItemStackComponent(new ItemStack(Items.APPLE), 0, 0)));
+        BookApi.addBookChapter(new DefaultBookChapter().build(new ItemStackComponent(new ItemStack(Items.APPLE), 0, 0)));
     }
 
     @SubscribeEvent

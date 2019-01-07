@@ -13,6 +13,7 @@ import ru.mousecray.endmagic.api.embook.IChapterComponent;
 public class ChapterButton extends GuiButton implements IChapterComponent {
 	
 	private final String text;
+	private int chapterVisible;
 	
 	public ChapterButton(int button, int x, int y, String text) {
 		super(button, x, y, 95, 8, "");
@@ -26,6 +27,14 @@ public class ChapterButton extends GuiButton implements IChapterComponent {
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			mc.fontRenderer.drawString(flag ? TextFormatting.GREEN + text : TextFormatting.BLUE + text, x, y, 0);
 		}
+	}
+	
+	public void setChapterVisible(int chapterVisible) {
+		this.chapterVisible = chapterVisible;
+	}
+	
+	public int getChapterVisible() {
+		return chapterVisible;
 	}
 
 	@Override

@@ -9,8 +9,7 @@ public class DefaultBookChapter extends BookChapter {
 	
 	private List<IChapterComponent> components;
 
-	public DefaultBookChapter(int key) {
-		super(key);
+	public DefaultBookChapter() {
 		components = new ArrayList<IChapterComponent>();
 	}
 
