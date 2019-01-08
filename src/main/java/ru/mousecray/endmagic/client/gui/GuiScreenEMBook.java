@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.client.gui;
 
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
@@ -7,6 +8,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -28,7 +30,13 @@ public class GuiScreenEMBook extends GuiScreen {
 	private int updateCount;
 	private GuiButton buttonDone;
 	private NextPageButton buttonNextPage, buttonPreviousPage;
-	private int chapter = 0;
+	
+	//These two variables are related
+	private int currChapter = 0;
+	private int countPages = 0;
+	
+	
+	
 	private int currPage = 0;
 	
 	private static Map<String, BookChapter> bookContent = BookApi.getBookContent();
@@ -52,12 +60,32 @@ public class GuiScreenEMBook extends GuiScreen {
         			addButton((ChapterButton)component);
         		}
         	}
+        	
+        	genPage(chapter, 0);
         }
         
         updateButtons();
     }
     
-    @Override
+    private void genPage(BookChapter chapter, int startIndex) {
+//		int guiWidth = (width - 256);
+		int guiHeight = (width - 192);
+		List<IChapterComponent> components = chapter.getChapterComponents();
+		int size = components.size();
+		for(int i = startIndex; i < size; i++) {
+			int currSize = 0;
+			
+			genPage(chapter, i);
+			
+//			genPageFromSize(count);
+		}
+	}
+//    
+//    private void genPageFromSize(int count) {
+//    	
+//    }
+
+	@Override
     public void updateScreen() {
         super.updateScreen();
         ++updateCount;
@@ -67,12 +95,12 @@ public class GuiScreenEMBook extends GuiScreen {
     	
     	//TODO: visible nextButtonPage
     	
-    	buttonPreviousPage.visible = !(chapter == 0);
+    	buttonPreviousPage.visible = !(currChapter == 0);
     	buttonDone.visible = true;
     	
     	for(int i = 3; i < buttonList.size(); i++) {
     		GuiButton button = buttonList.get(i);
-    		if(chapter == ((ChapterButton)button).getChapterVisible()) {
+    		if(currChapter == ((ChapterButton)button).getChapterVisible()) {
     			button.visible = true;
     		}
     	}
@@ -87,8 +115,19 @@ public class GuiScreenEMBook extends GuiScreen {
         int j = (height - 192) / 2;
         drawTexturedModalRect(i, j, 0, 0, 256, 192);
         
+        GlStateManager.disableRescaleNormal();
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.disableLighting();
+        GlStateManager.disableDepth();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        RenderHelper.enableGUIStandardItemLighting();
+        GlStateManager.enableRescaleNormal();
+        
     	for(BookChapter chapter : bookContent.values()) {
-    		chapter.render(i, j, mouseX, mouseY, partialTicks);
+    		if(currChapter == Integer.parseInt(chapter.getKey())) {
+    			//TODO: Parsing chapters to page
+        		chapter.render(i, j, mouseX, mouseY, partialTicks);
+    		}
     	}
     }
     
