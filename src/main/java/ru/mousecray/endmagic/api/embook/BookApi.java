@@ -14,23 +14,17 @@ public class BookApi {
 	
 	public static void addBookChapter(BookChapter chapter) {
 		String id = String.valueOf(idCount);
-//		if(!book.containsKey(id)) {
 		chapter.setKey(id);
 		book.put(id, chapter);
 		idCount++;
-//		}
-//		else throw new IllegalArgumentException("Attempt to add two chapters with the same key to the book!");
 	}
 	
 	public static void addBookChapters(BookChapter... chapters) {
 		for(BookChapter chapter : chapters) {
 			String id = String.valueOf(idCount);
-//			if(!book.containsKey(id)) {
 			chapter.setKey(id);
 			book.put(id, chapter);
 			idCount++;
-//			}
-//			else throw new IllegalArgumentException("Attempt to add two chapters with the same key to the book!");
 		}
 	}
 	

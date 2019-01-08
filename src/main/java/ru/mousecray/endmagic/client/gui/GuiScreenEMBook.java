@@ -1,5 +1,7 @@
 package ru.mousecray.endmagic.client.gui;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +20,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.BookChapter;
+import ru.mousecray.endmagic.api.embook.ChapterComponent;
+import ru.mousecray.endmagic.api.embook.ChapterPage;
 import ru.mousecray.endmagic.api.embook.ComponentType;
 import ru.mousecray.endmagic.api.embook.IChapterComponent;
 import ru.mousecray.endmagic.api.embook.components.ChapterButton;
@@ -39,7 +43,8 @@ public class GuiScreenEMBook extends GuiScreen {
 	
 	private int currPage = 0;
 	
-	private static Map<String, BookChapter> bookContent = BookApi.getBookContent();
+	private Map<String, BookChapter> bookContent = BookApi.getBookContent();
+	private Map<String, ChapterPage> pages = new HashMap();
 	
     private static final ResourceLocation BOOK_TEXTURES = new ResourceLocation(EM.ID, "textures/gui/book.png");
     
@@ -59,8 +64,7 @@ public class GuiScreenEMBook extends GuiScreen {
         		if(component.getComponentType() == ComponentType.LINK) {
         			addButton((ChapterButton)component);
         		}
-        	}
-        	
+        	}       	
         	genPage(chapter, 0);
         }
         
@@ -68,22 +72,27 @@ public class GuiScreenEMBook extends GuiScreen {
     }
     
     private void genPage(BookChapter chapter, int startIndex) {
-//		int guiWidth = (width - 256);
 		int guiHeight = (width - 192);
 		List<IChapterComponent> components = chapter.getChapterComponents();
 		int size = components.size();
+		List<IChapterComponent> currComponents = new ArrayList();
+		int currSize = 0;
 		for(int i = startIndex; i < size; i++) {
-			int currSize = 0;
-			
-			genPage(chapter, i);
-			
-//			genPageFromSize(count);
+			if(currSize > guiHeight) {
+				pages.put(chapter.getKey(), new ChapterPage(currComponents));
+				genPage(chapter, i);
+				break;
+			}
+			IChapterComponent component = components.get(i);
+			if(component.getComponentType() == ComponentType.LINK) {
+				currSize += ((ChapterButton)component).height;
+			}
+			else {
+				currSize += ((ChapterComponent)component).getHeight();
+			}
+			currComponents.add(component);
 		}
 	}
-//    
-//    private void genPageFromSize(int count) {
-//    	
-//    }
 
 	@Override
     public void updateScreen() {
