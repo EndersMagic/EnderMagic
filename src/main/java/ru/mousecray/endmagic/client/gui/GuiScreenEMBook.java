@@ -78,19 +78,31 @@ public class GuiScreenEMBook extends GuiScreen {
 		List<IChapterComponent> currComponents = new ArrayList();
 		int currSize = 0;
 		for(int i = startIndex; i < size; i++) {
-			if(currSize > guiHeight) {
-				pages.put(chapter.getKey(), new ChapterPage(currComponents));
-				genPage(chapter, i);
-				break;
-			}
 			IChapterComponent component = components.get(i);
 			if(component.getComponentType() == ComponentType.LINK) {
-				currSize += ((ChapterButton)component).height;
+				int testSize = currSize + ((ChapterButton)component).height;
+				if(testSize  < guiHeight) {
+					currSize = testSize;
+					currComponents.add(component);
+				}
+				else {
+					pages.put(chapter.getKey(), new ChapterPage(currComponents));
+					genPage(chapter, i);
+					break;
+				}
 			}
 			else {
-				currSize += ((ChapterComponent)component).getHeight();
+				int testSize = currSize + ((ChapterComponent)component).getHeight();
+				if(testSize  < guiHeight) {
+					currSize = testSize;
+					currComponents.add(component);
+				}
+				else {
+					pages.put(chapter.getKey(), new ChapterPage(currComponents));
+					genPage(chapter, i);
+					break;
+				}
 			}
-			currComponents.add(component);
 		}
 	}
 
@@ -132,12 +144,7 @@ public class GuiScreenEMBook extends GuiScreen {
         RenderHelper.enableGUIStandardItemLighting();
         GlStateManager.enableRescaleNormal();
         
-    	for(BookChapter chapter : bookContent.values()) {
-    		if(currChapter == Integer.parseInt(chapter.getKey())) {
-    			//TODO: Parsing chapters to page
-        		chapter.render(i, j, mouseX, mouseY, partialTicks);
-    		}
-    	}
+    	//TODO: Parsing chapters to page
     }
     
     public void drawItemStack(ItemStack stack, int x, int y, String altText) {
