@@ -1,9 +1,6 @@
 package ru.mousecray.endmagic.client.gui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -19,12 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
-import ru.mousecray.endmagic.api.embook.PageComponent;
-import ru.mousecray.endmagic.api.embook.ComponentType;
-import ru.mousecray.endmagic.api.embook.PageButton;
 import ru.mousecray.endmagic.api.embook.components.BookChapter;
-import ru.mousecray.endmagic.api.embook.components.ChapterPage;
-import ru.mousecray.endmagic.api.embook.components.IPageComponent;
 
 @SideOnly(Side.CLIENT)
 public class GuiScreenEMBook extends GuiScreen {
@@ -43,7 +35,7 @@ public class GuiScreenEMBook extends GuiScreen {
 	
 	private int currPage = 0;
 	
-	private Map<String, BookChapter> bookContent = BookApi.getBookContent();
+	private List<BookChapter> bookContent = BookApi.getBookContent();
 //	private Map<String, ChapterPage> pages = new HashMap();
 	
     private static final ResourceLocation BOOK_TEXTURES = new ResourceLocation(EM.ID, "textures/gui/book.png");
