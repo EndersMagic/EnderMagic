@@ -1,13 +1,11 @@
-package ru.mousecray.endmagic.api.embook.components;
+package ru.mousecray.endmagic.api.embook;
 
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
-import ru.mousecray.endmagic.api.embook.ChapterComponent;
-import ru.mousecray.endmagic.api.embook.ComponentType;
 
-public class FuelRecipeComponent extends ChapterComponent {
+public class FuelRecipeComponent extends PageComponent {
 	
 	private final ItemStack fuelStack;
 	private final ItemStack smeltingStack;

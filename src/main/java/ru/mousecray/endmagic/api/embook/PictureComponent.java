@@ -1,10 +1,8 @@
-package ru.mousecray.endmagic.api.embook.components;
+package ru.mousecray.endmagic.api.embook;
 
 import net.minecraft.util.ResourceLocation;
-import ru.mousecray.endmagic.api.embook.ChapterComponent;
-import ru.mousecray.endmagic.api.embook.ComponentType;
 
-public class PictureComponent extends ChapterComponent {
+public class PictureComponent extends PageComponent {
 	
 	public PictureComponent(ResourceLocation resource, int x, int y, int width, int height) {
 		super(x, y, width, height);

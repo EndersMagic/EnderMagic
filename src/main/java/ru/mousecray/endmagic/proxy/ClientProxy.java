@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.DefaultBookChapter;
-import ru.mousecray.endmagic.api.embook.components.ItemStackComponent;
+import ru.mousecray.endmagic.api.embook.ItemStackComponent;
 import ru.mousecray.endmagic.client.render.entity.EMEntityThrowableRenderFactory;
 import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;

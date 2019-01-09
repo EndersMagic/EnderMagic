@@ -1,10 +1,8 @@
-package ru.mousecray.endmagic.api.embook.components;
+package ru.mousecray.endmagic.api.embook;
 
 import net.minecraft.item.ItemStack;
-import ru.mousecray.endmagic.api.embook.ChapterComponent;
-import ru.mousecray.endmagic.api.embook.ComponentType;
 
-public class ItemStackComponent extends ChapterComponent {
+public class ItemStackComponent extends PageComponent {
 	
 	private final ItemStack stack;
 	private String altText = "";

@@ -1,9 +1,6 @@
-package ru.mousecray.endmagic.api.embook.components;
+package ru.mousecray.endmagic.api.embook;
 
-import ru.mousecray.endmagic.api.embook.ChapterComponent;
-import ru.mousecray.endmagic.api.embook.ComponentType;
-
-public class TextComponent extends ChapterComponent {
+public class TextComponent extends PageComponent {
 
 	public TextComponent(int x, int y, int width, int height) {
 		super(x, y, width, height);

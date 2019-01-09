@@ -19,12 +19,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
-import ru.mousecray.endmagic.api.embook.BookChapter;
-import ru.mousecray.endmagic.api.embook.ChapterComponent;
-import ru.mousecray.endmagic.api.embook.ChapterPage;
+import ru.mousecray.endmagic.api.embook.PageComponent;
 import ru.mousecray.endmagic.api.embook.ComponentType;
-import ru.mousecray.endmagic.api.embook.IChapterComponent;
-import ru.mousecray.endmagic.api.embook.components.ChapterButton;
+import ru.mousecray.endmagic.api.embook.PageButton;
+import ru.mousecray.endmagic.api.embook.components.BookChapter;
+import ru.mousecray.endmagic.api.embook.components.ChapterPage;
+import ru.mousecray.endmagic.api.embook.components.IPageComponent;
 
 @SideOnly(Side.CLIENT)
 public class GuiScreenEMBook extends GuiScreen {
@@ -60,9 +60,9 @@ public class GuiScreenEMBook extends GuiScreen {
         buttonPreviousPage = (NextPageButton)addButton(new NextPageButton(2, i + 18, j + 160, false));
         
 //        for(BookChapter chapter : bookContent.values()) {
-//        	for(IChapterComponent component : chapter.getChapterComponents()) {
+//        	for(IPageComponent component : chapter.getChapterComponents()) {
 //        		if(component.getComponentType() == ComponentType.LINK) {
-//        			addButton((ChapterButton)component);
+//        			addButton((PageButton)component);
 //        		}
 //        	}       	
 //        	genPage(chapter, 0);
@@ -73,14 +73,14 @@ public class GuiScreenEMBook extends GuiScreen {
     
 //    private void genPage(BookChapter chapter, int startIndex) {
 //		int guiHeight = (width - 192);
-//		List<IChapterComponent> components = chapter.getChapterComponents();
+//		List<IPageComponent> components = chapter.getChapterComponents();
 //		int size = components.size();
-//		List<IChapterComponent> currComponents = new ArrayList();
+//		List<IPageComponent> currComponents = new ArrayList();
 //		int currSize = 0;
 //		for(int i = startIndex; i < size; i++) {
-//			IChapterComponent component = components.get(i);
+//			IPageComponent component = components.get(i);
 //			if(component.getComponentType() == ComponentType.LINK) {
-//				int testSize = currSize + ((ChapterButton)component).height;
+//				int testSize = currSize + ((PageButton)component).height;
 //				if(testSize  < guiHeight) {
 //					currSize = testSize;
 //					currComponents.add(component);
@@ -92,7 +92,7 @@ public class GuiScreenEMBook extends GuiScreen {
 //				}
 //			}
 //			else {
-//				int testSize = currSize + ((ChapterComponent)component).getHeight();
+//				int testSize = currSize + ((PageComponent)component).getHeight();
 //				if(testSize  < guiHeight) {
 //					currSize = testSize;
 //					currComponents.add(component);
@@ -121,7 +121,7 @@ public class GuiScreenEMBook extends GuiScreen {
     	
 //    	for(int i = 3; i < buttonList.size(); i++) {
 //    		GuiButton button = buttonList.get(i);
-//    		if(currChapter == ((ChapterButton)button).getChapterVisible()) {
+//    		if(currChapter == ((PageButton)button).getChapterVisible()) {
 //    			button.visible = true;
 //    		}
 //    	}

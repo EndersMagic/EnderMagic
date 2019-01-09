@@ -2,9 +2,10 @@ package ru.mousecray.endmagic.api.embook;
 
 import net.minecraft.util.ResourceLocation;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.api.embook.components.IPageComponent;
 import ru.mousecray.endmagic.client.gui.GuiScreenEMBook;
 
-public abstract class ChapterComponent implements IChapterComponent {
+public abstract class PageComponent implements IPageComponent {
 	
 	protected GuiScreenEMBook book;
 	
@@ -16,7 +17,7 @@ public abstract class ChapterComponent implements IChapterComponent {
 	
 	protected ResourceLocation resource = new ResourceLocation(EM.ID, "textures/gui/book_elements.png");
 	
-	public ChapterComponent(int x, int y, int width, int height) {
+	public PageComponent(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -24,15 +25,13 @@ public abstract class ChapterComponent implements IChapterComponent {
 		this.book = GuiScreenEMBook.instance;
 	}
 	
-	public abstract void render(int mouseX, int mouseY, float partialTicks);
-	
-	public ChapterComponent setPosition(int x, int y) {
+	public PageComponent setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
 		return this;
 	}
 	
-	public ChapterComponent setSize(int width, int height) {
+	public PageComponent setSize(int width, int height) {
 		this.width = width;
 		this.height = height;
 		return this;

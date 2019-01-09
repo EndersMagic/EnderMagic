@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.api.embook.components;
+package ru.mousecray.endmagic.api.embook;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -6,16 +6,15 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ru.mousecray.endmagic.api.embook.ComponentType;
-import ru.mousecray.endmagic.api.embook.IChapterComponent;
+import ru.mousecray.endmagic.api.embook.components.IPageComponent;
 
 @SideOnly(Side.CLIENT) 
-public class ChapterButton extends GuiButton implements IChapterComponent {
+public class PageButton extends GuiButton implements IPageComponent {
 	
 	private final String text;
 	private int chapterVisible;
 	
-	public ChapterButton(int button, int x, int y, String text) {
+	public PageButton(int button, int x, int y, String text) {
 		super(button, x, y, 95, 8, "");
 		this.text = text;
     }
@@ -41,4 +40,7 @@ public class ChapterButton extends GuiButton implements IChapterComponent {
 	public ComponentType getComponentType() {
 		return ComponentType.LINK;
 	}
+
+	@Override
+	public void render(int mouseX, int mouseY, float partialTicks) {return;}
 }

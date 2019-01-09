@@ -1,32 +1,20 @@
 package ru.mousecray.endmagic.api.embook;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.resources.I18n;
+import ru.mousecray.endmagic.api.embook.components.BookChapter;
+import ru.mousecray.endmagic.api.embook.components.ChapterPage;
 
 public class DefaultBookChapter extends BookChapter {
-	
-	private List<IChapterComponent> components;
-
-	public DefaultBookChapter() {
-		components = new ArrayList<IChapterComponent>();
-	}
 
 	@Override
 	public String getChapterTitle() {
 		return I18n.format("embook.chapter_title." + getKey());
 	}
 	
-	public DefaultBookChapter build(IChapterComponent... elements) {
-		for(IChapterComponent component : elements) {
-			components.add(component);
+	public DefaultBookChapter build(ChapterPage... elements) {
+		for(ChapterPage component : elements) {
+			pages.add(component);
 		}
 		return this;
-	}
-
-	@Override
-	public List<IChapterComponent> getChapterComponents() {		
-		return components;
 	}
 }
