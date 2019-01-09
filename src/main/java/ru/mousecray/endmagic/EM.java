@@ -2,6 +2,8 @@ package ru.mousecray.endmagic;
 
 import javax.annotation.Nullable;
 
+import org.apache.logging.log4j.Level;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.DamageSource;
@@ -12,6 +14,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.FMLRelaunchLog;
 import ru.mousecray.endmagic.proxy.CommonProxy;
 import ru.mousecray.endmagic.util.EMCreativeTab;
 import ru.mousecray.endmagic.util.EMEntityDSI;
@@ -28,6 +31,8 @@ public class EM {
         return (new EMEntityDSI("arrow", arrow, indirectEntity)).setProjectile();
     }
 	
+    private static boolean debug = true;
+    
 	@Instance(EM.ID)
 	public static EM instance;
 	
@@ -40,4 +45,9 @@ public class EM {
 	public void init(FMLInitializationEvent event) {proxy.init(event);}
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {proxy.postInit(event);}
+	
+	public static void debug(String message)
+	{ 
+		if(debug) FMLRelaunchLog.log("[DEBUG] Galaxy Space", Level.INFO, message);
+	}  
 }
