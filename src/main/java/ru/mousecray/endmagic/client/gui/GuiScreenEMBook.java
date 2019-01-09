@@ -37,14 +37,14 @@ public class GuiScreenEMBook extends GuiScreen {
 	
 	//These two variables are related
 	private int currChapter = 0;
-	private int countPages = 0;
+//	private int countPages = 0;
 	
 	
 	
 	private int currPage = 0;
 	
 	private Map<String, BookChapter> bookContent = BookApi.getBookContent();
-	private Map<String, ChapterPage> pages = new HashMap();
+//	private Map<String, ChapterPage> pages = new HashMap();
 	
     private static final ResourceLocation BOOK_TEXTURES = new ResourceLocation(EM.ID, "textures/gui/book.png");
     
@@ -59,52 +59,52 @@ public class GuiScreenEMBook extends GuiScreen {
         buttonNextPage = (NextPageButton)addButton(new NextPageButton(1, i + 215, j + 160, true));
         buttonPreviousPage = (NextPageButton)addButton(new NextPageButton(2, i + 18, j + 160, false));
         
-        for(BookChapter chapter : bookContent.values()) {
-        	for(IChapterComponent component : chapter.getChapterComponents()) {
-        		if(component.getComponentType() == ComponentType.LINK) {
-        			addButton((ChapterButton)component);
-        		}
-        	}       	
-        	genPage(chapter, 0);
-        }
+//        for(BookChapter chapter : bookContent.values()) {
+//        	for(IChapterComponent component : chapter.getChapterComponents()) {
+//        		if(component.getComponentType() == ComponentType.LINK) {
+//        			addButton((ChapterButton)component);
+//        		}
+//        	}       	
+//        	genPage(chapter, 0);
+//        }
         
         updateButtons();
     }
     
-    private void genPage(BookChapter chapter, int startIndex) {
-		int guiHeight = (width - 192);
-		List<IChapterComponent> components = chapter.getChapterComponents();
-		int size = components.size();
-		List<IChapterComponent> currComponents = new ArrayList();
-		int currSize = 0;
-		for(int i = startIndex; i < size; i++) {
-			IChapterComponent component = components.get(i);
-			if(component.getComponentType() == ComponentType.LINK) {
-				int testSize = currSize + ((ChapterButton)component).height;
-				if(testSize  < guiHeight) {
-					currSize = testSize;
-					currComponents.add(component);
-				}
-				else {
-					pages.put(chapter.getKey(), new ChapterPage(currComponents));
-					genPage(chapter, i);
-					break;
-				}
-			}
-			else {
-				int testSize = currSize + ((ChapterComponent)component).getHeight();
-				if(testSize  < guiHeight) {
-					currSize = testSize;
-					currComponents.add(component);
-				}
-				else {
-					pages.put(chapter.getKey(), new ChapterPage(currComponents));
-					genPage(chapter, i);
-					break;
-				}
-			}
-		}
-	}
+//    private void genPage(BookChapter chapter, int startIndex) {
+//		int guiHeight = (width - 192);
+//		List<IChapterComponent> components = chapter.getChapterComponents();
+//		int size = components.size();
+//		List<IChapterComponent> currComponents = new ArrayList();
+//		int currSize = 0;
+//		for(int i = startIndex; i < size; i++) {
+//			IChapterComponent component = components.get(i);
+//			if(component.getComponentType() == ComponentType.LINK) {
+//				int testSize = currSize + ((ChapterButton)component).height;
+//				if(testSize  < guiHeight) {
+//					currSize = testSize;
+//					currComponents.add(component);
+//				}
+//				else {
+//					pages.put(chapter.getKey(), new ChapterPage(currComponents));
+//					genPage(chapter, i);
+//					break;
+//				}
+//			}
+//			else {
+//				int testSize = currSize + ((ChapterComponent)component).getHeight();
+//				if(testSize  < guiHeight) {
+//					currSize = testSize;
+//					currComponents.add(component);
+//				}
+//				else {
+//					pages.put(chapter.getKey(), new ChapterPage(currComponents));
+//					genPage(chapter, i);
+//					break;
+//				}
+//			}
+//		}
+//	}
 
 	@Override
     public void updateScreen() {
@@ -119,12 +119,12 @@ public class GuiScreenEMBook extends GuiScreen {
     	buttonPreviousPage.visible = !(currChapter == 0);
     	buttonDone.visible = true;
     	
-    	for(int i = 3; i < buttonList.size(); i++) {
-    		GuiButton button = buttonList.get(i);
-    		if(currChapter == ((ChapterButton)button).getChapterVisible()) {
-    			button.visible = true;
-    		}
-    	}
+//    	for(int i = 3; i < buttonList.size(); i++) {
+//    		GuiButton button = buttonList.get(i);
+//    		if(currChapter == ((ChapterButton)button).getChapterVisible()) {
+//    			button.visible = true;
+//    		}
+//    	}
     }
 	
     @Override
