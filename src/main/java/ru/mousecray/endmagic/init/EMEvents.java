@@ -18,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -25,9 +26,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
@@ -169,5 +172,11 @@ public class EMEvents {
 
     private static boolean isArrow(ItemStack stack) {
         return stack.getItem() instanceof ItemArrow;
+    }
+    
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void registerRecipes(RegistryEvent.Register<IRecipe> event)
+    {
+    	EMRecipes.loadRecipes();
     }
 }
