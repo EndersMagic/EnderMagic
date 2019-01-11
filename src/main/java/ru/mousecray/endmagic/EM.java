@@ -1,11 +1,8 @@
 package ru.mousecray.endmagic;
 
-import com.google.gson.*;
-
 import javax.annotation.Nullable;
 
-import endmagic.com.github.dahaka934.jhocon.JHocon;
-import endmagic.com.github.dahaka934.jhocon.JHoconBuilder;
+import hohserg.jhocon.JHoconConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.DamageSource;
@@ -46,31 +43,11 @@ public class EM {
     @Instance(EM.ID)
     public static EM instance;
 
-    public static Config config;
-
-    static {
-        String configFile = "./config/endmagic.cfg";
-        JHocon jhocon = new JHoconBuilder().create();
-        try {
-            String lines = Files.readAllLines(Paths.get(configFile), StandardCharsets.UTF_8)
-                    .stream()
-                    .reduce("", (a, b) -> a + b + "\n");
-
-            config = jhocon.fromHocon(lines, "config", Config.class);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            config = new Config();
-            String hocon = jhocon.toHocon("config", Config.class);
-            try {
-                Files.write(Paths.get(configFile), hocon.getBytes(StandardCharsets.UTF_8));
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
+    public static void main(String[] args) {
 
     }
+
+    public static Config config = JHoconConfig.getOrCreateConfig(ID, Config::new);
 
     @SidedProxy(clientSide = EM.CLIENT, serverSide = EM.SERVER)
     public static CommonProxy proxy;
