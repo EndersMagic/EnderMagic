@@ -1,6 +1,8 @@
 package ru.mousecray.endmagic;
 
+import com.github.dahaka934.jhocon.annotations.Comment;
+
 public class Config {
-    public int test1 = 1;
-    public String test2 = "test";
+    @Comment("Vertical limit for portals")
+    public int portalSizeLimit = 10;
 }
