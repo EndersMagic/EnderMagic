@@ -13,21 +13,11 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import org.apache.commons.io.FileUtils;
 import ru.mousecray.endmagic.proxy.CommonProxy;
 import ru.mousecray.endmagic.util.EMCreativeTab;
 import ru.mousecray.endmagic.util.EMEntityDSI;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
-
-@Mod(modid = EM.ID, name = EM.NAME, version = EM.VERSION)
+@Mod(modid = EM.ID, name = EM.NAME, version = EM.VERSION, dependencies = "after:jhocon")
 public class EM {
     public static final String ID = "endmagic";
     public static final String VERSION = "@version@";
@@ -47,7 +37,7 @@ public class EM {
 
     }
 
-    public static Config config = JHoconConfig.getOrCreateConfig(ID, Config::new);
+    public final static Config config = JHoconConfig.getOrCreateConfig(ID, Config::new);
 
     @SidedProxy(clientSide = EM.CLIENT, serverSide = EM.SERVER)
     public static CommonProxy proxy;
