@@ -43,7 +43,7 @@ public class EM {
     public static CommonProxy proxy;
 
     @EventHandler
-    public void preInit(FMLPreInitializationEvent event) throws Exception {
+    public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit(event);
     }
 
