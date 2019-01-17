@@ -3,9 +3,9 @@ package ru.mousecray.endmagic.runes
 import scala.collection.mutable.ListBuffer
 
 class Rune {
-  private[this] var _isFinished: Boolean = false
+  private[this] var runeEffect: RuneEffect = EmptyEffect
 
-  def isFinished: Boolean = _isFinished
+  def isFinished: Boolean = runeEffect != EmptyEffect
 
   private val parts = new ListBuffer[RunePart]
 
@@ -14,8 +14,8 @@ class Rune {
     checkFinished()
   }
 
-  private def checkFinished(): Unit = {
-    parts.groupBy((i: RunePart) => Tuple2.apply(i.x, i.y)).map(i => i._2.last).toSet
-  }
+  private def checkFinished(): Unit =
+    runeEffect = RuneRegistry.findRuneEffect(parts.groupBy((i: RunePart) => Tuple2.apply(i.x, i.y)).map(i => i._2.last).toSet)
+
 
 }
