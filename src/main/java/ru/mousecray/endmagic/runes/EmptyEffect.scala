@@ -1,5 +1,3 @@
 package ru.mousecray.endmagic.runes
 
-object EmptyEffect extends RuneEffect {
-
-}
+object EmptyEffect extends RuneEffect

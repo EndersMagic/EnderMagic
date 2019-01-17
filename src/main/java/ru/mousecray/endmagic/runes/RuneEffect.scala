@@ -1,5 +1,12 @@
 package ru.mousecray.endmagic.runes
 
-trait RuneEffect {
+import net.minecraft.entity.Entity
+import ru.mousecray.endmagic.teleport.Location
 
+trait RuneEffect {
+  def neighborChanged(location: Location): Unit = ()
+
+  def onDestroyed(location: Location): Unit = ()
+
+  def onEntityWalk(location: Location, entity: Entity): Unit = ()
 }
