@@ -3,7 +3,7 @@ package ru.mousecray.endmagic.runes
 import net.minecraft.entity.Entity
 import ru.mousecray.endmagic.teleport.Location
 
-trait RuneEffect {
+abstract class RuneEffect {
   def neighborChanged(location: Location): Unit = ()
 
   def onDestroyed(location: Location): Unit = ()
