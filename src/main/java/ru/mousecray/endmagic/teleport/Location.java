@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Location {
 
@@ -26,13 +27,18 @@ public class Location {
     }
 
     @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(x).append(y).append(z).append(dim).hashCode();
+    }
+
+    @Override
     public String toString() {
-        return "Location(x = " + x + ", y = " + y + ", z = " + z + ")";
+        return "Location(xl = " + x + ", y = " + y + ", z = " + z + ")";
     }
 
     public NBTTagCompound toNbt() {
         NBTTagCompound r = new NBTTagCompound();
-        r.setInteger("x", x);
+        r.setInteger("xl", x);
         r.setInteger("y", y);
         r.setInteger("z", z);
         r.setInteger("dim", dim);
@@ -49,9 +55,9 @@ public class Location {
 
     public static Location fromNbt(NBTTagCompound tag) {
         return
-                (ImmutableList.of("x", "y", "z", "dim").stream().map(tag::hasKey).reduce(true, (a, b) -> a && b))
+                (ImmutableList.of("xl", "y", "z", "dim").stream().map(tag::hasKey).reduce(true, (a, b) -> a && b))
                         ?
-                        new Location(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"), tag.getInteger("dim"))
+                        new Location(tag.getInteger("xl"), tag.getInteger("y"), tag.getInteger("z"), tag.getInteger("dim"))
                         :
                         spawn;
     }
