@@ -21,7 +21,7 @@ import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.init.EMItems;
 
 public class EMEnderArrow extends EntityArrow {
-	
+
     private int xTile;
     private int yTile;
     private int zTile;

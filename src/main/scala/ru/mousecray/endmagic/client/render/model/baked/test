@@ -1,0 +1,5 @@
+x,y
+color=(r,g,b)
+uv=(u,v)
+
+color=blend(color1,blend(color2,color4,v2.x

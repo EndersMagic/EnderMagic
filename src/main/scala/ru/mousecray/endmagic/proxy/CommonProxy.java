@@ -1,11 +1,5 @@
 package ru.mousecray.endmagic.proxy;
 
-import java.lang.reflect.Field;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,13 +19,21 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMEntities;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
+import ru.mousecray.endmagic.runes.RuneEffect;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
+
+import javax.annotation.Nullable;
+import java.lang.reflect.Field;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CommonProxy implements IGuiHandler {
 
@@ -62,7 +64,7 @@ public class CommonProxy implements IGuiHandler {
                 e.printStackTrace();
             }
         }
-        
+
         //Registration Entity
         for (Field field : EMEntities.class.getFields()) {
             try {
@@ -72,7 +74,7 @@ public class CommonProxy implements IGuiHandler {
                 e.printStackTrace();
             }
         }
-        
+
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
     }
 
@@ -108,6 +110,18 @@ public class CommonProxy implements IGuiHandler {
         registerItem(item, NameAndTabUtils.getName(item));
     }
 
+
+    @SubscribeEvent
+    public void onRegistryNewRegistry(RegistryEvent.NewRegistry event) {
+        new RegistryBuilder<RuneEffect>()
+                .setName(new ResourceLocation(EM.ID, "runeeffect"))
+                .setType(RuneEffect.class)
+                .add((IForgeRegistry.AddCallback<RuneEffect>) (owner, stage, id, obj, oldObj) -> {
+                    /*register rune logic*/
+                })
+                .create();
+    }
+
     @SubscribeEvent
     public void registerBlocks(RegistryEvent.Register<Block> e) {
         blocksToRegister.forEach(e.getRegistry()::register);
@@ -118,15 +132,17 @@ public class CommonProxy implements IGuiHandler {
     public void registerItems(RegistryEvent.Register<Item> e) {
         itemsToRegister.forEach(e.getRegistry()::register);
     }
-    
+
     @SubscribeEvent
     public void registerEntities(RegistryEvent.Register<EntityEntry> e) {
-    	entityToRegister.forEach(e.getRegistry()::register);
+        entityToRegister.forEach(e.getRegistry()::register);
     }
 
-    public void init(FMLInitializationEvent event) {}
+    public void init(FMLInitializationEvent event) {
+    }
 
-    public void postInit(FMLPostInitializationEvent event) {}
+    public void postInit(FMLPostInitializationEvent event) {
+    }
 
     public static int blastFurnaceGui = 0;
 
@@ -134,7 +150,7 @@ public class CommonProxy implements IGuiHandler {
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         if (id == blastFurnaceGui)
-            return new ContainerBlastFurnace(player,EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z)));
+            return new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z)));
 
         return null;
     }
