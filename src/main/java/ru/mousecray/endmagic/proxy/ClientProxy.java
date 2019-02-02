@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -27,6 +28,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.DefaultBookChapter;
 import ru.mousecray.endmagic.api.embook.ItemStackComponent;
+import ru.mousecray.endmagic.api.embook.components.ChapterPage;
 import ru.mousecray.endmagic.client.render.entity.EMEntityThrowableRenderFactory;
 import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
@@ -64,7 +66,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         super.postInit(event);
         
         //Add default book chapters
-        BookApi.addBookChapter(new DefaultBookChapter().build(new ItemStackComponent(new ItemStack(Items.APPLE), 0, 0)));
+        BookApi.addBookChapter(new DefaultBookChapter().build(new ChapterPage(0, ImmutableList.of(new ItemStackComponent(new ItemStack(Items.APPLE), 0, 0)))));
     }
 
     @SubscribeEvent
