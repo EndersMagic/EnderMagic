@@ -21,7 +21,8 @@ class FlatableBakedQuad(quad: BakedQuad) extends BakedQuad(
           .map { rune: Rune =>
             val richQuad = RichRectangleBakedQuad(quad)
             richQuad.slicedArea(1f / 16)
-              .erase(rune)
+              .eraseBy(r=>rune.parts.foreach(i => r(i.x)(i.y) = true))
+              .grouped
               .overlay(richQuad)
               .map(_.toQuad)
           }.getOrElse(Seq(quad)).foreach(_.pipe(consumer))
