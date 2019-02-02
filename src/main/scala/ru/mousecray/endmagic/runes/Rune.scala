@@ -7,7 +7,7 @@ class Rune {
 
   def isFinished: Boolean = runeEffect != EmptyEffect
 
-  private val parts = new ListBuffer[RunePart]
+  val parts = new ListBuffer[RunePart]
 
   def add(part: RunePart): Unit = {
     parts += part
