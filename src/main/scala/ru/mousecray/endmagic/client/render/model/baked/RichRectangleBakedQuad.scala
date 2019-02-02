@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic.client.render.model.baked
 
-import math._
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.renderer.vertex.VertexFormat
@@ -10,16 +9,16 @@ import net.minecraft.util.math.Vec3i
 import org.lwjgl.opengl.GL11
 import org.lwjgl.util.vector.{Vector2f, Vector3f}
 import ru.mousecray.endmagic.client.render.model.baked.RichRectangleBakedQuad._
-import ru.mousecray.endmagic.runes.Rune
 import ru.mousecray.endmagic.util.elix_x.baked.UnpackedBakedQuad
 import ru.mousecray.endmagic.util.elix_x.baked.vertex.{DefaultUnpackedVertex, DefaultUnpackedVertices}
 import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA
 
 import scala.collection.JavaConverters._
 import scala.language.implicitConversions
+import scala.math._
 
 case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, v3: Vertex, v4: Vertex, tintIndexIn: Int, faceIn: EnumFacing, spriteIn: TextureAtlasSprite, applyDiffuseLighting: Boolean) {
-  def slicedArea(by: Float): SlicedArea[RichRectangleBakedQuad, List[Boolean]] =
+  def slicedArea(by: Float): SlicedArea[Boolean, List[Boolean]] =
     new SlicedArea(((floor(x2) - ceil(x)) / by).toInt, ((floor(y2) - ceil(y)) / by).toInt)
 
   //flat
@@ -181,9 +180,14 @@ object RichRectangleBakedQuad {
 }
 
 class SlicedArea[A, B](w: Int, h: Int) {
-  def overlay(richQuad: RichRectangleBakedQuad): Seq[RichRectangleBakedQuad] = ???
+  def grouped: SlicedArea[A, B] = this
 
-  def erase(rune: Rune): SlicedArea[A, B] = ???
+  def eraseBy(function: Array[Array[A]] => Unit):SlicedArea[A, B] = {
+    function(matrix)
+    this
+  }
+
+  def overlay(richQuad: RichRectangleBakedQuad): Seq[RichRectangleBakedQuad] = ???
 
 
   import math._
