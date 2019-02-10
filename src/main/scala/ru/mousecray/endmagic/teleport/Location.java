@@ -8,6 +8,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import scala.Int;
+import scala.Tuple4;
 
 public class Location {
 
@@ -27,18 +29,30 @@ public class Location {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Location) {
+            Location obj1 = (Location) obj;
+            return x == obj1.x &&
+                    y == obj1.y &&
+                    z == obj1.z &&
+                    dim == obj1.dim;
+        } else
+            return false;
+    }
+
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(x).append(y).append(z).append(dim).hashCode();
     }
 
     @Override
     public String toString() {
-        return "Location(xl = " + x + ", y = " + y + ", z = " + z + ")";
+        return "Location(x = " + x + ", y = " + y + ", z = " + z + ")";
     }
 
     public NBTTagCompound toNbt() {
         NBTTagCompound r = new NBTTagCompound();
-        r.setInteger("xl", x);
+        r.setInteger("x", x);
         r.setInteger("y", y);
         r.setInteger("z", z);
         r.setInteger("dim", dim);
