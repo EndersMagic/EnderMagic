@@ -1,21 +1,21 @@
 package ru.mousecray.endmagic.runes
 
-import scala.collection.mutable.ListBuffer
+case class Rune(parts: Set[RunePart], runeEffect: RuneEffect = EmptyEffect) {
 
-class Rune {
-  private[this] var runeEffect: RuneEffect = EmptyEffect
+  val isFinished: Boolean = runeEffect != EmptyEffect
 
-  def isFinished: Boolean = runeEffect != EmptyEffect
-
-  val parts = new ListBuffer[RunePart]
-
-  def add(part: RunePart): Unit = {
-    parts += part
-    checkFinished()
+  def +(part: RunePart): Rune = {
+    val newParts = parts + part
+    copy(newParts, RuneRegistry.findRuneEffect(newParts))
   }
 
-  private def checkFinished(): Unit =
-    runeEffect = RuneRegistry.findRuneEffect(parts.groupBy((i: RunePart) => Tuple2.apply(i.x, i.y)).map(i => i._2.last).toSet)
+  def ++(rune: Rune): Rune = {
+    val newParts = parts ++ rune.parts
+    copy(newParts, RuneRegistry.findRuneEffect(newParts))
+  }
+}
 
+object Rune {
+  object EmptyRune extends Rune(Set())
 
 }
