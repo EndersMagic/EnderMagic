@@ -2,16 +2,20 @@ package ru.mousecray.endmagic.client.render.rune
 
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.BakedQuad
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraftforge.client.model.pipeline.{BlockInfoLense, IVertexConsumer, VertexLighterFlat}
+import net.minecraftforge.fluids.FluidRegistry
 import ru.mousecray.endmagic.client.render.model.baked.RichRectangleBakedQuad
-import ru.mousecray.endmagic.runes.{Rune, RuneIndex}
+import ru.mousecray.endmagic.client.render.rune.FlatableBakedQuad._
+import ru.mousecray.endmagic.runes.Rune.EmptyRune
+import ru.mousecray.endmagic.runes.{Rune, RuneIndex, RuneRegistry}
 import ru.mousecray.endmagic.teleport.Location
 import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA
 
 import scala.util.Random
 
 class FlatableBakedQuad(quad: BakedQuad) extends BakedQuad(
-  quad.getVertexData, quad.getTintIndex, quad.getFace, quad.getSprite, quad.shouldApplyDiffuseLighting(), quad.getFormat
+  quad.getVertexData, quad.getTintIndex, quad.getFace, atlasSpriteRune, quad.shouldApplyDiffuseLighting(), quad.getFormat
 ) {
 
   def makeRuneQuad(x: Float, y: Float, x2: Float, y2: Float, richQuad: RichRectangleBakedQuad, color: Int): RichRectangleBakedQuad = {
@@ -38,13 +42,22 @@ class FlatableBakedQuad(quad: BakedQuad) extends BakedQuad(
     consumer match {
       case consumer: VertexLighterFlat =>
         RuneIndex.getRuneAt(new Location(BlockInfoLense.get(consumer).getBlockPos, Minecraft.getMinecraft.world), BlockInfoLense.get(consumer).getState.getBlock)
-          .flatMap(_.sides.get(quad.face))
-          .map { rune: Rune =>
+          .sides.get(quad.getFace)
+          .collect { case rune: Rune if rune != EmptyRune =>
             val richQuad = RichRectangleBakedQuad(quad)
-            richQuad.slicedArea(1f / 16)
-              .eraseBy(r=>rune.parts.foreach(i => r(i.x)(i.y) = true))
+            val pixelSize = 1f / 16
+            richQuad.slicedArea(pixelSize)
+              .eraseBy(r => rune.parts.foreach(i => r(i.x)(i.y) = i.colorId))
               .grouped
-              .overlay(richQuad)
+              .overlay {
+                case (x, y, e) =>
+                  val qx = x * pixelSize
+                  val qy = y * pixelSize
+                  if (e != zero)
+                    makeRuneQuad(qx, qy, qx + pixelSize, qy + pixelSize, richQuad, RuneRegistry.getColor(e))
+                  else
+                    richQuad.slice(qx, qy, qx + pixelSize, qy + pixelSize)
+              }
               .map(_.toQuad)
           }.getOrElse(Seq(quad)).foreach(_.pipe(consumer))
 
@@ -54,6 +67,9 @@ class FlatableBakedQuad(quad: BakedQuad) extends BakedQuad(
 }
 
 object FlatableBakedQuad {
+  val atlasSpriteRune: TextureAtlasSprite = Minecraft.getMinecraft.getTextureMapBlocks
+    .getAtlasSprite(FluidRegistry.WATER.getStill().toString)
+
   val random = new Random()
 
   def nextColor() = new RGBA(random.nextFloat(), random.nextFloat(), random.nextFloat())
