@@ -18,7 +18,6 @@ import scala.language.implicitConversions
 import scala.math._
 
 case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, v3: Vertex, v4: Vertex, tintIndexIn: Int, faceIn: EnumFacing, spriteIn: TextureAtlasSprite, applyDiffuseLighting: Boolean) {
-  def slicedArea(by: Float): SlicedArea[Boolean, List[Boolean]] =
   def color(color: Int): RichRectangleBakedQuad =
     copy(
       v1 = v1.copy(_2 = RGBA.fromRGBA(color)),
@@ -37,6 +36,7 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
     )
   val minVertex: Vertex = Seq(v1, v2, v3, v4).minBy(_._1)
   val maxVertex: Vertex = Seq(v1, v2, v3, v4).maxBy(_._1)
+  def slicedArea(by: Float): SlicedArea[Byte, List[Boolean]] =
     new SlicedArea(((floor(x2) - ceil(x)) / by).toInt, ((floor(y2) - ceil(y)) / by).toInt)
 
   //flat
