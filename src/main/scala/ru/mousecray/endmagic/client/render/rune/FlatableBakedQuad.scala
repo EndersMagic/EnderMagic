@@ -13,6 +13,27 @@ import scala.util.Random
 class FlatableBakedQuad(quad: BakedQuad) extends BakedQuad(
   quad.getVertexData, quad.getTintIndex, quad.getFace, quad.getSprite, quad.shouldApplyDiffuseLighting(), quad.getFormat
 ) {
+
+  def makeRuneQuad(x: Float, y: Float, x2: Float, y2: Float, richQuad: RichRectangleBakedQuad, color: Int): RichRectangleBakedQuad = {
+    val const = richQuad.const
+    val nvu1 = (x, y, const)
+    val nvu3 = (x2, y2, const)
+
+    val nvu4 = (nvu3._1, nvu1._2, const)
+    val nvu2 = (nvu1._1, nvu3._2, const)
+    RichRectangleBakedQuad(richQuad.format,
+      richQuad.prepareVertex(nvu1),
+      richQuad.prepareVertex(nvu2),
+      richQuad.prepareVertex(nvu3),
+      richQuad.prepareVertex(nvu4),
+      richQuad.tintIndexIn, richQuad.faceIn, atlasSpriteRune, richQuad.applyDiffuseLighting
+    )
+      .texture(atlasSpriteRune)
+      .color(color)
+  }
+
+  val zero: Byte = 0
+
   override def pipe(consumer: IVertexConsumer): Unit = {
     consumer match {
       case consumer: VertexLighterFlat =>
