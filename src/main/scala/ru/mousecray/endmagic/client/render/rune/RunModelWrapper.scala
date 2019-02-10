@@ -8,9 +8,9 @@ import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.Vec3i
 import org.lwjgl.util.vector.Vector3f
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelDelegate
+import ru.mousecray.endmagic.runes.Utils._
 import ru.mousecray.endmagic.util.elix_x.baked.UnpackedBakedQuad
 
-import scala.collection.generic.CanBuildFrom
 import scala.collection.mutable
 
 class RunModelWrapper(baseModel: IBakedModel) extends BakedModelDelegate(baseModel) {
@@ -21,25 +21,6 @@ class RunModelWrapper(baseModel: IBakedModel) extends BakedModelDelegate(baseMod
 
   def vectMask(vector3f: Vector3f, getDirectionVec: Vec3i): Float =
     vector3f.x * getDirectionVec.getX + vector3f.y * getDirectionVec.getY + vector3f.z * getDirectionVec.getZ
-
-  def cbfZipMaps[K, V1, V2] = new CanBuildFrom[Map[K, V1], ((K, V1), (K, V2)), Map[K, (V1, V2)]] {
-    override def apply(from: Map[K, V1]): mutable.Builder[((K, V1), (K, V2)), Map[K, (V1, V2)]] =
-      apply()
-
-    override def apply(): mutable.Builder[((K, V1), (K, V2)), Map[K, (V1, V2)]] =
-      new mutable.Builder[((K, V1), (K, V2)), Map[K, (V1, V2)]] {
-        private var map = Map[K, (V1, V2)]()
-
-        override def +=(elem: ((K, V1), (K, V2))): this.type = {
-          map += elem._1._1 -> (elem._1._2, elem._2._2)
-          this
-        }
-
-        override def clear(): Unit = map = Map[K, (V1, V2)]()
-
-        override def result(): Map[K, (V1, V2)] = map
-      }
-  }
 
   def findEdge(facingToQuads: Map[EnumFacing, mutable.Buffer[BakedQuad]]): (Map[EnumFacing, BakedQuad], Map[EnumFacing, mutable.Buffer[BakedQuad]]) = {
     val uquad: Map[EnumFacing, BakedQuad] =
