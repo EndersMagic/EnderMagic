@@ -4,6 +4,16 @@ import scala.collection.mutable
 
 object RuneRegistry {
 
+  val colorById = new mutable.OpenHashMap[Byte, Int]()
+
+  def getColor(id: Byte): Int = colorById.getOrElse(id, 0xffffff)
+
+  def registerColor(id: Byte, color: Int): Unit =
+    colorById += ((id, color))
+
+  registerColor(1, 0xff00ff)
+
+
   def findRuneEffect(parts: Set[RunePart]): RuneEffect =
     map.getOrElse(nailToCenter(parts), EmptyEffect)
 
