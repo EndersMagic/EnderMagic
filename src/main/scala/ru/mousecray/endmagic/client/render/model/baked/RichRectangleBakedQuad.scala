@@ -19,6 +19,22 @@ import scala.math._
 
 case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, v3: Vertex, v4: Vertex, tintIndexIn: Int, faceIn: EnumFacing, spriteIn: TextureAtlasSprite, applyDiffuseLighting: Boolean) {
   def slicedArea(by: Float): SlicedArea[Boolean, List[Boolean]] =
+  def color(color: Int): RichRectangleBakedQuad =
+    copy(
+      v1 = v1.copy(_2 = RGBA.fromRGBA(color)),
+      v2 = v2.copy(_2 = RGBA.fromRGBA(color)),
+      v3 = v3.copy(_2 = RGBA.fromRGBA(color)),
+      v4 = v4.copy(_2 = RGBA.fromRGBA(color))
+    )
+
+  def texture(atlas: TextureAtlasSprite): RichRectangleBakedQuad =
+    copy(
+      v1 = v1.copy(_3 = (atlas.getMinU, atlas.getMinV)),
+      v2 = v2.copy(_3 = (atlas.getMinU, atlas.getMaxV)),
+      v3 = v3.copy(_3 = (atlas.getMaxU, atlas.getMaxV)),
+      v4 = v4.copy(_3 = (atlas.getMaxU, atlas.getMinV)),
+      spriteIn = atlas
+    )
     new SlicedArea(((floor(x2) - ceil(x)) / by).toInt, ((floor(y2) - ceil(y)) / by).toInt)
 
   //flat
