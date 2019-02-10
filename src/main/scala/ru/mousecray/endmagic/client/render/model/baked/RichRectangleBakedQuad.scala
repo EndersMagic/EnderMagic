@@ -35,6 +35,8 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
       v4 = v4.copy(_3 = (atlas.getMaxU, atlas.getMinV)),
       spriteIn = atlas
     )
+  val minVertex: Vertex = Seq(v1, v2, v3, v4).minBy(_._1)
+  val maxVertex: Vertex = Seq(v1, v2, v3, v4).maxBy(_._1)
     new SlicedArea(((floor(x2) - ceil(x)) / by).toInt, ((floor(y2) - ceil(y)) / by).toInt)
 
   //flat
