@@ -16,8 +16,11 @@ import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA
 import scala.collection.JavaConverters._
 import scala.language.implicitConversions
 import scala.math._
+import scala.reflect.ClassTag
 
 case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, v3: Vertex, v4: Vertex, tintIndexIn: Int, faceIn: EnumFacing, spriteIn: TextureAtlasSprite, applyDiffuseLighting: Boolean) {
+  implicit val faceIn2 = faceIn
+
   def color(color: Int): RichRectangleBakedQuad =
     copy(
       v1 = v1.copy(_2 = RGBA.fromRGBA(color)),
@@ -34,25 +37,29 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
       v4 = v4.copy(_3 = (atlas.getMaxU, atlas.getMinV)),
       spriteIn = atlas
     )
+
+
   val minVertex: Vertex = Seq(v1, v2, v3, v4).minBy(_._1)
   val maxVertex: Vertex = Seq(v1, v2, v3, v4).maxBy(_._1)
+
   def slicedArea(by: Float): SlicedArea[Byte, List[Boolean]] =
     new SlicedArea(((floor(x2) - ceil(x)) / by).toInt, ((floor(y2) - ceil(y)) / by).toInt)
 
   //flat
-  val (x, y, const) = projectTo2d(v1._1)
-  val (x2, y2, _) = projectTo2d(v3._1)
+  val (x, y, const) = projectTo2d(minVertex._1)
+  val (x2, y2, _) = projectTo2d(maxVertex._1)
 
   implicit def toQuad: BakedQuad = {
     val v = Seq(
       v1,
       v2,
       v3,
-      v3
+      v4
     )
     new UnpackedBakedQuad(new DefaultUnpackedVertices(v.map(buildVertex): _*), tintIndexIn, faceIn, spriteIn, applyDiffuseLighting).pack(format)
   }
 
+  /*
   def projectTo2d(v: VertexPos): (Float, Float, Float) = {
     val x = v._1
     val y = v._2
@@ -78,43 +85,71 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
       case SOUTH => (x, y, const)
       case WEST => (const, y, x)
       case EAST => (const, y, x)
-    }
+    }*/
 
-  def interpolateColor[A: Blendable](nvu1: VertexPos, by: Vertex => A): A = ???
+  def calculateBaricentric(a: (Float, Float), b: (Float, Float), c: (Float, Float), nvu: (Float, Float, Float)): (Float, Float) = {
+    val ab = new Vector3f(b._1 - a._1, b._2 - a._2, 0)
+    val ac = new Vector3f(c._1 - a._1, c._2 - a._2, 0)
+
+    val an = new Vector3f(nvu._1 - a._1, nvu._2 - a._2, 0)
+
+    val s = Vector3f.cross(ab, ac, null).lengthSquared()
+    val sabn = Vector3f.cross(ab, an, null).lengthSquared()
+    val sacn = Vector3f.cross(an, ac, null).lengthSquared()
+    (sqrt(sabn / s).toFloat, sqrt(sacn / s).toFloat)
+  }
+
+  def interpolateColor[A](nvu: (Float, Float, Float), by: Vertex => A)(implicit scalable: Scalable[A], blendable: Blendable[A]): A = {
+    import blendable._
+    import scalable._
+
+    if (nvu._1 > (-(y - y2) * nvu._2 - (x * y2 - x2 * y)) / (x2 - x)) {
+      val (w: Float, v: Float) = calculateBaricentric((x, y), (x2, y), (x2, y2), nvu)
+      by(v1) * (1 - w - v) + by(v2) * v + by(v3) * w
+    } else {
+      val (w, v) = calculateBaricentric((x, y), (x2, y2), (x, y2), nvu)
+      by(v1) * (1 - w - v) + by(v3) * v + by(v4) * w
+    }
+  }
 
   def calculateUV[A: Numeric](nvu: (Float, Float, Float), by: Vertex => A): (Float, Float) = ???
 
-  def slice(nv1: VertexPos, nv2: VertexPos): RichRectangleBakedQuad = {
+  def slice(_nx: Float, _ny: Float, _nx2: Float, _ny2: Float): RichRectangleBakedQuad = {
+    val nx = min(_nx, _nx2)
+    val nx2 = max(_nx, _nx2)
+    val ny = min(_ny, _ny2)
+    val ny2 = max(_ny, _ny2)
 
-    import math._
-    //val x1 = v1._1._1
-    //val y1 = v1._1._2
-    //val z1 = v1._1._3
+    val nvu1 = (max(x, nx), max(y, ny), const)
+    val nvu3 = (min(x2, nx2), min(y2, ny2), const)
 
-    val (nx, ny, nz) = projectTo2d(nv1)
-    val (nx2, ny2, nz2) = projectTo2d(nv2)
-
-    val nvu1 = returnTo3d(max(x, nx), max(y, ny), const)
-    val nvu3 = returnTo3d(min(x2, nx2), min(y2, ny2), const)
-    val nvu2 = returnTo3dTupled((nvu3._1, nv1._3, const))
-    val nvu4 = returnTo3dTupled((nv1._1, nvu3._2, const))
-
-    def prepareVertex(nvu: VertexPos): Vertex = {
-      (
-        nvu,
-        interpolateColor(nvu, _._2),
-        interpolateColor(nvu, _._3),
-        interpolateColor(nvu, _._4),
-        v1._5
-      )
-    }
+    val nvu2 = (nvu3._1, nvu1._2, const)
+    val nvu4 = (nvu1._1, nvu3._2, const)
 
     RichRectangleBakedQuad(format,
       prepareVertex(nvu1),
-      prepareVertex(nvu2),
-      prepareVertex(nvu3),
       prepareVertex(nvu4),
+      prepareVertex(nvu3),
+      prepareVertex(nvu2),
       tintIndexIn, faceIn, spriteIn, applyDiffuseLighting)
+
+  }
+
+  def prepareVertex(nvu: (Float, Float, Float)): Vertex = {
+    (
+      returnTo3dTupled(nvu),
+      RGBA.fromRGBA(0xffffffff),
+      //interpolateColor(nvu, _._2),
+      interpolateColor(nvu, _._3),
+      interpolateColor(nvu, _._4),
+      v1._5
+    )
+  }
+
+  def slice(nv1: VertexPos, nv2: VertexPos): RichRectangleBakedQuad = {
+    val (nx, ny, nz) = projectTo2d(nv1)
+    val (nx2, ny2, nz2) = projectTo2d(nv2)
+    slice(nx, ny, nx2, ny2)
   }
 
 
@@ -122,13 +157,64 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
 
 object RichRectangleBakedQuad {
 
+  def projectTo2d(v: VertexPos)(implicit faceIn: EnumFacing): (Float, Float, Float) = {
+    val x = v._1
+    val y = v._2
+    val z = v._3
+
+    faceIn match {
+      case DOWN => (x, z, y)
+      case UP => (x, z, y)
+      case NORTH => (x, y, z)
+      case SOUTH => (x, y, z)
+      case WEST => (z, y, x)
+      case EAST => (z, y, x)
+    }
+  }
+
+  def returnTo3dTupled(i: (Float, Float, Float))(implicit faceIn: EnumFacing): (Float, Float, Float) = returnTo3d(i._1, i._2, i._3)(faceIn)
+
+  def returnTo3d(x: Float, y: Float, const: Float)(implicit faceIn: EnumFacing): (Float, Float, Float) =
+    faceIn match {
+      case DOWN => (x, const, y)
+      case UP => (x, const, y)
+      case NORTH => (x, y, const)
+      case SOUTH => (x, y, const)
+      case WEST => (const, y, x)
+      case EAST => (const, y, x)
+    }
+
   implicit def apply(quad: BakedQuad): RichRectangleBakedQuad = {
     val vertices = UnpackedBakedQuad.unpack(quad).getVertices.getVertices.asScala.map(unpackVertex)
     new RichRectangleBakedQuad(quad.getFormat, vertices(0), vertices(1), vertices(2), vertices(3), quad.getTintIndex, quad.getFace, quad.getSprite, quad.shouldApplyDiffuseLighting())
   }
 
+  trait Scalable[A] {
+    def scale(a: A, b: Float): A
+
+    implicit class Ops(a: A) {
+      def *(b: Float): A = scale(a, b)
+    }
+
+  }
+
+  implicit val scalableRGBA: Scalable[RGBA] = new Scalable[RGBA] {
+    override def scale(a: RGBA, b: Float): RGBA = new RGBA(a.getRF * b, a.getGF * b, a.getBF * b)
+  }
+  implicit val scalableUV: Scalable[(Float, Float)] = new Scalable[(Float, Float)] {
+    override def scale(a: (Float, Float), b: Float): (Float, Float) = (a._1 * b, a._2 * b)
+  }
+  implicit val scalableLightmap: Scalable[(Int, Int, Int)] = new Scalable[(Int, Int, Int)] {
+    override def scale(a: (Int, Int, Int), b: Float): (Int, Int, Int) = ((a._1 * b).toInt, (a._2 * b).toInt, (a._3 * b).toInt)
+  }
+
+
   trait Blendable[A] {
     def blend(a: A, b: A, ratio: Float): A
+
+    implicit class Ops1(a: A) {
+      def +(b: A): A = blend(a, b, 0.5f)
+    }
 
   }
 
@@ -138,8 +224,9 @@ object RichRectangleBakedQuad {
   }
   implicit val blendableUV: Blendable[(Float, Float)] = new Blendable[(Float, Float)] {
     override def blend(a: (Float, Float), b: (Float, Float), ratio: Float): (Float, Float) = {
-      (a._1 + (b._1 - a._1) * ratio) ->
-        (a._2 + (b._2 - a._2) * ratio)
+      (a._1 + b._1, a._2 + b._2)
+      //(a._1 + (b._1 - a._1) * ratio) ->
+      //  (a._2 + (b._2 - a._2) * ratio)
     }
   }
   implicit val blendableLightmap: Blendable[(Int, Int, Int)] = new Blendable[(Int, Int, Int)] {
@@ -163,7 +250,9 @@ object RichRectangleBakedQuad {
 
   def buildVertex(v1: Vertex): DefaultUnpackedVertex = new DefaultUnpackedVertex(v1._1, v1._2, v1._3, v1._4, v1._5)
 
-  def unpackVertex(v1: DefaultUnpackedVertex): Vertex = (v1.getPos, v1.getColor, v1.getTexture, v1.getLightmap, v1.getNormal)
+  def unpackVertex(v1: DefaultUnpackedVertex): Vertex = {
+    (v1.getPos, v1.getColor, v1.getTexture, if (v1.getLightmap == null) new Vec3i(1, 1, 0) else v1.getLightmap, v1.getNormal)
+  }
 
   def buildVertexData(format: VertexFormat, v1: Vertex*): Array[Int] =
     new net.minecraftforge.client.model.pipeline.UnpackedBakedQuad(
@@ -197,15 +286,23 @@ object RichRectangleBakedQuad {
 
 }
 
-class SlicedArea[A, B](w: Int, h: Int) {
+class SlicedArea[A: ClassTag, B: ClassTag](w: Int, h: Int) {
+
   def grouped: SlicedArea[A, B] = this
 
-  def eraseBy(function: Array[Array[A]] => Unit):SlicedArea[A, B] = {
+  def eraseBy(function: Array[Array[A]] => Unit): SlicedArea[A, B] = {
     function(matrix)
     this
   }
 
-  def overlay(richQuad: RichRectangleBakedQuad): Seq[RichRectangleBakedQuad] = ???
+  def overlay[C](mapping: PartialFunction[(Int, Int, A), C]): Seq[C] = {
+    val mapping2: ((Int, Int, A)) => Option[C] = mapping.lift
+    (for {
+      i <- matrix.indices
+      col = matrix(i)
+      j <- col.indices
+    } yield mapping2((i, j, col(j)))).flatten
+  }
 
 
   import math._
@@ -225,9 +322,9 @@ class SlicedArea[A, B](w: Int, h: Int) {
     else if (p1._2 == p2._2) edgesY(p1._2)(min(p1._1, p2._1)) = v
   }
 
-  val matrix: Array[Array[A]] = new Array(w).map(_ => new Array[A](h))
+  val matrix: Array[Array[A]] = new Array[Array[A]](w).map(_ => new Array[A](h))
 
-  val edgesX: Array[Array[B]] = new Array(w).map(_ => new Array[B](h))
-  val edgesY: Array[Array[B]] = new Array(h).map(_ => new Array[B](w))
+  val edgesX: Array[Array[B]] = new Array[Array[B]](w).map(_ => new Array[B](h))
+  val edgesY: Array[Array[B]] = new Array[Array[B]](h).map(_ => new Array[B](w))
 
 }
