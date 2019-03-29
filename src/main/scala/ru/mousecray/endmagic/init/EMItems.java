@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import ru.mousecray.endmagic.items.*;
+import ru.mousecray.endmagic.items.runeinscribers.TestItem;
 import ru.mousecray.endmagic.items.tools.EMArmor;
 import ru.mousecray.endmagic.items.tools.EMAxe;
 import ru.mousecray.endmagic.items.tools.EMHoe;
@@ -12,6 +13,7 @@ import ru.mousecray.endmagic.items.tools.EMShovel;
 import ru.mousecray.endmagic.items.tools.EMSword;
 
 public class EMItems {
+    public static final TestItem itemTest = new TestItem();
     public static final Item enderSeeds = new EMSeeds(EMBlocks.enderCrops, Blocks.END_STONE, "ender_seeds", "tooltip.ender_seeds");
     public static final ItemPortalBinder itemPortalBinder = new ItemPortalBinder();
 
