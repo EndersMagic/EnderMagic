@@ -1,6 +1,9 @@
 package ru.mousecray.endmagic.api.embook;
 
-public interface IStructuralGuiElement {
+import net.minecraft.client.Minecraft;
 
-    void render();
+public interface IStructuralGuiElement {
+    default Minecraft mc(){return Minecraft.getMinecraft()}
+
+    void render(int mouseX, int mouseY);
 }
