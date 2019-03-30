@@ -15,8 +15,8 @@ public class TextLine implements IStructuralGuiElement {
     }
 
     @Override
-    public void render() {
         Minecraft.getMinecraft().fontRenderer.drawString(line, x, y, 0x000000);
 
+    public void render(int mouseX, int mouseY) {
     }
 }
