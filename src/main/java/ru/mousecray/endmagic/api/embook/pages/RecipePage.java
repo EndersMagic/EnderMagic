@@ -2,11 +2,8 @@ package ru.mousecray.endmagic.api.embook.pages;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.util.Rectangle;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
@@ -16,18 +13,16 @@ import ru.mousecray.endmagic.client.gui.elements.ImageView;
 import ru.mousecray.endmagic.client.gui.elements.ItemStackView;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public class RecipePage implements IPage {
     public final ItemStack result;
+    public final ImmutableList<ImmutableList<Ingredient>> cratingGrid;
 
     public RecipePage(ItemStack result, ImmutableList<ImmutableList<Ingredient>> cratingGrid) {
         this.result = result;
         this.cratingGrid = cratingGrid;
     }
-
-    public final ImmutableList<ImmutableList<Ingredient>> cratingGrid;
 
     @Override
     public List<IStructuralGuiElement> elements() {
