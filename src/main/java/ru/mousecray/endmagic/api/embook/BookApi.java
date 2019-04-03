@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.api.embook;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import ru.mousecray.endmagic.api.embook.pages.MainPage;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,10 +14,37 @@ import static com.google.common.collect.ImmutableList.toImmutableList;
 public class BookApi {
     public static final int pageWidth = 100;
     public static final int pageHeight = 150;
-    static Map<String, PageContainer> book = new HashMap<>();
+
+    static Map<String, PageContainer> book = new HashMap<String, PageContainer>() {
+        @Override
+        public PageContainer put(String key, PageContainer value) {
+            dirty = true;
+            return super.put(key, value);
+        }
+    };
+
+    private static boolean dirty = true;
+
+    private static ImmutableMap<String, PageContainer> immutableMap;
 
     public static ImmutableMap<String, PageContainer> getBookContent() {
-        return ImmutableMap.copyOf(book);
+        checkAndResolveDirty();
+        return immutableMap;
+    }
+
+    private static PageContainer mainPage;
+
+    public static PageContainer mainPage() {
+        checkAndResolveDirty();
+        return mainPage;
+    }
+
+    private static void checkAndResolveDirty() {
+        if (dirty) {
+            immutableMap = ImmutableMap.copyOf(book);
+            mainPage = new PageContainer(new MainPage(immutableMap));
+            dirty = false;
+        }
     }
 
     public static void addChapter(String name, List<IChapterComponent> content) {
@@ -42,9 +70,5 @@ public class BookApi {
             return containers.get(0);
         } else
             return null;
-    }
-
-    public static PageContainer mainPage() {
-        return null;
     }
 }
