@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.util.Rectangle;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.IPage;
-import ru.mousecray.endmagic.api.embook.IStructuralGuiElement;
+import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 import ru.mousecray.endmagic.client.gui.elements.ImageView;
 import ru.mousecray.endmagic.client.gui.elements.TextLine;
 

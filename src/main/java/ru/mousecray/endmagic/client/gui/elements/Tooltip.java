@@ -3,7 +3,7 @@ package ru.mousecray.endmagic.client.gui.elements;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.util.Rectangle;
-import ru.mousecray.endmagic.api.embook.IStructuralGuiElement;
+import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 
 public class Tooltip extends GuiScreen implements IStructuralGuiElement {
     public final ImmutableList<String> lines;

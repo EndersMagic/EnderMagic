@@ -2,7 +2,7 @@ package ru.mousecray.endmagic.api.embook.pages;
 
 import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.api.embook.IPage;
-import ru.mousecray.endmagic.api.embook.IStructuralGuiElement;
+import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 import ru.mousecray.endmagic.client.gui.elements.TextLine;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package ru.mousecray.endmagic.client.gui.elements;
 
 import net.minecraft.client.Minecraft;
-import ru.mousecray.endmagic.api.embook.IStructuralGuiElement;
+import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 
 public class TextLine implements IStructuralGuiElement {
     public final String line;

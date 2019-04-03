@@ -3,7 +3,7 @@ package ru.mousecray.endmagic.client.gui.elements;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.util.Rectangle;
-import ru.mousecray.endmagic.api.embook.IStructuralGuiElement;
+import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 
 public class ImageView extends GuiScreen implements IStructuralGuiElement {
     public final ResourceLocation texture;

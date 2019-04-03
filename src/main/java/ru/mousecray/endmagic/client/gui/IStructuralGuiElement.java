@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.api.embook;
+package ru.mousecray.endmagic.client.gui;
 
 import net.minecraft.client.Minecraft;
 
