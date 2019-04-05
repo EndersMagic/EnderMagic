@@ -7,5 +7,5 @@ public interface IStructuralGuiElement {
         return Minecraft.getMinecraft();
     }
 
-    void render(int mouseX, int mouseY);
+    void render(int mouseX, int mouseY, int width, int height);
 }

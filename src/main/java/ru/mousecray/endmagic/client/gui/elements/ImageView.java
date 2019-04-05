@@ -15,7 +15,7 @@ public class ImageView extends GuiScreen implements IStructuralGuiElement {
     }
 
     @Override
-    public void render(int mouseX, int mouseY) {
+    public void render(int mouseX, int mouseY, int width, int height) {
         mc().getTextureManager().bindTexture(texture);
         drawTexturedModalRect(rectangle.getX(), rectangle.getY(), 0, 0, rectangle.getWidth(), rectangle.getHeight());
     }
