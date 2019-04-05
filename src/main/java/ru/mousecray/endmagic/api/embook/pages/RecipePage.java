@@ -8,6 +8,7 @@ import org.lwjgl.util.Rectangle;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.IPage;
+import ru.mousecray.endmagic.api.embook.alignment.Min;
 import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 import ru.mousecray.endmagic.client.gui.elements.ImageView;
 import ru.mousecray.endmagic.client.gui.elements.ItemStackView;
@@ -34,7 +35,7 @@ public class RecipePage implements IPage {
                 cratingGrid
                         .stream()
                         .flatMap(col -> col.stream()
-                                .map(i -> new ItemStackView(ImmutableList.copyOf(i.matchingStacks), 0, 0 /*todo: correct pos*/))))
+                                .map(i -> new ItemStackView(ImmutableList.copyOf(i.matchingStacks), new Min(0), new Min(0) /*todo: correct pos*/))))
                 .collect(ImmutableList.toImmutableList());
     }
 }
