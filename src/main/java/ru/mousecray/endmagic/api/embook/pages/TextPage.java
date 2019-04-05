@@ -1,7 +1,9 @@
 package ru.mousecray.endmagic.api.embook.pages;
 
 import org.apache.commons.lang3.tuple.Pair;
+import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.IPage;
+import ru.mousecray.endmagic.api.embook.alignment.Min;
 import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 import ru.mousecray.endmagic.client.gui.elements.TextLine;
 
@@ -16,7 +18,7 @@ public class TextPage implements IPage {
     public TextPage(List<String> lines) {
         this.lines = IntStream.range(0, lines.size())
                 .mapToObj(i -> Pair.of(i, lines.get(i)))
-                .map(line -> new TextLine(line.getRight(), 0, line.getLeft() * 20))
+                .map(line -> new TextLine(line.getRight(), new Min(0), new Min(line.getLeft() / (BookApi.pageHeight / 20))))
                 .collect(Collectors.toList());
     }
 
