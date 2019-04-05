@@ -12,8 +12,8 @@ import java.util.stream.Stream;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 
 public class BookApi {
-    public static final int pageWidth = 100;
-    public static final int pageHeight = 150;
+    public static final int pageWidth = 256/2;
+    public static final int pageHeight = 192;
 
     static Map<String, PageContainer> book = new HashMap<String, PageContainer>() {
         @Override
