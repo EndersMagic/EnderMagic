@@ -1,9 +1,12 @@
 package ru.mousecray.endmagic.api.embook.alignment;
 
-public class Min implements Alignment {
-    public final int offset;
+public class Min extends OffsetAlignment {
+    public Min(float offset) {
+        super(offset);
+    }
 
-    public Min(int offset) {
-        this.offset = offset;
+    @Override
+    public float resolve1(int dimension) {
+        return dimension * offset;
     }
 }

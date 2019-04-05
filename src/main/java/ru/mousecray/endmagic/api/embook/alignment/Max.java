@@ -1,9 +1,13 @@
 package ru.mousecray.endmagic.api.embook.alignment;
 
-public class Max implements Alignment {
-    public final int offset;
+public class Max extends OffsetAlignment {
 
-    public Max(int offset) {
-        this.offset = offset;
+    public Max(float offset) {
+        super(offset);
+    }
+
+    @Override
+    public float resolve1(int dimension) {
+        return dimension + dimension * offset;
     }
 }
