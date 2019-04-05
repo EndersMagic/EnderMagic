@@ -57,7 +57,9 @@ public class BookApi {
     }
 
     private static PageContainer flatMapToPages(Stream<IChapterComponent> stream) {
-        ImmutableList<PageContainer> containers = stream.flatMap(i -> i.pages().stream()).map(PageContainer::new).collect(toImmutableList());
+        ImmutableList<PageContainer> containers = stream
+                .flatMap(i -> i.pages().stream())
+                .map(PageContainer::new).collect(toImmutableList());
         if (containers.size() > 0) {
             for (int i = 1; i < containers.size() - 1; i++) {
                 containers.get(i).left = containers.get(i - 1);
