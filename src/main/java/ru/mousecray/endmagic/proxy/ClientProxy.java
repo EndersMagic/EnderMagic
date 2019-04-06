@@ -1,10 +1,5 @@
 package ru.mousecray.endmagic.proxy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -37,6 +32,11 @@ import ru.mousecray.endmagic.items.ItemTextured;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.IEMModel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
 public class ClientProxy extends CommonProxy implements IModelRegistration {
     public ClientProxy() {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
@@ -59,12 +59,9 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
-        
+
         //Add default book chapters
-        BookApi.addChapter("Test",new TextComponent(
-                "Сайт рыбатекст поможет дизайнеру, верстальщику, вебмастеру сгенерировать несколько абзацев более менее осмысленного текста рыбы на русском языке, а начинающему оратору отточить навык публичных выступлений в домашних условиях. При создании генератора мы использовали небезизвестный универсальный код речей. Текст генерируется абзацами случайным образом от двух до десяти предложений в абзаце, что позволяет сделать текст более привлекательным и живым для визуально-слухового восприятия.\n" +
-                "\n" +
-                "По своей сути рыбатекст является альтернативой традиционному lorem ipsum, который вызывает у некторых людей недоумение при попытках прочитать рыбу текст. В отличии от lorem ipsum, текст рыба на русском языке наполнит любой макет непонятным смыслом и придаст неповторимый колорит советских времен."));
+        BookApi.addChapter("Test", new TextComponent("book.test"));
     }
 
     @SubscribeEvent
@@ -110,24 +107,24 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
             IBakedModel existingModel = e.getModelRegistry().getObject(resource);
             e.getModelRegistry().putObject(resource, override.getValue().apply(existingModel));
         }
-		for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
-			ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
+        for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
+            ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
 
-			if (bakedModelOverridesR.containsKey(key)) {
+            if (bakedModelOverridesR.containsKey(key)) {
                 System.out.println(resource);
-				e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
-			}
-		}
+                e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
+            }
+        }
     }
 
     @Override
     public void addBakedModelOverride(ModelResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
         bakedModelOverrides.put(resource, override);
     }
-    
+
     @Override
     public void addBakedModelOverride(ResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
-    	bakedModelOverridesR.put(resource, override);
+        bakedModelOverridesR.put(resource, override);
     }
 
     @Override

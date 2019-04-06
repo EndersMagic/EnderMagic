@@ -3,6 +3,7 @@ package ru.mousecray.endmagic.api.embook.components;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.resources.I18n;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.IChapterComponent;
 import ru.mousecray.endmagic.api.embook.IPage;
@@ -20,8 +21,9 @@ public class TextComponent implements IChapterComponent {
     private Map<FontRenderer, ImmutableList<IPage>> cache = new HashMap<>();
     private ImmutableList<IPage> pages;
 
-    public TextComponent(String text) {
-        this.text = text;
+    public TextComponent(String unlocalizedText) {
+        //todo: make rebuild pages on resource reloading
+        text = I18n.format(unlocalizedText);
         pages();
         pages = buildPagesForFont(Minecraft.getMinecraft().fontRenderer);
     }
