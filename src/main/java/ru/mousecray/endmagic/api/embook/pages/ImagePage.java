@@ -5,13 +5,14 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.util.Rectangle;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.IPage;
-import ru.mousecray.endmagic.api.embook.alignment.Center;
-import ru.mousecray.endmagic.api.embook.alignment.Max;
 import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 import ru.mousecray.endmagic.client.gui.elements.ImageView;
 import ru.mousecray.endmagic.client.gui.elements.TextLine;
 
 import java.util.List;
+
+import static ru.mousecray.endmagic.api.embook.alignment.Alignment.bottom;
+import static ru.mousecray.endmagic.api.embook.alignment.Alignment.centerX;
 
 public class ImagePage implements IPage {
     private final ResourceLocation texture;
@@ -26,7 +27,7 @@ public class ImagePage implements IPage {
     public List<IStructuralGuiElement> elements() {
         return ImmutableList.of(
                 new ImageView(texture, new Rectangle(20, 20, BookApi.pageWidth - 20, BookApi.pageHeight - 20)),
-                new TextLine(label, new Center(0), new Max(-0.1f))
+                new TextLine(label, centerX(0), bottom(-0.1f))
         );
     }
 }

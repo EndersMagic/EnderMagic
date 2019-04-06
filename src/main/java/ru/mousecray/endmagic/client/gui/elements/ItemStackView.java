@@ -7,37 +7,31 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
-import ru.mousecray.endmagic.api.embook.alignment.Alignment;
-import ru.mousecray.endmagic.api.embook.alignment.Min;
 import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 
 public class ItemStackView implements IStructuralGuiElement {
     public final ImmutableList<ItemStack> itemStack;
-    public final Alignment x;
-    public final Alignment y;
+    public final int x;
+    public final int y;
     private ItemRenderer itemRenderer = mc().getItemRenderer();
 
-    public ItemStackView(ItemStack itemStack, Alignment x, Alignment y) {
+    public ItemStackView(ItemStack itemStack, int x, int y) {
         this.itemStack = ImmutableList.of(itemStack);
         this.x = x;
         this.y = y;
     }
 
-    public ItemStackView(ImmutableList<ItemStack> itemStack, Alignment x, Alignment y) {
+    public ItemStackView(ImmutableList<ItemStack> itemStack, int x, int y) {
         this.itemStack = itemStack;
         this.x = x;
         this.y = y;
     }
 
-    public ItemStackView(ItemStack itemStack, int x, int y) {
-        this(itemStack, new Min(x), new Min(y));
-    }
-
     @Override
-    public void render(int mouseX, int mouseY, int width, int height) {
-        GlStateManager.translate(x.resolve(width), y.resolve(height), 0);
+    public void render(int mouseX, int mouseY) {
+        GlStateManager.translate(x, y, 0);
         itemRenderer.renderItem(mc().player, cycleItemStack(itemStack), ItemCameraTransforms.TransformType.GUI);
-        GlStateManager.translate(x.resolve(width), y.resolve(height), 0);
+        GlStateManager.translate(x, y, 0);
     }
 
     public void drawItemStack(ItemStack stack, int x, int y, String altText) {
