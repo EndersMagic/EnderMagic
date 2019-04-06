@@ -45,11 +45,10 @@ public class GuiScreenEMBook extends GuiScreen {
     @Override
     public void initGui() {
         buttonList.clear();
-
-        buttonBack = addButton(new BackButton(0, width / 2 - 100, height / 2 + 98));
-
         int i = (width - 256) / 2;
         int j = (height - 192) / 2;
+
+        buttonBack = addButton(new BackButton(0, width / 2 - 11, j + 160));
 
         buttonNextPage = addButton(new NextPageButton(1, i + 215, j + 160, true));
         buttonPreviousPage = addButton(new NextPageButton(2, i + 18, j + 160, false));
@@ -138,12 +137,15 @@ public class GuiScreenEMBook extends GuiScreen {
     }
 
     @SideOnly(Side.CLIENT)
-    static class NextPageButton extends GuiButton {
-        private final boolean isForward;
+    static class PageButton extends GuiButton {
 
-        public NextPageButton(int button, int x, int y, boolean isForward) {
-            super(button, x, y, 23, 13, "");
-            this.isForward = isForward;
+        private final int u;
+        private final int v;
+
+        public PageButton(int buttonId, int x, int y, int u, int v) {
+            super(buttonId, x, y, 23, 13, "");
+            this.u = u;
+            this.v = v;
         }
 
         @Override
@@ -152,17 +154,25 @@ public class GuiScreenEMBook extends GuiScreen {
                 boolean flag = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                 mc.getTextureManager().bindTexture(BOOK_TEXTURES);
-                int i = 0, j = 192;
-                if (flag) i += 23;
-                if (!isForward) j += 13;
-                drawTexturedModalRect(x, y, i, j, 23, 13);
+                drawTexturedModalRect(x, y, flag ? u + 23 : u, v, 23, 13);
             }
         }
     }
 
-    private class BackButton extends GuiButton {
+    @SideOnly(Side.CLIENT)
+    static class NextPageButton extends PageButton {
+        private final boolean isForward;
+
+        public NextPageButton(int button, int x, int y, boolean isForward) {
+            super(button, x, y, 0, isForward ? 192 : 192 + 13);
+            this.isForward = isForward;
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    static class BackButton extends PageButton {
         public BackButton(int button, int x, int y) {
-            super(button, x, y, 23, 13, "");
+            super(button, x, y, 0, 218);
         }
     }
 }
