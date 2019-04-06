@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BookApi {
-    public static final int pageWidth = 256 / 2;
-    public static final int pageHeight = 192;
+    public static final int pageWidth = 104;
+    public static final int pageHeight = 147;
 
     static Map<String, PageContainer> book = new HashMap<String, PageContainer>() {
         @Override

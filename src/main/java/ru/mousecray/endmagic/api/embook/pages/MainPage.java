@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
-import static ru.mousecray.endmagic.api.embook.alignment.Alignment.top;
 
 public class MainPage implements IPage {
 
@@ -27,7 +26,7 @@ public class MainPage implements IPage {
                 .mapToObj(i -> Pair.of(i, chapters.get(i)))
                 .map(i -> new LinkElement(
                         i.getRight().getKey(), i.getRight().getValue(),
-                        20,i.getLeft() * Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 20
+                        0, i.getLeft() * Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 20
                 )).collect(toList());
     }
 

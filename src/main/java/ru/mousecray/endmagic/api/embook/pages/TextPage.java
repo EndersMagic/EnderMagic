@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static ru.mousecray.endmagic.api.embook.alignment.Alignment.left;
-
 public class TextPage implements IPage {
 
     private List<IStructuralGuiElement> lines;
@@ -21,8 +19,8 @@ public class TextPage implements IPage {
                 .mapToObj(i -> Pair.of(i, lines.get(i)))
                 .map(line ->
                         new TextLine(line.getRight(),
-                                20,
-                                line.getLeft() * Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 10)
+                                0,
+                                line.getLeft() * Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT)
                 )
                 .collect(Collectors.toList());
     }

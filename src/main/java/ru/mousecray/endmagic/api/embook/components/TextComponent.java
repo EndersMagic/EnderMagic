@@ -15,8 +15,8 @@ import java.util.stream.StreamSupport;
 
 public class TextComponent implements IChapterComponent {
     private final String text;
-    public final static int pageSize = (BookApi.pageHeight - 35) / Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
-    public final static int lineSize = BookApi.pageWidth - 30;
+    public final static int pageSize = BookApi.pageHeight / Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
+    public final static int lineSize = BookApi.pageWidth;
     private Map<FontRenderer, ImmutableList<IPage>> cache = new HashMap<>();
     private ImmutableList<IPage> pages;
 
@@ -30,7 +30,9 @@ public class TextComponent implements IChapterComponent {
         font.setUnicodeFlag(true);
         String[] words = text.split("\\s+");
 
-        GroupIterator<String> lines = new GroupIterator<>(Arrays.asList(words).listIterator(), lineSize, w -> font.getStringWidth(w) + 1);
+        int spaceWidth = font.getStringWidth(" ");
+
+        GroupIterator<String> lines = new GroupIterator<>(Arrays.asList(words).listIterator(), lineSize, w -> font.getStringWidth(w) + spaceWidth);
 
         GroupIterator<List<String>> pages = new GroupIterator<>(lines, pageSize, __ -> 1);
         Iterator<List<List<String>>> pages1 = pages;

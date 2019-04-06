@@ -25,6 +25,8 @@ public class GuiScreenEMBook extends GuiScreen {
 
     private GuiButton buttonBack;
     private NextPageButton buttonNextPage, buttonPreviousPage;
+    private int bookFullWidth = 256;
+    private int bookFullHeight = 192;
 
     public void setCurrentPage(Optional<PageContainer> currentPage) {
         this.currentPage = currentPage.orElse(BookApi.mainPage());
@@ -68,12 +70,12 @@ public class GuiScreenEMBook extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        int i = (width - BookApi.pageWidth * 2) / 2;
-        int j = (height - BookApi.pageHeight) / 2;
-        if (mouseX < i + BookApi.pageWidth)
-            performClickOnPage(mouseX, mouseY, i, j, currentPage.page1);
+        int i = (width - bookFullWidth) / 2;
+        int j = (height - bookFullHeight) / 2;
+        if (mouseX < i + bookFullWidth / 2)
+            performClickOnPage(mouseX, mouseY, i + 20, j + 15, currentPage.page1);
         else
-            performClickOnPage(mouseX, mouseY, i + BookApi.pageWidth, i, currentPage.page2);
+            performClickOnPage(mouseX, mouseY, i + bookFullWidth / 2 + 4, j + 15, currentPage.page2);
     }
 
     private void performClickOnPage(int mouseX, int mouseY, int i, int j, IPage page) {
@@ -112,10 +114,10 @@ public class GuiScreenEMBook extends GuiScreen {
         mc.getTextureManager().bindTexture(BOOK_TEXTURES);
         int i = (width - 256) / 2;
         int j = (height - 192) / 2;
-        drawTexturedModalRect(i, j, 0, 0, BookApi.pageWidth * 2, BookApi.pageHeight);
+        drawTexturedModalRect(i, j, 0, 0, bookFullWidth, bookFullHeight);
 
-        drawPage(i, j, currentPage.page1, mouseX, mouseY);
-        drawPage(i + BookApi.pageWidth, j, currentPage.page2, mouseX, mouseY);
+        drawPage(i + 20, j + 15, currentPage.page1, mouseX, mouseY);
+        drawPage(i + bookFullWidth / 2 + 4, j + 15, currentPage.page2, mouseX, mouseY);
 
 
         GlStateManager.disableRescaleNormal();
