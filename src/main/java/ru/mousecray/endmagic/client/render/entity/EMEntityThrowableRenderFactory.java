@@ -9,15 +9,15 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 public class EMEntityThrowableRenderFactory implements IRenderFactory {
 
-	Item item;
-	
-	public EMEntityThrowableRenderFactory(Item item) {
-		this.item = item;
-	}
-	
-	@Override
-	public Render createRenderFor(RenderManager manager) {
-		return new RenderSnowball(manager, item, Minecraft.getMinecraft().getRenderItem());
-	}
+    Item item;
+
+    public EMEntityThrowableRenderFactory(Item item) {
+        this.item = item;
+    }
+
+    @Override
+    public Render createRenderFor(RenderManager manager) {
+        return new RenderSnowball(manager, item, Minecraft.getMinecraft().getRenderItem());
+    }
 
 }

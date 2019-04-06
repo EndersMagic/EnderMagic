@@ -13,6 +13,7 @@ public class TextLine implements IStructuralGuiElement {
         this.x = x;
         this.y = y;
     }
+
     @Override
     public void render(int mouseX, int mouseY) {
         Minecraft.getMinecraft().fontRenderer.drawString(line, x, y, 0xaa00ff);
