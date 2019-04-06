@@ -1,29 +1,17 @@
 package ru.mousecray.endmagic.api.embook.alignment;
 
-public interface Alignment {
-    default int resolve(int dimension) {
-        return (int) resolve1(dimension);
-    }
+import ru.mousecray.endmagic.api.embook.BookApi;
 
-    float resolve1(int dimension);
+public class Alignment {
+    public static int min(double v,int dimension){return (int) (dimension*v);}
+    public static int max(double v,int dimension){return (int) (dimension*(1-v));}
+    public static int center(double v,int dimension){return (int) (dimension*(0.5+v));}
 
-    default Alignment add(float v) {
-        return new AdditionAlignment(this, v);
-    }
+    public static int left(double v){return min(v,BookApi.pageWidth);}
+    public static int right(double v){return max(v,BookApi.pageWidth);}
+    public static int centerX(double v){return center(v,BookApi.pageWidth);}
 
-    class AdditionAlignment implements Alignment {
-        private Alignment base;
-        private float addition;
-
-        public AdditionAlignment(Alignment base, float addition) {
-
-            this.base = base;
-            this.addition = addition;
-        }
-
-        @Override
-        public float resolve1(int dimension) {
-            return (int) (base.resolve(dimension) + dimension * addition);
-        }
-    }
+    public static int top(double v){return min(v,BookApi.pageHeight);}
+    public static int bottom(double v){return max(v,BookApi.pageHeight);}
+    public static int centerY(double v){return center(v,BookApi.pageHeight);}
 }
