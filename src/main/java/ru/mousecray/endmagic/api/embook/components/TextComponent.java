@@ -24,7 +24,6 @@ public class TextComponent implements IChapterComponent {
     public TextComponent(String unlocalizedText) {
         //todo: make rebuild pages on resource reloading
         text = I18n.format(unlocalizedText);
-        pages();
         pages = buildPagesForFont(Minecraft.getMinecraft().fontRenderer);
     }
 
