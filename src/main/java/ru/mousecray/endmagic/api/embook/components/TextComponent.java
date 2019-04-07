@@ -37,9 +37,8 @@ public class TextComponent implements IChapterComponent {
         GroupIterator<String> lines = new GroupIterator<>(Arrays.asList(words).listIterator(), lineSize, w -> font.getStringWidth(w) + spaceWidth);
 
         GroupIterator<List<String>> pages = new GroupIterator<>(lines, pageSize, __ -> 1);
-        Iterator<List<List<String>>> pages1 = pages;
 
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(pages1, Spliterator.ORDERED), false)
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(pages, Spliterator.ORDERED), false)
                 .map(page ->
                         new TextPage(page
                                 .stream()

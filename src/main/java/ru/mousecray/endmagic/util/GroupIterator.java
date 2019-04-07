@@ -11,7 +11,6 @@ public class GroupIterator<A> implements ListIterator<List<A>> {
     private final Function<A, Integer> size;
 
     public GroupIterator(ListIterator<A> list, Integer max, Function<A, Integer> size) {
-
         this.list = list;
         this.max = max;
         this.size = size;
