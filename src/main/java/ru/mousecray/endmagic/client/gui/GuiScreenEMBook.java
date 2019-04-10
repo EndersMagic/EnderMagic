@@ -25,8 +25,8 @@ public class GuiScreenEMBook extends GuiScreen {
 
     private GuiButton buttonBack;
     private NextPageButton buttonNextPage, buttonPreviousPage;
-    private int bookFullWidth = 256;
-    private int bookFullHeight = 192;
+    private static int bookFullWidth = 256;
+    private static int bookFullHeight = 192;
 
     public void setCurrentPage(Optional<PageContainer> currentPage) {
         this.currentPage = currentPage.orElse(BookApi.mainPage());
@@ -47,8 +47,8 @@ public class GuiScreenEMBook extends GuiScreen {
     @Override
     public void initGui() {
         buttonList.clear();
-        int i = (width - 256) / 2;
-        int j = (height - 192) / 2;
+        int i = (width - bookFullWidth) / 2;
+        int j = (height - bookFullHeight) / 2;
 
         buttonBack = addButton(new BackButton(0, width / 2 - 11, j + 160));
 
@@ -112,8 +112,8 @@ public class GuiScreenEMBook extends GuiScreen {
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(BOOK_TEXTURES);
-        int i = (width - 256) / 2;
-        int j = (height - 192) / 2;
+        int i = (width - bookFullWidth) / 2;
+        int j = (height - bookFullHeight) / 2;
         drawTexturedModalRect(i, j, 0, 0, bookFullWidth, bookFullHeight);
 
         drawPage(i + 20, j + 15, currentPage.page1, mouseX, mouseY);
@@ -166,7 +166,7 @@ public class GuiScreenEMBook extends GuiScreen {
         private final boolean isForward;
 
         public NextPageButton(int button, int x, int y, boolean isForward) {
-            super(button, x, y, 0, isForward ? 192 : 192 + 13);
+            super(button, x, y, 0, isForward ? bookFullHeight : bookFullHeight + 13);
             this.isForward = isForward;
         }
     }
