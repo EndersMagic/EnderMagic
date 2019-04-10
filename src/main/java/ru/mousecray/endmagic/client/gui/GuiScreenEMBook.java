@@ -17,6 +17,8 @@ import ru.mousecray.endmagic.api.embook.PageContainer;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 @SideOnly(Side.CLIENT)
 public class GuiScreenEMBook extends GuiScreen {
@@ -88,12 +90,8 @@ public class GuiScreenEMBook extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        if (button == buttonNextPage)
-            setCurrentPage(currentPage.right);
-        else if (button == buttonPreviousPage)
-            setCurrentPage(currentPage.left);
-        else if (button == buttonBack)
-            setCurrentPage(BookApi.mainPage());
+        if(button instanceof PageButton)
+            setCurrentPage(((PageButton) button).goToPage.get());
     }
 
     @Override
@@ -143,11 +141,13 @@ public class GuiScreenEMBook extends GuiScreen {
 
         private final int u;
         private final int v;
+        public final Supplier<Optional<PageContainer>> goToPage;
 
-        public PageButton(int buttonId, int x, int y, int u, int v) {
+        public PageButton(int buttonId, int x, int y, int u, int v, Supplier<Optional<PageContainer>> goToPage) {
             super(buttonId, x, y, 23, 13, "");
             this.u = u;
             this.v = v;
+            this.goToPage = goToPage;
         }
 
         @Override
@@ -163,18 +163,17 @@ public class GuiScreenEMBook extends GuiScreen {
 
     @SideOnly(Side.CLIENT)
     static class NextPageButton extends PageButton {
-        private final boolean isForward;
 
         public NextPageButton(int button, int x, int y, boolean isForward) {
-            super(button, x, y, 0, isForward ? bookFullHeight : bookFullHeight + 13);
-            this.isForward = isForward;
+            super(button, x, y, 0, isForward ? bookFullHeight : bookFullHeight + 13,
+                    isForward ? () -> GuiScreenEMBook.instance.currentPage.right : () -> GuiScreenEMBook.instance.currentPage.left);
         }
     }
 
     @SideOnly(Side.CLIENT)
     static class BackButton extends PageButton {
         public BackButton(int button, int x, int y) {
-            super(button, x, y, 0, 218);
+            super(button, x, y, 0, 218, () -> Optional.ofNullable(BookApi.mainPage()));
         }
     }
 }
