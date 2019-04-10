@@ -5,6 +5,7 @@ import ru.mousecray.endmagic.api.embook.pages.EmptyPage;
 import ru.mousecray.endmagic.api.embook.pages.MainPage;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,8 +46,7 @@ public class BookApi {
     }
 
     public static void addChapter(String name, List<IChapterComponent> content) {
-        Stream<IChapterComponent> stream = content.stream();
-        book.put(name, flatMapToPages(stream));
+        book.put(name, flatMapToPages(content.stream()));
     }
 
     public static void addChapter(String name, IChapterComponent... content) {
@@ -65,17 +65,24 @@ public class BookApi {
             for (int i = 0; i < pages.size(); i += 2)
                 groupedPairs.add(new PageContainer(pages.get(i), pages.get(i + 1)));
 
-            for (int i = 1; i < groupedPairs.size() - 1; i++) {
-                groupedPairs.get(i).left = Optional.ofNullable(groupedPairs.get(i - 1));
-                groupedPairs.get(i).right = Optional.ofNullable(groupedPairs.get(i + 1));
-            }
+            Function<Integer, Optional<PageContainer>> getMaybePage = lift(groupedPairs::get);
 
-            if (groupedPairs.size() > 1) {
-                groupedPairs.get(0).right = Optional.ofNullable(groupedPairs.get(1));
-                groupedPairs.get(groupedPairs.size() - 1).left = Optional.ofNullable(groupedPairs.get(groupedPairs.size() - 2));
+            for (int i = 0; i < groupedPairs.size(); i++) {
+                groupedPairs.get(i).left = getMaybePage.apply(i - 1);
+                groupedPairs.get(i).right = getMaybePage.apply(i + 1);
             }
             return groupedPairs.get(0);
         } else
             return null;
+    }
+
+    private static <A, B> Function<A, Optional<B>> lift(Function<A, B> partialFunction) {
+        return x -> {
+            try {
+                return Optional.ofNullable(partialFunction.apply(x));
+            } catch (Exception e) {
+                return Optional.empty();
+            }
+        };
     }
 }
