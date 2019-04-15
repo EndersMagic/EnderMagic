@@ -8,6 +8,7 @@ import ru.mousecray.endmagic.api.embook.IPage;
 import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 import ru.mousecray.endmagic.client.gui.elements.ImageView;
 import ru.mousecray.endmagic.client.gui.elements.TextLine;
+import ru.mousecray.endmagic.util.Vec2i;
 
 import java.util.List;
 
@@ -26,8 +27,13 @@ public class ImagePage implements IPage {
     @Override
     public List<IStructuralGuiElement> elements() {
         return ImmutableList.of(
-                new ImageView(texture, new Rectangle(20, 20, BookApi.pageWidth - 20, BookApi.pageHeight - 20)),
-                new TextLine(label, centerX(0), bottom(-0.1f))
+                new ImageView(texture, new Rectangle(5, 5, BookApi.pageWidth - 10, BookApi.pageHeight - 20)),
+                new TextLine(label, centerX(0), bottom(0)) {
+                    @Override
+                    public Vec2i fixPoint() {
+                        return new Vec2i(width() / 2, height());
+                    }
+                }
         );
     }
 }
