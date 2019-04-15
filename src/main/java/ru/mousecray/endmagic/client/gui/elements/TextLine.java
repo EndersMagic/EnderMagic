@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic.client.gui.elements;
 
-import net.minecraft.client.Minecraft;
 import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 
 public class TextLine implements IStructuralGuiElement {
@@ -15,7 +14,17 @@ public class TextLine implements IStructuralGuiElement {
     }
 
     @Override
+    public int width() {
+        return mc().fontRenderer.getStringWidth(line);
+    }
+
+    @Override
+    public int height() {
+        return mc().fontRenderer.FONT_HEIGHT;
+    }
+
+    @Override
     public void render(int mouseX, int mouseY) {
-        Minecraft.getMinecraft().fontRenderer.drawString(line, x, y, 0xaa00ff);
+        mc().fontRenderer.drawString(line, x, y, 0xaa00ff);
     }
 }
