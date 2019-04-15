@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.api.embook.alignment;
+package ru.mousecray.endmagic.api.embook;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
