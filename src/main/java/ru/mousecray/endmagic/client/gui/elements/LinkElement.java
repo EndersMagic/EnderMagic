@@ -1,7 +1,7 @@
 package ru.mousecray.endmagic.client.gui.elements;
 
 import ru.mousecray.endmagic.api.embook.PageContainer;
-import ru.mousecray.endmagic.api.embook.alignment.Rectangle;
+import ru.mousecray.endmagic.api.embook.Rectangle;
 import ru.mousecray.endmagic.client.gui.GuiScreenEMBook;
 import ru.mousecray.endmagic.client.gui.IClickable;
 

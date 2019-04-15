@@ -3,7 +3,7 @@ package ru.mousecray.endmagic.client.gui.elements;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.gui.GuiScreen;
 import ru.mousecray.endmagic.api.embook.BookApi;
-import ru.mousecray.endmagic.api.embook.alignment.Rectangle;
+import ru.mousecray.endmagic.api.embook.Rectangle;
 import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 
 public class Tooltip extends GuiScreen implements IStructuralGuiElement {

@@ -1,6 +1,6 @@
 package ru.mousecray.endmagic.client.gui;
 
-import ru.mousecray.endmagic.api.embook.alignment.Rectangle;
+import ru.mousecray.endmagic.api.embook.Rectangle;
 
 public interface IClickable {
     default Rectangle area() {
