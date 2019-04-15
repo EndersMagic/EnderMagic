@@ -17,7 +17,9 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
+import ru.mousecray.endmagic.api.embook.components.ImageComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
 import ru.mousecray.endmagic.client.render.entity.EMEntityThrowableRenderFactory;
 import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
@@ -61,7 +63,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         super.postInit(event);
 
         //Add default book chapters
-        BookApi.addChapter("Test", new TextComponent("book.test"));
+        BookApi.addChapter("Test", new TextComponent("book.test"), new ImageComponent(new ResourceLocation(EM.ID, "textures/blocks/ender_grass.png"),"Grass"));
     }
 
     @SubscribeEvent
