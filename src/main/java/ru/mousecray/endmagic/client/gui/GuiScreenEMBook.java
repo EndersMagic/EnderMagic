@@ -17,7 +17,6 @@ import ru.mousecray.endmagic.api.embook.PageContainer;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 @SideOnly(Side.CLIENT)
@@ -90,7 +89,7 @@ public class GuiScreenEMBook extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        if(button instanceof PageButton)
+        if (button instanceof PageButton)
             setCurrentPage(((PageButton) button).goToPage.get());
     }
 
@@ -131,7 +130,11 @@ public class GuiScreenEMBook extends GuiScreen {
         GlStateManager.pushMatrix();
 
         GlStateManager.translate(i, j, 0);
-        page.elements().forEach(e -> e.render(mouseX - i, mouseY - j));
+        page.elements().forEach(e -> {
+            GlStateManager.translate(-e.fixPoint().x, -e.fixPoint().y, 0);
+            e.render(mouseX - i, mouseY - j);
+            GlStateManager.translate(e.fixPoint().x, e.fixPoint().y, 0);
+        });
 
         GlStateManager.popMatrix();
     }
