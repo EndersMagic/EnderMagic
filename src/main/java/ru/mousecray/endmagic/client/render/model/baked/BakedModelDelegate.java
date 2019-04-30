@@ -65,6 +65,7 @@ public class BakedModelDelegate implements IBakedModel {
 
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-        return base.handlePerspective(cameraTransformType);
+        Matrix4f matrix4f = base.handlePerspective(cameraTransformType).getRight();
+        return Pair.of(this, matrix4f);
     }
 }
