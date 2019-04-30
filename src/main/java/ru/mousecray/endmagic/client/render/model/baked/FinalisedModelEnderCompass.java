@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FinalisedModelEnderCompass extends BakedModelDelegate {
+    private Vec3d current = new Vec3d(2, 0, 3);
     private final IBakedModel originalModel;
     private final ItemStack stack;
     private final World world;
@@ -69,7 +70,8 @@ public class FinalisedModelEnderCompass extends BakedModelDelegate {
 
     private Vec3d getEyePos() {
         double angle = calcAngle(entity.getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks()), new BlockPos(0, 0, 0)) + Math.toRadians(entity.rotationYaw + 90);
-        return new Vec3d(2 - Math.cos(angle), 0, 3 + Math.sin(angle));
+        current = current.add(new Vec3d(2 - Math.cos(angle), 0, 3 + Math.sin(angle)).subtract(current).scale(0.001));
+        return current;
     }
 
     private List<BakedQuad> generateEye(Vec3d eyePos) {
