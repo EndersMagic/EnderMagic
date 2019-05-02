@@ -25,7 +25,7 @@ public class ModelEnderCompass extends BakedModelDelegate {
     }
 
     private static class ItemOverrideListEnderCompass extends ItemOverrideList {
-        private Map<String, FinalisedModelEnderCompass> modelCache = new HashMap<>();
+        private Map<Integer, FinalisedModelEnderCompass> modelCache = new HashMap<>();
 
         public static ItemOverrideListEnderCompass instance = new ItemOverrideListEnderCompass();
 
