@@ -25,7 +25,6 @@ public class FinalisedModelEnderCompass extends BakedModelDelegate {
     private Vec3d current = new Vec3d(2, 0, 3);
     private final IBakedModel originalModel;
     private final ItemStack stack;
-    private final World world;
     private final EntityLivingBase entity;
     private final float nineteenDegs = (float) (Math.PI / 2);
 
@@ -35,11 +34,10 @@ public class FinalisedModelEnderCompass extends BakedModelDelegate {
 
     public static BlockPos target = new BlockPos(0, 0, 0);
 
-    public FinalisedModelEnderCompass(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
+    public FinalisedModelEnderCompass(IBakedModel originalModel, ItemStack stack, EntityLivingBase entity) {
         super(originalModel);
         this.originalModel = originalModel;
         this.stack = stack;
-        this.world = world;
         this.entity = entity;
     }
 

@@ -36,7 +36,7 @@ public class ModelEnderCompass extends BakedModelDelegate {
         @Override
         public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
             return modelCache.computeIfAbsent(EnderCompass.getCompassKey(stack), key ->
-                    new FinalisedModelEnderCompass(originalModel, stack, world, entity == null ? Minecraft.getMinecraft().player : entity));
+                    new FinalisedModelEnderCompass(originalModel, stack, entity == null ? Minecraft.getMinecraft().player : entity));
         }
     }
 }
