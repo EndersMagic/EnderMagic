@@ -48,10 +48,6 @@ public class FinalisedModelEnderCompass extends BakedModelDelegate {
                 eye.addAll(model.getQuads(null, side1, 0));
             }
             eye.addAll(model.getQuads(null, null, 0));
-            eye = eye
-                    .stream()
-                    .map(i -> BakedModelFullbright.transformQuad(i, 0.007f))
-                    .collect(Collectors.toList());
         }
         return eye;
     }
