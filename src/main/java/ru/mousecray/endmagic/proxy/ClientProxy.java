@@ -1,10 +1,6 @@
 package ru.mousecray.endmagic.proxy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
+import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -24,6 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.DefaultBookChapter;
 import ru.mousecray.endmagic.api.embook.components.ItemStackComponent;
@@ -37,8 +34,14 @@ import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.EntityPurplePearl;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.items.ItemTextured;
+import ru.mousecray.endmagic.network.ClientPacketHandler;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.IEMModel;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
     public ClientProxy() {
@@ -48,6 +51,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
+        PacketCustom.assignHandler(EM.ID, new ClientPacketHandler());
         RenderingRegistry.registerEntityRenderingHandler(EntityPurplePearl.class, new EMEntityThrowableRenderFactory(EMItems.purpleEnderPearl));
         RenderingRegistry.registerEntityRenderingHandler(EntityBluePearl.class, new EMEntityThrowableRenderFactory(EMItems.blueEnderPearl));
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderArrow.class, manager -> new RenderEnderArrow(manager));
@@ -62,7 +66,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
-        
+
         //Add default book chapters
         BookApi.addBookChapter(new DefaultBookChapter(0).build(new ItemStackComponent(new ItemStack(Items.APPLE), 0, 0)));
     }
@@ -110,24 +114,24 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
             IBakedModel existingModel = e.getModelRegistry().getObject(resource);
             e.getModelRegistry().putObject(resource, override.getValue().apply(existingModel));
         }
-		for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
-			ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
+        for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
+            ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
 
-			if (bakedModelOverridesR.containsKey(key)) {
+            if (bakedModelOverridesR.containsKey(key)) {
                 System.out.println(resource);
-				e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
-			}
-		}
+                e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
+            }
+        }
     }
 
     @Override
     public void addBakedModelOverride(ModelResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
         bakedModelOverrides.put(resource, override);
     }
-    
+
     @Override
     public void addBakedModelOverride(ResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
-    	bakedModelOverridesR.put(resource, override);
+        bakedModelOverridesR.put(resource, override);
     }
 
     @Override
