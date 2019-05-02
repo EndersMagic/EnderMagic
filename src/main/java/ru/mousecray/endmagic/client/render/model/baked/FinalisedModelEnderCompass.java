@@ -14,11 +14,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import ru.mousecray.endmagic.util.RandomBlockPos;
 import ru.mousecray.endmagic.util.elix_x.baked.UnpackedBakedQuad;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class FinalisedModelEnderCompass extends BakedModelDelegate {
@@ -28,11 +31,18 @@ public class FinalisedModelEnderCompass extends BakedModelDelegate {
     private final EntityLivingBase entity;
     private final float nineteenDegs = (float) (Math.PI / 2);
 
-    public static BlockPos getTarget() {
-        return target;
+    private static BlockPos getTarget() {
+        return target.get(mc().world.provider.getDimension());
     }
 
-    public static BlockPos target = new BlockPos(0, 0, 0);
+    public static Map<Integer, BlockPos> target = new HashMap<Integer, BlockPos>() {
+        private BlockPos randomPos = new RandomBlockPos();
+
+        @Override
+        public BlockPos get(Object key) {
+            return super.getOrDefault(key, randomPos);
+        }
+    };
 
     public FinalisedModelEnderCompass(IBakedModel originalModel, ItemStack stack, EntityLivingBase entity) {
         super(originalModel);
@@ -43,8 +53,8 @@ public class FinalisedModelEnderCompass extends BakedModelDelegate {
 
     private static List<BakedQuad> eye = new ArrayList<>();
 
-    private static IBakedModel model = Minecraft.getMinecraft().getRenderItem()
-            .getItemModelWithOverrides(new ItemStack(Items.ENDER_EYE), Minecraft.getMinecraft().world, null);
+    private static IBakedModel model = mc().getRenderItem()
+            .getItemModelWithOverrides(new ItemStack(Items.ENDER_EYE), mc().world, null);
 
     private static List<BakedQuad> getEyeQuads() {
         if (eye.isEmpty()) {
@@ -69,9 +79,13 @@ public class FinalisedModelEnderCompass extends BakedModelDelegate {
     }
 
     private Vec3d getEyePos() {
-        double angle = calcAngle(entity.getPositionEyes(Minecraft.getMinecraft().getRenderPartialTicks()), getTarget()) + Math.toRadians(entity.rotationYaw + 90);
+        double angle = calcAngle(entity.getPositionEyes(mc().getRenderPartialTicks()), getTarget()) + Math.toRadians(entity.rotationYaw + 90);
         current = current.add(new Vec3d(2 - Math.cos(angle), 0, 3 + Math.sin(angle)).subtract(current).scale(0.001));
         return current;
+    }
+
+    private static Minecraft mc() {
+        return Minecraft.getMinecraft();
     }
 
     private List<BakedQuad> generateEye(Vec3d eyePos) {
