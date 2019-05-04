@@ -24,6 +24,10 @@ import java.util.stream.Collectors;
 
 public class FinalisedModelEnderCompass extends BakedModelDelegate {
     private Vec3d current = new Vec3d(2, 0, 3);
+    private float roll = 0;
+    private int rollDirect = 1;
+    private final float rollMin = (float) (-Math.PI / 16);
+    private final float rollMax = (float) (Math.PI / 16);
     private final IBakedModel originalModel;
     private final ItemStack stack;
     private final EntityLivingBase entity;
@@ -68,8 +72,23 @@ public class FinalisedModelEnderCompass extends BakedModelDelegate {
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
         return Lists.newArrayList(Iterables.concat(
                 originalModel.getQuads(state, side, rand),
-                generateEye(getEyePos())
+                generateEye(getEyePos(), getEyeRoll())
         ));
+    }
+
+    private float getEyeRoll() {
+        if (roll < rollMin)
+            rollDirect = 1;
+        else if (roll > rollMax)
+            rollDirect = -1;
+
+        double distance = current.squareDistanceTo(getLocalTarget());
+        roll += (Math.PI / 3000) * fluctuations(distance) * rollDirect;
+        return roll;
+    }
+
+    private float fluctuations(double x) {
+        return (float) (x < 0.5f ? Math.sqrt(x) : Math.sqrt(0.5));
     }
 
     private double calcAngle(Vec3d pos1, BlockPos pos) {
@@ -77,22 +96,27 @@ public class FinalisedModelEnderCompass extends BakedModelDelegate {
     }
 
     private Vec3d getEyePos() {
-        double angle = calcAngle(entity.getPositionEyes(mc().getRenderPartialTicks()), getTarget()) + Math.toRadians(entity.rotationYaw + 90);
-        current = current.add(new Vec3d(2 - Math.cos(angle), 0, 3 + Math.sin(angle)).subtract(current).scale(0.001));
+        Vec3d localTarget = getLocalTarget();
+        current = current.add(localTarget.subtract(current).scale(0.001));
         return current;
+    }
+
+    private Vec3d getLocalTarget() {
+        double angle = calcAngle(entity.getPositionEyes(mc().getRenderPartialTicks()), getTarget()) + Math.toRadians(entity.rotationYaw + 90);
+        return new Vec3d(2 - Math.cos(angle), 0, 3 + Math.sin(angle));
     }
 
     private static Minecraft mc() {
         return Minecraft.getMinecraft();
     }
 
-    private List<BakedQuad> generateEye(Vec3d eyePos) {
+    private List<BakedQuad> generateEye(Vec3d eyePos, float roll) {
         return getEyeQuads()
                 .stream()
                 .map(UnpackedBakedQuad::unpack)
                 .peek(i -> i.getVertices().getVertices()
                         .forEach(v ->
-                                v.setPos(v.getPos().rotatePitch(nineteenDegs).add(eyePos).scale(0.2))
+                                v.setPos(v.getPos().rotatePitch(nineteenDegs + roll).add(eyePos).scale(0.2))
                         ))
                 .map(UnpackedBakedQuad::pack)
                 .collect(Collectors.toList());
