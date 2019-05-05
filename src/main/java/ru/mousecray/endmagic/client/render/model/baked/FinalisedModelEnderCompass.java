@@ -12,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.World;
 import ru.mousecray.endmagic.util.RandomBlockPos;
 import ru.mousecray.endmagic.util.elix_x.baked.UnpackedBakedQuad;
 
@@ -93,10 +91,9 @@ public class FinalisedModelEnderCompass extends BakedModelDelegate {
                 .stream()
                 .map(UnpackedBakedQuad::unpack)
                 .peek(i -> i.getVertices().getVertices()
-                        .forEach(v -> {
-                            v.setPos(v.getPos().rotatePitch(nineteenDegs).add(eyePos).scale(0.2));
-                            v.setLightmap(new Vec3i(Short.MAX_VALUE, Short.MAX_VALUE, 0));
-                        }))
+                        .forEach(v ->
+                                v.setPos(v.getPos().rotatePitch(nineteenDegs).add(eyePos).scale(0.2))
+                        ))
                 .map(UnpackedBakedQuad::pack)
                 .collect(Collectors.toList());
     }
