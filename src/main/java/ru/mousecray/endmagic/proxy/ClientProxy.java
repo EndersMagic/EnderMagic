@@ -63,7 +63,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
-        
+
         //Add default book chapters
         BookApi.addBookChapter(new DefaultBookChapter(0).build(new ItemStackComponent(new ItemStack(Items.APPLE), 0, 0)));
     }
@@ -111,24 +111,24 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
             IBakedModel existingModel = e.getModelRegistry().getObject(resource);
             e.getModelRegistry().putObject(resource, override.getValue().apply(existingModel));
         }
-		for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
-			ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
+        for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
+            ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
 
-			if (bakedModelOverridesR.containsKey(key)) {
+            if (bakedModelOverridesR.containsKey(key)) {
                 System.out.println(resource);
-				e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
-			}
-		}
+                e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
+            }
+        }
     }
 
     @Override
     public void addBakedModelOverride(ModelResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
         bakedModelOverrides.put(resource, override);
     }
-    
+
     @Override
     public void addBakedModelOverride(ResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
-    	bakedModelOverridesR.put(resource, override);
+        bakedModelOverridesR.put(resource, override);
     }
 
     @Override
