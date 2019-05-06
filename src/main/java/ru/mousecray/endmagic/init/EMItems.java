@@ -4,12 +4,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import ru.mousecray.endmagic.items.*;
-import ru.mousecray.endmagic.items.tools.EMArmor;
-import ru.mousecray.endmagic.items.tools.EMAxe;
-import ru.mousecray.endmagic.items.tools.EMHoe;
-import ru.mousecray.endmagic.items.tools.EMPickaxe;
-import ru.mousecray.endmagic.items.tools.EMShovel;
-import ru.mousecray.endmagic.items.tools.EMSword;
+import ru.mousecray.endmagic.items.materials.EnderCoal;
+import ru.mousecray.endmagic.items.materials.EnderDiamond;
+import ru.mousecray.endmagic.items.materials.EnderSteel;
+import ru.mousecray.endmagic.items.tools.*;
 
 public class EMItems {
     public static final Item enderSeeds = new EMSeeds(EMBlocks.enderCrops, Blocks.END_STONE, "ender_seeds", "tooltip.ender_seeds");
@@ -17,20 +15,20 @@ public class EMItems {
 
     //public static final ItemTextured simpletexturemodel = ItemTextured.companion.simpletexturemodelItem; //may be unused
 
-    public static final ItemNamed naturalCoal = new ItemNamed("natural_coal");
-    public static final ItemNamed phantomCoal = new ItemNamed("phantom_coal");
-    public static final ItemNamed dragonCoal = new ItemNamed("dragon_coal");
-    public static final ItemNamed immortalCoal = new ItemNamed("immortal_coal");
+    public static final ItemNamed naturalCoal = new EnderCoal("natural_coal", 0x00ffaa);
+    public static final ItemNamed phantomCoal = new EnderCoal("phantom_coal", 0x0011ff);
+    public static final ItemNamed dragonCoal = new EnderCoal("dragon_coal", 0xff00ff);
+    public static final ItemNamed immortalCoal = new EnderCoal("immortal_coal", 0xaaaa00);
 
-    public static final ItemNamed naturalSteel = new ItemNamed("natural_steel");
-    public static final ItemNamed phantomSteel = new ItemNamed("phantom_steel");
-    public static final ItemNamed dragonSteel = new ItemNamed("dragon_steel");
-    public static final ItemNamed immortalSteel = new ItemNamed("immortal_steel");
+    public static final ItemNamed naturalSteel = new EnderSteel("natural_steel", 0x00ffaa);
+    public static final ItemNamed phantomSteel = new EnderSteel("phantom_steel", 0x0011ff);
+    public static final ItemNamed dragonSteel = new EnderSteel("dragon_steel", 0xff00ff);
+    public static final ItemNamed immortalSteel = new EnderSteel("immortal_steel", 0xaaaa00);
 
-    public static final ItemNamed naturalDiamond = new ItemNamed("natural_diamond");
-    public static final ItemNamed phantomDiamond = new ItemNamed("phantom_diamond");
-    public static final ItemNamed dragonDiamond = new ItemNamed("dragon_diamond");
-    public static final ItemNamed immortalDiamond = new ItemNamed("immortal_diamond");
+    public static final ItemNamed naturalDiamond = new EnderDiamond("natural_diamond", 0x00ffaa);
+    public static final ItemNamed phantomDiamond = new EnderDiamond("phantom_diamond", 0x0011ff);
+    public static final ItemNamed dragonDiamond = new EnderDiamond("dragon_diamond", 0xff00ff);
+    public static final ItemNamed immortalDiamond = new EnderDiamond("immortal_diamond", 0xaaaa00);
 
     public static final EMShovel naturalSteelShovel = new EMShovel(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_shovel");
     public static final EMPickaxe naturalSteelPickaxe = new EMPickaxe(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_pickaxe");
