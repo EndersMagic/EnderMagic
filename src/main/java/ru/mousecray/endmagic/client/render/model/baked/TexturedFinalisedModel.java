@@ -15,6 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -43,14 +44,12 @@ public class TexturedFinalisedModel implements IBakedModel {
             quads = getTextureAtlasSprite()
                     .stream()
                     .flatMap(p ->
-                            net.minecraftforge.client.model.ItemTextureQuadConverter.convertTexture(
-                                    DefaultVertexFormats.ITEM,
-                                    TRSRTransformation.identity(),
-                                    p.getKey(), p.getKey(),
-                                    0, null,
-                                    p.getValue(),
-                                    -1)
-                                    .stream())
+                            Arrays.stream(EnumFacing.values()).flatMap(side ->
+                                    net.minecraftforge.client.model.ItemTextureQuadConverter.convertTexture(
+                                            DefaultVertexFormats.ITEM,
+                                            TRSRTransformation.identity(),
+                                            p.getKey(), p.getKey(),
+                                            0, side, 0xFFFFFFFF, 1).stream()))
                     .collect(ImmutableList.toImmutableList());
         }
         return quads;
