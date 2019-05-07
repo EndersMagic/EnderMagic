@@ -17,10 +17,10 @@ public class EMItems {
 
     //public static final ItemTextured simpletexturemodel = ItemTextured.companion.simpletexturemodelItem; //may be unused
 
-    private static final int naturalColor = new Color(0xD29B77).getRGB();
-    private static final int phantomColor = new Color(0x86ACC5).getRGB();
+    private static final int naturalColor = new Color(0xEAB277).getRGB();
+    private static final int phantomColor = new Color(0xA9D7F2).getRGB();
     private static final int dragonColor = new Color(0xA87DD2).getRGB();
-    private static final int immortalColor = new Color(0xDCBE20).getRGB();
+    private static final int immortalColor = new Color(0xE5D67E).getRGB();
 
     public static final ItemNamed naturalCoal = new EnderCoal("natural_coal", naturalColor);
     public static final ItemNamed phantomCoal = new EnderCoal("phantom_coal", phantomColor);
