@@ -1,12 +1,13 @@
 package ru.mousecray.endmagic.items;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.item.Item;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.util.NameProvider;
 
 import java.util.Map;
 
-public class ItemNamed extends ItemTextured implements NameProvider {
+public class ItemNamed extends Item implements ItemTextured, NameProvider {
 
     public ItemNamed(String name) {
         this.name = name;

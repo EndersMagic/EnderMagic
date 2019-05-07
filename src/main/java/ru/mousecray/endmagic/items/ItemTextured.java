@@ -11,29 +11,20 @@ import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.util.CreativeTabProvider;
 import ru.mousecray.endmagic.util.IEMModel;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 
-public abstract class ItemTextured extends Item implements IEMModel, CreativeTabProvider {
-    public ItemTextured() {
-    }
+public interface ItemTextured extends IEMModel {
 
-    public abstract Map<String, Integer> textures();
+    Map<String, Integer> textures();
 
     @Override
-    public void registerModels(IModelRegistration modelRegistration) {
+    default void registerModels(IModelRegistration modelRegistration) {
         textures().keySet().forEach(t -> modelRegistration.registerTexture(new ResourceLocation(t)));
         //Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(this, 0, companion.simpletexturemodel);
-        ModelLoader.setCustomModelResourceLocation(this, 0, companion.simpletexturemodel);
+        ModelLoader.setCustomModelResourceLocation((Item) this, 0, companion.simpletexturemodel);
     }
 
-    @Nullable
-    @Override
-    public CreativeTabs creativeTab() {
-        return EM.EM_CREATIVE;
-    }
-
-    public static class companion {
+    class companion {
         //may be unused
         public static ItemTextured simpletexturemodelItem = new ItemTextured() {
             public Map<String, Integer> textures() {

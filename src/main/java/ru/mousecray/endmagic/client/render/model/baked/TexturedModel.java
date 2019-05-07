@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
-import ru.mousecray.endmagic.items.ItemNamed;
+import ru.mousecray.endmagic.items.ItemTextured;
 
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
@@ -75,8 +75,8 @@ public class TexturedModel implements IBakedModel {
 
         private IBakedModel model(IBakedModel originalModel, ItemStack stack) {
             Item item = stack.getItem();
-            if (item instanceof ItemNamed) {
-                Map<String, Integer> key = ((ItemNamed) item).textures();
+            if (item instanceof ItemTextured) {
+                Map<String, Integer> key = ((ItemTextured) item).textures();
                 return memoization.computeIfAbsent(key, (__) -> new TexturedFinalisedModel(originalModel, key));
             } else return originalModel;
         }
