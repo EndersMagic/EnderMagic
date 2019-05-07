@@ -17,6 +17,7 @@ import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
 
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,8 @@ public class TexturedFinalisedModel implements IBakedModel {
                                 ItemLayerModel.getQuadsForSprite(1, p.getKey(), DefaultVertexFormats.ITEM, Optional.empty())
                                         .stream()
                                         .map(UnpackedBakedQuad::unpack)
-                                        .peek(quad -> quad.getVertices().forEach(v -> v.setColor(RGBA.fromARGB(p.getValue()))))
+                                        .peek(quad -> quad.getVertices()
+                                                .forEach(v -> v.setColor(RGBA.fromARGB(p.getValue()))))
                                         .map(quad -> quad.pack(DefaultVertexFormats.ITEM))
                         ))
                 .collect(ImmutableList.toImmutableList());
