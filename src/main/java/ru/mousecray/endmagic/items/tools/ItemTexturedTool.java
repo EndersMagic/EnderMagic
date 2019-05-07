@@ -9,8 +9,12 @@ import java.util.Map;
 public interface ItemTexturedTool extends ItemTextured {
     default Map<String, Integer> textures() {
         return ImmutableMap.of(
-                EM.ID + ":items/tools/colorless_" + toolType(), color(),
-                "minecraft:/items/stick", 0xffffffff);
+                stick(), 0xffffffff,
+                EM.ID + ":items/tools/colorless_" + toolType(), color());
+    }
+
+    default String stick() {
+        return "minecraft:items/stick";
     }
 
     String toolType();

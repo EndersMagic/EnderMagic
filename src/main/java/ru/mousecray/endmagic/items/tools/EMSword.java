@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.items.tools;
 
 import net.minecraft.item.ItemSword;
+import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.util.NameProvider;
 
 public class EMSword extends ItemSword implements NameProvider, ItemTexturedTool {
@@ -17,6 +18,11 @@ public class EMSword extends ItemSword implements NameProvider, ItemTexturedTool
     @Override
     public String name() {
         return name;
+    }
+
+    @Override
+    public String stick() {
+        return EM.ID + ":items/tools/sword_stick";
     }
 
     @Override

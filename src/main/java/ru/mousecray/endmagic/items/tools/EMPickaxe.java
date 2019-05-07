@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.items.tools;
 
 import net.minecraft.item.ItemPickaxe;
+import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.util.NameProvider;
 
 public class EMPickaxe extends ItemPickaxe implements NameProvider, ItemTexturedTool {
@@ -20,8 +21,13 @@ public class EMPickaxe extends ItemPickaxe implements NameProvider, ItemTextured
     }
 
     @Override
+    public String stick() {
+        return EM.ID + ":items/tools/pickaxe_stick";
+    }
+
+    @Override
     public String toolType() {
-        return "colorless_shovel";
+        return "pickaxe";
     }
 
     @Override
