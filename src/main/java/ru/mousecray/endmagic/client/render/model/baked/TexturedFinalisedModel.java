@@ -10,14 +10,17 @@ import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.client.model.ItemLayerModel;
 import org.apache.commons.lang3.tuple.Pair;
+import ru.mousecray.endmagic.util.elix_x.baked.UnpackedBakedQuad;
+import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
 
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class TexturedFinalisedModel implements IBakedModel {
     private IBakedModel baseModel;
@@ -41,16 +44,17 @@ public class TexturedFinalisedModel implements IBakedModel {
 
     private ImmutableList<BakedQuad> getQuads() {
         //if (quads == null) {
-            quads = getTextureAtlasSprite()
-                    .stream()
-                    .flatMap(p ->
-                            Arrays.stream(EnumFacing.values()).flatMap(side ->
-                                    net.minecraftforge.client.model.ItemTextureQuadConverter.convertTexture(
-                                            DefaultVertexFormats.ITEM,
-                                            TRSRTransformation.identity(),
-                                            p.getKey(), p.getKey(),
-                                            0, side, p.getValue(), 1).stream()))
-                    .collect(ImmutableList.toImmutableList());
+        quads = getTextureAtlasSprite()
+                .stream()
+                .flatMap(p ->
+                        Arrays.stream(EnumFacing.values()).flatMap(side ->
+                                ItemLayerModel.getQuadsForSprite(1, p.getKey(), DefaultVertexFormats.ITEM, Optional.empty())
+                                        .stream()
+                                        .map(UnpackedBakedQuad::unpack)
+                                        .peek(quad -> quad.getVertices().forEach(v -> v.setColor(RGBA.fromARGB(p.getValue()))))
+                                        .map(quad -> quad.pack(DefaultVertexFormats.ITEM))
+                        ))
+                .collect(ImmutableList.toImmutableList());
 
         return quads;
     }
