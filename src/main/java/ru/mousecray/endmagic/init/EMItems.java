@@ -9,26 +9,33 @@ import ru.mousecray.endmagic.items.materials.EnderDiamond;
 import ru.mousecray.endmagic.items.materials.EnderSteel;
 import ru.mousecray.endmagic.items.tools.*;
 
+import java.awt.*;
+
 public class EMItems {
     public static final Item enderSeeds = new EMSeeds(EMBlocks.enderCrops, Blocks.END_STONE, "ender_seeds", "tooltip.ender_seeds");
     public static final ItemPortalBinder itemPortalBinder = new ItemPortalBinder();
 
     //public static final ItemTextured simpletexturemodel = ItemTextured.companion.simpletexturemodelItem; //may be unused
 
-    public static final ItemNamed naturalCoal = new EnderCoal("natural_coal", 0x00ffaa);
-    public static final ItemNamed phantomCoal = new EnderCoal("phantom_coal", 0x0011ff);
-    public static final ItemNamed dragonCoal = new EnderCoal("dragon_coal", 0xff00ff);
-    public static final ItemNamed immortalCoal = new EnderCoal("immortal_coal", 0xaaaa00);
+    private static final int naturalColor = new Color(0xD29B77).getRGB();
+    private static final int phantomColor = new Color(0x86ACC5).getRGB();
+    private static final int dragonColor = new Color(0xA87DD2).getRGB();
+    private static final int immortalColor = new Color(0xDCBE20).getRGB();
 
-    public static final ItemNamed naturalSteel = new EnderSteel("natural_steel", 0x00ffaa);
-    public static final ItemNamed phantomSteel = new EnderSteel("phantom_steel", 0x0011ff);
-    public static final ItemNamed dragonSteel = new EnderSteel("dragon_steel", 0xff00ff);
-    public static final ItemNamed immortalSteel = new EnderSteel("immortal_steel", 0xaaaa00);
+    public static final ItemNamed naturalCoal = new EnderCoal("natural_coal", naturalColor);
+    public static final ItemNamed phantomCoal = new EnderCoal("phantom_coal", phantomColor);
+    public static final ItemNamed dragonCoal = new EnderCoal("dragon_coal", dragonColor);
+    public static final ItemNamed immortalCoal = new EnderCoal("immortal_coal", immortalColor);
 
-    public static final ItemNamed naturalDiamond = new EnderDiamond("natural_diamond", 0x00ffaa);
-    public static final ItemNamed phantomDiamond = new EnderDiamond("phantom_diamond", 0x0011ff);
-    public static final ItemNamed dragonDiamond = new EnderDiamond("dragon_diamond", 0xff00ff);
-    public static final ItemNamed immortalDiamond = new EnderDiamond("immortal_diamond", 0xaaaa00);
+    public static final ItemNamed naturalSteel = new EnderSteel("natural_steel", naturalColor);
+    public static final ItemNamed phantomSteel = new EnderSteel("phantom_steel", phantomColor);
+    public static final ItemNamed dragonSteel = new EnderSteel("dragon_steel", dragonColor);
+    public static final ItemNamed immortalSteel = new EnderSteel("immortal_steel", immortalColor);
+
+    public static final ItemNamed naturalDiamond = new EnderDiamond("natural_diamond", naturalColor);
+    public static final ItemNamed phantomDiamond = new EnderDiamond("phantom_diamond", phantomColor);
+    public static final ItemNamed dragonDiamond = new EnderDiamond("dragon_diamond", dragonColor);
+    public static final ItemNamed immortalDiamond = new EnderDiamond("immortal_diamond", immortalColor);
 
     public static final EMShovel naturalSteelShovel = new EMShovel(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_shovel");
     public static final EMPickaxe naturalSteelPickaxe = new EMPickaxe(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_pickaxe");
