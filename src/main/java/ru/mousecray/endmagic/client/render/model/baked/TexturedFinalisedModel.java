@@ -40,7 +40,7 @@ public class TexturedFinalisedModel implements IBakedModel {
     }
 
     private ImmutableList<BakedQuad> getQuads() {
-        if (quads == null) {
+        //if (quads == null) {
             quads = getTextureAtlasSprite()
                     .stream()
                     .flatMap(p ->
@@ -49,9 +49,9 @@ public class TexturedFinalisedModel implements IBakedModel {
                                             DefaultVertexFormats.ITEM,
                                             TRSRTransformation.identity(),
                                             p.getKey(), p.getKey(),
-                                            0, side, 0xFFFFFFFF, 1).stream()))
+                                            0, side, p.getValue(), 1).stream()))
                     .collect(ImmutableList.toImmutableList());
-        }
+
         return quads;
     }
 
