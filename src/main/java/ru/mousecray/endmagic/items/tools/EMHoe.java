@@ -21,7 +21,7 @@ public class EMHoe extends ItemHoe implements NameProvider, ItemTexturedTool {
 
     @Override
     public String toolType() {
-        return "colorless_shovel";
+        return "hoe";
     }
 
     @Override
