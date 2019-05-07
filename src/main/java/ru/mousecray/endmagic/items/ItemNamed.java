@@ -10,7 +10,7 @@ public class ItemNamed extends ItemTextured implements NameProvider {
 
     public ItemNamed(String name) {
         this.name = name;
-        textures = ImmutableMap.of(EM.ID + ":items/" + name, 0xffffff);
+        textures = ImmutableMap.of(EM.ID + ":items/" + name, 0xffffffff);
     }
 
     public ItemNamed(String name, Map<String, Integer> textures) {
