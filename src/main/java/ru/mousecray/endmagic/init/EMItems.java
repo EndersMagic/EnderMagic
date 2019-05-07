@@ -22,6 +22,11 @@ public class EMItems {
     private static final int dragonColor = new Color(0xA87DD2).getRGB();
     private static final int immortalColor = new Color(0xE5D67E).getRGB();
 
+    private static final int naturalColorTool = new Color(0xE89746).getRGB();
+    private static final int phantomColorTool = new Color(0xA9D7F2).getRGB();
+    private static final int dragonColorTool = new Color(0xA74FFF).getRGB();
+    private static final int immortalColorTool = new Color(0xFFE14D).getRGB();
+
     public static final ItemNamed naturalCoal = new EnderCoal("natural_coal", naturalColor);
     public static final ItemNamed phantomCoal = new EnderCoal("phantom_coal", phantomColor);
     public static final ItemNamed dragonCoal = new EnderCoal("dragon_coal", dragonColor);
@@ -37,70 +42,70 @@ public class EMItems {
     public static final ItemNamed dragonDiamond = new EnderDiamond("dragon_diamond", dragonColor);
     public static final ItemNamed immortalDiamond = new EnderDiamond("immortal_diamond", immortalColor);
 
-    public static final EMShovel naturalSteelShovel = new EMShovel(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_shovel", naturalColor);
-    public static final EMPickaxe naturalSteelPickaxe = new EMPickaxe(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_pickaxe", naturalColor);
-    public static final EMAxe naturalSteelAxe = new EMAxe(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_axe", naturalColor);
-    public static final EMSword naturalSteelSword = new EMSword(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_sword", naturalColor);
-    public static final EMHoe naturalSteelHoe = new EMHoe(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_hoe", naturalColor);
+    public static final EMShovel naturalSteelShovel = new EMShovel(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_shovel", naturalColorTool);
+    public static final EMPickaxe naturalSteelPickaxe = new EMPickaxe(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_pickaxe", naturalColorTool);
+    public static final EMAxe naturalSteelAxe = new EMAxe(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_axe", naturalColorTool);
+    public static final EMSword naturalSteelSword = new EMSword(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_sword", naturalColorTool);
+    public static final EMHoe naturalSteelHoe = new EMHoe(EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, "natural_steel_hoe", naturalColorTool);
     public static final EMArmor naturalSteelHelmet = new EMArmor(EMMaterials.NATURAL_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.HEAD, "natural_steel_helmet", naturalSteel);
     public static final EMArmor naturalSteelChestplate = new EMArmor(EMMaterials.NATURAL_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.CHEST, "natural_steel_chestplate", naturalSteel);
     public static final EMArmor naturalSteelLeggings = new EMArmor(EMMaterials.NATURAL_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.LEGS, "natural_steel_leggings", naturalSteel);
     public static final EMArmor naturalSteelBoots = new EMArmor(EMMaterials.NATURAL_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.FEET, "natural_steel_boots", naturalSteel);
 
-    public static final EMShovel phantomSteelShovel = new EMShovel(EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, "phantom_steel_shovel", phantomColor);
-    public static final EMPickaxe phantomSteelPickaxe = new EMPickaxe(EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, "phantom_steel_pickaxe", phantomColor);
-    public static final EMAxe phantomSteelAxe = new EMAxe(EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, "phantom_steel_axe", phantomColor);
-    public static final EMSword phantomSteelSword = new EMSword(EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, "phantom_steel_sword", phantomColor);
-    public static final EMHoe phantomSteelHoe = new EMHoe(EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, "phantom_steel_hoe", phantomColor);
+    public static final EMShovel phantomSteelShovel = new EMShovel(EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, "phantom_steel_shovel", phantomColorTool);
+    public static final EMPickaxe phantomSteelPickaxe = new EMPickaxe(EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, "phantom_steel_pickaxe", phantomColorTool);
+    public static final EMAxe phantomSteelAxe = new EMAxe(EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, "phantom_steel_axe", phantomColorTool);
+    public static final EMSword phantomSteelSword = new EMSword(EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, "phantom_steel_sword", phantomColorTool);
+    public static final EMHoe phantomSteelHoe = new EMHoe(EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, "phantom_steel_hoe", phantomColorTool);
     public static final EMArmor phantomSteelHelmet = new EMArmor(EMMaterials.PHANTOM_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.HEAD, "phantom_steel_helmet", phantomSteel);
     public static final EMArmor phantomSteelChestplate = new EMArmor(EMMaterials.PHANTOM_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.CHEST, "phantom_steel_chestplate", phantomSteel);
     public static final EMArmor phantomSteelLeggings = new EMArmor(EMMaterials.PHANTOM_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.LEGS, "phantom_steel_leggings", phantomSteel);
     public static final EMArmor phantomSteelBoots = new EMArmor(EMMaterials.PHANTOM_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.FEET, "phantom_steel_boots", phantomSteel);
 
-    public static final EMShovel dragonSteelShovel = new EMShovel(EMMaterials.DRAGON_STEEL_TOOL_MATERIAL, "dragon_steel_shovel", dragonColor);
-    public static final EMPickaxe dragonSteelPickaxe = new EMPickaxe(EMMaterials.DRAGON_STEEL_TOOL_MATERIAL, "dragon_steel_pickaxe", dragonColor);
-    public static final EMAxe dragonSteelAxe = new EMAxe(EMMaterials.DRAGON_STEEL_TOOL_MATERIAL, "dragon_steel_axe", dragonColor);
-    public static final EMSword dragonSteelSword = new EMSword(EMMaterials.DRAGON_STEEL_TOOL_MATERIAL, "dragon_steel_sword", dragonColor);
-    public static final EMHoe dragonSteelHoe = new EMHoe(EMMaterials.DRAGON_STEEL_TOOL_MATERIAL, "dragon_steel_hoe", dragonColor);
+    public static final EMShovel dragonSteelShovel = new EMShovel(EMMaterials.DRAGON_STEEL_TOOL_MATERIAL, "dragon_steel_shovel", dragonColorTool);
+    public static final EMPickaxe dragonSteelPickaxe = new EMPickaxe(EMMaterials.DRAGON_STEEL_TOOL_MATERIAL, "dragon_steel_pickaxe", dragonColorTool);
+    public static final EMAxe dragonSteelAxe = new EMAxe(EMMaterials.DRAGON_STEEL_TOOL_MATERIAL, "dragon_steel_axe", dragonColorTool);
+    public static final EMSword dragonSteelSword = new EMSword(EMMaterials.DRAGON_STEEL_TOOL_MATERIAL, "dragon_steel_sword", dragonColorTool);
+    public static final EMHoe dragonSteelHoe = new EMHoe(EMMaterials.DRAGON_STEEL_TOOL_MATERIAL, "dragon_steel_hoe", dragonColorTool);
     public static final EMArmor dragonSteelHelmet = new EMArmor(EMMaterials.DRAGON_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.HEAD, "dragon_steel_helmet", dragonSteel);
     public static final EMArmor dragonSteelChestplate = new EMArmor(EMMaterials.DRAGON_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.CHEST, "dragon_steel_chestplate", dragonSteel);
     public static final EMArmor dragonSteelLeggings = new EMArmor(EMMaterials.DRAGON_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.LEGS, "dragon_steel_leggings", dragonSteel);
     public static final EMArmor dragonSteelBoots = new EMArmor(EMMaterials.DRAGON_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.FEET, "dragon_steel_boots", dragonSteel);
 
-    public static final EMShovel immortalSteelShovel = new EMShovel(EMMaterials.IMMORTAL_STEEL_TOOL_MATERIAL, "immortal_steel_shovel", immortalColor);
-    public static final EMPickaxe immortalSteelPickaxe = new EMPickaxe(EMMaterials.IMMORTAL_STEEL_TOOL_MATERIAL, "immortal_steel_pickaxe", immortalColor);
-    public static final EMAxe immortalSteelAxe = new EMAxe(EMMaterials.IMMORTAL_STEEL_TOOL_MATERIAL, "immortal_steel_axe", immortalColor);
-    public static final EMSword immortalSteelSword = new EMSword(EMMaterials.IMMORTAL_STEEL_TOOL_MATERIAL, "immortal_steel_sword", immortalColor);
-    public static final EMHoe immortalSteelHoe = new EMHoe(EMMaterials.IMMORTAL_STEEL_TOOL_MATERIAL, "immortal_steel_hoe", immortalColor);
+    public static final EMShovel immortalSteelShovel = new EMShovel(EMMaterials.IMMORTAL_STEEL_TOOL_MATERIAL, "immortal_steel_shovel", immortalColorTool);
+    public static final EMPickaxe immortalSteelPickaxe = new EMPickaxe(EMMaterials.IMMORTAL_STEEL_TOOL_MATERIAL, "immortal_steel_pickaxe", immortalColorTool);
+    public static final EMAxe immortalSteelAxe = new EMAxe(EMMaterials.IMMORTAL_STEEL_TOOL_MATERIAL, "immortal_steel_axe", immortalColorTool);
+    public static final EMSword immortalSteelSword = new EMSword(EMMaterials.IMMORTAL_STEEL_TOOL_MATERIAL, "immortal_steel_sword", immortalColorTool);
+    public static final EMHoe immortalSteelHoe = new EMHoe(EMMaterials.IMMORTAL_STEEL_TOOL_MATERIAL, "immortal_steel_hoe", immortalColorTool);
     public static final EMArmor immortalSteelHelmet = new EMArmor(EMMaterials.IMMORTAL_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.HEAD, "immortal_steel_helmet", immortalSteel);
     public static final EMArmor immortalSteelChestplate = new EMArmor(EMMaterials.IMMORTAL_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.CHEST, "immortal_steel_chestplate", immortalSteel);
     public static final EMArmor immortalSteelLeggings = new EMArmor(EMMaterials.IMMORTAL_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.LEGS, "immortal_steel_leggings", immortalSteel);
     public static final EMArmor immortalSteelBoots = new EMArmor(EMMaterials.IMMORTAL_STEEL_ARMOR_MATERIAL, 4, EntityEquipmentSlot.FEET, "immortal_steel_boots", immortalSteel);
 
 
-    public static final EMShovel naturalDiamondShovel = new EMShovel(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_shovel", naturalColor);
-    public static final EMPickaxe naturalDiamondPickaxe = new EMPickaxe(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_pickaxe", naturalColor);
-    public static final EMAxe naturalDiamondAxe = new EMAxe(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_axe", naturalColor);
-    public static final EMSword naturalDiamondSword = new EMSword(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_sword", naturalColor);
-    public static final EMHoe naturalDiamondHoe = new EMHoe(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_hoe", naturalColor);
+    public static final EMShovel naturalDiamondShovel = new EMShovel(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_shovel", naturalColorTool);
+    public static final EMPickaxe naturalDiamondPickaxe = new EMPickaxe(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_pickaxe", naturalColorTool);
+    public static final EMAxe naturalDiamondAxe = new EMAxe(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_axe", naturalColorTool);
+    public static final EMSword naturalDiamondSword = new EMSword(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_sword", naturalColorTool);
+    public static final EMHoe naturalDiamondHoe = new EMHoe(EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL, "natural_diamond_hoe", naturalColorTool);
 
-    public static final EMShovel phantomDiamondShovel = new EMShovel(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_shovel", phantomColor);
-    public static final EMPickaxe phantomDiamondPickaxe = new EMPickaxe(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_pickaxe", phantomColor);
-    public static final EMAxe phantomDiamondAxe = new EMAxe(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_axe", phantomColor);
-    public static final EMSword phantomDiamondSword = new EMSword(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_sword", phantomColor);
-    public static final EMHoe phantomDiamondHoe = new EMHoe(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_hoe", phantomColor);
+    public static final EMShovel phantomDiamondShovel = new EMShovel(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_shovel", phantomColorTool);
+    public static final EMPickaxe phantomDiamondPickaxe = new EMPickaxe(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_pickaxe", phantomColorTool);
+    public static final EMAxe phantomDiamondAxe = new EMAxe(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_axe", phantomColorTool);
+    public static final EMSword phantomDiamondSword = new EMSword(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_sword", phantomColorTool);
+    public static final EMHoe phantomDiamondHoe = new EMHoe(EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL, "phantom_diamond_hoe", phantomColorTool);
 
-    public static final EMShovel dragonDiamondShovel = new EMShovel(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_shovel", dragonColor);
-    public static final EMPickaxe dragonDiamondPickaxe = new EMPickaxe(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_pickaxe", dragonColor);
-    public static final EMAxe dragonDiamondAxe = new EMAxe(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_axe", dragonColor);
-    public static final EMSword dragonDiamondSword = new EMSword(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_sword", dragonColor);
-    public static final EMHoe dragonDiamondHoe = new EMHoe(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_hoe", dragonColor);
+    public static final EMShovel dragonDiamondShovel = new EMShovel(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_shovel", dragonColorTool);
+    public static final EMPickaxe dragonDiamondPickaxe = new EMPickaxe(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_pickaxe", dragonColorTool);
+    public static final EMAxe dragonDiamondAxe = new EMAxe(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_axe", dragonColorTool);
+    public static final EMSword dragonDiamondSword = new EMSword(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_sword", dragonColorTool);
+    public static final EMHoe dragonDiamondHoe = new EMHoe(EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL, "dragon_diamond_hoe", dragonColorTool);
 
-    public static final EMShovel immortalDiamondShovel = new EMShovel(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_shovel", immortalColor);
-    public static final EMPickaxe immortalDiamondPickaxe = new EMPickaxe(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_pickaxe", immortalColor);
-    public static final EMAxe immortalDiamondAxe = new EMAxe(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_axe", immortalColor);
-    public static final EMSword immortalDiamondSword = new EMSword(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_sword", immortalColor);
-    public static final EMHoe immortalDiamondHoe = new EMHoe(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_hoe", immortalColor);
+    public static final EMShovel immortalDiamondShovel = new EMShovel(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_shovel", immortalColorTool);
+    public static final EMPickaxe immortalDiamondPickaxe = new EMPickaxe(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_pickaxe", immortalColorTool);
+    public static final EMAxe immortalDiamondAxe = new EMAxe(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_axe", immortalColorTool);
+    public static final EMSword immortalDiamondSword = new EMSword(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_sword", immortalColorTool);
+    public static final EMHoe immortalDiamondHoe = new EMHoe(EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL, "immortal_diamond_hoe", immortalColorTool);
 
     public static final ItemNamed rawEnderite = new ItemNamed("raw_enderite");
 
