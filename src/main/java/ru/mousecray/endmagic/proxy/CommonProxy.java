@@ -95,15 +95,17 @@ public class CommonProxy implements IGuiHandler {
     public void registerItems(RegistryEvent.Register<Item> e) {
         itemsToRegister.forEach(e.getRegistry()::register);
     }
-    
+
     @SubscribeEvent
     public void registerEntities(RegistryEvent.Register<EntityEntry> e) {
-    	entityToRegister.forEach(e.getRegistry()::register);
+        entityToRegister.forEach(e.getRegistry()::register);
     }
 
-    public void init(FMLInitializationEvent event) {}
+    public void init(FMLInitializationEvent event) {
+    }
 
-    public void postInit(FMLPostInitializationEvent event) {}
+    public void postInit(FMLPostInitializationEvent event) {
+    }
 
     public static int blastFurnaceGui = 0;
 
@@ -111,7 +113,7 @@ public class CommonProxy implements IGuiHandler {
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         if (id == blastFurnaceGui)
-            return new ContainerBlastFurnace(player,EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z)));
+            return new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z)));
 
         return null;
     }
