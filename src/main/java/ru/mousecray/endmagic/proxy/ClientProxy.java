@@ -1,10 +1,5 @@
 package ru.mousecray.endmagic.proxy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -40,6 +35,12 @@ import ru.mousecray.endmagic.items.ItemTextured;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.IEMModel;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+
 public class ClientProxy extends CommonProxy implements IModelRegistration {
     public ClientProxy() {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
@@ -62,7 +63,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
-        
+
         //Add default book chapters
         BookApi.addBookChapter(new DefaultBookChapter(0).build(new ItemStackComponent(new ItemStack(Items.APPLE), 0, 0)));
     }
@@ -88,7 +89,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         }
     }
 
-    private ArrayList<ResourceLocation> forRegister = new ArrayList<>();
+    private Set<ResourceLocation> forRegister = new HashSet<>();
 
     private Map<ModelResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
     private Map<ResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverridesR = new HashMap<>();
@@ -110,24 +111,24 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
             IBakedModel existingModel = e.getModelRegistry().getObject(resource);
             e.getModelRegistry().putObject(resource, override.getValue().apply(existingModel));
         }
-		for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
-			ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
+        for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
+            ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
 
-			if (bakedModelOverridesR.containsKey(key)) {
+            if (bakedModelOverridesR.containsKey(key)) {
                 System.out.println(resource);
-				e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
-			}
-		}
+                e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
+            }
+        }
     }
 
     @Override
     public void addBakedModelOverride(ModelResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
         bakedModelOverrides.put(resource, override);
     }
-    
+
     @Override
     public void addBakedModelOverride(ResourceLocation resource, Function<IBakedModel, IBakedModel> override) {
-    	bakedModelOverridesR.put(resource, override);
+        bakedModelOverridesR.put(resource, override);
     }
 
     @Override
