@@ -1,11 +1,5 @@
 package ru.mousecray.endmagic.proxy;
 
-import java.lang.reflect.Field;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,12 +20,14 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.init.EMBlocks;
-import ru.mousecray.endmagic.init.EMEntities;
-import ru.mousecray.endmagic.init.EMItems;
+import ru.mousecray.endmagic.init.*;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
+
+import javax.annotation.Nullable;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CommonProxy implements IGuiHandler {
 
@@ -44,35 +40,16 @@ public class CommonProxy implements IGuiHandler {
         MinecraftForge.EVENT_BUS.register(this);
 
         //Registration Blocks
-        for (Field field : EMBlocks.class.getFields()) {
-            try {
-                Block block = (Block) field.get(null);
-                registerBlock(block);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+        new ClassFieldSource<Block>(EMBlocks.class).elemes().forEach(this::registerBlock);
 
         //Registration Items
-        for (Field field : EMItems.class.getFields()) {
-            try {
-                Item item = (Item) field.get(null);
-                registerItem(item);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        
+        new ClassFieldSource<Item>(EMItems.class).and(new ListSource<>(EMItems.createToolsAndArmor()))
+                .elemes().forEach(this::registerItem);
+
         //Registration Entity
-        for (Field field : EMEntities.class.getFields()) {
-            try {
-                EntityEntry entity = (EntityEntry) field.get(null);
-                entityToRegister.add(entity);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        
+
+        entityToRegister.addAll(new ClassFieldSource<EntityEntry>(EMEntities.class).elemes());
+
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
     }
 
