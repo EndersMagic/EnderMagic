@@ -48,7 +48,7 @@ public class EMItems {
                 Stream.of(naturalSteel, phantomSteel, dragonSteel, immortalSteel)
                         .flatMap(material ->
                                 {
-                                    Integer materialColor = material.textures().values().iterator().next();
+                                    int materialColor = material.textures().values().iterator().next();
                                     HSBA hsba = RGBA.fromARGB(materialColor).toHSBA();
                                     int toolColor = hsba.setS(hsba.getS() + 0.1f).toRGBA().argb();
                                     return Stream.of(
@@ -68,7 +68,7 @@ public class EMItems {
                 Stream.of(naturalDiamond, phantomDiamond, dragonDiamond, immortalDiamond)
                         .flatMap(material ->
                                 {
-                                    Integer materialColor = material.textures().values().iterator().next();
+                                    int materialColor = material.textures().values().iterator().next();
                                     HSBA hsba = RGBA.fromARGB(materialColor).toHSBA();
                                     int toolColor = hsba.setS(hsba.getS() + 0.3f).toRGBA().argb();
                                     return Stream.of(
