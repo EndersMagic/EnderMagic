@@ -28,11 +28,6 @@ public class EMItems {
     private static final int dragonColor = new Color(0xA87DD2).getRGB();
     private static final int immortalColor = new Color(0xE5D67E).getRGB();
 
-    private static final int naturalColorTool = new Color(0xE89746).getRGB();
-    private static final int phantomColorTool = new Color(0xA9D7F2).getRGB();
-    private static final int dragonColorTool = new Color(0xA74FFF).getRGB();
-    private static final int immortalColorTool = new Color(0xFFE14D).getRGB();
-
     public static final ItemNamed naturalCoal = new EnderCoal("natural_coal", naturalColor);
     public static final ItemNamed phantomCoal = new EnderCoal("phantom_coal", phantomColor);
     public static final ItemNamed dragonCoal = new EnderCoal("dragon_coal", dragonColor);
