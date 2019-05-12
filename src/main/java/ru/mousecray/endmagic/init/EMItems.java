@@ -50,7 +50,7 @@ public class EMItems {
                                 {
                                     int materialColor = material.textures().values().iterator().next();
                                     HSBA hsba = RGBA.fromARGB(materialColor).toHSBA();
-                                    int toolColor = hsba.setS(hsba.getS() + 0.1f).toRGBA().argb();
+                                    int toolColor = hsba.setB(0.7f).setA(0.1f).toRGBA().argb();
                                     return Stream.of(
                                             new EMShovel(((MaterialProvider) material).material(), material.name() + "_shovel", toolColor),
                                             new EMPickaxe(((MaterialProvider) material).material(), material.name() + "_pickaxe", toolColor),
@@ -70,7 +70,7 @@ public class EMItems {
                                 {
                                     int materialColor = material.textures().values().iterator().next();
                                     HSBA hsba = RGBA.fromARGB(materialColor).toHSBA();
-                                    int toolColor = hsba.setS(hsba.getS() + 0.3f).toRGBA().argb();
+                                    int toolColor = hsba.setS(hsba.getS() + 0.3f).setB(1).setA(0.5f).toRGBA().argb();
                                     return Stream.of(
                                             new EMShovel(((MaterialProvider) material).material(), material.name() + "_shovel", toolColor),
                                             new EMPickaxe(((MaterialProvider) material).material(), material.name() + "_pickaxe", toolColor),
