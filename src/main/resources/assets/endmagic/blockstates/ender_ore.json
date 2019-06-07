@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "normal": {
+      "model": "endmagic:ender_ore"
+    },
+    "inventory": {
+      "model": "endmagic:ender_ore"
+    }
+  }
+}
