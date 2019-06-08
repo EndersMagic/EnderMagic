@@ -12,6 +12,7 @@ import ru.mousecray.endmagic.items.tools.*;
 import java.awt.*;
 
 public class EMItems {
+    public static final Item enderCompass = new EnderCompass();
     public static final Item enderSeeds = new EMSeeds(EMBlocks.enderCrops, Blocks.END_STONE, "ender_seeds", "tooltip.ender_seeds");
     public static final ItemPortalBinder itemPortalBinder = new ItemPortalBinder();
 

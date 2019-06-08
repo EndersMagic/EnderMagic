@@ -1,11 +1,7 @@
 package ru.mousecray.endmagic.init;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Random;
-
+import codechicken.lib.packet.PacketCustom;
 import com.google.common.collect.ImmutableMap;
-
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
@@ -25,6 +21,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -33,9 +31,29 @@ import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
+import ru.mousecray.endmagic.network.ClientPacketHandler;
+
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Random;
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
+
+    @SubscribeEvent
+    public static void onPlayerEnter(EntityJoinWorldEvent event) {
+        if (!event.getWorld().isRemote)
+            if (event.getEntity() instanceof EntityPlayer) {
+                Optional.ofNullable(((WorldServer) event.getWorld()).getChunkProvider()
+                        .getNearestStructurePos(event.getWorld(), "Stronghold", new BlockPos(event.getEntity()), false))
+                        .map(pos ->
+                                new PacketCustom(EM.ID, ClientPacketHandler.UPDATE_COMPAS_TARGET)
+                                        .writeInt(0)
+                                        .writePos(pos))
+                        .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
+            }
+    }
+
     @SubscribeEvent
     public static void onPressureExplosionCoal(ExplosionEvent.Start event) {
         Vec3d vec = event.getExplosion().getPosition();
