@@ -38,9 +38,10 @@ import ru.mousecray.endmagic.network.ClientPacketHandler;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.IEMModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
@@ -92,7 +93,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         }
     }
 
-    private ArrayList<ResourceLocation> forRegister = new ArrayList<>();
+    private Set<ResourceLocation> forRegister = new HashSet<>();
 
     private Map<ModelResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
     private Map<ResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverridesR = new HashMap<>();
