@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "normal": {
+      "model": "endmagic:block_blast_furnace"
+    },
+    "inventory": {
+      "model": "endmagic:block_blast_furnace"
+    }
+  }
+}
