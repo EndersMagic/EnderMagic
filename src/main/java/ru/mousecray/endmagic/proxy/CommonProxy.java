@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.proxy;
 
+import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +24,7 @@ import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.init.*;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
+import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
 
 import javax.annotation.Nullable;
@@ -39,6 +41,8 @@ public class CommonProxy implements IGuiHandler {
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
 
+        PacketCustom.assignHandler(EM.ID, new ServerPacketHandler());
+
         //Registration Blocks
         new ClassFieldSource<Block>(EMBlocks.class).elemes().forEach(this::registerBlock);
 
@@ -49,6 +53,7 @@ public class CommonProxy implements IGuiHandler {
         //Registration Entity
 
         entityToRegister.addAll(new ClassFieldSource<EntityEntry>(EMEntities.class).elemes());
+
 
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
     }

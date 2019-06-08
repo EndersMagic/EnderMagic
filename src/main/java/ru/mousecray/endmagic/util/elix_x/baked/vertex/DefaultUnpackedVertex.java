@@ -3,8 +3,8 @@ package ru.mousecray.endmagic.util.elix_x.baked.vertex;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.util.math.Vec3d;
 import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -18,7 +18,7 @@ public class DefaultUnpackedVertex {
 	/**
 	 * Unpacked version of {@linkplain DefaultVertexFormats#POSITION_3F}
 	 */
-	private Vector3f pos;
+	private Vec3d pos;
 	/**
 	 * Unpacked version of {@linkplain DefaultVertexFormats#COLOR_4UB}
 	 */
@@ -39,7 +39,7 @@ public class DefaultUnpackedVertex {
 	private Vec3i normal;
 	private Map<VertexFormatElement, float[]> unknown = new HashMap<>();
 
-	public DefaultUnpackedVertex(Vector3f pos, RGBA color, Vector2f texture, Vec3i lightmap, Vec3i normal){
+	public DefaultUnpackedVertex(Vec3d pos, RGBA color, Vector2f texture, Vec3i lightmap, Vec3i normal){
 		this.pos = pos;
 		this.color = color;
 		this.texture = texture;
@@ -54,7 +54,7 @@ public class DefaultUnpackedVertex {
 			switch(element.getUsage()){
 				case POSITION:
 					if(element.getType() == EnumType.FLOAT && element.getElementCount() == 3){
-						pos = new Vector3f(edata[0], edata[1], edata[2]);
+						pos = new Vec3d(edata[0], edata[1], edata[2]);
 						continue elements;
 					} else break;
 				case COLOR:
@@ -84,11 +84,11 @@ public class DefaultUnpackedVertex {
 		}
 	}
 
-	public Vector3f getPos(){
+	public Vec3d getPos(){
 		return pos;
 	}
 
-	public DefaultUnpackedVertex setPos(Vector3f pos){
+	public DefaultUnpackedVertex setPos(Vec3d pos){
 		this.pos = pos;
 		return this;
 	}
@@ -155,9 +155,9 @@ public class DefaultUnpackedVertex {
 			switch(element.getUsage()){
 				case POSITION:
 					if(element.getType() == EnumType.FLOAT && element.getElementCount() == 3){
-						edata[0] = pos.x;
-						edata[1] = pos.y;
-						edata[2] = pos.z;
+						edata[0] = (float) pos.x;
+						edata[1] = (float) pos.y;
+						edata[2] = (float) pos.z;
 						continue elements;
 					} else break;
 				case COLOR:
