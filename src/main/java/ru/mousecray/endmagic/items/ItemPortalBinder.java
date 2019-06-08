@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.items;
 
+import com.google.common.collect.ImmutableMap;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -12,15 +13,17 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.teleport.Location;
 import ru.mousecray.endmagic.tileentity.portal.TileMasterPortal;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-public class ItemPortalBinder extends Item {
+public class ItemPortalBinder extends Item implements ItemTextured {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(ChatFormatting.DARK_AQUA + readFromItem(stack).toString());
@@ -56,5 +59,10 @@ public class ItemPortalBinder extends Item {
             item.setTagCompound(new NBTTagCompound());
 
         item.getTagCompound().setTag("distination", distination.toNbt());
+    }
+
+    @Override
+    public Map<String, Integer> textures() {
+        return ImmutableMap.of(EM.ID + ":items/item_portal_binder", 0x88ffffff, EM.ID + ":items/item_portal_binder_glow", 0x88ffffff);
     }
 }
