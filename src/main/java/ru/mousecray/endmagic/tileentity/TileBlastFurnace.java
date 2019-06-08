@@ -49,9 +49,15 @@ public class TileBlastFurnace extends EMTileEntity implements ITickable {
     }
 
     public void spawnParticles() {
-        EnumFacing side = EnumFacing.HORIZONTALS[world.rand.nextInt(EnumFacing.HORIZONTALS.length)];
+        if (world.rand.nextInt(20) == 0) {
+            EnumFacing side = EnumFacing.HORIZONTALS[world.rand.nextInt(EnumFacing.HORIZONTALS.length)];
 
-        world.spawnParticle(EnumParticleTypes.LAVA, pos.getX(), pos.getY(), pos.getZ(), side.getDirectionVec().getX(), 0, side.getDirectionVec().getZ());
+            world.spawnParticle(EnumParticleTypes.LAVA,
+                    pos.getX() + 0.5 + (double) side.getDirectionVec().getX() / 2,
+                    pos.getY() + 5d/16,
+                    pos.getZ() + 0.5 + (double) side.getDirectionVec().getZ() / 2,
+                    0, 0, 0);
+        }
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
