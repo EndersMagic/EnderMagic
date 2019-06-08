@@ -11,6 +11,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.BlockWithTile;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.teleport.Location;
@@ -50,7 +51,7 @@ public abstract class BlockMasterPortal<A extends TileMasterPortal> extends Bloc
     	return DEFAULT_AABB;
     }
 
-    public final int limit = 10;//todo: extract to config
+    public final int limit = EM.config.portalSizeLimit;
 
     private void openPortal(BlockPos pos, World worldIn) {
         int length = 0;
