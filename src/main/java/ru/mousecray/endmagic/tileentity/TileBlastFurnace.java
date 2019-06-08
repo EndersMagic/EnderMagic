@@ -5,6 +5,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.util.Constants;
 import ru.mousecray.endmagic.init.EMBlocks;
@@ -28,6 +30,9 @@ public class TileBlastFurnace extends EMTileEntity implements ITickable {
             Item r = result.get();
             if (steel.getItem() == r || steel == ItemStack.EMPTY) {
                 tickProcess++;
+
+                spawnParticles();
+
                 if (tickProcess >= 20 * 60 * 5) {
                     tickProcess = 0;
                     inv.decrStackSize(0, 1);
@@ -41,6 +46,12 @@ public class TileBlastFurnace extends EMTileEntity implements ITickable {
         } else
             tickProcess = 0;
 
+    }
+
+    public void spawnParticles() {
+        EnumFacing side = EnumFacing.HORIZONTALS[world.rand.nextInt(EnumFacing.HORIZONTALS.length)];
+
+        world.spawnParticle(EnumParticleTypes.LAVA, pos.getX(), pos.getY(), pos.getZ(), side.getDirectionVec().getX(), 0, side.getDirectionVec().getZ());
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
