@@ -1,5 +1,6 @@
 {
     "variants": {
-        "normal": { "model": "endmagic:block_master_dark_portal" }
+        "normal": { "model": "endmagic:block_master_dark_portal" },
+        "inventory": { "model": "endmagic:block_master_dark_portal" }
     }
 }
