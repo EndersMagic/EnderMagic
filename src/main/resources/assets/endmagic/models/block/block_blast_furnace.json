@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "endmagic:blocks/blast_furnace_side",
+    "north": "endmagic:blocks/blast_furnace_side",
+    "south": "endmagic:blocks/blast_furnace_side",
+    "west": "endmagic:blocks/blast_furnace_side",
+    "east": "endmagic:blocks/blast_furnace_side",
+    "down": "blocks/brick",
+    "up": "blocks/brick"
+  }
+}

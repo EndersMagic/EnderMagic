@@ -1,9 +1,6 @@
 package ru.mousecray.endmagic.items;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -23,26 +20,31 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import ru.mousecray.endmagic.util.NameProvider;
 
-public class EMSeeds extends Item implements IPlantable, NameProvider {
-	
-	private final Block crops;
-	private final Block soilBlockID;
-	@Nullable private final String textTooltip;
-	private final String name;
-	
-	public EMSeeds(Block crops, Block soil, String name, @Nullable String text) {
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
+
+public class EMSeeds extends Item implements IPlantable, NameProvider, ItemOneWhiteEMTextured {
+
+    private final Block crops;
+    private final Block soilBlockID;
+    @Nullable
+    private final String textTooltip;
+    private final String name;
+
+    public EMSeeds(Block crops, Block soil, String name, @Nullable String text) {
         this.crops = crops;
         this.name = name;
         soilBlockID = soil;
         textTooltip = text;
-	}
-	
-	@Override
-	public String name() {
-		return name;
-	}
-	
-	@Override
+    }
+
+    @Override
+    public String name() {
+        return name;
+    }
+
+    @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack itemstack = player.getHeldItem(hand);
         IBlockState state = world.getBlockState(pos);
@@ -50,19 +52,18 @@ public class EMSeeds extends Item implements IPlantable, NameProvider {
             world.setBlockState(pos.up(), crops.getDefaultState());
 
             if (player instanceof EntityPlayerMP) {
-                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)player, pos.up(), itemstack);
+                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos.up(), itemstack);
             }
 
             itemstack.shrink(1);
             return EnumActionResult.SUCCESS;
-        }
-        else return EnumActionResult.FAIL;
+        } else return EnumActionResult.FAIL;
     }
-	
-	@Override
-	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-		if(textTooltip != null) tooltip.add(I18n.format(textTooltip));
-	}
+
+    @Override
+    public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+        if (textTooltip != null) tooltip.add(I18n.format(textTooltip));
+    }
 
     @Override
     public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
@@ -72,5 +73,10 @@ public class EMSeeds extends Item implements IPlantable, NameProvider {
     @Override
     public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
         return crops.getDefaultState();
+    }
+
+    @Override
+    public String texture() {
+        return "ender_seeds";
     }
 }

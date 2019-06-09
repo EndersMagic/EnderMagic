@@ -161,6 +161,9 @@ public final class RGBA {
 	public static RGBA fromRGBA(int rgba){
 		return new RGBA(rgba >> 24 & 255, rgba >> 16 & 255, rgba >> 8 & 255, rgba & 255);
 	}
+    public static RGBA fromRGB(int rgb) {
+        return new RGBA(rgb >> 16 & 255, rgb >> 8 & 255, rgb & 255);
+    }
 
 	/*
 	 * Other color defs

@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -52,6 +53,11 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
         addRecipe(EMItems.immortalCoal, Items.IRON_INGOT, EMItems.immortalSteel);
         addRecipe(EMItems.naturalCoal, Items.IRON_INGOT, EMItems.naturalSteel);
         addRecipe(EMItems.phantomCoal, Items.IRON_INGOT, EMItems.phantomSteel);
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
     }
 
     @Override

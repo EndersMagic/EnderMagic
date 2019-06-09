@@ -31,7 +31,7 @@ public class DefaultUnpackedVertex {
 	 * Unpacked version of {@linkplain DefaultVertexFormats#TEX_2S}<br><br>
 	 * Note: Only {@linkplain Vec3i#x} and {@linkplain Vec3i#y} are used, and as valid shorts.
 	 */
-	private Vec3i lightmap;
+	private Vec3i lightmap=new Vec3i(0,0,1);
 	/**
 	 * Unpacked version of {@linkplain DefaultVertexFormats#NORMAL_3B}<br><br>
 	 * Note: All fields of {@linkplain Vec3i} are valid bytes.
