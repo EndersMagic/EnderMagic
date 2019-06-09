@@ -15,7 +15,7 @@ public class NameAndTabUtils {
             return getName(c.getClass());
     }
 
-    private static String getName(Class c) {
+    public static String getName(Class c) {
         String r = c.getSimpleName()
         		.chars()
         		.flatMap(i -> {
