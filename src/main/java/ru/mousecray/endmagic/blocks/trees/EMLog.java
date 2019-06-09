@@ -5,7 +5,13 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
 import ru.mousecray.endmagic.util.NameProvider;
 
@@ -30,6 +36,17 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extend
         setDefaultState(blockState.getBaseState()
                 .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y)
                 .withProperty(treeType, byIndex.apply(0)));
+    }
+    
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    {
+        worldIn.setBlockState(pos,state.withProperty(treeType,byIndex.apply(stack.getItemDamage())));
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        for (int i = 0; i < 4; i++)
+            items.add(new ItemStack(this, 1, i));
     }
 
     @Override
