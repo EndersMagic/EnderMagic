@@ -158,8 +158,8 @@ public final class RGBA {
 		return getRI() << 24 | getGI() << 16 | getBI() << 8 | getAI();
 	}
 
-	public static RGBA fromRGBA(int argb){
-		return new RGBA(argb >> 24 & 255, argb >> 16 & 255, argb >> 8 & 255, argb & 255);
+	public static RGBA fromRGBA(int rgba){
+		return new RGBA(rgba >> 24 & 255, rgba >> 16 & 255, rgba >> 8 & 255, rgba & 255);
 	}
     public static RGBA fromRGB(int rgb) {
         return new RGBA(rgb >> 16 & 255, rgb >> 8 & 255, rgb & 255);
