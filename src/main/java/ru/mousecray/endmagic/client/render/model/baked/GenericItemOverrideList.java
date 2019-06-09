@@ -19,7 +19,7 @@ public class GenericItemOverrideList {
         };
     }
 
-    public static interface HandleItemState {
-        public IBakedModel apply(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity);
+    public interface HandleItemState {
+        IBakedModel apply(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity);
     }
 }
