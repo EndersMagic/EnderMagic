@@ -46,12 +46,12 @@ public class BakedModelDelegate implements IBakedModel {
 
     @Override
     public boolean isGui3d() {
-        return true;
+        return base.isGui3d();
     }
 
     @Override
     public boolean isBuiltInRenderer() {
-        return false;
+        return base.isBuiltInRenderer();
     }
 
     @Override

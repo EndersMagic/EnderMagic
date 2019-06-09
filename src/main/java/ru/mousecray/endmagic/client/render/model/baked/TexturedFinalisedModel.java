@@ -67,13 +67,11 @@ public class TexturedFinalisedModel extends BakedModelDelegate {
 
     @Override
     public boolean isGui3d() {
-        System.out.println("isGui3d" + (super.isGui3d()==true));
         return true;
     }
 
     @Override
     public boolean isBuiltInRenderer() {
-        System.out.println("isBuiltInRenderer" + (super.isBuiltInRenderer()==false));
         return false;
     }
 
