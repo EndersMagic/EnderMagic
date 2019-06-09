@@ -26,4 +26,11 @@ public class EMEntities {
 			.id("ender_pearl", 2)
 			.tracker(64, 20, true)
 			.build();
+	public static EntityEntry entityCurseBush = EntityEntryBuilder
+			.create()
+			.entity(EntityCurseBush.class)
+			.name("Curse Bush")
+			.id("curse_bush", 3)
+			.tracker(64, 20, true)
+			.build();
 }

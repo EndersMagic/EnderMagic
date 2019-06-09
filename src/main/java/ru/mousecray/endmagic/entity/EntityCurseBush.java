@@ -28,6 +28,7 @@ import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import ru.mousecray.endmagic.init.EMBlocks;
 
 public class EntityCurseBush extends EntityMob {
 	
@@ -100,7 +101,7 @@ public class EntityCurseBush extends EntityMob {
     
     public void setToBlock() {
 		setDead();
-		world.setBlockState(getPosition(), state);
+		world.setBlockState(getPosition(), EMBlocks.blockCurseBush.getDefaultState());
 	}
     
     @Override protected SoundEvent getAmbientSound() {return SoundEvents.BLOCK_GRASS_HIT;}

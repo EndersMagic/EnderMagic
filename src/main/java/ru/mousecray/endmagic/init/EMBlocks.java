@@ -29,4 +29,6 @@ public final class EMBlocks {
 
     public static final BlockNamed technicalEnderite = new BlockNamed("technical_enderite");
     public static final EnderOre enderOre = new EnderOre("ender_ore");
+    
+    public static final BlockCurseBush blockCurseBush = new BlockCurseBush();
 }
