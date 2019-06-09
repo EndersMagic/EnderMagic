@@ -1,7 +1,5 @@
 package ru.mousecray.endmagic;
 
-import javax.annotation.Nullable;
-
 import hohserg.jhocon.JHoconConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -16,6 +14,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import ru.mousecray.endmagic.proxy.CommonProxy;
 import ru.mousecray.endmagic.util.EMCreativeTab;
 import ru.mousecray.endmagic.util.EMEntityDSI;
+
+import javax.annotation.Nullable;
 
 @Mod(modid = EM.ID, name = EM.NAME, version = EM.VERSION, dependencies = "after:jhocon")
 public class EM {
