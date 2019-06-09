@@ -45,7 +45,7 @@ public class EMItems {
     public static final ItemNamed immortalDiamond = new EnderDiamond("immortal_diamond", immortalColor, EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL);
 
     public static List<Item> createToolsAndArmor() {
-        return Stream.concat(
+        return Stream.<Item>concat(
                 Stream.of(naturalSteel, phantomSteel, dragonSteel, immortalSteel)
                         .flatMap(material ->
                                 {
