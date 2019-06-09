@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "axis=y":  { "model": "endmagic:dragon_log" },
-    "axis=z":   { "model": "endmagic:dragon_log", "x": 90 },
-    "axis=x":   { "model": "endmagic:dragon_log", "x": 90, "y": 90 },
-    "axis=none": { "model": "endmagic:dragon_log" }
-  }
-}

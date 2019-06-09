@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "axis=y,tree_type=dragon":  { "model": "endmagic:dragon_log" },
+    "axis=z,tree_type=dragon":   { "model": "endmagic:dragon_log", "x": 90 },
+    "axis=x,tree_type=dragon":   { "model": "endmagic:dragon_log", "x": 90, "y": 90 },
+
+    "axis=y,tree_type=immortal":  { "model": "endmagic:dragon_log" },
+    "axis=z,tree_type=immortal":   { "model": "endmagic:dragon_log", "x": 90 },
+    "axis=x,tree_type=immortal":   { "model": "endmagic:dragon_log", "x": 90, "y": 90 },
+
+    "axis=y,tree_type=natural":  { "model": "endmagic:dragon_log" },
+    "axis=z,tree_type=natural":   { "model": "endmagic:dragon_log", "x": 90 },
+    "axis=x,tree_type=natural":   { "model": "endmagic:dragon_log", "x": 90, "y": 90 },
+
+    "axis=y,tree_type=dragon":  { "model": "endmagic:dragon_log" },
+    "axis=z,tree_type=dragon":   { "model": "endmagic:dragon_log", "x": 90 },
+    "axis=x,tree_type=dragon":   { "model": "endmagic:dragon_log", "x": 90, "y": 90 },
+    "axis=none": { "model": "endmagic:dragon_log" }
+  }
+}
