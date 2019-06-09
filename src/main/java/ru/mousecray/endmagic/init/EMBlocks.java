@@ -5,21 +5,9 @@ import ru.mousecray.endmagic.blocks.portal.BlockMasterDarkPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterStaticPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockTopMark;
-import ru.mousecray.endmagic.blocks.trees.EnderLeaves;
-import ru.mousecray.endmagic.blocks.trees.EnderLogs;
-import ru.mousecray.endmagic.blocks.trees.EnderPlanks;
-import ru.mousecray.endmagic.blocks.trees.EnderSapling;
 import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
-    public static final EnderLogs log = new EnderLogs();
-
-    public static final EnderPlanks planks = new EnderPlanks();
-
-    public static final EnderLeaves leaves = new EnderLeaves();
-
-    public static final EnderSapling sappling = new EnderSapling();
-
     public static final EnderGrass enderGrass = new EnderGrass();
 
     public static final BlockBlastFurnace blockBlastFurnace = new BlockBlastFurnace();
