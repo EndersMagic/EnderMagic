@@ -53,7 +53,6 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extend
 
     @Override
     public String name() {
-        System.out.println(NameAndTabUtils.getName(type));
-        return NameAndTabUtils.getName(type);
+        return NameAndTabUtils.getName(type) + "_log";
     }
 }
