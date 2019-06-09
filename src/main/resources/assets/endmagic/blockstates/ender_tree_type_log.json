@@ -4,18 +4,27 @@
     "axis=z,tree_type=dragon":   { "model": "endmagic:dragon_log", "x": 90 },
     "axis=x,tree_type=dragon":   { "model": "endmagic:dragon_log", "x": 90, "y": 90 },
 
-    "axis=y,tree_type=immortal":  { "model": "endmagic:immortal_log" },
-    "axis=z,tree_type=immortal":   { "model": "endmagic:immortal_log", "x": 90 },
-    "axis=x,tree_type=immortal":   { "model": "endmagic:immortal_log", "x": 90, "y": 90 },
 
     "axis=y,tree_type=natural":  { "model": "endmagic:natural_log" },
     "axis=z,tree_type=natural":   { "model": "endmagic:natural_log", "x": 90 },
     "axis=x,tree_type=natural":   { "model": "endmagic:natural_log", "x": 90, "y": 90 },
 
+    "axis=y,tree_type=immortal":  { "model": "endmagic:immortal_log" },
+    "axis=z,tree_type=immortal":   { "model": "endmagic:immortal_log", "x": 90 },
+    "axis=x,tree_type=immortal":   { "model": "endmagic:immortal_log", "x": 90, "y": 90 },
+
     "axis=y,tree_type=phantom":  { "model": "endmagic:phantom_log" },
     "axis=z,tree_type=phantom":   { "model": "endmagic:phantom_log", "x": 90 },
     "axis=x,tree_type=phantom":   { "model": "endmagic:phantom_log", "x": 90, "y": 90 },
 
-    "axis=none": { "model": "endmagic:dragon_log" }
+    "axis=none,tree_type=dragon":  { "model": "endmagic:dragon_log" },
+    "axis=none,tree_type=immortal":  { "model": "endmagic:immortal_log" },
+    "axis=none,tree_type=natural":  { "model": "endmagic:natural_log" },
+    "axis=none,tree_type=phantom":  { "model": "endmagic:phantom_log" },
+
+    "inventory":  { "model": "endmagic:dragon_log" },
+    "inventory,meta=1":  { "model": "endmagic:natural_log" },
+    "inventory,meta=2":  { "model": "endmagic:immortal_log" },
+    "inventory,meta=3":  { "model": "endmagic:phantom_log" }
   }
 }

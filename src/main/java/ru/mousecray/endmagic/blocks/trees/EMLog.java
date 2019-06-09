@@ -5,20 +5,25 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import ru.mousecray.endmagic.client.render.model.IModelRegistration;
+import ru.mousecray.endmagic.util.IEMModel;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
 import ru.mousecray.endmagic.util.NameProvider;
 
 import java.util.Arrays;
 import java.util.function.Function;
 
-public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extends BlockLog implements NameProvider {
+public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extends BlockLog implements NameProvider, IEMModel {
     private final IProperty<TreeType> treeType;
     private final Function<Integer, TreeType> byIndex;
     private final Class<TreeType> type;
@@ -37,10 +42,9 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extend
                 .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y)
                 .withProperty(treeType, byIndex.apply(0)));
     }
-    
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-    {
-        worldIn.setBlockState(pos,state.withProperty(treeType,byIndex.apply(stack.getItemDamage())));
+
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        worldIn.setBlockState(pos, state.withProperty(treeType, byIndex.apply(stack.getItemDamage())));
     }
 
     @Override
@@ -71,5 +75,14 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extend
     @Override
     public String name() {
         return NameAndTabUtils.getName(type) + "_log";
+    }
+
+    @Override
+    public void registerModels(IModelRegistration modelRegistration) {
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
+                new ModelResourceLocation(getRegistryName(), "inventory"));
+        for (int i = 1; i < 4; i++)
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i,
+                    new ModelResourceLocation(getRegistryName(), "inventory,meta="+i));
     }
 }
