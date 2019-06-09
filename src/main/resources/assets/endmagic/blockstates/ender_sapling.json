@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "stage=0,type=dragon": { "model": "endmagic:dragon_sapling" },
+        "stage=1,type=dragon": { "model": "endmagic:dragon_sapling" },
+        "stage=0,type=natural": { "model": "endmagic:natural_sapling" },
+        "stage=1,type=natural": { "model": "endmagic:natural_sapling" },
+        "stage=0,type=immortal": { "model": "endmagic:immortal_sapling" },
+        "stage=1,type=immortal": { "model": "endmagic:immortal_sapling" },
+        "stage=0,type=vanishing": { "model": "endmagic:vanishing_sapling" },
+        "stage=1,type=vanishing": { "model": "endmagic:vanishing_sapling" }
+    }
+}

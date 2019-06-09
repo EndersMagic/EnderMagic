@@ -1,0 +1,6 @@
+{
+    "parent": "block/leaves",
+    "textures": {
+        "all": "endmagic:blocks/dragon_leaves"
+    }
+}

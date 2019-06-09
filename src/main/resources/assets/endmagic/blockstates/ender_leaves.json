@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "check_decay=true,decayable=true,type=dragon": { "model": "endmagic:dragon_leaves" },
+        "check_decay=false,decayable=true,type=dragon": { "model": "endmagic:dragon_leaves" },
+        "check_decay=true,decayable=false,type=dragon": { "model": "endmagic:dragon_leaves" },
+        "check_decay=false,decayable=false,type=dragon": { "model": "endmagic:dragon_leaves" },
+        "check_decay=true,decayable=true,type=natural": { "model": "endmagic:natural_leaves" },
+        "check_decay=false,decayable=true,type=natural": { "model": "endmagic:natural_leaves" },
+        "check_decay=true,decayable=false,type=natural": { "model": "endmagic:natural_leaves" },
+        "check_decay=false,decayable=false,type=natural": { "model": "endmagic:natural_leaves" },
+        "check_decay=true,decayable=true,type=immortal": { "model": "endmagic:immortal_leaves" },
+        "check_decay=false,decayable=true,type=immortal": { "model": "endmagic:immortal_leaves" },
+        "check_decay=true,decayable=false,type=immortal": { "model": "endmagic:immortal_leaves" },
+        "check_decay=false,decayable=false,type=immortal": { "model": "endmagic:immortal_leaves" },
+        "check_decay=true,decayable=true,type=vanishing": { "model": "endmagic:vanishing_leaves" },
+        "check_decay=false,decayable=true,type=vanishing": { "model": "endmagic:vanishing_leaves" },
+        "check_decay=true,decayable=false,type=vanishing": { "model": "endmagic:vanishing_leaves" },
+        "check_decay=false,decayable=false,type=vanishing": { "model": "endmagic:vanishing_leaves" }
+    }
+}
