@@ -7,7 +7,7 @@ public enum EnderTreeType implements IStringSerializable {
     DRAGON("dragon", MapColor.PURPLE),
     NATURAL("natural", MapColor.BLUE),
     IMMORTAL("immortal", MapColor.EMERALD),
-    VANISHING("vanishing", MapColor.SILVER);
+    PHANTOM("phantom", MapColor.SILVER);
 
     private final String name;
     private final MapColor mapColor;
