@@ -3,21 +3,52 @@ package ru.mousecray.endmagic.blocks;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.PotionTypes;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemSword;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.entity.EntityCurseBush;
+import ru.mousecray.endmagic.init.EMItems;
 
 public class BlockCurseBush extends BlockBush {
+	
+	public static final PropertyBool ACTIVE = PropertyBool.create("active");
+	
+	public BlockCurseBush() {
+		setDefaultState(blockState.getBaseState().withProperty(ACTIVE, Boolean.valueOf(false)));
+	}
+	
+	@Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(ACTIVE, Boolean.valueOf((meta & 1) > 0));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return ((Boolean)state.getValue(ACTIVE)).booleanValue() ? 1 : 0;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, new IProperty[] {ACTIVE});
+    }
 	
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
@@ -31,7 +62,7 @@ public class BlockCurseBush extends BlockBush {
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(!world.isRemote && entity instanceof EntityPlayer) {
 			if(entity.getHeldEquipment().iterator().next().getItem() instanceof ItemSword) {
-				//TODO: matadata
+				//
 				world.spawnEntity(getAreaEffect(world, pos));
 			}
 			else {
@@ -61,4 +92,24 @@ public class BlockCurseBush extends BlockBush {
 		for(Entity entity : list) flag = entity instanceof EntityAreaEffectCloud;
 		return flag;
 	}
+	
+    @Override
+    public Block.EnumOffsetType getOffsetType() {
+        return Block.EnumOffsetType.XYZ;
+    }
+	
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return Items.AIR;
+    }
+    
+    @Override
+    public boolean canPlaceBlockAt(World world, BlockPos pos) {
+        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE;
+    }
+
+    @Override
+    public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
+        return world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE;
+    }
 }
