@@ -12,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -24,8 +25,12 @@ import ru.mousecray.endmagic.util.NameAndTabUtils;
 import ru.mousecray.endmagic.util.NameProvider;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Function;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> extends BlockLeaves implements NameProvider, IEMModel {
     private final IProperty<TreeType> treeType;
@@ -39,7 +44,7 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
         this.byIndex = byIndex;
 
         //super
-        blockState = new BlockStateContainer(this,treeType);
+        blockState = new BlockStateContainer(this, treeType);
         //
 
         setDefaultState(blockState.getBaseState()
@@ -99,5 +104,33 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
         return ImmutableList.of(new ItemStack(
                 Item.getItemFromBlock(this), 1,
                 world.getBlockState(pos).getValue(treeType).ordinal()));
+    }
+
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+        if (!worldIn.isRemote) {
+            if (worldIn.isAreaLoaded(pos, 2)) {
+                if (!findingArea(pos)
+                        .anyMatch(pos1 -> worldIn.getBlockState(pos1).getBlock()
+                                .canSustainLeaves(state, worldIn, pos))) {
+                    dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
+                    worldIn.setBlockToAir(pos);
+                }
+
+            }
+        }
+    }
+
+    private Stream<BlockPos> findingArea(BlockPos pos) {
+        return IntStream.range(-5,5)
+                .mapToObj(x->
+                        IntStream.range(-5,5)
+                                .mapToObj(y->
+                                        IntStream.range(-5,5)
+                                                .mapToObj(z->
+                                                        pos.add(x,y,z))).flatMap(Function.identity())).flatMap(Function.identity());
+    }
+
+    @Override
+    public void beginLeavesDecay(IBlockState state, World world, BlockPos pos) {
     }
 }
