@@ -1,30 +1,30 @@
 {
   "variants": {
-    "axis=y,tree_type=dragon":  { "model": "endmagic:dragon_log" },
-    "axis=z,tree_type=dragon":   { "model": "endmagic:dragon_log", "x": 90 },
-    "axis=x,tree_type=dragon":   { "model": "endmagic:dragon_log", "x": 90, "y": 90 },
+    "axis=y,tree_type=dragon":  { "model": "endmagic:trees/dragon_log" },
+    "axis=z,tree_type=dragon":   { "model": "endmagic:trees/dragon_log", "x": 90 },
+    "axis=x,tree_type=dragon":   { "model": "endmagic:trees/dragon_log", "x": 90, "y": 90 },
 
 
-    "axis=y,tree_type=natural":  { "model": "endmagic:natural_log" },
-    "axis=z,tree_type=natural":   { "model": "endmagic:natural_log", "x": 90 },
-    "axis=x,tree_type=natural":   { "model": "endmagic:natural_log", "x": 90, "y": 90 },
+    "axis=y,tree_type=natural":  { "model": "endmagic:trees/natural_log" },
+    "axis=z,tree_type=natural":   { "model": "endmagic:trees/natural_log", "x": 90 },
+    "axis=x,tree_type=natural":   { "model": "endmagic:trees/natural_log", "x": 90, "y": 90 },
 
-    "axis=y,tree_type=immortal":  { "model": "endmagic:immortal_log" },
-    "axis=z,tree_type=immortal":   { "model": "endmagic:immortal_log", "x": 90 },
-    "axis=x,tree_type=immortal":   { "model": "endmagic:immortal_log", "x": 90, "y": 90 },
+    "axis=y,tree_type=immortal":  { "model": "endmagic:trees/immortal_log" },
+    "axis=z,tree_type=immortal":   { "model": "endmagic:trees/immortal_log", "x": 90 },
+    "axis=x,tree_type=immortal":   { "model": "endmagic:trees/immortal_log", "x": 90, "y": 90 },
 
-    "axis=y,tree_type=phantom":  { "model": "endmagic:phantom_log" },
-    "axis=z,tree_type=phantom":   { "model": "endmagic:phantom_log", "x": 90 },
-    "axis=x,tree_type=phantom":   { "model": "endmagic:phantom_log", "x": 90, "y": 90 },
+    "axis=y,tree_type=phantom":  { "model": "endmagic:trees/phantom_log" },
+    "axis=z,tree_type=phantom":   { "model": "endmagic:trees/phantom_log", "x": 90 },
+    "axis=x,tree_type=phantom":   { "model": "endmagic:trees/phantom_log", "x": 90, "y": 90 },
 
-    "axis=none,tree_type=dragon":  { "model": "endmagic:dragon_log" },
-    "axis=none,tree_type=immortal":  { "model": "endmagic:immortal_log" },
-    "axis=none,tree_type=natural":  { "model": "endmagic:natural_log" },
-    "axis=none,tree_type=phantom":  { "model": "endmagic:phantom_log" },
+    "axis=none,tree_type=dragon":  { "model": "endmagic:trees/dragon_log" },
+    "axis=none,tree_type=immortal":  { "model": "endmagic:trees/immortal_log" },
+    "axis=none,tree_type=natural":  { "model": "endmagic:trees/natural_log" },
+    "axis=none,tree_type=phantom":  { "model": "endmagic:trees/phantom_log" },
 
-    "inventory":  { "model": "endmagic:dragon_log" },
-    "inventory,meta=1":  { "model": "endmagic:natural_log" },
-    "inventory,meta=2":  { "model": "endmagic:immortal_log" },
-    "inventory,meta=3":  { "model": "endmagic:phantom_log" }
+    "inventory":  { "model": "endmagic:trees/dragon_log" },
+    "inventory,meta=1":  { "model": "endmagic:trees/natural_log" },
+    "inventory,meta=2":  { "model": "endmagic:trees/immortal_log" },
+    "inventory,meta=3":  { "model": "endmagic:trees/phantom_log" }
   }
 }
