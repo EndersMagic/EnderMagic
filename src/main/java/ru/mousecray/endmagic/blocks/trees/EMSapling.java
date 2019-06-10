@@ -101,7 +101,7 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable> ex
     public void registerModels(IModelRegistration modelRegistration) {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
                 new ModelResourceLocation(getRegistryName(), "inventory"));
-        for (int i = 0; i < 4; i++)
+        for (int i = 1; i < 4; i++)
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i,
                     new ModelResourceLocation(getRegistryName(), "inventory,meta=" + i));
     }
