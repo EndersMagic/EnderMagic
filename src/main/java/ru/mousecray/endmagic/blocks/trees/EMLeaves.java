@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -109,8 +110,8 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         if (!worldIn.isRemote) {
             if (worldIn.isAreaLoaded(pos, 2)) {
-                if (!findingArea(pos)
-                        .anyMatch(pos1 -> worldIn.getBlockState(pos1).getBlock()
+                if (findingArea(pos)
+                        .noneMatch(pos1 -> worldIn.getBlockState(pos1).getBlock()
                                 .canSustainLeaves(state, worldIn, pos))) {
                     dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
                     worldIn.setBlockToAir(pos);
