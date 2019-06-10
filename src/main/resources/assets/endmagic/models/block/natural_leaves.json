@@ -1,0 +1,6 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "endmagic:blocks/trees/natural_leaves"
+  }
+}
