@@ -62,7 +62,7 @@ public class EntityCurseBush extends EntityMob {
     @Override
     protected void applyEntityAttributes() {
     	super.applyEntityAttributes();       
-    	getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
+    	getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
         getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05D);
         getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(25.0D);
     }
@@ -124,7 +124,7 @@ public class EntityCurseBush extends EntityMob {
     @Override
     public boolean attackEntityFrom(DamageSource source, float amount) {        
         if (source.isFireDamage()) {
-        	damageEntity(source, 1.0F);
+        	damageEntity(source, amount);
         	return true;
         }
         return super.attackEntityFrom(source, amount);
