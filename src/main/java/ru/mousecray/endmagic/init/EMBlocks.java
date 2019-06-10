@@ -5,6 +5,7 @@ import ru.mousecray.endmagic.blocks.portal.BlockMasterDarkPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterStaticPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockTopMark;
+import ru.mousecray.endmagic.blocks.trees.EMLeaves;
 import ru.mousecray.endmagic.blocks.trees.EMLog;
 import ru.mousecray.endmagic.blocks.trees.EnderTreeType;
 import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
@@ -34,4 +35,5 @@ public final class EMBlocks {
     public static final EnderOre enderOre = new EnderOre("ender_ore");
 
     public static final EMLog<EnderTreeType> enderLog = new EMLog<>(EnderTreeType.class, i -> EnderTreeType.values()[i]);
+    public static final EMLeaves<EnderTreeType> enderLeaves = new EMLeaves<>(EnderTreeType.class, i -> EnderTreeType.values()[i]);
 }
