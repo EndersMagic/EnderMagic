@@ -67,15 +67,13 @@ public class BlockCurseBush extends BlockBush {
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(!world.isRemote && entity instanceof EntityPlayer) {
 			if(entity.getHeldEquipment().iterator().next().getItem() instanceof ItemSword) {
-				if(state == getDefaultState().withProperty(ACTIVE, false)) {
-					world.setBlockState(pos, getDefaultState().withProperty(ACTIVE, true));
-					world.spawnEntity(getAreaEffect(world, pos));
-				}
-			}
-			else {
 				world.setBlockToAir(pos);
 				EntityCurseBush bush = new EntityCurseBush(world, pos);
 				world.spawnEntity(bush);
+			}
+			else if(state == getDefaultState().withProperty(ACTIVE, false)) {
+				world.setBlockState(pos, getDefaultState().withProperty(ACTIVE, true));
+				world.spawnEntity(getAreaEffect(world, pos));
 			}
 		}
 	}

@@ -1,18 +1,18 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "cube_all"
+        "model": "tinted_cross"
     },
     "variants": {
         "active": {
             "true": {
                 "textures": {
-                    "all": "endmagic:blocks/block_curse_bush"
+                    "cross": "endmagic:blocks/block_curse_bush"
                 }
             },
             "false": {
                 "textures": {
-                    "all": "endmagic:blocks/block_curse_bush"
+                    "cross": "endmagic:blocks/block_curse_bush"
                 }
             }
         }

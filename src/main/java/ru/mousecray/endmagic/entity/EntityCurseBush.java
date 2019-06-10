@@ -102,6 +102,9 @@ public class EntityCurseBush extends EntityMob {
     }
     
     @Override
+    protected void collideWithNearbyEntities() {}
+    
+    @Override
     protected boolean canTriggerWalking() {
         return false;
     }
