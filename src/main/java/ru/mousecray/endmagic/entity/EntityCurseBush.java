@@ -1,69 +1,70 @@
 package ru.mousecray.endmagic.entity;
 
-import javax.annotation.Nullable;
-
-import com.google.common.base.Predicate;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityEndermite;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.init.EMBlocks;
 
 public class EntityCurseBush extends EntityMob {
 	
+	protected static final DataParameter<BlockPos> ORIGIN = EntityDataManager.<BlockPos>createKey(EntityCurseBush.class, DataSerializers.BLOCK_POS);
+	
+	private boolean isInvade;
+	
 	public EntityCurseBush(World world) {
 		super(world);
-		isJumping = false;
+		setJumping(false);
+		setOrigin(new BlockPos(this));
+		setSize(0.98F, 0.98F);
 	}
+	
+	public EntityCurseBush(World world, BlockPos pos) {
+		this(world);
+		setPosition(pos.getX(), pos.getY(), pos.getZ());
+	}
+	
+	@Override
+    protected void entityInit() {
+		super.entityInit();
+		dataManager.register(ORIGIN, BlockPos.ORIGIN);
+    }
 
+	@Override
     protected void initEntityAI() {
-        this.tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D, 0.0F));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.tasks.addTask(10, new AITransformToBlock(this));
-        this.targetTasks.addTask(1, new AIFindPlayer(this));
+		tasks.addTask(7, new EntityAIWanderAvoidWater(this, 1.0D, 0.0F));
+        tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        tasks.addTask(8, new EntityAILookIdle(this));
+//        tasks.addTask(10, new AITransformToBlock(this));
+        targetTasks.addTask(1, new EntityAIFindEntityNearestPlayer(this));
     }
     
     @Override
     protected void applyEntityAttributes() {
-    	getAttributeMap().registerAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
-        getAttributeMap().registerAttribute(SharedMonsterAttributes.MAX_HEALTH);
-        getAttributeMap().registerAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-        
-        getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(25.0D);
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
+    	super.applyEntityAttributes();       
+    	getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5.0D);
         getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05D);
-    }
-    
-    @Override
-    public void writeEntityToNBT(NBTTagCompound compound) {	 	
-    	super.writeEntityToNBT(compound);
-    }
-    
-    @Override
-    public void readEntityFromNBT(NBTTagCompound compound) {
-    	super.readEntityFromNBT(compound);
+        getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(25.0D);
     }
     
     @Override
@@ -75,56 +76,111 @@ public class EntityCurseBush extends EntityMob {
     @Override
     protected void updateAITasks() {
     	super.updateAITasks();
+    	
     }
     
     @Override
-    public boolean canBeHitWithPotion() {
+    public void writeEntityToNBT(NBTTagCompound compound) {
+    	super.writeEntityToNBT(compound);
+    	compound.setBoolean("isInvade", isInvade);
+    }
+    
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
+    	super.readEntityFromNBT(compound);
+    	isInvade = compound.getBoolean("isInvade");
+    }
+    
+    @Override
+    public boolean canBeCollidedWith() {
     	return false;
     }
     
     @Override
+    public boolean canBePushed() {
+        return false;
+    }
+    
+    @Override
+    protected boolean canTriggerWalking() {
+        return false;
+    }
+    
+    @Override
+    public void fall(float distance, float damageMultiplier) {
+        setDead();
+        super.fall(distance, damageMultiplier);
+    }
+    
+    @Override
+    public void onDeath(DamageSource cause) {
+    	world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, posX, posY, posZ, 20, 20, 20, Block.getStateId(EMBlocks.blockCurseBush.getDefaultState()));
+    	super.onDeath(cause);
+    }
+   
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {        
+        if (source.isFireDamage()) {
+        	damageEntity(source, 1.0F);
+        	return true;
+        }
+        return super.attackEntityFrom(source, amount);
+    }
+    
+    public void transformToBlock() {
+		setDead();
+		//TODO:AI
+		world.setBlockState(getPosition(), EMBlocks.blockCurseBush.getDefaultState());
+	}
+    
+    public boolean isInvade() {
+		return isInvade;
+	}
+    
+    public void setInvade(boolean isInvade) {
+		this.isInvade = isInvade;
+	}
+
+    @Override 
+    public boolean canBeHitWithPotion() {
+    	return false;
+    } 
+    
+    @Override 
     public boolean canBeAttackedWithItem() {
     	return false;
     }
     
-//    @Override
-//    public boolean hitByEntity(Entity entity) {
-//        return true;
-//    }
-    
-    @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {        
-        if (this.isEntityInvulnerable(source)) return false;
-        else if (source.isFireDamage()) return true;
-        return super.attackEntityFrom(source, amount);
+    @SideOnly(Side.CLIENT) 
+    public World getWorldObj() {
+    	return this.world;
     }
     
-    public void setToBlock() {
-		setDead();
-		world.setBlockState(getPosition(), EMBlocks.blockCurseBush.getDefaultState());
-	}
+    @SideOnly(Side.CLIENT) 
+    public BlockPos getOrigin() {
+    	return (BlockPos)this.dataManager.get(ORIGIN);
+    }  
     
-    @Override protected SoundEvent getAmbientSound() {return SoundEvents.BLOCK_GRASS_HIT;}
+    public void setOrigin(BlockPos pos) {
+    	this.dataManager.set(ORIGIN, pos);
+    }
     
-    @Override protected SoundEvent getHurtSound(DamageSource damageSource) {return SoundEvents.BLOCK_GRASS_STEP;}
-
-    @Override protected SoundEvent getDeathSound() {return SoundEvents.BLOCK_GRASS_FALL;}
+    @Override 
+    protected SoundEvent getAmbientSound() {
+    	return SoundEvents.BLOCK_GRASS_HIT;
+    }   
     
-	public class AIFindPlayer extends EntityAIFindEntityNearestPlayer {
-
-		public AIFindPlayer(EntityLiving entityLiving) {
-			super(entityLiving);
-		}
-
-		@Override
-		public boolean shouldExecute() {
-			return false;
-		}
-
-	}
+    @Override 
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
+    	return SoundEvents.BLOCK_GRASS_STEP;
+    }
+    
+    @Override 
+    protected SoundEvent getDeathSound() {
+    	return SoundEvents.BLOCK_GRASS_FALL;
+    } 
 
 	public class AITransformToBlock extends EntityAIBase {
-
 		private final EntityCurseBush entity;
 		
 		public AITransformToBlock(EntityCurseBush entity) {
@@ -135,6 +191,5 @@ public class EntityCurseBush extends EntityMob {
 		public boolean shouldExecute() {
 			return false;
 		}
-
 	}
 }
