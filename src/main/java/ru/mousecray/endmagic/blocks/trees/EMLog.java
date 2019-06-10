@@ -20,7 +20,6 @@ import ru.mousecray.endmagic.util.IEMModel;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
 import ru.mousecray.endmagic.util.NameProvider;
 
-import java.util.Arrays;
 import java.util.function.Function;
 
 public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extends BlockLog implements NameProvider, IEMModel {
