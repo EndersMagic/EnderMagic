@@ -31,9 +31,8 @@ public class BlockCurseBush extends BlockBush {
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(!world.isRemote && entity instanceof EntityPlayer) {
 			if(entity.getHeldEquipment().iterator().next().getItem() instanceof ItemSword) {
-				if(world.getEntitiesWithinAABB(EntityAreaEffectCloud.class, BUSH_AABB.grow(2, 2, 2)).size() <= 0) {
-					world.spawnEntity(getAreaEffect(world, pos));
-				}
+				//TODO: matadata
+				world.spawnEntity(getAreaEffect(world, pos));
 			}
 			else {
 				world.setBlockToAir(pos);
