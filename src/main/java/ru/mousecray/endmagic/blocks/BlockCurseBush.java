@@ -53,8 +53,13 @@ public class BlockCurseBush extends BlockBush {
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		super.updateTick(world, pos, state, rand);
-		if(!world.isRemote && rand.nextInt(100) < 25 && !existEffect(world, pos, 2)) {
-			world.spawnEntity(getAreaEffect(world, pos));
+		if(!world.isRemote && !existEffect(world, pos, 2)) {
+			if(state == getDefaultState().withProperty(ACTIVE, true)) {
+				world.setBlockState(pos, getDefaultState().withProperty(ACTIVE, false));
+			}
+			else if(rand.nextInt(100) < 25) {
+				world.spawnEntity(getAreaEffect(world, pos));
+			}
 		}
 	}
 	
@@ -62,8 +67,10 @@ public class BlockCurseBush extends BlockBush {
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(!world.isRemote && entity instanceof EntityPlayer) {
 			if(entity.getHeldEquipment().iterator().next().getItem() instanceof ItemSword) {
-				//
-				world.spawnEntity(getAreaEffect(world, pos));
+				if(state == getDefaultState().withProperty(ACTIVE, false)) {
+					world.setBlockState(pos, getDefaultState().withProperty(ACTIVE, true));
+					world.spawnEntity(getAreaEffect(world, pos));
+				}
 			}
 			else {
 				world.setBlockToAir(pos);
