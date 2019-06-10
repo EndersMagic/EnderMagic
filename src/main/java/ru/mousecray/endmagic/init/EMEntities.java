@@ -31,6 +31,6 @@ public class EMEntities {
 			.entity(EntityCurseBush.class)
 			.name("Curse Bush")
 			.id("curse_bush", 3)
-			.tracker(64, 50, true)
+			.tracker(15, 1, true)
 			.build();
 }

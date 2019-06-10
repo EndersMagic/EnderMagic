@@ -104,7 +104,7 @@ public class BlockCurseBush extends BlockBush {
 	}
 	
 	private int getPlayer(World world, BlockPos pos) {
-		List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(3D));
+		List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(3));
 		for(Entity entity : list) {
 			if(entity instanceof EntityPlayer) {
 				if(entity.getDistanceSq(pos) < 1.5D) return 1;

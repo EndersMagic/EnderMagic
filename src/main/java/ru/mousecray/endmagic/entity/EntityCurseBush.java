@@ -35,19 +35,15 @@ public class EntityCurseBush extends EntityMob {
 	protected static final DataParameter<BlockPos> ORIGIN = EntityDataManager.<BlockPos>createKey(EntityCurseBush.class, DataSerializers.BLOCK_POS);
 	
 	private boolean isInvade;
-	private boolean isSleep;
-	private int sleepTime;
-	private boolean enableEffect;
+	private int effect;
 	
 	public EntityCurseBush(World world) {
 		super(world);
 		setJumping(false);
 		setOrigin(new BlockPos(this));
 		setSize(0.98F, 0.98F);
-		sleepTime = 0;
 		isInvade = false;
-		isSleep = false;
-		enableEffect = false;
+		effect = 60;
 	}
 	
 	public EntityCurseBush(World world, BlockPos pos) {
@@ -77,8 +73,8 @@ public class EntityCurseBush extends EntityMob {
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
-		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(25.0D);
+		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05D);
+		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(5.0D);
 		getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(0.5D);
 	}
 	
@@ -87,32 +83,27 @@ public class EntityCurseBush extends EntityMob {
 		super.onLivingUpdate();
 		if(getAttackTarget() != null) {		
 			isInvade = true;
-			getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+			getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
 		}
 		else {
 			isInvade = false;
-			getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
+			getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05D);
 		}
+		
+		if(effect > 0) --effect;
 	}
 	@Override
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		compound.setBoolean("isInvade", isInvade);
-		compound.setBoolean("isSleep", isSleep);
-		compound.setInteger("sleepTime", sleepTime);
+		compound.setInteger("effect", effect);
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		isInvade = compound.getBoolean("isInvade");
-		isSleep = compound.getBoolean("isSleep");
-		sleepTime = compound.getInteger("sleepTime");
-	}
-
-	@Override
-	public boolean canRenderOnFire() {
-		return false;
+		effect = compound.getInteger("effect");
 	}
 
 	@Override
@@ -140,7 +131,7 @@ public class EntityCurseBush extends EntityMob {
 			}
 		}
 
-		return processInteract(player, hand);
+		return super.processInteract(player, hand);
 	}
 
 	@Override
@@ -171,10 +162,11 @@ public class EntityCurseBush extends EntityMob {
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if(source.isFireDamage()) setFire(5);
 		return (source == DamageSource.FALLING_BLOCK || source == DamageSource.FLY_INTO_WALL || 
-				source == DamageSource.OUT_OF_WORLD) ? super.attackEntityFrom(source, amount) : false;
+				source == DamageSource.OUT_OF_WORLD) ? super.attackEntityFrom(source, amount) : true;
 	}
 
 	public void transformToBlock() {
+		moveToBlockPosAndAngles(getPosition(), 0, 0);
 		setDead();
 		world.setBlockState(getPosition(), EMBlocks.blockCurseBush.getDefaultState());
 	}
@@ -191,30 +183,6 @@ public class EntityCurseBush extends EntityMob {
 
 	public void setInvade(boolean isInvade) {
 		this.isInvade = isInvade;
-	}
-
-	public boolean isSleep() {
-		return isSleep;
-	}
-
-	public void setSleep(boolean isSleep) {
-		this.isSleep = isSleep;
-	}
-
-	public void setSleepTime(int sleepTime) {
-		this.sleepTime = sleepTime;
-	}
-
-	public int getSleepTime() {
-		return sleepTime;
-	}
-	
-	public boolean isEnableEffect() {
-		return enableEffect;
-	}
-	
-	public void setEnableEffect(boolean enableEffect) {
-		this.enableEffect = enableEffect;
 	}
 
 	@Override
@@ -235,6 +203,14 @@ public class EntityCurseBush extends EntityMob {
 	public void setOrigin(BlockPos pos) {
 		this.dataManager.set(ORIGIN, pos);
 	}
+	
+	public void setEffect(int effect) {
+		this.effect = effect;
+	}
+	
+	public int getEffect() {
+		return effect;
+	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
@@ -254,9 +230,11 @@ public class EntityCurseBush extends EntityMob {
 	public class EntityAITransformToBlock extends EntityAIBase {
 
 		private final EntityCurseBush bush;
+		private int sleepTime;
 
 		public EntityAITransformToBlock(EntityCurseBush bush) {
 			this.bush = bush;
+			sleepTime = 0;
 			setMutexBits(1);
 		}
 
@@ -266,26 +244,20 @@ public class EntityCurseBush extends EntityMob {
 		}
 
 		@Override
-		public void startExecuting() {
-			bush.setSleep(true);
-			bush.setSleepTime(0);
-			bush.setHealth(bush.getMaxHealth());
-		}
-
-		@Override
 		public boolean shouldContinueExecuting() {
 			
 			if(bush.getAttackTarget() != null) {
-				bush.setSleep(false);
-				bush.setSleepTime(0);
+				sleepTime = 0;
 				return false;
 			}
-			
-			bush.setSleepTime(getSleepTime() + 1);
-			if (bush.getSleepTime() > 1000) {
-				bush.transformToBlock();
-				return false;
-			} else return true;
+			else {
+				sleepTime += 1;
+				if (sleepTime > 600) {
+					bush.transformToBlock();
+					return false;
+				}
+				return true;
+			}
 		}
 	}
 
@@ -300,13 +272,14 @@ public class EntityCurseBush extends EntityMob {
 
 		@Override
 		public boolean shouldExecute() {
-			return !bush.isSleep() && bush.getAttackTarget() != null && 
-					bush.getAttackTarget().getDistance(bush) < 2.5F && rand.nextInt(100) > 70;
+			return bush.getEffect() <= 0 && bush.getAttackTarget() != null && 
+			bush.getAttackTarget().getDistance(bush) < 2.5F && rand.nextInt(100) > 70;
 		}
-
+		
 		@Override
-		public void startExecuting() {
-			super.startExecuting();
+		public boolean shouldContinueExecuting() {
+			bush.world.spawnEntity(EMBlocks.blockCurseBush.getAreaEffect(world, bush.getPosition()));
+			return false;
 		}
 	}
 }
