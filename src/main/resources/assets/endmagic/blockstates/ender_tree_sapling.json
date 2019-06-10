@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "tree_type=dragon":  { "model": "endmagic:trees/dragon_sapling" },
+
+    "tree_type=natural":  { "model": "endmagic:trees/natural_sapling" },
+
+    "tree_type=immortal":  { "model": "endmagic:trees/immortal_sapling" },
+
+    "tree_type=phantom":  { "model": "endmagic:trees/phantom_sapling" },
+
+    "inventory,meta=0":  { "model": "endmagic:trees/dragon_sapling" },
+    "inventory,meta=1":  { "model": "endmagic:trees/natural_sapling" },
+    "inventory,meta=2":  { "model": "endmagic:trees/immortal_sapling" },
+    "inventory,meta=3":  { "model": "endmagic:trees/phantom_sapling" }
+  }
+}
