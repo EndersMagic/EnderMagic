@@ -99,11 +99,6 @@ public class BlockCurseBush extends BlockBush {
 	}
 	
     @Override
-    public Block.EnumOffsetType getOffsetType() {
-        return Block.EnumOffsetType.XYZ;
-    }
-	
-    @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return Items.AIR;
     }

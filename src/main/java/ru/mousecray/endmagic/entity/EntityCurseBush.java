@@ -41,7 +41,7 @@ public class EntityCurseBush extends EntityMob {
 	
 	public EntityCurseBush(World world, BlockPos pos) {
 		this(world);
-		setPosition(pos.getX(), pos.getY(), pos.getZ());
+		setPosition(pos.getX()+0.5D, pos.getY()+0.5D, pos.getZ()+0.5D);
 	}
 	
 	@Override
