@@ -74,7 +74,8 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extend
 
     @Override
     public String name() {
-        return NameAndTabUtils.getName(type) + "_log";
+        String rawName = NameAndTabUtils.getName(type);
+        return rawName.substring(0, rawName.lastIndexOf('_')) + "_log";
     }
 
     @Override
@@ -83,6 +84,6 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extend
                 new ModelResourceLocation(getRegistryName(), "inventory"));
         for (int i = 1; i < 4; i++)
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i,
-                    new ModelResourceLocation(getRegistryName(), "inventory,meta="+i));
+                    new ModelResourceLocation(getRegistryName(), "inventory,meta=" + i));
     }
 }
