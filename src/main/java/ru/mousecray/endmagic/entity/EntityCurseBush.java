@@ -78,21 +78,9 @@ public class EntityCurseBush extends EntityMob {
 		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(15.0D);
 		getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
 	}
-
+	
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-		compound.setBoolean("isInvade", isInvade);
-	}
-
-	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
-		isInvade = compound.getBoolean("isInvade");
-	}
-
-	@Override
-	protected boolean processInteract(EntityPlayer player, EnumHand hand) {
+	public boolean processInteract(EntityPlayer player, EnumHand hand) {
 		ItemStack itemstack = player.getHeldItem(hand);
 
 		if (itemstack.getItem() == Items.FLINT_AND_STEEL) {
@@ -120,21 +108,15 @@ public class EntityCurseBush extends EntityMob {
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
-		return true;
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		compound.setBoolean("isInvade", isInvade);
 	}
 
 	@Override
-	public boolean canBePushed() {
-		return false;
-	}
-
-	@Override
-	protected void collideWithNearbyEntities() {}
-
-	@Override
-	protected boolean canTriggerWalking() {
-		return false;
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		isInvade = compound.getBoolean("isInvade");
 	}
 
 	@Override
@@ -208,6 +190,24 @@ public class EntityCurseBush extends EntityMob {
 
 	public void setOrigin(BlockPos pos) {
 		this.dataManager.set(ORIGIN, pos);
+	}
+	
+	@Override
+	public boolean canBeCollidedWith() {
+		return true;
+	}
+
+	@Override
+	public boolean canBePushed() {
+		return false;
+	}
+
+	@Override
+	public void collideWithNearbyEntities() {}
+
+	@Override
+	protected boolean canTriggerWalking() {
+		return false;
 	}
 
 	@Override
