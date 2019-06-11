@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.entity;
 
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -16,6 +17,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
@@ -23,6 +25,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -35,7 +38,6 @@ public class EntityCurseBush extends EntityMob {
 	protected static final DataParameter<BlockPos> ORIGIN = EntityDataManager.<BlockPos>createKey(EntityCurseBush.class, DataSerializers.BLOCK_POS);
 	
 	private boolean isInvade;
-	private int effect;
 	
 	public EntityCurseBush(World world) {
 		super(world);
@@ -43,7 +45,6 @@ public class EntityCurseBush extends EntityMob {
 		setOrigin(new BlockPos(this));
 		setSize(0.98F, 0.98F);
 		isInvade = false;
-		effect = 60;
 	}
 	
 	public EntityCurseBush(World world, BlockPos pos) {
@@ -60,10 +61,10 @@ public class EntityCurseBush extends EntityMob {
 	@Override
 	protected void initEntityAI() {
 		tasks.addTask(1, new EntityAIWanderAvoidWater(this, 1.0D, 0.0F));
-		tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 12.0F));
 		tasks.addTask(3, new EntityAILookIdle(this));
 		tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
-		tasks.addTask(5, new EntityAISpawnAreaEffects(this));
+		tasks.addTask(5, new EntityAIOnBushTargetingEnemy(this));
 		tasks.addTask(6, new EntityAITransformToBlock(this));
 		targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[0]));
 		targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
@@ -72,38 +73,22 @@ public class EntityCurseBush extends EntityMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05D);
-		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(5.0D);
-		getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(0.5D);
+		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
+		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(15.0D);
+		getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
 	}
-	
-	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
-		if(getAttackTarget() != null) {		
-			isInvade = true;
-			getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
-		}
-		else {
-			isInvade = false;
-			getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05D);
-		}
-		
-		if(effect > 0) --effect;
-	}
+
 	@Override
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		compound.setBoolean("isInvade", isInvade);
-		compound.setInteger("effect", effect);
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		isInvade = compound.getBoolean("isInvade");
-		effect = compound.getInteger("effect");
 	}
 
 	@Override
@@ -114,7 +99,7 @@ public class EntityCurseBush extends EntityMob {
 			player.swingArm(hand);
 			if (!this.world.isRemote) {
 				setFire(3);
-				itemstack.damageItem(1, player);
+				itemstack.damageItem(3, player);
 				return true;
 			}
 		}
@@ -124,8 +109,8 @@ public class EntityCurseBush extends EntityMob {
 				NBTTagCompound tag = enchantments.getCompoundTagAt(i);
 				Enchantment itemEnchant = Enchantment.getEnchantmentByID(tag.getShort("id"));
 				if (itemEnchant == Enchantments.SILK_TOUCH)  {
-					damageEntity(DamageSource.MAGIC, 10.0F);
-					itemstack.damageItem(5, player);
+					attackEntityFrom(DamageSource.MAGIC, getMaxHealth());
+					itemstack.damageItem(10, player);
 					return true;
 				}
 			}
@@ -154,21 +139,40 @@ public class EntityCurseBush extends EntityMob {
 
 	@Override
 	public void fall(float distance, float damageMultiplier) {
-		transformToBlock();
 		super.fall(distance, damageMultiplier);
+		transformToBlock();
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if(source.isFireDamage()) setFire(5);
-		return (source == DamageSource.FALLING_BLOCK || source == DamageSource.FLY_INTO_WALL || 
-				source == DamageSource.OUT_OF_WORLD) ? super.attackEntityFrom(source, amount) : true;
+		if(source == DamageSource.GENERIC) {
+			world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, posX, posY, posZ, 5, 5, 5, Block.getStateId(EMBlocks.blockCurseBush.getDefaultState()));
+			if(source.getTrueSource() instanceof EntityPlayer) {
+				EntityPlayer player = (EntityPlayer) source.getTrueSource();
+				ItemStack stack = player.getHeldItem(getActiveHand());
+				if(stack.getItem() instanceof ItemSword) {
+					NBTTagList enchantments = stack.getEnchantmentTagList();
+					for (int i = 0; i < enchantments.tagCount(); ++i) {
+						NBTTagCompound tag = enchantments.getCompoundTagAt(i);
+						Enchantment itemEnchant = Enchantment.getEnchantmentByID(tag.getShort("id"));
+						if (itemEnchant == Enchantments.FIRE_ASPECT) {
+							attackEntityFrom(DamageSource.ON_FIRE, 1.5F * (float)tag.getShort("lvl"));
+							return false;
+						}
+					}
+				}
+			}
+		}
+		if (source.isFireDamage()) setFire(3);
+		if(source.isFireDamage() || source.isMagicDamage()) return super.attackEntityFrom(source, amount);
+		else return false;
 	}
 
-	public void transformToBlock() {
-		moveToBlockPosAndAngles(getPosition(), 0, 0);
+	public boolean transformToBlock() {
+		navigator.tryMoveToXYZ(getPosition().getX()+0.5D, getPosition().getY(), getPosition().getZ()+0.5D, getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
 		setDead();
 		world.setBlockState(getPosition(), EMBlocks.blockCurseBush.getDefaultState());
+		return true;
 	}
 
 	@Override
@@ -183,6 +187,8 @@ public class EntityCurseBush extends EntityMob {
 
 	public void setInvade(boolean isInvade) {
 		this.isInvade = isInvade;
+		if (isInvade) getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.22D);
+		else getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
 	}
 
 	@Override
@@ -203,14 +209,6 @@ public class EntityCurseBush extends EntityMob {
 	public void setOrigin(BlockPos pos) {
 		this.dataManager.set(ORIGIN, pos);
 	}
-	
-	public void setEffect(int effect) {
-		this.effect = effect;
-	}
-	
-	public int getEffect() {
-		return effect;
-	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
@@ -219,7 +217,7 @@ public class EntityCurseBush extends EntityMob {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSource) {
-		return SoundEvents.BLOCK_GRASS_STEP;
+		return SoundEvents.BLOCK_GRASS_BREAK;
 	}
 
 	@Override
@@ -234,52 +232,68 @@ public class EntityCurseBush extends EntityMob {
 
 		public EntityAITransformToBlock(EntityCurseBush bush) {
 			this.bush = bush;
-			sleepTime = 0;
 			setMutexBits(1);
-		}
+		}		
 
 		@Override
 		public boolean shouldExecute() {
-			return bush.getAttackTarget() == null && bush.rand.nextInt(100) > 60;
+			return bush.getAttackTarget() == null && bush.getRNG().nextInt(10) > 5;
+		}
+		
+		@Override
+		public void startExecuting() {
+			sleepTime = 20 + bush.getRNG().nextInt(100);
 		}
 
 		@Override
 		public boolean shouldContinueExecuting() {
-			
-			if(bush.getAttackTarget() != null) {
-				sleepTime = 0;
-				return false;
-			}
-			else {
-				sleepTime += 1;
-				if (sleepTime > 600) {
-					bush.transformToBlock();
-					return false;
-				}
-				return true;
-			}
+			if(bush.getAttackTarget() != null && sleepTime < 600) return true;
+			else return bush.transformToBlock();
+		}
+		
+		@Override
+		public void updateTask() {
+			++sleepTime;
 		}
 	}
 
-	public class EntityAISpawnAreaEffects extends EntityAIBase {
+	public class EntityAIOnBushTargetingEnemy extends EntityAIBase {
 		
 		private final EntityCurseBush bush;
+		private int effect;
 
-		public EntityAISpawnAreaEffects(EntityCurseBush bush) {
+		public EntityAIOnBushTargetingEnemy(EntityCurseBush bush) {
 			this.bush = bush;
 			setMutexBits(3);
 		}
 
 		@Override
 		public boolean shouldExecute() {
-			return bush.getEffect() <= 0 && bush.getAttackTarget() != null && 
-			bush.getAttackTarget().getDistance(bush) < 2.5F && rand.nextInt(100) > 70;
+			return bush.getAttackTarget() != null && bush.getAttackTarget().getDistance(bush) < 5F;
+		}
+		
+		@Override
+		public void startExecuting() {
+			effect = 100 + bush.getRNG().nextInt(100);
+			bush.setInvade(true);
 		}
 		
 		@Override
 		public boolean shouldContinueExecuting() {
-			bush.world.spawnEntity(EMBlocks.blockCurseBush.getAreaEffect(world, bush.getPosition()));
-			return false;
+			if(bush.getAttackTarget() != null && bush.getAttackTarget().getDistance(bush) < 10F) return true;
+			else {
+				setInvade(false);
+				return false;
+			}
+		}
+		
+		@Override
+		public void updateTask() {
+			--effect;
+			if(effect == 0) {
+				effect = 100 + bush.getRNG().nextInt(100);
+				bush.world.spawnEntity(EMBlocks.blockCurseBush.getAreaEffect(world, getPosition()));
+			}
 		}
 	}
 }
