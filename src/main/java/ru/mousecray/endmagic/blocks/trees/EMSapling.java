@@ -25,6 +25,7 @@ import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.util.IEMModel;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
 import ru.mousecray.endmagic.util.NameProvider;
+import ru.mousecray.endmagic.worldgen.WorldGenDragonTree;
 import ru.mousecray.endmagic.worldgen.WorldGenTreesCloud;
 
 import java.util.Arrays;
@@ -75,7 +76,7 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
 
     @Override
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
-        return false;
+        return true;
     }
 
     @Override
@@ -85,7 +86,7 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
 
     @Override
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
-
+        state.getValue(treeType).grow(worldIn, rand, pos, state);
     }
 
 
@@ -135,6 +136,10 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
     public interface SaplingThings {
         default boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
             return worldIn.getBlockState(pos.down()).getBlock() == Blocks.END_STONE;
+        }
+
+        default void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+
         }
     }
 }
