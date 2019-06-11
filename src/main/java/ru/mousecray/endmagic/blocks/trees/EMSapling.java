@@ -52,18 +52,25 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
                 .withProperty(treeType, byIndex.apply(0)));
     }
 
+    @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-        return worldIn.getBlockState(pos).getValue(treeType).canPlaceBlockAt(worldIn, pos);
+        return true;
     }
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        if (!canPlaceBlockAt(worldIn, pos))
+        if (!worldIn.getBlockState(pos).getValue(treeType).canPlaceBlockAt(worldIn, pos)) {
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
             dropBlockAsItem(worldIn, pos, state, 4);
+        }
     }
 
+
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        worldIn.setBlockState(pos, state.withProperty(treeType, byIndex.apply(stack.getItemDamage())));
+        TreeType treeType1 = byIndex.apply(stack.getItemDamage());
+        worldIn.setBlockState(pos, state.withProperty(treeType, treeType1));
+        if (!treeType1.canPlaceBlockAt(worldIn, pos))
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
     }
 
     @Override
