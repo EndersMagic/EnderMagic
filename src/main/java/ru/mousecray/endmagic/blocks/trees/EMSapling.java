@@ -31,6 +31,8 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.function.Function;
 
+import static net.minecraft.block.BlockSapling.SAPLING_AABB;
+
 public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & EMSapling.SaplingThings> extends BlockBush implements IGrowable, NameProvider, IEMModel {
     private final IProperty<TreeType> treeType;
     private final Function<Integer, TreeType> byIndex;
@@ -78,10 +80,12 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
 
     }
-    protected static AxisAlignedBB SAPLING_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
+
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {return SAPLING_AABB;}
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return SAPLING_AABB;
+    }
 
     @Override
     public String name() {
