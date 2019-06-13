@@ -3,6 +3,7 @@ package ru.mousecray.endmagic.init;
 import codechicken.lib.packet.PacketCustom;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,6 +25,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -33,12 +35,72 @@ import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import static ru.mousecray.endmagic.worldgen.WorldGenDragonTreeWorld.walkAround;
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
+    @SubscribeEvent
+    public static void onFurnacePlaced(BlockEvent.PlaceEvent event) {
+        if (event.getState().getBlock() == Blocks.FURNACE) {
+            EnumFacing direction = event.getState().getValue(BlockFurnace.FACING);
+            EnumFacing ground = Arrays.stream(EnumFacing.HORIZONTALS)
+                    .filter(side -> event.getWorld().getBlockState(event.getPos().offset(side)).getBlock() == Blocks.END_STONE).findFirst().get();
+
+            event.getWorld().setBlockToAir(event.getPos());
+
+
+            Stream<BlockPos> blockPosStream = walkAround(
+                    event.getWorld(),
+                    event.getPos(),
+                    direction,
+                    ground.getOpposite(),
+                    0
+            );
+
+            Stream<BlockPos> blockPosStream1 = takeWhile(blockPosStream, blockPos -> !blockPos.equals(event.getPos().offset(direction.getOpposite())));
+
+            List<BlockPos> collect = blockPosStream1.collect(Collectors.toList());
+            System.out.println(collect);
+            collect
+                    .forEach(pos -> {
+                        event.getWorld().setBlockState(pos, Blocks.WOOL.getDefaultState());
+                    });
+        }
+
+    }
+
+    static <T> Spliterator<T> takeWhile(
+            Spliterator<T> splitr, Predicate<? super T> predicate) {
+        return new Spliterators.AbstractSpliterator<T>(splitr.estimateSize(), 0) {
+            boolean stillGoing = true;
+
+            @Override
+            public boolean tryAdvance(Consumer<? super T> consumer) {
+                if (stillGoing) {
+                    boolean hadNext = splitr.tryAdvance(elem -> {
+                        if (predicate.test(elem)) {
+                            consumer.accept(elem);
+                        } else {
+                            stillGoing = false;
+                        }
+                    });
+                    return hadNext && stillGoing;
+                }
+                return false;
+            }
+        };
+    }
+
+    static <T> Stream<T> takeWhile(Stream<T> stream, Predicate<? super T> predicate) {
+        return StreamSupport.stream(takeWhile(stream.spliterator(), predicate), false);
+    }
 
     @SubscribeEvent
     public static void onPlayerEnter(EntityJoinWorldEvent event) {
