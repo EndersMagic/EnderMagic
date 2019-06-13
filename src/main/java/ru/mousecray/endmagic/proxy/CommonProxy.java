@@ -26,6 +26,7 @@ import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
+import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
 
 import javax.annotation.Nullable;
 import java.util.LinkedList;
@@ -107,6 +108,7 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void init(FMLInitializationEvent event) {
+        GameRegistry.registerWorldGenerator(new WorldGenEnderTrees(), 10);
     }
 
     public void postInit(FMLPostInitializationEvent event) {

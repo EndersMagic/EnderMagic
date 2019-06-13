@@ -6,6 +6,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import ru.mousecray.endmagic.init.EMBlocks;
 
@@ -54,7 +56,6 @@ public class WorldGenDragonTree extends WorldGenAbstractTree {
             BlockPos current = position.offset(direction, i);
 
             if (i == 0 || i == size - 1) {
-                System.out.println(i);
                 int i1 = min(size - i, 2);
                 ImmutableList.of(side, oppositeSide, EnumFacing.UP, EnumFacing.DOWN)
                         .forEach(enumFacing -> generateLeaves(worldIn, rand, current, enumFacing, i1));
@@ -80,7 +81,6 @@ public class WorldGenDragonTree extends WorldGenAbstractTree {
             for (int y = -diameter; y <= diameter; y++) {
                 BlockPos vertical = position.offset(EnumFacing.UP, y).offset(direction, i);
                 for (int x = min(diameter - abs(y) + 1, diameter); x >= 1; x--) {
-                    System.out.println(x);
                     generateOneLeaves(worldIn, vertical.offset(side, x));
                     generateOneLeaves(worldIn, vertical.offset(oppositeSide, x));
                 }
@@ -127,10 +127,13 @@ public class WorldGenDragonTree extends WorldGenAbstractTree {
 
     }
 
-    private Optional<EnumFacing> findDirection(World worldIn, BlockPos position) {
+    public static Optional<EnumFacing> findDirection(World worldIn, BlockPos position) {
         return Arrays.stream(EnumFacing.HORIZONTALS)
                 .filter(i -> worldIn.getBlockState(position.offset(i)).getBlock() == Blocks.END_STONE)
                 .map(EnumFacing::getOpposite)
                 .findFirst();
+    }
+
+    public void generateWorld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
     }
 }
