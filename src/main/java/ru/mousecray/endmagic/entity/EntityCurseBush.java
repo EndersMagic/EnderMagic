@@ -73,7 +73,7 @@ public class EntityCurseBush extends EntityMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
 		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.1D);
 		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(15.0D);
 		getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
@@ -127,26 +127,26 @@ public class EntityCurseBush extends EntityMob {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if(source == DamageSource.GENERIC) {
-			world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, posX, posY, posZ, 5, 5, 5, Block.getStateId(EMBlocks.blockCurseBush.getDefaultState()));
-			if(source.getTrueSource() instanceof EntityPlayer) {
-				EntityPlayer player = (EntityPlayer) source.getTrueSource();
-				ItemStack stack = player.getHeldItem(getActiveHand());
-				if(stack.getItem() instanceof ItemSword) {
-					NBTTagList enchantments = stack.getEnchantmentTagList();
-					for (int i = 0; i < enchantments.tagCount(); ++i) {
-						NBTTagCompound tag = enchantments.getCompoundTagAt(i);
-						Enchantment itemEnchant = Enchantment.getEnchantmentByID(tag.getShort("id"));
-						if (itemEnchant == Enchantments.FIRE_ASPECT) {
-							attackEntityFrom(DamageSource.ON_FIRE, 1.5F * (float)tag.getShort("lvl"));
-							return false;
-						}
+		if(source.getTrueSource() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) source.getTrueSource();
+			ItemStack stack = player.getHeldItem(getActiveHand());
+			if(stack.getItem() instanceof ItemSword) {
+				NBTTagList enchantments = stack.getEnchantmentTagList();
+				for (int i = 0; i < enchantments.tagCount(); ++i) {
+					NBTTagCompound tag = enchantments.getCompoundTagAt(i);
+					Enchantment itemEnchant = Enchantment.getEnchantmentByID(tag.getShort("id"));
+					if (itemEnchant == Enchantments.FIRE_ASPECT) {
+						attackEntityFrom(DamageSource.IN_FIRE, (float)tag.getShort("lvl"));
+						return false;
 					}
 				}
 			}
 		}
-		if (source.isFireDamage()) setFire(3);
-		if(source.isFireDamage() || source.isMagicDamage()) return super.attackEntityFrom(source, amount);
+		if(source.isFireDamage() || source.isMagicDamage()) {
+			for(int i = 0; i <)
+			world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, posX, posY, posZ, 5, 5, 5, Block.getStateId(EMBlocks.blockCurseBush.getDefaultState()));
+			return super.attackEntityFrom(source, amount);
+		}
 		else return false;
 	}
 
@@ -217,12 +217,12 @@ public class EntityCurseBush extends EntityMob {
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSource) {
-		return SoundEvents.BLOCK_GRASS_BREAK;
+		return SoundEvents.BLOCK_GRASS_FALL;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.BLOCK_GRASS_FALL;
+		return SoundEvents.BLOCK_GRASS_BREAK;
 	}
 
 	public class EntityAITransformToBlock extends EntityAIBase {
@@ -232,12 +232,12 @@ public class EntityCurseBush extends EntityMob {
 
 		public EntityAITransformToBlock(EntityCurseBush bush) {
 			this.bush = bush;
-			setMutexBits(1);
+			setMutexBits(5);
 		}		
 
 		@Override
 		public boolean shouldExecute() {
-			return bush.getAttackTarget() == null && bush.getRNG().nextInt(10) > 5;
+			return bush.getAttackTarget() == null;
 		}
 		
 		@Override
@@ -247,7 +247,8 @@ public class EntityCurseBush extends EntityMob {
 
 		@Override
 		public boolean shouldContinueExecuting() {
-			if(bush.getAttackTarget() != null && sleepTime < 600) return true;
+			if(bush.getAttackTarget() != null) return false;		
+			if(sleepTime < 600) return true;
 			else return bush.transformToBlock();
 		}
 		
@@ -269,18 +270,18 @@ public class EntityCurseBush extends EntityMob {
 
 		@Override
 		public boolean shouldExecute() {
-			return bush.getAttackTarget() != null && bush.getAttackTarget().getDistance(bush) < 5F;
+			return bush.getAttackTarget() != null && bush.getAttackTarget().getDistance(bush) < 8F;
 		}
 		
 		@Override
 		public void startExecuting() {
-			effect = 100 + bush.getRNG().nextInt(100);
+			effect = 50 + bush.getRNG().nextInt(50);
 			bush.setInvade(true);
 		}
 		
 		@Override
 		public boolean shouldContinueExecuting() {
-			if(bush.getAttackTarget() != null && bush.getAttackTarget().getDistance(bush) < 10F) return true;
+			if(bush.getAttackTarget() != null && bush.getAttackTarget().getDistance(bush) < 8F) return true;
 			else {
 				setInvade(false);
 				return false;
@@ -290,9 +291,9 @@ public class EntityCurseBush extends EntityMob {
 		@Override
 		public void updateTask() {
 			--effect;
-			if(effect == 0) {
-				effect = 100 + bush.getRNG().nextInt(100);
+			if(effect <= 0) {
 				bush.world.spawnEntity(EMBlocks.blockCurseBush.getAreaEffect(world, getPosition()));
+				effect = 100 + bush.getRNG().nextInt(100);
 			}
 		}
 	}
