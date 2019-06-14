@@ -7,10 +7,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import ru.mousecray.endmagic.worldgen.WorldGenDragonTree;
 
 import java.util.Arrays;
-import java.util.Random;
 
 public enum EnderTreeType implements IStringSerializable, EMSapling.SaplingThings {
     DRAGON("dragon", MapColor.PURPLE) {
@@ -20,11 +18,6 @@ public enum EnderTreeType implements IStringSerializable, EMSapling.SaplingThing
                     .map(worldIn::getBlockState)
                     .map(IBlockState::getBlock)
                     .anyMatch(Blocks.END_STONE::equals);
-        }
-
-        @Override
-        public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
-            new WorldGenDragonTree(true).generate(worldIn, rand, pos);
         }
     },
     NATURAL("natural", MapColor.BLUE),

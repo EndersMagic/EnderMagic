@@ -1,77 +1,43 @@
 package ru.mousecray.endmagic.blocks.trees;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import ru.mousecray.endmagic.client.render.model.IModelRegistration;
-import ru.mousecray.endmagic.util.IEMModel;
-import ru.mousecray.endmagic.util.NameAndTabUtils;
-import ru.mousecray.endmagic.util.NameProvider;
+import net.minecraftforge.common.IShearable;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import ru.mousecray.endmagic.blocks.VariativeBlock;
+import ru.mousecray.endmagic.init.EMBlocks;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> extends BlockLeaves implements NameProvider, IEMModel {
-    private final IProperty<TreeType> treeType;
-    private final Function<Integer, TreeType> byIndex;
-    private final Class<TreeType> type;
+public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> extends VariativeBlock<TreeType> implements IShearable {
 
     public EMLeaves(Class<TreeType> type, Function<Integer, TreeType> byIndex) {
-        super();
-        this.type = type;
-        treeType = PropertyEnum.create("tree_type", type);
-        this.byIndex = byIndex;
+        super(type, byIndex, Material.LEAVES, "_leaves");
 
-        //super
-        blockState = new BlockStateContainer(this, treeType);
-        //
-
-        setDefaultState(blockState.getBaseState()
-                .withProperty(treeType, byIndex.apply(0)));
-    }
-
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        worldIn.setBlockState(pos, state.withProperty(treeType, byIndex.apply(stack.getItemDamage())));
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (int i = 0; i < 4; i++)
-            items.add(new ItemStack(this, 1, i));
-    }
-
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        int type = meta & 3;
-        return getDefaultState()
-                .withProperty(treeType, byIndex.apply(type));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(treeType).ordinal();
+        setTickRandomly(true);
+        setHardness(0.2F);
+        setLightOpacity(1);
+        setSoundType(SoundType.PLANT);
     }
 
     @Override
@@ -79,24 +45,48 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
         return new BlockStateContainer(this);
     }
 
-    @Override
-    public String name() {
-        String rawName = NameAndTabUtils.getName(type);
-        return rawName.substring(0, rawName.lastIndexOf('_')) + "_leaves";
+    public int quantityDropped(Random random) {
+        return random.nextInt(20) == 0 ? 1 : 0;
+    }
+
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return Item.getItemFromBlock(EMBlocks.enderSapling);
     }
 
     @Override
-    public void registerModels(IModelRegistration modelRegistration) {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
-                new ModelResourceLocation(getRegistryName(), "inventory"));
-        for (int i = 1; i < 4; i++)
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i,
-                    new ModelResourceLocation(getRegistryName(), "inventory,meta=" + i));
+    public int damageDropped(IBlockState state) {
+        return state.getValue(blockType).ordinal();
     }
 
     @Override
-    public BlockPlanks.EnumType getWoodType(int meta) {
-        return null;
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        Blocks.LEAVES.getDrops(drops, world, pos, state, fortune);
+    }
+
+    @Override
+    public boolean isShearable(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos) {
+        return item.getItem().getRegistryName().getResourcePath().contains("shears");
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return !Minecraft.getMinecraft().gameSettings.fancyGraphics;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() {
+        return Minecraft.getMinecraft().gameSettings.fancyGraphics ? BlockRenderLayer.CUTOUT_MIPPED : BlockRenderLayer.SOLID;
+    }
+
+    @Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        return Blocks.LEAVES.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 
     @Nonnull
@@ -104,7 +94,7 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
     public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
         return ImmutableList.of(new ItemStack(
                 Item.getItemFromBlock(this), 1,
-                world.getBlockState(pos).getValue(treeType).ordinal()));
+                damageDropped(world.getBlockState(pos))));
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
@@ -122,16 +112,22 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
     }
 
     private Stream<BlockPos> findingArea(BlockPos pos) {
-        return IntStream.range(-5,5)
-                .mapToObj(x->
-                        IntStream.range(-5,5)
-                                .mapToObj(y->
-                                        IntStream.range(-5,5)
-                                                .mapToObj(z->
-                                                        pos.add(x,y,z))).flatMap(Function.identity())).flatMap(Function.identity());
+        return IntStream.range(-5, 5)
+                .mapToObj(x ->
+                        IntStream.range(-5, 5)
+                                .mapToObj(y ->
+                                        IntStream.range(-5, 5)
+                                                .mapToObj(z ->
+                                                        pos.add(x, y, z))).flatMap(Function.identity())).flatMap(Function.identity());
     }
 
     @Override
     public void beginLeavesDecay(IBlockState state, World world, BlockPos pos) {
+    }
+
+
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+        Blocks.LEAVES.randomDisplayTick(stateIn, worldIn, pos, rand);
     }
 }
