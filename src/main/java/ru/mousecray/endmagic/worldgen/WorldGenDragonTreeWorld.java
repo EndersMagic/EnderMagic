@@ -80,9 +80,6 @@ public class WorldGenDragonTreeWorld {
     public static Stream<BlockPos> walkAround(World world, BlockPos current, EnumFacing dirrection, EnumFacing up, int step) {
         return Stream.iterate(new TraverseState(current, dirrection, up, 0),
                 state -> {
-
-                    System.out.println(world.getBlockState(state.current));
-
                     if (world.getBlockState(state.current.offset(state.ground)).getBlock() == END_STONE) {
                         BlockPos next = state.current.offset(state.dirrection);
                         if (world.isAirBlock(next))
