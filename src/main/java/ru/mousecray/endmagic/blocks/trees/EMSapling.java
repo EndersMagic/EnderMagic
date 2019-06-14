@@ -1,11 +1,13 @@
 package ru.mousecray.endmagic.blocks.trees;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -24,7 +26,7 @@ import java.util.function.Function;
 
 import static net.minecraft.block.BlockSapling.SAPLING_AABB;
 
-public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable> extends VariativeBlock<TreeType> implements IGrowable {
+public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & EMSapling.SaplingThings> extends VariativeBlock<TreeType> implements IGrowable {
 
     public EMSapling(Class<TreeType> type, Function<Integer, TreeType> byIndex) {
         super(type, byIndex, Material.PLANTS, "_sapling");
@@ -32,13 +34,30 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable> ex
         setTickRandomly(true);
     }
 
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        return true;
+    }
+
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (!worldIn.getBlockState(pos).getValue(blockType).canPlaceBlockAt(worldIn, pos)) {
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+            dropBlockAsItem(worldIn, pos, state, 4);
+        }
+    }
+
+
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        worldIn.setBlockState(pos, state.withProperty(blockType, byIndex.apply(stack.getItemDamage())));
+        TreeType blockType1 = byIndex.apply(stack.getItemDamage());
+        worldIn.setBlockState(pos, state.withProperty(blockType, blockType1));
+        if (!blockType1.canPlaceBlockAt(worldIn, pos))
+            worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
     }
 
     @Override
     public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
-        return false;
+        return true;
     }
 
     @Override
@@ -81,5 +100,15 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable> ex
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this);
+    }
+
+    public interface SaplingThings {
+        default boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+            return worldIn.getBlockState(pos.down()).getBlock() == Blocks.END_STONE;
+        }
+
+        default void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+
+        }
     }
 }
