@@ -66,7 +66,7 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
 
     @Override
     public boolean isShearable(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos) {
-        return item.getItem().getRegistryName().getResourcePath().contains("shears ");
+        return item.getItem().getRegistryName().getResourcePath().contains("shears");
     }
 
     @Override
