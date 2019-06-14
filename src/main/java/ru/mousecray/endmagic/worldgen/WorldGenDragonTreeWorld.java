@@ -84,8 +84,12 @@ public class WorldGenDragonTreeWorld {
                         BlockPos next = state.current.offset(state.dirrection);
                         if (world.isAirBlock(next))
                             return new TraverseState(next, state.dirrection, state.up, state.stepCount + 1);
-                        else
-                            return new TraverseState(state.current.offset(state.up), state.up, state.dirrection.getOpposite(), state.stepCount + 1);
+                        else {
+                            if (world.isAirBlock(state.current.offset(state.up)))
+                                return new TraverseState(state.current.offset(state.up), state.up, state.dirrection.getOpposite(), state.stepCount + 1);
+                            else
+                                return new TraverseState(state.current.offset(state.dirrection.getOpposite()), state.dirrection.getOpposite(), state.ground, state.stepCount + 1);
+                        }
                     } else
                         return new TraverseState(state.current.offset(state.ground), state.ground, state.dirrection, state.stepCount + 1);
                 }).map(TraverseState::getCurrent);
