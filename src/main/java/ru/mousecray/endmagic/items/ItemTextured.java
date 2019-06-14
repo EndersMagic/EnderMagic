@@ -1,6 +1,9 @@
 package ru.mousecray.endmagic.items;
 
+import java.util.Map;
+
 import com.google.common.collect.ImmutableMap;
+
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -8,10 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
-import ru.mousecray.endmagic.util.CreativeTabProvider;
 import ru.mousecray.endmagic.util.IEMModel;
-
-import java.util.Map;
 
 public interface ItemTextured extends IEMModel {
 

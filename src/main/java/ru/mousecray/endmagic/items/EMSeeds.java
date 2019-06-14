@@ -1,6 +1,9 @@
 package ru.mousecray.endmagic.items;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -19,10 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import ru.mousecray.endmagic.util.NameProvider;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map;
 
 public class EMSeeds extends Item implements IPlantable, NameProvider, ItemOneWhiteEMTextured {
 

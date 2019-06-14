@@ -1,8 +1,6 @@
 package ru.mousecray.endmagic.util.elix_x.ecomms.pipeline.list;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import ru.mousecray.endmagic.util.elix_x.ecomms.pipeline.PipelineElement;
 
