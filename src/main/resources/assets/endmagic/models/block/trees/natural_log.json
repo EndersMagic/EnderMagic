@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "endmagic:blocks/trees/natural_log_top",
+    "side": "endmagic:blocks/trees/natural_log"
+  }
+}
