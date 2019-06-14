@@ -38,9 +38,6 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
         setHardness(0.2F);
         setLightOpacity(1);
         setSoundType(SoundType.PLANT);
-
-        setDefaultState(blockState.getBaseState()
-                .withProperty(blockType, byIndex.apply(0)));
     }
 
     @Override
