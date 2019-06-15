@@ -43,7 +43,7 @@ public class WorldGenDragonTreeWorld {
                         new BlockPos(startX + 15, 50, startZ + 15),
                         pos -> {
                             if (chunk.getBlockState(pos).getBlock() == END_STONE && aroundBlocks(chunk, pos, AIR, 4, alreadyChecked)) {
-                                if (random.nextInt(100) == 0) {
+                                if (random.nextInt(40) == 0) {
                                     EnumFacing direction = logDirection(chunk, pos).getOpposite();
                                     BlockLog.EnumAxis value = BlockLog.EnumAxis.fromFacingAxis(direction.getAxis());
                                     //if (value != BlockLog.EnumAxis.Y)
