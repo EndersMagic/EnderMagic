@@ -1,6 +1,6 @@
 package ru.mousecray.endmagic.worldgen;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Block;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -8,10 +8,12 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.stream.Stream;
 
-import static net.minecraft.init.Blocks.END_STONE;
+import static net.minecraft.init.Blocks.*;
 
 public class WorldGenDragonTreeWorld {
     private WorldGenDragonTree generator = new WorldGenDragonTree(true);
@@ -31,13 +33,32 @@ public class WorldGenDragonTreeWorld {
                     for (int z = startZ; z < startZ + 16; z++) {
                         for (int y = 30; y < 50; y++) {
                             pos.setPos(x, y, z);
-                            if (chunk.getBlockState(pos).getBlock().isAir(chunk.getBlockState(pos), world, pos))
-                                chunk.setBlockState(pos, Blocks.GLASS.getDefaultState());
+                            if (chunk.getBlockState(pos).getBlock() == END_STONE && aroundBlocks(chunk, pos, AIR, 4, new HashSet<>())) {
+                                chunk.setBlockState(pos, GLASS.getDefaultState());
+                            }
                         }
                     }
                 }
             }
         }
+    }
+
+    public static boolean aroundBlocks(Chunk chunk, BlockPos pos, Block air, int n, HashSet<BlockPos> alreadyChecked) {
+        alreadyChecked.add(pos);
+        if (n == 0)
+            return true;
+        else {
+            return Arrays.stream(EnumFacing.values())
+                    .map(pos::offset)
+                    .filter(i -> chunkContains(chunk, i))
+                    .filter(i -> !alreadyChecked.contains(i))
+                    .anyMatch(i -> chunk.getBlockState(i).getBlock() == air && aroundBlocks(chunk, i, air, n - 1, alreadyChecked));
+        }
+    }
+
+    private static boolean chunkContains(Chunk chunk, BlockPos pos) {
+        return chunk.getPos().getXStart() <= pos.getX() && chunk.getPos().getXEnd() >= pos.getX() &&
+                chunk.getPos().getZStart() <= pos.getZ() && chunk.getPos().getZEnd() >= pos.getZ();
     }
 
 
