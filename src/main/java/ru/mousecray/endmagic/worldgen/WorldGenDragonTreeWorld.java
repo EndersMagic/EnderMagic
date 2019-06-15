@@ -32,17 +32,16 @@ public class WorldGenDragonTreeWorld {
     //3;minecraft:bedrock,2*minecraft:dirt,minecraft:end_portal;1;
 
     public void generateWorld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        HashSet<BlockPos> alreadyChecked = new HashSet<>();
         if (chunkX * chunkX + chunkZ * chunkZ < centralIslandSize * centralIslandSize) {
-            if (!world.getChunkFromChunkCoords(chunkX, chunkZ).isEmpty()) {
-                BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+            Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
+            if (!chunk.isEmpty()) {
                 int startX = chunkX << 4;
                 int startZ = chunkZ << 4;
-                Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
-                for (int x = startX; x < startX + 16; x++) {
-                    for (int z = startZ; z < startZ + 16; z++) {
-                        for (int y = 30; y < 50; y++) {
-                            pos.setPos(x, y, z);
+                HashSet<BlockPos> alreadyChecked = new HashSet<>();
+                generateInArea(
+                        new BlockPos(startX, 30, startZ),
+                        new BlockPos(startX + 15, 50, startZ + 15),
+                        pos -> {
                             if (chunk.getBlockState(pos).getBlock() == END_STONE && aroundBlocks(chunk, pos, AIR, 4, alreadyChecked)) {
                                 if (random.nextInt(100) == 0) {
                                     EnumFacing direction = logDirection(chunk, pos).getOpposite();
@@ -57,8 +56,7 @@ public class WorldGenDragonTreeWorld {
                             }
                             alreadyChecked.clear();
                         }
-                    }
-                }
+                );
             }
         }
     }
@@ -91,16 +89,25 @@ public class WorldGenDragonTreeWorld {
         }
     }
 
+    public static void generateInArea(BlockPos start, BlockPos end, Consumer<BlockPos> generate) {
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        for (int x = start.getX(); x <= end.getX(); x++) {
+            for (int z = start.getZ(); z <= end.getZ(); z++) {
+                for (int y = start.getY(); y <= end.getY(); y++) {
+                    pos.setPos(x, y, z);
+                    generate.accept(pos);
+                }
+            }
+        }
+    }
 
     public static void spreadOut(Chunk chunk, BlockPos startPos, IBlockState block, Block air, int lvl) {
         HashSet<BlockPos> alreadyChecked = new HashSet<>();
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        for (int x = startPos.getX() - lvl; x <= startPos.getX() + lvl; x++) {
-            for (int z = startPos.getZ() - lvl; z <= startPos.getZ() + lvl; z++) {
-                for (int y = startPos.getY() - lvl; y <= startPos.getY() + lvl; y++) {
-                    pos.setPos(x, y, z);
+        generateInArea(
+                new BlockPos(startPos.getX() - lvl, startPos.getY() - lvl, startPos.getZ() - lvl),
+                new BlockPos(startPos.getX() + lvl, startPos.getY() + lvl, startPos.getZ() + lvl),
+                pos -> {
                     if (/*chunkContains(chunk, pos) && */pos.distanceSq(startPos) < lvl * lvl) {
-
                         if (chunk.getBlockState(pos).getBlock() != air && aroundBlocks(chunk, pos, air, 1, alreadyChecked)) {
                             Arrays.stream(EnumFacing.values())
                                     .map(pos::offset)
@@ -109,11 +116,9 @@ public class WorldGenDragonTreeWorld {
                                     .forEach(i -> chunk.getWorld().setBlockState(i, block));
                         }
                         alreadyChecked.clear();
-
                     }
                 }
-            }
-        }
+        );
     }
 
     private static class IgnoreOneBlockPos extends BlockPos {
