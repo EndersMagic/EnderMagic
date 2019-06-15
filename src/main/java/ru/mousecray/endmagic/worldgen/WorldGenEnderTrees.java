@@ -12,7 +12,6 @@ public class WorldGenEnderTrees implements IWorldGenerator {
 
     private WorldGenDragonTreeWorld dragonGenerator = new WorldGenDragonTreeWorld();
     private WorldGenTest generatorTest = new WorldGenTest(false);
-    private int centralIslandSize = 30;
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
