@@ -101,23 +101,27 @@ public class WorldGenDragonTreeWorld {
         }
     }
 
-    public static void spreadOut(Chunk chunk, BlockPos startPos, IBlockState block, Block air, int lvl) {
+    public static void spreadOut(Chunk chunk, BlockPos startPos, IBlockState block, Block air, int lvl, double chance) {
         HashSet<BlockPos> alreadyChecked = new HashSet<>();
+        List<BlockPos> setLeaves = new ArrayList<>();
         generateInArea(
                 new BlockPos(startPos.getX() - lvl, startPos.getY() - lvl, startPos.getZ() - lvl),
                 new BlockPos(startPos.getX() + lvl, startPos.getY() + lvl, startPos.getZ() + lvl),
                 pos -> {
-                    if (/*chunkContains(chunk, pos) && */pos.distanceSq(startPos) < lvl * lvl && chunk.getWorld().isAirBlock(pos)) {
-                        chunk.getWorld().setBlockState(pos, block);
-                        /*
-                        if (chunk.getBlockState(pos).getBlock() != air && aroundBlocks(chunk, pos, air, 1, alreadyChecked)) {
+                    if (/*chunkContains(chunk, pos) && */pos.distanceSq(startPos) < lvl * lvl) {
+                        if (!chunk.getWorld().isAirBlock(pos) && aroundBlocks(chunk, pos, air, 1, alreadyChecked)) {
+                            //chunk.getWorld().setBlockState(pos, REDSTONE_BLOCK.getDefaultState());
                             Arrays.stream(EnumFacing.values())
                                     .map(pos::offset)
                                     //.filter(i -> chunkContains(chunk, i))
                                     .filter(i -> chunk.getWorld().getBlockState(i).getBlock() == air)
-                                    .forEach(i -> chunk.getWorld().setBlockState(i, block));
+                                    /*.filter(i -> {
+                                        double t = TREE_NOISE.getValue(i.getX() * 10, i.getZ() * 10);
+                                        return t < 0;
+                                    })*/
+                                    .forEach(setLeaves::add);
                         }
-                        alreadyChecked.clear();*/
+                        alreadyChecked.clear();
                     }
                 }
         );
@@ -193,6 +197,7 @@ public class WorldGenDragonTreeWorld {
         public IgnoreOneBlockPos offset(EnumFacing facing, int n) {
             return n == 0 ? this : new IgnoreOneBlockPos(getX() + facing.getFrontOffsetX() * n, getY() + facing.getFrontOffsetY() * n, getZ() + facing.getFrontOffsetZ() * n, ignoreCoord);
         }
+        setLeaves.forEach(i -> chunk.getWorld().setBlockState(i, block));
     }
 
     private static int dotProduct(Vec3i a, Vec3i b) {
