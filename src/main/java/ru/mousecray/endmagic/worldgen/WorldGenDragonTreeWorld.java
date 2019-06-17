@@ -11,6 +11,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
+import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.init.EMBlocks;
 
 import java.util.*;
@@ -18,8 +19,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static net.minecraft.block.BlockLog.LOG_AXIS;
-import static net.minecraft.init.Blocks.AIR;
-import static net.minecraft.init.Blocks.END_STONE;
+import static net.minecraft.init.Blocks.*;
 
 public class WorldGenDragonTreeWorld {
 
@@ -30,7 +30,7 @@ public class WorldGenDragonTreeWorld {
     private IBlockState enderLog = EMBlocks.enderLog.getDefaultState();
     private IBlockState enderLeaves = EMBlocks.enderLeaves.getDefaultState();
 
-    private int centralIslandSize = 9;
+    public static int centralIslandSize = 9;
     //3;minecraft:bedrock,2*minecraft:dirt,minecraft:end_portal;1;
 
     public void generateWorld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
@@ -45,16 +45,18 @@ public class WorldGenDragonTreeWorld {
                         new BlockPos(startX + 15, 50, startZ + 15),
                         pos -> {
                             if (random.nextInt(40) == 0) {
-                                if (chunk.getBlockState(pos).getBlock() == END_STONE && aroundBlocks(chunk, pos, AIR, 4, alreadyChecked)) {
-                                    EnumFacing direction = logDirection(chunk, pos).getOpposite();
-                                    BlockLog.EnumAxis value = BlockLog.EnumAxis.fromFacingAxis(direction.getAxis());
-                                    //if (value != BlockLog.EnumAxis.Y)
 
-                                    int lvl = 2 + random.nextInt(3);
-                                    for (int i = 0; i < lvl; i++)
-                                        chunk.setBlockState(pos.offset(direction, i), enderLog.withProperty(LOG_AXIS, value));
+                                EnumFacing direction = logDirection(world, pos).getOpposite();
+                                BlockLog.EnumAxis value = BlockLog.EnumAxis.fromFacingAxis(direction.getAxis());
+                                if (value != BlockLog.EnumAxis.Y) {
+                                    if (world.getBlockState(pos).getBlock() == END_STONE && aroundBlocks(world, pos, AIR, 4, alreadyChecked)) {
 
-                                    generateLeaveaAround(chunk, pos.offset(direction), lvl);
+                                        int lvl = 2 + random.nextInt(3);
+                                        for (int i = 0; i < lvl; i++)
+                                            world.setBlockState(pos.offset(direction, i), enderLog.withProperty(LOG_AXIS, value), 18);
+
+                                        generateLeaveaAround(world, pos.offset(direction), lvl);
+                                    }
                                 }
 
                             }
@@ -65,30 +67,29 @@ public class WorldGenDragonTreeWorld {
         }
     }
 
-    private void generateLeaveaAround(Chunk chunk, BlockPos pos, int lvl) {
-        spreadOut(chunk, pos, enderLeaves, AIR, lvl, 1);
-        spreadOut(chunk, pos, enderLeaves, AIR, lvl, 1);
-        spreadOut(chunk, pos, enderLeaves, AIR, lvl, 0.3);
+    private void generateLeaveaAround(World world, BlockPos pos, int lvl) {
+        spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3);
+        spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3);
+        spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3);
     }
 
-    private EnumFacing logDirection(Chunk chunk, BlockPos pos) {
+    private EnumFacing logDirection(World world, BlockPos pos) {
         return
                 Arrays.stream(EnumFacing.values())
-                        .filter((i -> chunk.getBlockState(pos.offset(i)).getBlock() == AIR))
+                        .filter((i -> world.getBlockState(pos.offset(i)).getBlock() == AIR))
                         .findAny()
                         .orElse(EnumFacing.UP);
     }
 
-    public static boolean aroundBlocks(Chunk chunk, BlockPos pos, Block air, int n, HashSet<BlockPos> alreadyChecked) {
+    public static boolean aroundBlocks(World world, BlockPos pos, Block air, int n, HashSet<BlockPos> alreadyChecked) {
         alreadyChecked.add(pos);
         if (n == 0)
             return true;
         else {
             return Arrays.stream(EnumFacing.values())
                     .map(pos::offset)
-                    .filter(i -> chunkContains(chunk, i))
                     .filter(i -> !alreadyChecked.contains(i))
-                    .anyMatch(i -> chunk.getBlockState(i).getBlock() == air && aroundBlocks(chunk, i, air, n - 1, alreadyChecked));
+                    .anyMatch(i -> world.getBlockState(i).getBlock() == air && aroundBlocks(world, i, air, n - 1, alreadyChecked));
         }
     }
 
@@ -104,9 +105,9 @@ public class WorldGenDragonTreeWorld {
         }
     }
 
-    public static void spreadOut(Chunk chunk, BlockPos startPos, IBlockState block, Block air, int lvl, double chance) {
+    public static boolean[][][] spreadOut(World world, BlockPos startPos, IBlockState block, Block air, int lvl, double chance) {
         HashSet<BlockPos> alreadyChecked = new HashSet<>();
-        List<BlockPos> setLeaves = new ArrayList<>();
+        List<Pair<BlockPos, IBlockState>> setLeaves = new ArrayList<>();
 
         int areaSize = lvl * 2 + 1;
         boolean[][][] marks = new boolean[areaSize][areaSize][areaSize];
@@ -116,22 +117,20 @@ public class WorldGenDragonTreeWorld {
                 new BlockPos(startPos.getX() + lvl, startPos.getY() + lvl, startPos.getZ() + lvl),
                 pos -> {
                     if (/*chunkContains(chunk, pos) && */pos.distanceSq(startPos) < lvl * lvl) {
-                        if (!chunk.getWorld().isAirBlock(pos) && aroundBlocks(chunk, pos, air, 1, alreadyChecked)) {
-                            //chunk.getWorld().setBlockState(pos, REDSTONE_BLOCK.getDefaultState());
+                        if (world.getBlockState(pos).getBlock() == air && aroundBlocks(world, pos, air, 1, alreadyChecked)) {
                             Arrays.stream(EnumFacing.values())
                                     .map(pos::offset)
-                                    //.filter(i -> chunkContains(chunk, i))
-                                    .filter(i -> chunk.getWorld().getBlockState(i).getBlock() == air)
-                                    .filter(i -> {
+                                    .filter(i -> world.getBlockState(i).getBlock() == air)
+                                    .map(i -> {
                                         if (marks[i.getX() - start.getX()][i.getY() - start.getY()][i.getZ() - start.getZ()]) {
-                                            return true;
+                                            return Pair.of(i, block);
                                         } else {
-                                            boolean willBeAir = chunk.getWorld().rand.nextFloat() > chance;
+                                            boolean willBeAir = world.rand.nextFloat() > chance;
                                             if (willBeAir) {
                                                 Arrays.stream(EnumFacing.values()).map(i::offset).forEach(markPos -> setMark(marks, markPos, start));
-                                                return false;
+                                                return Pair.of(i, air.getDefaultState());
                                             } else
-                                                return true;
+                                                return Pair.of(i, block);
                                         }
                                     })
                                     .forEach(setLeaves::add);
@@ -140,7 +139,8 @@ public class WorldGenDragonTreeWorld {
                     }
                 }
         );
-        setLeaves.forEach(i -> chunk.getWorld().setBlockState(i, block));
+        setLeaves.forEach(i -> world.setBlockState(i.getLeft(), i.getRight(), 18));
+        return marks;
     }
 
     private static void setMark(boolean[][][] marks, BlockPos markPos, BlockPos start) {
