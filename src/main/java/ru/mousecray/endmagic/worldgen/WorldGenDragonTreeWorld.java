@@ -62,7 +62,7 @@ public class WorldGenDragonTreeWorld {
     }
 
     private void generateLeaveaAround(Chunk chunk, Random random, BlockPos pos) {
-        int lvl = 2-random.nextInt(3);
+        int lvl = 2+random.nextInt(3);
         spreadOut(chunk, pos, enderLeaves, AIR, lvl);
         spreadOut(chunk, pos, enderLeaves, AIR, lvl - 1);
         spreadOut(chunk, pos, enderLeaves, AIR, lvl - 2);
