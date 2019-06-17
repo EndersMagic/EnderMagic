@@ -23,7 +23,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -44,10 +43,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static net.minecraft.init.Blocks.AIR;
-import static net.minecraft.init.Blocks.WOOL;
 import static net.minecraft.init.Items.STICK;
-import static ru.mousecray.endmagic.worldgen.WorldGenDragonTreeWorld.spreadOut;
 import static ru.mousecray.endmagic.worldgen.WorldGenDragonTreeWorld.walkAround;
 
 @EventBusSubscriber(modid = EM.ID)
@@ -55,8 +51,6 @@ public class EMEvents {
     //@SubscribeEvent
     public static void onRightClick(PlayerInteractEvent.RightClickBlock event) {
         if (event.getEntityPlayer().getHeldItemMainhand().getItem() == STICK) {
-            Chunk chunk = event.getWorld().getChunkFromBlockCoords(event.getPos());
-            spreadOut(chunk, event.getPos().offset(event.getFace()), WOOL.getDefaultState(), AIR, 4);
         }
     }
 
