@@ -107,7 +107,9 @@ public class WorldGenDragonTreeWorld {
                 new BlockPos(startPos.getX() - lvl, startPos.getY() - lvl, startPos.getZ() - lvl),
                 new BlockPos(startPos.getX() + lvl, startPos.getY() + lvl, startPos.getZ() + lvl),
                 pos -> {
-                    if (/*chunkContains(chunk, pos) && */pos.distanceSq(startPos) < lvl * lvl) {
+                    if (/*chunkContains(chunk, pos) && */pos.distanceSq(startPos) < lvl * lvl && chunk.getWorld().isAirBlock(pos)) {
+                        chunk.getWorld().setBlockState(pos, block);
+                        /*
                         if (chunk.getBlockState(pos).getBlock() != air && aroundBlocks(chunk, pos, air, 1, alreadyChecked)) {
                             Arrays.stream(EnumFacing.values())
                                     .map(pos::offset)
@@ -115,7 +117,7 @@ public class WorldGenDragonTreeWorld {
                                     .filter(i -> chunk.getWorld().getBlockState(i).getBlock() == air)
                                     .forEach(i -> chunk.getWorld().setBlockState(i, block));
                         }
-                        alreadyChecked.clear();
+                        alreadyChecked.clear();*/
                     }
                 }
         );
