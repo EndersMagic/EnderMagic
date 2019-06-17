@@ -37,8 +37,6 @@ public class EM {
 
     }
 
-    public final static Config config = JHoconConfig.getOrCreateConfig(ID, Config::new);
-
     @SidedProxy(clientSide = EM.CLIENT, serverSide = EM.SERVER)
     public static CommonProxy proxy;
 
