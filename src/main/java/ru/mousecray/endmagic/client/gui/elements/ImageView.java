@@ -26,7 +26,7 @@ public class ImageView extends GuiScreen implements IStructuralGuiElement {
 
     @Override
     public void render(int mouseX, int mouseY) {
-        GlStateManager.color(1,1,1,1);
+        GlStateManager.color(1, 1, 1, 1);
         mc().getTextureManager().bindTexture(texture);
         drawModalRectWithCustomSizedTexture(rectangle.getX(), rectangle.getY(), 0, 0, rectangle.getWidth(), rectangle.getHeight(),
                 atlas.getIconWidth(), atlas.getIconHeight());
@@ -37,8 +37,8 @@ public class ImageView extends GuiScreen implements IStructuralGuiElement {
         int newWidth = min(width, (int) (ratio * height));
         int newHeight = min(height, (int) (1f / ratio * width));
 
-        y -= (newHeight - height) / 2;
-        x -= (newWidth - width) / 2;
+        y += (height - newHeight) / 2;
+        x += (width - newWidth) / 2;
         width = newWidth;
         height = newHeight;
 
