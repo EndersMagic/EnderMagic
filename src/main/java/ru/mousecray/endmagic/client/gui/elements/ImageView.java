@@ -26,11 +26,10 @@ public class ImageView extends GuiScreen implements IStructuralGuiElement {
 
     @Override
     public void render(int mouseX, int mouseY) {
-        GlStateManager.pushMatrix();
+        GlStateManager.color(1,1,1,1);
         mc().getTextureManager().bindTexture(texture);
         drawModalRectWithCustomSizedTexture(rectangle.getX(), rectangle.getY(), 0, 0, rectangle.getWidth(), rectangle.getHeight(),
                 atlas.getIconWidth(), atlas.getIconHeight());
-        GlStateManager.popMatrix();
     }
 
     public static void drawModalRectWithCustomSizedTexture(int x, int y, float u, float v, int width, int height, float textureWidth, float textureHeight) {
