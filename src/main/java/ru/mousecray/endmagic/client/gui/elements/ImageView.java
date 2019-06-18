@@ -21,7 +21,7 @@ public class ImageView extends GuiScreen implements IStructuralGuiElement {
     public ImageView(ResourceLocation texture, Rectangle rectangle) {
         this.texture = texture;
         this.rectangle = rectangle;
-        atlas = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(texture.toString());
+        this.atlas = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(texture.toString());
     }
 
     @Override
