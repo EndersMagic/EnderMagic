@@ -21,37 +21,29 @@ public class ImageView extends GuiScreen implements IStructuralGuiElement {
     public ImageView(ResourceLocation texture, Rectangle rectangle) {
         this.texture = texture;
         this.rectangle = rectangle;
-        this.atlas = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(texture.toString());
+        atlas = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(texture.toString());
     }
 
     @Override
     public void render(int mouseX, int mouseY) {
         GlStateManager.color(1, 1, 1, 1);
         mc().getTextureManager().bindTexture(texture);
-        drawModalRectWithCustomSizedTexture(rectangle.getX(), rectangle.getY(), 0, 0, rectangle.getWidth(), rectangle.getHeight(),
+        drawInscribedCustomSizeModalRect(rectangle.getX(), rectangle.getY(),
+                rectangle.getWidth(), rectangle.getHeight(),
                 atlas.getIconWidth(), atlas.getIconHeight());
     }
 
-    public static void drawModalRectWithCustomSizedTexture(int x, int y, float u, float v, int width, int height, float textureWidth, float textureHeight) {
+    public static void drawInscribedCustomSizeModalRect(int x, int y, int width, int height, float textureWidth, float textureHeight) {
         float ratio = textureWidth / textureHeight;
         int newWidth = min(width, (int) (ratio * height));
         int newHeight = min(height, (int) (1f / ratio * width));
 
-        y += (height - newHeight) / 2;
-        x += (width - newWidth) / 2;
-        width = newWidth;
-        height = newHeight;
+        int ny = y + (height - newHeight) / 2;
+        int nx = x + (width - newWidth) / 2;
 
-
-        float f = 1.0F / textureWidth;
-        float f1 = 1.0F / textureHeight;
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos((double) x, (double) (y + height), 0.0D).tex((double) (u * f), (double) ((v + textureHeight) * f1)).endVertex();
-        bufferbuilder.pos((double) (x + width), (double) (y + height), 0.0D).tex((double) ((u + textureWidth) * f), (double) ((v + textureHeight) * f1)).endVertex();
-        bufferbuilder.pos((double) (x + width), (double) y, 0.0D).tex((double) ((u + textureWidth) * f), (double) (v * f1)).endVertex();
-        bufferbuilder.pos((double) x, (double) y, 0.0D).tex((double) (u * f), (double) (v * f1)).endVertex();
-        tessellator.draw();
+        drawScaledCustomSizeModalRect(nx, ny, 0, 0,
+                1, 1,
+                newWidth, newHeight,
+                1, 1);
     }
 }
