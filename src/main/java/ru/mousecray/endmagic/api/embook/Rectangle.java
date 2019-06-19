@@ -13,7 +13,7 @@ public class Rectangle {
         this.y2 = max(y1, y2);
     }
 
-    public boolean contains(int mouseX, int mouseY, int width, int height) {
+    public boolean contains(int mouseX, int mouseY) {
         return mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2;
     }
 

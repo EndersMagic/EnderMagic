@@ -2,35 +2,39 @@ package ru.mousecray.endmagic.client.gui.elements;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
+import ru.mousecray.endmagic.api.embook.Rectangle;
 import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 
-public class ItemStackView implements IStructuralGuiElement {
+public class ItemStackView extends GuiScreen implements IStructuralGuiElement {
     public final ImmutableList<ItemStack> itemStack;
     public final int x;
     public final int y;
     private ItemRenderer itemRenderer = mc().getItemRenderer();
+    private final Rectangle itemArea;
 
     public ItemStackView(ItemStack itemStack, int x, int y) {
-        this.itemStack = ImmutableList.of(itemStack);
-        this.x = x;
-        this.y = y;
+        this(ImmutableList.of(itemStack), x, y);
     }
 
     public ItemStackView(ImmutableList<ItemStack> itemStack, int x, int y) {
         this.itemStack = itemStack;
         this.x = x;
         this.y = y;
+        itemArea = new Rectangle(this.x, this.y, this.x + 16, this.y + 16);
     }
 
     @Override
     public void render(int mouseX, int mouseY) {
         ItemStack stack = cycleItemStack(itemStack);
-        drawItemStack(stack,x,y,"");
+        drawItemStack(stack, x, y, "");
+        if (itemArea.contains(mouseX, mouseY))
+            renderToolTip(stack, mouseX, mouseY);
     }
 
     public void drawItemStack(ItemStack stack, int x, int y, String altText) {

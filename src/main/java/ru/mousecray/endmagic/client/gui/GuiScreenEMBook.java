@@ -81,7 +81,7 @@ public class GuiScreenEMBook extends GuiScreen {
 
     private void performClickOnPage(int mouseX, int mouseY, int i, int j, IPage page) {
         page.elements().forEach(e -> {
-            if (e instanceof IClickable && ((IClickable) e).area().contains(mouseX - i, mouseY - j, width, height))
+            if (e instanceof IClickable && ((IClickable) e).area().contains(mouseX - i, mouseY - j))
                 ((IClickable) e).click();
 
         });
