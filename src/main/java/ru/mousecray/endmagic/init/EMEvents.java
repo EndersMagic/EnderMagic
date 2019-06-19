@@ -7,6 +7,10 @@ import java.util.Random;
 import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiListWorldSelection;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiWorldSelection;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +29,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -36,6 +41,20 @@ import ru.mousecray.endmagic.items.EnderArrow;
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
+    @SubscribeEvent
+    public static void loadLastWorld(GuiOpenEvent event) {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (event.getGui() instanceof GuiMainMenu) {
+            mc.displayGuiScreen(new GuiWorldSelection((GuiMainMenu) event.getGui()));
+        } else if (event.getGui() instanceof GuiWorldSelection) {
+            GuiListWorldSelection guiListWorldSelection = new GuiListWorldSelection((GuiWorldSelection) event.getGui(), mc, 100, 100, 32, 100 - 64, 36);
+            try {
+                guiListWorldSelection.getListEntry(0).joinWorld();
+            } catch (Exception ignore) {
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void onPressureExplosionCoal(ExplosionEvent.Start event) {
         Vec3d vec = event.getExplosion().getPosition();
