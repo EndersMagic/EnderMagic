@@ -47,7 +47,7 @@ public class RecipeComponent implements IChapterComponent {
 
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
-                int index = x + y * 3;
+                int index = y + x * 3;
                 if (ingredients.size() > index)
                     cratingGrid1[x][y] = ingredients.get(index);
                 else
