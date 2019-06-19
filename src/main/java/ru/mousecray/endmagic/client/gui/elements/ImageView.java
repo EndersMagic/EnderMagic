@@ -5,23 +5,34 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.PngSizeInfo;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.util.Rectangle;
 import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 
+import java.io.IOException;
+
 import static java.lang.Math.min;
 
 public class ImageView extends GuiScreen implements IStructuralGuiElement {
     public final ResourceLocation texture;
     public final Rectangle rectangle;
-    private final TextureAtlasSprite atlas;
+    private int textureWidth;
+    private int textureHeight;
 
     public ImageView(ResourceLocation texture, Rectangle rectangle) {
         this.texture = texture;
         this.rectangle = rectangle;
-        atlas = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(texture.toString());
+        try {
+            PngSizeInfo pngsizeinfo = PngSizeInfo.makeFromResource(mc().getResourceManager().getResource(texture));
+            textureWidth = pngsizeinfo.pngWidth;
+            textureHeight = pngsizeinfo.pngHeight;
+        } catch (IOException e) {
+            textureWidth = textureHeight = 16;
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -30,7 +41,7 @@ public class ImageView extends GuiScreen implements IStructuralGuiElement {
         mc().getTextureManager().bindTexture(texture);
         drawInscribedCustomSizeModalRect(rectangle.getX(), rectangle.getY(),
                 rectangle.getWidth(), rectangle.getHeight(),
-                atlas.getIconWidth(), atlas.getIconHeight());
+                textureWidth, textureHeight);
     }
 
     public static void drawInscribedCustomSizeModalRect(int x, int y, int width, int height, float textureWidth, float textureHeight) {
