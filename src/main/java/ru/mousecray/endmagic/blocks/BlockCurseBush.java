@@ -45,7 +45,7 @@ public class BlockCurseBush extends BlockBush {
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, new IProperty[] {ACTIVE});
     }
-	
+
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		super.updateTick(world, pos, state, rand);

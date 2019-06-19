@@ -1,5 +1,9 @@
 package ru.mousecray.endmagic;
 
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import hohserg.jhocon.JHoconConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -14,8 +18,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import ru.mousecray.endmagic.proxy.CommonProxy;
 import ru.mousecray.endmagic.util.EMCreativeTab;
 import ru.mousecray.endmagic.util.EMEntityDSI;
-
-import javax.annotation.Nullable;
 
 @Mod(modid = EM.ID, name = EM.NAME, version = EM.VERSION, dependencies = "after:jhocon")
 public class EM {
@@ -38,6 +40,8 @@ public class EM {
     }
 
     public final static Config config = JHoconConfig.getOrCreateConfig(ID, Config::new);
+    
+    public static Random rand = new Random();
 
     @SidedProxy(clientSide = EM.CLIENT, serverSide = EM.SERVER)
     public static CommonProxy proxy;

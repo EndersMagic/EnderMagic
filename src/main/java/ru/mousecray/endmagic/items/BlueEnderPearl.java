@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic.items;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -16,8 +15,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.entity.EntityBluePearl;
 import ru.mousecray.endmagic.util.EntityImpact;
-
-import java.util.Map;
 
 public class BlueEnderPearl extends Item implements EntityImpact,ItemOneWhiteEMTextured {
 
