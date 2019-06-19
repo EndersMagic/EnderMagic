@@ -98,9 +98,9 @@ public class BlockCurseBush extends BlockBush {
 	
 	private boolean existEffect(World world, BlockPos pos, int radius) {
 		List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(radius));
-		Boolean flag = false;
-		for(Entity entity : list) flag = entity instanceof EntityAreaEffectCloud;
-		return flag;
+		for(Entity entity : list) //EM: Don't indent below
+			if(entity instanceof EntityAreaEffectCloud) return true;
+		return false;
 	}
 	
 	private int getPlayer(World world, BlockPos pos) {

@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -83,10 +84,10 @@ public class EntityCurseBush extends EntityMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.22D);
-		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(15.0D);
-		getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0);
+		getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.22);
+		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(15.0);
+		getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0);
 	}
 	
 	@Override
@@ -125,9 +126,9 @@ public class EntityCurseBush extends EntityMob {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if(source.getTrueSource() instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) source.getTrueSource();
-			ItemStack stack = player.getHeldItem(getActiveHand());
+		if(source.getTrueSource() instanceof EntityLivingBase) {
+			EntityLivingBase living = (EntityLivingBase) source.getTrueSource();
+			ItemStack stack = living.getHeldItem(living.getActiveHand());
 			if(stack.getItem() instanceof ItemSword) {
 				NBTTagList enchantments = stack.getEnchantmentTagList();
 				for (int i = 0; i < enchantments.tagCount(); ++i) {
