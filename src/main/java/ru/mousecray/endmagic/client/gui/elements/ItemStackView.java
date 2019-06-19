@@ -20,7 +20,6 @@ public class ItemStackView implements IStructuralGuiElement {
     public final ImmutableList<ItemStack> itemStack;
     public final int x;
     public final int y;
-    private ItemRenderer itemRenderer = mc().getItemRenderer();
     private final Rectangle itemArea;
 
     public ItemStackView(ItemStack itemStack, int x, int y) {
