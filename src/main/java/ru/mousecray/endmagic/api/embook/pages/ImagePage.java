@@ -27,7 +27,7 @@ public class ImagePage implements IPage {
     @Override
     public List<IStructuralGuiElement> elements() {
         return ImmutableList.of(
-                new ImageView(texture, new Rectangle(5, 5, BookApi.pageWidth - 10, BookApi.pageHeight - 20)),
+                new ImageView(texture, new Rectangle(0, 0, BookApi.pageWidth, BookApi.pageHeight)),
                 new TextLine(label, centerX(0), bottom(0)) {
                     @Override
                     public Vec2i fixPoint() {
