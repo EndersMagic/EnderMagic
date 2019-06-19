@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic;
 
-import hohserg.jhocon.JHoconConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.DamageSource;
