@@ -4,7 +4,6 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import hohserg.jhocon.JHoconConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.DamageSource;
@@ -34,7 +33,7 @@ public class EM {
 
     @Instance(EM.ID)
     public static EM instance;
-  
+
     public static Random rand = new Random();
 
     @SidedProxy(clientSide = EM.CLIENT, serverSide = EM.SERVER)
