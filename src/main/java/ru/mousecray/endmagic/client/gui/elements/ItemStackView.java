@@ -29,9 +29,8 @@ public class ItemStackView implements IStructuralGuiElement {
 
     @Override
     public void render(int mouseX, int mouseY) {
-        GlStateManager.translate(x, y, 0);
-        itemRenderer.renderItem(mc().player, cycleItemStack(itemStack), ItemCameraTransforms.TransformType.GUI);
-        GlStateManager.translate(x, y, 0);
+        ItemStack stack = cycleItemStack(itemStack);
+        drawItemStack(stack,x,y,"");
     }
 
     public void drawItemStack(ItemStack stack, int x, int y, String altText) {
