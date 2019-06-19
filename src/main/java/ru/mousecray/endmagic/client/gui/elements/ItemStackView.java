@@ -41,7 +41,6 @@ public class ItemStackView implements IStructuralGuiElement {
         FontRenderer font = stack.getItem().getFontRenderer(stack);
         if (font == null) font = fontRenderer;
         itemRender.renderItemAndEffectIntoGUI(stack, x, y);
-        itemRender.renderItemOverlayIntoGUI(font, stack, x, y, altText);
         itemRender.zLevel = 0.0F;
     }
 
