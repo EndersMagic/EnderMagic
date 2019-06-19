@@ -1,0 +1,6 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "endmagic:blocks/trees/natural_sapling"
+  }
+}

@@ -34,13 +34,7 @@ public class EM {
 
     @Instance(EM.ID)
     public static EM instance;
-
-    public static void main(String[] args) {
-
-    }
-
-    public final static Config config = JHoconConfig.getOrCreateConfig(ID, Config::new);
-    
+  
     public static Random rand = new Random();
 
     @SidedProxy(clientSide = EM.CLIENT, serverSide = EM.SERVER)
