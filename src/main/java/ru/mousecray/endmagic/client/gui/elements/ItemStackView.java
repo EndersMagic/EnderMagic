@@ -16,7 +16,7 @@ import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 
 import java.util.List;
 
-public class ItemStackView extends GuiScreen implements IStructuralGuiElement {
+public class ItemStackView implements IStructuralGuiElement {
     public final ImmutableList<ItemStack> itemStack;
     public final int x;
     public final int y;
@@ -32,8 +32,6 @@ public class ItemStackView extends GuiScreen implements IStructuralGuiElement {
         this.x = x;
         this.y = y;
         itemArea = new Rectangle(this.x, this.y, this.x + 16, this.y + 16);
-        mc = mc();
-        fontRenderer = mc().fontRenderer;
     }
 
     @Override
