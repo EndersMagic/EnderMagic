@@ -26,6 +26,7 @@ public final class EMBlocks {
     public static final BlockTopMark blockTopMark = new BlockTopMark();
 
     public static final EnderCrops enderCrops = new EnderCrops();
+    public static final BlockCurseBush blockCurseBush = new BlockCurseBush();
 
     public static final BlockEnderCoal dragonCoal = new BlockEnderCoal("dragon_coal_block", RGBA.fromRGB(0xff00ff));
     public static final BlockEnderCoal naturalCoal = new BlockEnderCoal("natural_coal_block", RGBA.fromRGB(0xffaa00));
