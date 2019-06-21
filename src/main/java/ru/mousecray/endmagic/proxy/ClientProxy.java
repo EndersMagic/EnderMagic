@@ -4,7 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -20,6 +22,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.components.ImageComponent;
+import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
+import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
 import ru.mousecray.endmagic.client.render.entity.EMEntityThrowableRenderFactory;
 import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
@@ -63,7 +67,12 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         super.postInit(event);
 
         //Add default book chapters
-        BookApi.addChapter("Test", new TextComponent("book.test"), new ImageComponent(new ResourceLocation(EM.ID, "textures/blocks/ender_grass.png"),"Grass"));
+        BookApi.addChapter("Test",
+                new TextComponent("book.test"),
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/blocks/ender_grass.png"), "Grass"),
+                new SmeltingRecipeComponent(new ItemStack(Items.IRON_INGOT)),
+                new RecipeComponent(new ItemStack(Items.IRON_INGOT))
+        );
     }
 
     @SubscribeEvent

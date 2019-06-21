@@ -15,17 +15,20 @@ public class SmeltingRecipePage extends ImagePage {
     public final ItemStack result;
     private final ItemStack input;
 
-    public SmeltingRecipePage(ItemStack result, ItemStack input) {
-        super(new ResourceLocation(EM.ID, "textures/gui/smelting_grid.png"), result.getDisplayName());
+    public SmeltingRecipePage(ItemStack result, ItemStack input,String label) {
+        super(new ResourceLocation(EM.ID, "textures/gui/smelting_grid.png"), label);
         this.result = result;
         this.input = input;
     }
 
+
+
     @Override
     public List<IStructuralGuiElement> elements() {
         ImmutableList.Builder<IStructuralGuiElement> builder = ImmutableList.builder();
-        builder.add(new ItemStackView(result, BookApi.pageWidth - 20, BookApi.pageHeight / 2 - 8));
-        builder.add(new ItemStackView(result, 16, BookApi.pageHeight / 2 - 8));
+        builder.addAll(super.elements());
+        builder.add(new ItemStackView(result, BookApi.pageWidth - 31, BookApi.pageHeight / 2 - 8));
+        builder.add(new ItemStackView(result, 9, BookApi.pageHeight / 2 - 27));
         return builder.build();
     }
 }
