@@ -19,20 +19,31 @@ import static net.minecraft.init.Blocks.AIR;
 public class SmeltingRecipeComponent implements IChapterComponent {
     public final ItemStack result;
     public final ItemStack input;
+    private String label;
 
-    public SmeltingRecipeComponent(ItemStack result, ItemStack input) {
+    public SmeltingRecipeComponent(ItemStack result, ItemStack input, String label) {
         this.result = result;
         this.input = input;
+        this.label = label;
     }
 
     public SmeltingRecipeComponent(ItemStack result) {
-        this.result = result;
-        Optional<Map.Entry<ItemStack, ItemStack>> maybeRecipe = FurnaceRecipes.instance().getSmeltingList().entrySet().stream().filter(i -> ItemStack.areItemStacksEqual(i.getValue(), result)).findAny();
-        input = maybeRecipe.map(Map.Entry::getKey).orElse(new ItemStack(Item.getItemFromBlock(AIR)));
+        this(result, result.getDisplayName());
+    }
+
+    public SmeltingRecipeComponent(ItemStack result, String label) {
+        this(result,
+                FurnaceRecipes.instance().getSmeltingList().entrySet()
+                        .stream()
+                        .filter(i -> ItemStack.areItemStacksEqual(i.getValue(), result))
+                        .findAny()
+                        .map(Map.Entry::getValue)
+                        .orElse(new ItemStack(Item.getItemFromBlock(AIR))),
+                label);
     }
 
     @Override
     public List<IPage> pages() {
-        return ImmutableList.of(new SmeltingRecipePage(result, input));
+        return ImmutableList.of(new SmeltingRecipePage(result, input, label));
     }
 }
