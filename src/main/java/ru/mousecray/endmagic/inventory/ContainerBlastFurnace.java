@@ -47,7 +47,7 @@ public class ContainerBlastFurnace extends Container {
     }
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return tile.getPos().distanceSq(playerIn.getPosition()) < 25
+        return tile.getPos().distanceSq(playerIn.getPosition()) < 16*16//для Baubles (16 блоков от тайла)
                 && playerIn.world.getTileEntity(tile.getPos()) == tile;
     }
 }
