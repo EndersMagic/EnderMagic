@@ -28,7 +28,7 @@ public class ContainerBlastFurnace extends Container {
 
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int slotNumber) {
         System.out.println(slotNumber);
-        ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack;
         Slot slot = inventorySlots.get(slotNumber);
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
@@ -47,7 +47,8 @@ public class ContainerBlastFurnace extends Container {
     }
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return tile.getPos().distanceSq(playerIn.getPosition()) < 25
+        return tile.getPos().distanceSq(playerIn.getPosition()) < 16*16
                 && playerIn.world.getTileEntity(tile.getPos()) == tile;
     }
+
 }
