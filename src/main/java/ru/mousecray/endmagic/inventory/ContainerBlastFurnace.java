@@ -45,9 +45,9 @@ public class ContainerBlastFurnace extends Container {
             }
         } else return ItemStack.EMPTY;
     }
-
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return true;
+        return tile.getDistanceSq(playerIn.posX,playerIn.posY,playerIn.posZ) < 25
+                && playerIn.world.getTileEntity(tile.getPos()) == tile;
     }
 }
