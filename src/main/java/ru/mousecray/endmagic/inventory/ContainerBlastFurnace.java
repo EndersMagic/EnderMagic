@@ -26,29 +26,34 @@ public class ContainerBlastFurnace extends Container {
             addSlotToContainer(new Slot(player.inventory, i, 16 + i * 18, 209));
     }
 
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int slotNumber) {
-        System.out.println(slotNumber);
-        ItemStack itemstack;
-        Slot slot = inventorySlots.get(slotNumber);
+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = inventorySlots.get(index);
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
-            if (slotNumber < 3) {
-                if (!mergeItemStack(itemstack1, 3, 38, true)) {
-                    return ItemStack.EMPTY;
-                } else {
-                    slot.onSlotChange(itemstack1, itemstack);
+            if(index < 3){
+                if (!mergeItemStack(itemstack1, 3, inventorySlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else {
+            }
+            else if(!mergeItemStack(itemstack1,0,3,false)){
                 return ItemStack.EMPTY;
             }
-        } else return ItemStack.EMPTY;
+            if (itemstack1.isEmpty())
+            {
+                slot.putStack(ItemStack.EMPTY);
+            }
+            else
+            {
+                slot.onSlotChanged();
+            }
+        }
+        return itemstack;
     }
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return tile.getPos().distanceSq(playerIn.getPosition()) < 16*16
+        return tile.getPos().distanceSq(playerIn.getPosition()) < 25
                 && playerIn.world.getTileEntity(tile.getPos()) == tile;
     }
-
 }
