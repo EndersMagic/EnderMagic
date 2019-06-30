@@ -39,6 +39,13 @@ public interface WorldIO<E, T> {
         return seq.stream().reduce((WorldIO<E, A1>) none, WorldIO::andThen);
     }
 
+    static <E, A1> WorldIO<E, Void> when(boolean condition, WorldIO<E, A1> action) {
+        if (condition)
+            return action.andThen(none);
+        else
+            return start();
+    }
+
 
     static WorldIO<OnlyWorld, IBlockState> getBlockState(BlockPos pos) {
         return world -> world.world.getBlockState(pos);
