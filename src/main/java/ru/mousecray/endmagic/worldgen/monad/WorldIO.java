@@ -23,6 +23,10 @@ public interface WorldIO<E, T> {
         return (E world) -> f.apply(performIO(world)).performIO(world);
     }
 
+    default <T1> WorldIO<E, T1> map(Function<T, T1> f) {
+        return flatMap(f.andThen(WorldIO::lift));
+    }
+
     default <T1> WorldIO<E, T1> flatten() {
         return flatMap(i -> (WorldIO<E, T1>) i);
     }
