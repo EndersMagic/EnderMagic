@@ -17,6 +17,14 @@ public interface WorldIO<E, T> {
         return (WorldIO<E1, Void>) none;
     }
 
+    static WorldIO<WorldAndChunkCoord, Void> startWorldAndChunkCoord() {
+        return start();
+    }
+
+    static WorldIO<OnlyWorld, Void> startWorld() {
+        return start();
+    }
+
     static WorldIO<Object, Void> none = __ -> null;
 
     default <T1> WorldIO<E, T1> flatMap(Function<T, WorldIO<? super E, T1>> f) {
