@@ -36,7 +36,7 @@ public interface WorldIO<E, T> {
     }
 
     static <E, A1> WorldIO<E, A1> sequence(Collection<WorldIO<E, A1>> seq) {
-        return seq.stream().reduce(WorldIO::andThen).orElse((WorldIO<E, A1>) none);
+        return seq.stream().reduce((WorldIO<E, A1>) none, WorldIO::andThen);
     }
 
 
