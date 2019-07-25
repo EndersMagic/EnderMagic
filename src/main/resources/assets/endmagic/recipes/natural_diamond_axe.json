@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "#",
+    "#",
+    "X"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:natural_diamond"
+        },
+        "X": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "endmagic:natural_diamond_axe"
+    }
+}

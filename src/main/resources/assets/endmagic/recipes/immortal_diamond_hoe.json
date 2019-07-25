@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "#",
+    "#",
+    "X"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:immortal_diamond"
+        },
+        "X": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "endmagic:immortal_diamond_hoe"
+    }
+}
