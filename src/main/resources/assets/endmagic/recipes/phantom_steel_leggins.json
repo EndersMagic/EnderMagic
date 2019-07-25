@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "###",
+    "# #",
+	"# #"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:phantom_steel"
+        }
+    },
+    "result": {
+        "item": "endmagic:phantom_steel_leggins"
+    }
+}
