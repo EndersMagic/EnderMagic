@@ -7,10 +7,10 @@
     ],
     "key": {
         "#": {
-            "item": "endmagic:dragon_steel"
+            "item": "endmagic:natural_steel"
         }
     },
     "result": {
-        "item": "endmagic:dragon_steel_leggins"
+        "item": "endmagic:natural_steel_leggings"
     }
 }

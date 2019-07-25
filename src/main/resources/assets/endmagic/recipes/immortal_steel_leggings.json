@@ -7,10 +7,10 @@
     ],
     "key": {
         "#": {
-            "item": "endmagic:phantom_steel"
+            "item": "endmagic:immortal_steel"
         }
     },
     "result": {
-        "item": "endmagic:phantom_steel_leggins"
+        "item": "endmagic:immortal_steel_leggings"
     }
 }
