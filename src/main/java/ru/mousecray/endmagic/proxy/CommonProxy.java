@@ -51,9 +51,10 @@ public class CommonProxy implements IGuiHandler {
                 .elemes().forEach(this::registerItem);
 
         //Registration Entity
-
         entityToRegister.addAll(new ClassFieldSource<EntityEntry>(EMEntities.class).elemes());
 
+        //Registration Recipes
+        EMRecipes.initRecipes();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
     }

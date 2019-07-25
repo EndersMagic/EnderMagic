@@ -85,6 +85,7 @@ public class EMItems {
     }
 
     public static final ItemNamed rawEnderite = new ItemNamed("raw_enderite");
+    public static final ItemNamed burnedEnderite = new ItemNamed("burned_enderite");
 
     public static final Item purpleEnderPearl = new PurpleEnderPearl();
     public static final Item blueEnderPearl = new BlueEnderPearl();
