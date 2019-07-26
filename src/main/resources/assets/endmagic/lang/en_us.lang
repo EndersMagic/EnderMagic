@@ -12,6 +12,20 @@ tile.phantom_coal_block.name=Block of Phantom Coal
 tile.enderite.name=Enderite
 tile.ender_ore.name=Ender Ore
 
+tile.ender_tree_log.dragon.name=Dragon Wood
+tile.ender_tree_log.natural.name=Natural Wood
+tile.ender_tree_log.immortal.name=Immortal Wood
+tile.ender_tree_log.phantom.name=Phantom Wood
+
+tile.ender_tree_leaves.dragon.name=Dragon Leaves
+tile.ender_tree_leaves.natural.name=Natural Leaves
+tile.ender_tree_leaves.immortal.name=Immortal Leaves
+tile.ender_tree_leaves.phantom.name=Phantom Leaves
+
+tile.ender_tree_sapling.dragon.name=Dragon Sapling
+tile.ender_tree_sapling.natural.name=Natural Sapling
+tile.ender_tree_sapling.immortal.name=Immortal Sapling
+tile.ender_tree_sapling.phantom.name=Phantom Sapling
 
 item.ender_seeds.name=Purple Pearl Seeds
 item.purple_ender_pearl.name=Purple Pearl
@@ -19,6 +33,64 @@ item.blue_ender_pearl.name=Blue Pearl
 item.ender_arrow.name=Ender Arrow
 item.em_book.name=Ender's Book
 item.ender_apple.name=Ender Apple
+item.ender_compass.name=Ender Compass
+item.item_portal_binder.name=Portal Binder
+item.raw_enderite.name=Raw Enderite
+
+item.dragon_coal.name=Coal of Dragon
+item.natural_coal.name=Coal of Nature
+item.immortal_coal.name=Coal of Immortality
+item.phantom_coal.name=Coal of Ghost
+
+item.dragon_steel.name=Steel of Dragon
+item.natural_steel.name=Steel of Nature
+item.immortal_steel.name=Steel of Immortality
+item.phantom_steel.name=Steel of Ghost
+
+item.dragon_diamond.name=Diamond of Dragon
+item.natural_diamond.name=Diamond of Nature
+item.immortal_diamond.name=Diamond of Immortality
+item.phantom_diamond.name=Diamond of Ghost
+
+item.natural_steel_shovel.name=Natural Shovel
+item.natural_steel_pickaxe.name=Natural Pickaxe
+item.natural_steel_axe.name=Natural Axe
+item.natural_steel_sword.name=Natural Sword
+item.natural_steel_hoe.name=Natural Hoe
+item.natural_steel_helmet.name=Natural Helmet
+item.natural_steel_chestplate.name=Natural Chestplate
+item.natural_steel_leggings.name=Natural Leggings
+item.natural_steel_boots.name=Natural Boots
+
+item.immortal_steel_shovel.name=Immortal Shovel
+item.immortal_steel_pickaxe.name=Immortal Pickaxe
+item.immortal_steel_axe.name=Immortal Axe
+item.immortal_steel_sword.name=Immortal Sword
+item.immortal_steel_hoe.name=Immortal Hoe
+item.immortal_steel_helmet.name=Immortal Helmet
+item.immortal_steel_chestplate.name=Immortal Chestplate
+item.immortal_steel_leggings.name=Immortal Leggings
+item.immortal_steel_boots.name=Immortal Boots
+
+item.dragon_steel_shovel.name=Dragon Shovel
+item.dragon_steel_pickaxe.name=Dragon Pickaxe
+item.dragon_steel_axe.name=Dragon Axe
+item.dragon_steel_sword.name=Dragon Sword
+item.dragon_steel_hoe.name=Dragon Hoe
+item.dragon_steel_helmet.name=Dragon Helmet
+item.dragon_steel_chestplate.name=Dragon Chestplate
+item.dragon_steel_leggings.name=Dragon Leggings
+item.dragon_steel_boots.name=Dragon Boots
+
+item.phantom_steel_shovel.name=Phantom Shovel
+item.phantom_steel_pickaxe.name=Phantom Pickaxe
+item.phantom_steel_axe.name=Phantom Axe
+item.phantom_steel_sword.name=Phantom Sword
+item.phantom_steel_hoe.name=Phantom Hoe
+item.phantom_steel_helmet.name=Phantom Helmet
+item.phantom_steel_chestplate.name=Phantom Chestplate
+item.phantom_steel_leggings.name=Phantom Leggings
+item.phantom_steel_boots.name=Phantom Boots
 
 itemGroup.em_cretive_tab=Ender's Magic
 
