@@ -52,45 +52,69 @@ item.natural_diamond.name=Diamond of Nature
 item.immortal_diamond.name=Diamond of Immortality
 item.phantom_diamond.name=Diamond of Ghost
 
-item.natural_steel_shovel.name=Natural Shovel
-item.natural_steel_pickaxe.name=Natural Pickaxe
-item.natural_steel_axe.name=Natural Axe
-item.natural_steel_sword.name=Natural Sword
-item.natural_steel_hoe.name=Natural Hoe
-item.natural_steel_helmet.name=Natural Helmet
-item.natural_steel_chestplate.name=Natural Chestplate
-item.natural_steel_leggings.name=Natural Leggings
-item.natural_steel_boots.name=Natural Boots
+item.natural_steel_shovel.name=Natural Steel Shovel
+item.natural_steel_pickaxe.name=Natural Steel Pickaxe
+item.natural_steel_axe.name=Natural Steel Axe
+item.natural_steel_sword.name=Natural Steel Sword
+item.natural_steel_hoe.name=Natural Steel Hoe
+item.natural_steel_helmet.name=Natural Steel Helmet
+item.natural_steel_chestplate.name=Natural Steel Chestplate
+item.natural_steel_leggings.name=Natural Steel Leggings
+item.natural_steel_boots.name=Natural Steel Boots
 
-item.immortal_steel_shovel.name=Immortal Shovel
-item.immortal_steel_pickaxe.name=Immortal Pickaxe
-item.immortal_steel_axe.name=Immortal Axe
-item.immortal_steel_sword.name=Immortal Sword
-item.immortal_steel_hoe.name=Immortal Hoe
-item.immortal_steel_helmet.name=Immortal Helmet
-item.immortal_steel_chestplate.name=Immortal Chestplate
-item.immortal_steel_leggings.name=Immortal Leggings
-item.immortal_steel_boots.name=Immortal Boots
+item.immortal_steel_shovel.name=Immortal Steel Shovel
+item.immortal_steel_pickaxe.name=Immortal Steel Pickaxe
+item.immortal_steel_axe.name=Immortal Steel Axe
+item.immortal_steel_sword.name=Immortal Steel Sword
+item.immortal_steel_hoe.name=Immortal Steel Hoe
+item.immortal_steel_helmet.name=Immortal Steel Helmet
+item.immortal_steel_chestplate.name=Immortal Steel Chestplate
+item.immortal_steel_leggings.name=Immortal Steel Leggings
+item.immortal_steel_boots.name=Immortal Steel Boots
 
-item.dragon_steel_shovel.name=Dragon Shovel
-item.dragon_steel_pickaxe.name=Dragon Pickaxe
-item.dragon_steel_axe.name=Dragon Axe
-item.dragon_steel_sword.name=Dragon Sword
-item.dragon_steel_hoe.name=Dragon Hoe
-item.dragon_steel_helmet.name=Dragon Helmet
-item.dragon_steel_chestplate.name=Dragon Chestplate
-item.dragon_steel_leggings.name=Dragon Leggings
-item.dragon_steel_boots.name=Dragon Boots
+item.dragon_steel_shovel.name=Dragon Steel Shovel
+item.dragon_steel_pickaxe.name=Dragon Steel Pickaxe
+item.dragon_steel_axe.name=Dragon Steel Axe
+item.dragon_steel_sword.name=Dragon Steel Sword
+item.dragon_steel_hoe.name=Dragon Steel Hoe
+item.dragon_steel_helmet.name=Dragon Steel Helmet
+item.dragon_steel_chestplate.name=Dragon Steel Chestplate
+item.dragon_steel_leggings.name=Dragon Steel Leggings
+item.dragon_steel_boots.name=Dragon Steel Boots
 
-item.phantom_steel_shovel.name=Phantom Shovel
-item.phantom_steel_pickaxe.name=Phantom Pickaxe
-item.phantom_steel_axe.name=Phantom Axe
-item.phantom_steel_sword.name=Phantom Sword
-item.phantom_steel_hoe.name=Phantom Hoe
-item.phantom_steel_helmet.name=Phantom Helmet
-item.phantom_steel_chestplate.name=Phantom Chestplate
-item.phantom_steel_leggings.name=Phantom Leggings
-item.phantom_steel_boots.name=Phantom Boots
+item.phantom_steel_shovel.name=Phantom Steel Shovel
+item.phantom_steel_pickaxe.name=Phantom Steel Pickaxe
+item.phantom_steel_axe.name=Phantom Steel Axe
+item.phantom_steel_sword.name=Phantom Steel Sword
+item.phantom_steel_hoe.name=Phantom Steel Hoe
+item.phantom_steel_helmet.name=Phantom Steel Helmet
+item.phantom_steel_chestplate.name=Phantom Steel Chestplate
+item.phantom_steel_leggings.name=Phantom Steel Leggings
+item.phantom_steel_boots.name=Phantom Steel Boots
+
+item.natural_diamond_shovel.name=Natural Diamond Shovel
+item.natural_diamond_pickaxe.name=Natural Diamond Pickaxe
+item.natural_diamond_axe.name=Natural Diamond Axe
+item.natural_diamond_sword.name=Natural Diamond Sword
+item.natural_diamond_hoe.name=Natural Diamond Hoe
+
+item.immortal_diamond_shovel.name=Immortal Diamond Shovel
+item.immortal_diamond_pickaxe.name=Immortal Diamond Pickaxe
+item.immortal_diamond_axe.name=Immortal Diamond Axe
+item.immortal_diamond_sword.name=Immortal Diamond Sword
+item.immortal_diamond_hoe.name=Immortal Diamond Hoe
+
+item.dragon_diamond_shovel.name=Dragon Diamond Shovel
+item.dragon_diamond_pickaxe.name=Dragon Diamond Pickaxe
+item.dragon_diamond_axe.name=Dragon Diamond Axe
+item.dragon_diamond_sword.name=Dragon Diamond Sword
+item.dragon_diamond_hoe.name=Dragon Diamond Hoe
+
+item.phantom_diamond_shovel.name=Phantom Diamond Shovel
+item.phantom_diamond_pickaxe.name=Phantom Diamond Pickaxe
+item.phantom_diamond_axe.name=Phantom Diamond Axe
+item.phantom_diamond_sword.name=Phantom Diamond Sword
+item.phantom_diamond_hoe.name=Phantom Diamond Hoe
 
 itemGroup.em_cretive_tab=Ender's Magic
 
