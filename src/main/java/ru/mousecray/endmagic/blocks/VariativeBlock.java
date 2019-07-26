@@ -21,21 +21,29 @@ import ru.mousecray.endmagic.util.IEMModel;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
 import ru.mousecray.endmagic.util.NameProvider;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.function.Function;
 
 public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable> extends Block implements NameProvider, IEMModel {
 
     protected final IProperty<BlockType> blockType;
-    protected final Function<Integer, BlockType> byIndex;
+    protected Function<Integer, BlockType> byIndex;
     private final Class<BlockType> type;
     private String suffix;
 
-    public VariativeBlock(Class<BlockType> type, Function<Integer, BlockType> byIndex, Material material, String suffix) {
+    public VariativeBlock(Class<BlockType> type, Material material, String suffix) {
         super(material);
         this.type = type;
         blockType = PropertyEnum.create("tree_type", type);
-        this.byIndex = byIndex;
+        try {
+            Field valuesField = type.getDeclaredField("values");
+            BlockType[] values = (BlockType[]) valuesField.get(null);
+            this.byIndex = i -> values[i];
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            this.byIndex = null;
+        }
         this.suffix = suffix;
 
         //super
@@ -72,6 +80,10 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     public String name() {
         String rawName = NameAndTabUtils.getName(type);
         return rawName.substring(0, rawName.lastIndexOf('_')) + suffix;
+    }
+
+    public String getNameForStack(ItemStack stack) {
+        return byIndex.apply(stack.getMetadata()).getName();
     }
 
     @Override

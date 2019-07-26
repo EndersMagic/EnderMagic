@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "#",
+    "#",
+    "X"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:phantom_steel"
+        },
+        "X": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "endmagic:phantom_steel_sword"
+    }
+}

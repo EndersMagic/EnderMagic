@@ -12,14 +12,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 
-import java.util.function.Function;
-
 import static net.minecraft.block.BlockLog.LOG_AXIS;
 
 public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extends VariativeBlock<TreeType> {
 
-    public EMLog(Class<TreeType> type, Function<Integer, TreeType> byIndex) {
-        super(type, byIndex, Material.WOOD, "_log");
+    public EMLog(Class<TreeType> type) {
+        super(type, Material.WOOD, "_log");
 
         setHardness(2.0F);
         setSoundType(SoundType.WOOD);

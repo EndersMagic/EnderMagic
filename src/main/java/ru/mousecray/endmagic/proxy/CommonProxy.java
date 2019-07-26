@@ -1,5 +1,10 @@
 package ru.mousecray.endmagic.proxy;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -21,15 +26,18 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.init.*;
+import ru.mousecray.endmagic.blocks.VariativeBlock;
+import ru.mousecray.endmagic.init.ClassFieldSource;
+import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.init.EMEntities;
+import ru.mousecray.endmagic.init.EMItems;
+import ru.mousecray.endmagic.init.EMRecipes;
+import ru.mousecray.endmagic.init.ListSource;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
+import ru.mousecray.endmagic.util.EMItemBlock;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
-
-import javax.annotation.Nullable;
-import java.util.LinkedList;
-import java.util.List;
 
 public class CommonProxy implements IGuiHandler {
 
@@ -51,9 +59,10 @@ public class CommonProxy implements IGuiHandler {
                 .elemes().forEach(this::registerItem);
 
         //Registration Entity
-
         entityToRegister.addAll(new ClassFieldSource<EntityEntry>(EMEntities.class).elemes());
 
+        //Registration Recipes
+        EMRecipes.initRecipes();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
     }
@@ -70,7 +79,8 @@ public class CommonProxy implements IGuiHandler {
         }
 
         blocksToRegister.add(block);
-        registerItem(new ItemBlock(block), block.getRegistryName().toString());
+        if(block instanceof VariativeBlock) registerItem(new EMItemBlock(block), block.getRegistryName().toString());
+        else registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 
     private void registerTile(Class<? extends TileEntity> tile) {

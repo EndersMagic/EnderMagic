@@ -1,6 +1,31 @@
 tile.ender_grass.name=Ender Grass
 tile.block_master_static_portal.name=Static Teleport
 tile.block_master_dark_portal.name=Dark Teleport
+tile.block_blast_furnace.name=Blast Furnace
+tile.block_portal.name=Portal
+tile.block_top_mark.name=Control Block
+tile.block_curse_bush.name=Curse Bush
+tile.dragon_coal_block.name=Block of Dragon Coal
+tile.natural_coal_block.name=Block of Natural Coal
+tile.immortal_coal_block.name=Block of Immortal Coal
+tile.phantom_coal_block.name=Block of Phantom Coal
+tile.enderite.name=Enderite
+tile.ender_ore.name=Ender Ore
+
+tile.ender_tree_log.dragon.name=Dragon Wood
+tile.ender_tree_log.natural.name=Natural Wood
+tile.ender_tree_log.immortal.name=Immortal Wood
+tile.ender_tree_log.phantom.name=Phantom Wood
+
+tile.ender_tree_leaves.dragon.name=Dragon Leaves
+tile.ender_tree_leaves.natural.name=Natural Leaves
+tile.ender_tree_leaves.immortal.name=Immortal Leaves
+tile.ender_tree_leaves.phantom.name=Phantom Leaves
+
+tile.ender_tree_sapling.dragon.name=Dragon Sapling
+tile.ender_tree_sapling.natural.name=Natural Sapling
+tile.ender_tree_sapling.immortal.name=Immortal Sapling
+tile.ender_tree_sapling.phantom.name=Phantom Sapling
 
 item.ender_seeds.name=Purple Pearl Seeds
 item.purple_ender_pearl.name=Purple Pearl
@@ -8,7 +33,89 @@ item.blue_ender_pearl.name=Blue Pearl
 item.ender_arrow.name=Ender Arrow
 item.em_book.name=Ender's Book
 item.ender_apple.name=Ender Apple
+item.ender_compass.name=Ender Compass
+item.item_portal_binder.name=Portal Binder
+item.raw_enderite.name=Raw Enderite
+
+item.dragon_coal.name=Coal of Dragon
+item.natural_coal.name=Coal of Nature
+item.immortal_coal.name=Coal of Immortality
+item.phantom_coal.name=Coal of Ghost
+
+item.dragon_steel.name=Steel of Dragon
+item.natural_steel.name=Steel of Nature
+item.immortal_steel.name=Steel of Immortality
+item.phantom_steel.name=Steel of Ghost
+
+item.dragon_diamond.name=Diamond of Dragon
+item.natural_diamond.name=Diamond of Nature
+item.immortal_diamond.name=Diamond of Immortality
+item.phantom_diamond.name=Diamond of Ghost
+
+item.natural_steel_shovel.name=Natural Steel Shovel
+item.natural_steel_pickaxe.name=Natural Steel Pickaxe
+item.natural_steel_axe.name=Natural Steel Axe
+item.natural_steel_sword.name=Natural Steel Sword
+item.natural_steel_hoe.name=Natural Steel Hoe
+item.natural_steel_helmet.name=Natural Steel Helmet
+item.natural_steel_chestplate.name=Natural Steel Chestplate
+item.natural_steel_leggings.name=Natural Steel Leggings
+item.natural_steel_boots.name=Natural Steel Boots
+
+item.immortal_steel_shovel.name=Immortal Steel Shovel
+item.immortal_steel_pickaxe.name=Immortal Steel Pickaxe
+item.immortal_steel_axe.name=Immortal Steel Axe
+item.immortal_steel_sword.name=Immortal Steel Sword
+item.immortal_steel_hoe.name=Immortal Steel Hoe
+item.immortal_steel_helmet.name=Immortal Steel Helmet
+item.immortal_steel_chestplate.name=Immortal Steel Chestplate
+item.immortal_steel_leggings.name=Immortal Steel Leggings
+item.immortal_steel_boots.name=Immortal Steel Boots
+
+item.dragon_steel_shovel.name=Dragon Steel Shovel
+item.dragon_steel_pickaxe.name=Dragon Steel Pickaxe
+item.dragon_steel_axe.name=Dragon Steel Axe
+item.dragon_steel_sword.name=Dragon Steel Sword
+item.dragon_steel_hoe.name=Dragon Steel Hoe
+item.dragon_steel_helmet.name=Dragon Steel Helmet
+item.dragon_steel_chestplate.name=Dragon Steel Chestplate
+item.dragon_steel_leggings.name=Dragon Steel Leggings
+item.dragon_steel_boots.name=Dragon Steel Boots
+
+item.phantom_steel_shovel.name=Phantom Steel Shovel
+item.phantom_steel_pickaxe.name=Phantom Steel Pickaxe
+item.phantom_steel_axe.name=Phantom Steel Axe
+item.phantom_steel_sword.name=Phantom Steel Sword
+item.phantom_steel_hoe.name=Phantom Steel Hoe
+item.phantom_steel_helmet.name=Phantom Steel Helmet
+item.phantom_steel_chestplate.name=Phantom Steel Chestplate
+item.phantom_steel_leggings.name=Phantom Steel Leggings
+item.phantom_steel_boots.name=Phantom Steel Boots
+
+item.natural_diamond_shovel.name=Natural Diamond Shovel
+item.natural_diamond_pickaxe.name=Natural Diamond Pickaxe
+item.natural_diamond_axe.name=Natural Diamond Axe
+item.natural_diamond_sword.name=Natural Diamond Sword
+item.natural_diamond_hoe.name=Natural Diamond Hoe
+
+item.immortal_diamond_shovel.name=Immortal Diamond Shovel
+item.immortal_diamond_pickaxe.name=Immortal Diamond Pickaxe
+item.immortal_diamond_axe.name=Immortal Diamond Axe
+item.immortal_diamond_sword.name=Immortal Diamond Sword
+item.immortal_diamond_hoe.name=Immortal Diamond Hoe
+
+item.dragon_diamond_shovel.name=Dragon Diamond Shovel
+item.dragon_diamond_pickaxe.name=Dragon Diamond Pickaxe
+item.dragon_diamond_axe.name=Dragon Diamond Axe
+item.dragon_diamond_sword.name=Dragon Diamond Sword
+item.dragon_diamond_hoe.name=Dragon Diamond Hoe
+
+item.phantom_diamond_shovel.name=Phantom Diamond Shovel
+item.phantom_diamond_pickaxe.name=Phantom Diamond Pickaxe
+item.phantom_diamond_axe.name=Phantom Diamond Axe
+item.phantom_diamond_sword.name=Phantom Diamond Sword
+item.phantom_diamond_hoe.name=Phantom Diamond Hoe
 
 itemGroup.em_cretive_tab=Ender's Magic
 
-tooltip.ender_seeds=They can be planted on the End Stone
+tooltip.ender_seeds=Grow on the End Stone

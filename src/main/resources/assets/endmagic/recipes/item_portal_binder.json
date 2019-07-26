@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "AZA",
+    "ZEZ",
+    "AZA"
+    ],
+    "key": {
+        "A": {
+            "item": "endmagic:raw_enderite"
+        },
+        "E": {
+            "item": "minecraft:ender_eye"
+        },
+        "Z": {
+            "item": "minecraft:glowstone_dust"
+        }
+    },
+    "result": {
+        "item": "endmagic:item_portal_binder"
+    }
+}

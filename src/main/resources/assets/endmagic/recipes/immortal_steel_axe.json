@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "##",
+    "#X",
+    " X"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:immortal_steel"
+        },
+        "X": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "endmagic:immortal_steel_axe"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "ZZZ",
+    "FXF",
+    "F#F"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:lava_bucket"
+        },
+        "X": {
+            "item": "minecraft:furnace"
+        },
+        "Z": {
+            "item": "minecraft:iron_bars"
+        },
+        "F": {
+            "item": "minecraft:brick_block"
+        }
+    },
+    "result": {
+        "item": "endmagic:block_blast_furnace"
+    }
+}
