@@ -28,7 +28,7 @@ import java.util.function.Function;
 public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable> extends Block implements NameProvider, IEMModel {
 
     protected final IProperty<BlockType> blockType;
-    protected final Function<Integer, BlockType> byIndex;
+    protected Function<Integer, BlockType> byIndex;
     private final Class<BlockType> type;
     private String suffix;
 
