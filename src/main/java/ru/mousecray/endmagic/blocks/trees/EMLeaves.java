@@ -54,11 +54,6 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
     }
 
     @Override
-    public int damageDropped(IBlockState state) {
-        return state.getValue(blockType).ordinal();
-    }
-
-    @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         Blocks.LEAVES.getDrops(drops, world, pos, state, fortune);
     }

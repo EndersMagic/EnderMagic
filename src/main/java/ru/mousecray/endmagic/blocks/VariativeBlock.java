@@ -1,5 +1,10 @@
 package ru.mousecray.endmagic.blocks;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.function.Function;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -21,10 +26,6 @@ import ru.mousecray.endmagic.util.IEMModel;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
 import ru.mousecray.endmagic.util.NameProvider;
 
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.function.Function;
-
 public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable> extends Block implements NameProvider, IEMModel {
 
     protected final IProperty<BlockType> blockType;
@@ -36,14 +37,6 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         super(material);
         this.type = type;
         blockType = PropertyEnum.create("tree_type", type);
-        try {
-            Field valuesField = type.getDeclaredField("values");
-            BlockType[] values = (BlockType[]) valuesField.get(null);
-            this.byIndex = i -> values[i];
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-            this.byIndex = null;
-        }
         this.suffix = suffix;
 
         //super
@@ -52,6 +45,16 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         fullProperties[baseProperties.size()] = blockType;
         blockState = new BlockStateContainer(this, fullProperties);
         //
+        
+        try {
+            Method valuesField = type.getDeclaredMethod("values");
+            BlockType[] values = (BlockType[]) valuesField.invoke(null);
+            this.byIndex = i -> values[i];
+        } catch (IllegalAccessException | IllegalArgumentException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+            System.out.println(this.getClass().getName() + " loaded with error");
+            this.byIndex = null;
+        }
 
         setDefaultState(blockState.getBaseState()
                 .withProperty(blockType, byIndex.apply(0)));
@@ -59,6 +62,11 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
 
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         worldIn.setBlockState(pos, state.withProperty(blockType, byIndex.apply(stack.getItemDamage())));
+    }
+    
+    @Override
+    public int damageDropped(IBlockState state) {
+        return state.getValue(blockType).ordinal();
     }
 
     @Override
