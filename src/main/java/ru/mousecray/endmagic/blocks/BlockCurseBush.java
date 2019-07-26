@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -29,6 +30,8 @@ public class BlockCurseBush extends BlockBush {
 	
 	public BlockCurseBush() {
 		setDefaultState(blockState.getBaseState().withProperty(ACTIVE, Boolean.valueOf(false)));
+		setHardness(0.0F);
+		setSoundType(SoundType.PLANT);
 	}
 	
 	@Override

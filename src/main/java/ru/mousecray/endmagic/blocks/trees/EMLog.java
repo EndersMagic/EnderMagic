@@ -19,8 +19,14 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extend
     public EMLog(Class<TreeType> type) {
         super(type, Material.WOOD, "_log");
 
-        setHardness(2.0F);
-        setSoundType(SoundType.WOOD);
+      setHardness(2.5F);
+      setResistance(4.0F);
+      setSoundType(SoundType.WOOD);
+      
+      setHarvestLevel("axe", 2, getDefaultState().withProperty(blockType, byIndex.apply(0)));
+      setHarvestLevel("axe", 2, getDefaultState().withProperty(blockType, byIndex.apply(1)));
+      setHarvestLevel("axe", 3, getDefaultState().withProperty(blockType, byIndex.apply(2)));
+      setHarvestLevel("axe", 1, getDefaultState().withProperty(blockType, byIndex.apply(3)));
 
         setDefaultState(blockState.getBaseState()
                 .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y)

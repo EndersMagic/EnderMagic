@@ -1,7 +1,14 @@
 package ru.mousecray.endmagic.blocks.trees;
 
+import static net.minecraft.block.BlockSapling.SAPLING_AABB;
+
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -20,16 +27,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 
-import javax.annotation.Nullable;
-import java.util.Random;
-
-import static net.minecraft.block.BlockSapling.SAPLING_AABB;
-
 public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & EMSapling.SaplingThings> extends VariativeBlock<TreeType> implements IGrowable {
 
     public EMSapling(Class<TreeType> type) {
         super(type, Material.PLANTS, "_sapling");
 
+        setResistance(0.0F);
+        setHardness(0.0F);
+        setSoundType(SoundType.PLANT);
         setTickRandomly(true);
     }
 

@@ -36,6 +36,8 @@ public class EnderGrass extends BlockBush implements IShearable, IEMModel {
 
     public EnderGrass() {
         super(Material.VINE);
+        setHardness(0.0F);
+        setResistance(0.0F);
         setSoundType(SoundType.PLANT);
 		setLightLevel(0.1F);
     }

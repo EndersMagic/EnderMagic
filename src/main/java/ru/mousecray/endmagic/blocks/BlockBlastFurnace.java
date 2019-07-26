@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.blocks;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,6 +50,9 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
 
     public BlockBlastFurnace() {
         super(Material.ROCK);
+        setResistance(8.0F);
+        setHardness(4.0F);
+        setSoundType(SoundType.STONE);
         addRecipe(EMItems.dragonCoal, Items.IRON_INGOT, EMItems.dragonSteel);
         addRecipe(EMItems.immortalCoal, Items.IRON_INGOT, EMItems.immortalSteel);
         addRecipe(EMItems.naturalCoal, Items.IRON_INGOT, EMItems.naturalSteel);

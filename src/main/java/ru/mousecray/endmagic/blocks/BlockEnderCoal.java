@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.blocks;
 
+import net.minecraft.block.SoundType;
 import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
 
 public class BlockEnderCoal extends BlockNamed implements BlockColored {
@@ -8,6 +9,9 @@ public class BlockEnderCoal extends BlockNamed implements BlockColored {
     public BlockEnderCoal(String name, RGBA color) {
         super(name);
         this.color = color;
+        setHardness(5.0F);
+        setResistance(10.0F);
+        setSoundType(SoundType.STONE);
     }
 
     @Override

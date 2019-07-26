@@ -36,6 +36,7 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
 
         setTickRandomly(true);
         setHardness(0.2F);
+        setResistance(0.4F);
         setLightOpacity(1);
         setSoundType(SoundType.PLANT);
     }

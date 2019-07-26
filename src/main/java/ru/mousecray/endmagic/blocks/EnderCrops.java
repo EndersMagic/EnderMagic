@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.blocks;
 
 import net.minecraft.block.BlockCrops;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -27,6 +28,8 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
 
     public EnderCrops() {
 		setLightLevel(0.3F);
+		setResistance(0.0F);
+		setSoundType(SoundType.PLANT);
     }
     
 	@Override

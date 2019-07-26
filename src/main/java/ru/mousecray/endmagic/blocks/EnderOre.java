@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.blocks;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
@@ -14,6 +15,10 @@ public class EnderOre extends BlockNamed {
 
     public EnderOre(String name) {
         super(name);
+        setHardness(3.0F);
+        setResistance(5.0F);
+        setHarvestLevel("pickaxe", 2);
+        setSoundType(SoundType.STONE);
     }
 
     @Override
