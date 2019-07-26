@@ -36,7 +36,7 @@ public final class EMBlocks {
     public static final BlockNamed enderite = new BlockNamed("enderite");
     public static final EnderOre enderOre = new EnderOre("ender_ore");
 
-    public static final EMLog<EnderTreeType> enderLog = new EMLog<>(EnderTreeType.class, i -> EnderTreeType.values()[i]);
-    public static final EMSapling<EnderTreeType> enderSapling = new EMSapling<>(EnderTreeType.class, i -> EnderTreeType.values()[i]);
-    public static final EMLeaves<EnderTreeType> enderLeaves = new EMLeaves<>(EnderTreeType.class, i -> EnderTreeType.values()[i]);
+    public static final EMLog<EnderTreeType> enderLog = new EMLog<>(EnderTreeType.class);
+    public static final EMSapling<EnderTreeType> enderSapling = new EMSapling<>(EnderTreeType.class);
+    public static final EMLeaves<EnderTreeType> enderLeaves = new EMLeaves<>(EnderTreeType.class);
 }
