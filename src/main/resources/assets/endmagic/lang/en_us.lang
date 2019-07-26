@@ -1,6 +1,17 @@
 tile.ender_grass.name=Ender Grass
 tile.block_master_static_portal.name=Static Teleport
 tile.block_master_dark_portal.name=Dark Teleport
+tile.block_blast_furnace.name=Blast Furnace
+tile.block_portal.name=Portal
+tile.block_top_mark.name=Control Block
+tile.block_curse_bush.name=Curse Bush
+tile.dragon_coal_block.name=Block of Dragon Coal
+tile.natural_coal_block.name=Block of Natural Coal
+tile.immortal_coal_block.name=Block of Immortal Coal
+tile.phantom_coal_block.name=Block of Phantom Coal
+tile.enderite.name=Enderite
+tile.ender_ore.name=Ender Ore
+
 
 item.ender_seeds.name=Purple Pearl Seeds
 item.purple_ender_pearl.name=Purple Pearl

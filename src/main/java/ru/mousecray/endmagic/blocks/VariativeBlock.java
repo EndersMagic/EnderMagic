@@ -1,5 +1,8 @@
 package ru.mousecray.endmagic.blocks;
 
+import java.util.Collection;
+import java.util.function.Function;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -20,9 +23,6 @@ import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.util.IEMModel;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
 import ru.mousecray.endmagic.util.NameProvider;
-
-import java.util.Collection;
-import java.util.function.Function;
 
 public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable> extends Block implements NameProvider, IEMModel {
 
@@ -72,6 +72,10 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     public String name() {
         String rawName = NameAndTabUtils.getName(type);
         return rawName.substring(0, rawName.lastIndexOf('_')) + suffix;
+    }
+    
+    public String getNameForStack(ItemStack stack) {
+		return byIndex.apply(stack.getMetadata()).getName();
     }
 
     @Override
