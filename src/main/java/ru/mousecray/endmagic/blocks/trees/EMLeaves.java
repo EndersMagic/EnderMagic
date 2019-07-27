@@ -31,8 +31,8 @@ import java.util.stream.Stream;
 
 public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> extends VariativeBlock<TreeType> implements IShearable {
 
-    public EMLeaves(Class<TreeType> type, Function<Integer, TreeType> byIndex) {
-        super(type, byIndex, Material.LEAVES, "_leaves");
+    public EMLeaves(Class<TreeType> type) {
+        super(type, Material.LEAVES, "_leaves");
 
         setTickRandomly(true);
         setHardness(0.2F);
@@ -51,11 +51,6 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
 
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return Item.getItemFromBlock(EMBlocks.enderSapling);
-    }
-
-    @Override
-    public int damageDropped(IBlockState state) {
-        return state.getValue(blockType).ordinal();
     }
 
     @Override

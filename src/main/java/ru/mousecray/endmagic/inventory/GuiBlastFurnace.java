@@ -10,21 +10,24 @@ public class GuiBlastFurnace extends GuiContainer {
     public GuiBlastFurnace(ContainerBlastFurnace containerBlastFurnace) {
         super(containerBlastFurnace);
         container = containerBlastFurnace;
-    }
-
-    @Override
-    public void initGui() {
         xSize = 190;
         ySize = 234;
-        super.initGui();
     }
 
-    ResourceLocation background = new ResourceLocation(EM.ID, "textures/gui/blast_furnace.png");
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        renderHoveredToolTip(mouseX, mouseY);
+    }
+
+
+    static ResourceLocation background = new ResourceLocation(EM.ID, "textures/gui/blast_furnace.png");
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         mc.getTextureManager().bindTexture(background);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-
     }
 }

@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "Z#Z",
+    "#X#",
+    "Z#Z"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:glass"
+        },
+        "X": {
+            "item": "minecraft:ender_eye"
+        },
+        "Z": {
+            "item": "minecraft:glass_pane"
+        }
+    },
+    "result": {
+        "item": "endmagic:ender_compass"
+    }
+}

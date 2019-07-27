@@ -31,6 +31,7 @@ public class EntityBluePearl extends EntityEMEnderPearl{
         
 		if(!world.isRemote) {
 	    	if(entitylivingbase2 != null) {
+	    		//TODO: Revive the mine
 	    		if(stack != ItemStack.EMPTY && stack.getItem() instanceof EntityImpact) {
 	    			
 	    			if (entitylivingbase2.isRiding()) {

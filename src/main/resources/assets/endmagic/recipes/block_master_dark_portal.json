@@ -1,0 +1,32 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "OGO",
+    "ZKZ",
+    "AEA"
+    ],
+    "key": {
+        "A": {
+            "item": "minecraft:stonebrick",
+            "data": 0
+        },
+        "E": {
+            "item": "endmagic:enderite"
+        },
+        "O": {
+            "item": "minecraft:obsidian"
+        },
+        "G": {
+            "item": "minecraft:gold_nugget"
+        },
+        "Z": {
+            "item": "minecraft:glass"
+        },
+        "K": {
+            "item": "minecraft:lava_bucket"
+        }
+    },
+    "result": {
+        "item": "endmagic:block_master_dark_portal"
+    }
+}

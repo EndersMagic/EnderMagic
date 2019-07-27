@@ -22,14 +22,13 @@ import ru.mousecray.endmagic.blocks.VariativeBlock;
 
 import javax.annotation.Nullable;
 import java.util.Random;
-import java.util.function.Function;
 
 import static net.minecraft.block.BlockSapling.SAPLING_AABB;
 
 public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & EMSapling.SaplingThings> extends VariativeBlock<TreeType> implements IGrowable {
 
-    public EMSapling(Class<TreeType> type, Function<Integer, TreeType> byIndex) {
-        super(type, byIndex, Material.PLANTS, "_sapling");
+    public EMSapling(Class<TreeType> type) {
+        super(type, Material.PLANTS, "_sapling");
 
         setTickRandomly(true);
     }

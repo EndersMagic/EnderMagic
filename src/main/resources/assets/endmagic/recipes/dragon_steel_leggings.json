@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "###",
+    "# #",
+	"# #"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:dragon_steel"
+        }
+    },
+    "result": {
+        "item": "endmagic:dragon_steel_leggings"
+    }
+}

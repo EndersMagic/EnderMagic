@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic.items;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,8 +8,6 @@ import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
-
-import java.util.Map;
 
 public class EnderArrow extends ItemArrow implements ItemOneWhiteEMTextured {
 	
