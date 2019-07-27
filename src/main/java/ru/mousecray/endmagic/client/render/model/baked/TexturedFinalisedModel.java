@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ItemLayerModel;
 import org.apache.commons.lang3.tuple.Pair;
-import ru.mousecray.endmagic.util.elix_x.baked.UnpackedBakedQuad;
-import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
+import ru.mousecray.endmagic.util.render.elix_x.baked.UnpackedBakedQuad;
+import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;

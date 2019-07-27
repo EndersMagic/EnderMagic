@@ -2,7 +2,7 @@ package ru.mousecray.endmagic.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import ru.mousecray.endmagic.util.NameProvider;
+import ru.mousecray.endmagic.util.registry.NameProvider;
 
 public class BlockNamed extends Block implements NameProvider {
     public BlockNamed(String name) {

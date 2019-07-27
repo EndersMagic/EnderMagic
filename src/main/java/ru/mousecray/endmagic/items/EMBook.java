@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.client.gui.GuiScreenEMBook;
-import ru.mousecray.endmagic.util.NameProvider;
+import ru.mousecray.endmagic.util.registry.NameProvider;
 
 public class EMBook extends Item implements NameProvider, ItemOneWhiteEMTextured {
 

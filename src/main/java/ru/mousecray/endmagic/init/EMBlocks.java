@@ -9,7 +9,7 @@ import ru.mousecray.endmagic.blocks.trees.EMLeaves;
 import ru.mousecray.endmagic.blocks.trees.EMLog;
 import ru.mousecray.endmagic.blocks.trees.EMSapling;
 import ru.mousecray.endmagic.blocks.trees.EnderTreeType;
-import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
+import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
 

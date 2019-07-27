@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
-import ru.mousecray.endmagic.util.IEMModel;
+import ru.mousecray.endmagic.util.registry.IEMModel;
 
 public interface ItemTextured extends IEMModel {
 
