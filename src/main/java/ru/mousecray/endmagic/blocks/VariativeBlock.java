@@ -32,6 +32,7 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     protected Function<Integer, BlockType> byIndex;
     private final Class<BlockType> type;
     private String suffix;
+    private int metaCount;
 
     public VariativeBlock(Class<BlockType> type, Material material, String suffix) {
         super(material);
@@ -49,6 +50,9 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         try {
             Method valuesField = type.getDeclaredMethod("values");
             BlockType[] values = (BlockType[]) valuesField.invoke(null);
+            this.metaCount = values.length;
+            if (metaCount > 4) throw new IllegalArgumentException(String.format("The given EnumType %s contains " 
+            + metaCount + " metadata. The maximum number of 4.", type.getName()));
             this.byIndex = i -> values[i];
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
@@ -58,6 +62,10 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
 
         setDefaultState(blockState.getBaseState()
                 .withProperty(blockType, byIndex.apply(0)));
+    }
+    
+    public VariativeBlock(Class<BlockType> type, Material material) {
+    	this(type, material, null);
     }
 
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
@@ -87,7 +95,7 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     @Override
     public String name() {
         String rawName = NameAndTabUtils.getName(type);
-        return rawName.substring(0, rawName.lastIndexOf('_')) + suffix;
+        return suffix != null ? rawName.substring(0, rawName.lastIndexOf('_')) + suffix : rawName;
     }
 
     public String getNameForStack(ItemStack stack) {
@@ -96,16 +104,14 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
 
     @Override
     public void registerModels(IModelRegistration modelRegistration) {
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0,
-                new ModelResourceLocation(getRegistryName(), "inventory"));
-        for (int i = 1; i < 4; i++)
+        for (int i = 0; i < metaCount; i++)
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i,
-                    new ModelResourceLocation(getRegistryName(), "inventory,meta=" + i));
+                    new ModelResourceLocation(getRegistryName(), i == 0 ? "inventory" : "inventory,meta=" + i));
     }
 
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < metaCount; i++)
             items.add(new ItemStack(this, 1, i));
     }
 }
