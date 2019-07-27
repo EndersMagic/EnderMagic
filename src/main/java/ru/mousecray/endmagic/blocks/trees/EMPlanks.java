@@ -13,6 +13,7 @@ public class EMPlanks<TreeType extends Enum<TreeType> & IStringSerializable> ext
 		setHardness(2.5F);
 		setResistance(7.0F);
 		setSoundType(SoundType.WOOD);
+		
 	}
 
 	@Override
