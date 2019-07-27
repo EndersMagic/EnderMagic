@@ -4,9 +4,10 @@ import ru.mousecray.endmagic.blocks.BlockBlastFurnace;
 import ru.mousecray.endmagic.blocks.BlockCurseBush;
 import ru.mousecray.endmagic.blocks.BlockEnderCoal;
 import ru.mousecray.endmagic.blocks.BlockNamed;
+import static ru.mousecray.endmagic.blocks.EnderBlockTypes.*;
 import ru.mousecray.endmagic.blocks.EnderCrops;
-import ru.mousecray.endmagic.blocks.EnderTallgrass;
 import ru.mousecray.endmagic.blocks.EnderOre;
+import ru.mousecray.endmagic.blocks.EnderTallgrass;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterDarkPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterStaticPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockPortal;
@@ -15,7 +16,6 @@ import ru.mousecray.endmagic.blocks.trees.EMLeaves;
 import ru.mousecray.endmagic.blocks.trees.EMLog;
 import ru.mousecray.endmagic.blocks.trees.EMPlanks;
 import ru.mousecray.endmagic.blocks.trees.EMSapling;
-import ru.mousecray.endmagic.blocks.trees.EnderTreeType;
 import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
