@@ -1,5 +1,7 @@
 package ru.mousecray.endmagic.blocks.dimensional;
 
+import java.util.Random;
+
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -20,6 +22,12 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
 		setResistance(10.0F);
 		setTickRandomly(true);
 		setSoundType(SoundType.GROUND);
+	}
+	
+	@Override
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		super.updateTick(world, pos, state, rand);
+		//TODO:Custom mechanics
 	}
 	
 	@Override
