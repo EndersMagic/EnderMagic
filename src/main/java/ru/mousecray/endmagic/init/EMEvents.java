@@ -1,7 +1,12 @@
 package ru.mousecray.endmagic.init;
 
-import codechicken.lib.packet.PacketCustom;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Random;
+
 import com.google.common.collect.ImmutableMap;
+
+import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
@@ -32,12 +37,6 @@ import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
-
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
