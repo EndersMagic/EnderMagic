@@ -1,8 +1,13 @@
 package ru.mousecray.endmagic.blocks.dimensional;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 
 public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializable> extends VariativeBlock<GrassType> {
@@ -14,6 +19,12 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
 		setHardness(3.0F);
 		setResistance(10.0F);
 		setTickRandomly(true);
+		setSoundType(SoundType.GROUND);
+	}
+	
+	@Override
+	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) {
+		return state.getValue(blockType).ordinal() == 2 ? SoundType.SNOW : super.getSoundType(state, world, pos, entity);
 	}
 
 	@Override
