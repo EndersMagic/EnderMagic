@@ -13,7 +13,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import ru.mousecray.endmagic.util.RandomBlockPos;
-import ru.mousecray.endmagic.util.elix_x.baked.UnpackedBakedQuad;
+import ru.mousecray.endmagic.util.render.elix_x.baked.UnpackedBakedQuad;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

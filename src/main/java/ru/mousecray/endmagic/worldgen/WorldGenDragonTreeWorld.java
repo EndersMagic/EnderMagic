@@ -3,6 +3,7 @@ package ru.mousecray.endmagic.worldgen;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
 import java.util.HashSet;
 import java.util.Random;

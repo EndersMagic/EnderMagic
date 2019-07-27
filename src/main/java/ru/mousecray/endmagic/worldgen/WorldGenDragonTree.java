@@ -15,7 +15,7 @@ import java.util.*;
 import static net.minecraft.block.BlockLog.LOG_AXIS;
 import static net.minecraft.init.Blocks.AIR;
 import static net.minecraft.init.Blocks.END_STONE;
-import static ru.mousecray.endmagic.worldgen.WorldGenUtils.generateInArea;
+import static ru.mousecray.endmagic.util.worldgen.WorldGenUtils.generateInArea;
 
 public class WorldGenDragonTree extends WorldGenAbstractTree {
     public WorldGenDragonTree(boolean notify) {

@@ -3,7 +3,7 @@ package ru.mousecray.endmagic.items;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.item.Item;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.util.NameProvider;
+import ru.mousecray.endmagic.util.registry.NameProvider;
 
 import java.util.Map;
 

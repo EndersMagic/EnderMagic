@@ -9,8 +9,8 @@ import ru.mousecray.endmagic.items.materials.EnderDiamond;
 import ru.mousecray.endmagic.items.materials.EnderSteel;
 import ru.mousecray.endmagic.items.materials.MaterialProvider;
 import ru.mousecray.endmagic.items.tools.*;
-import ru.mousecray.endmagic.util.elix_x.ecomms.color.HSBA;
-import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
+import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.HSBA;
+import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 import java.awt.*;
 import java.util.List;

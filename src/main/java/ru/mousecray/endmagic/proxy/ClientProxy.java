@@ -45,7 +45,7 @@ import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.items.ItemTextured;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
-import ru.mousecray.endmagic.util.IEMModel;
+import ru.mousecray.endmagic.util.registry.IEMModel;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
     public ClientProxy() {

@@ -2,7 +2,7 @@ package ru.mousecray.endmagic.items.tools;
 
 import net.minecraft.item.ItemSword;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.util.NameProvider;
+import ru.mousecray.endmagic.util.registry.NameProvider;
 
 public class EMSword extends ItemSword implements NameProvider, ItemTexturedTool {
 

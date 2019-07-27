@@ -22,9 +22,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
-import ru.mousecray.endmagic.util.IEMModel;
-import ru.mousecray.endmagic.util.NameAndTabUtils;
-import ru.mousecray.endmagic.util.NameProvider;
+import ru.mousecray.endmagic.util.registry.IEMModel;
+import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
+import ru.mousecray.endmagic.util.registry.NameProvider;
 
 public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable> extends Block implements NameProvider, IEMModel {
 
