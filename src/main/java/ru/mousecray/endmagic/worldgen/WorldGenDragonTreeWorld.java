@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.init.EMBlocks;
 
@@ -19,13 +18,10 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static net.minecraft.block.BlockLog.LOG_AXIS;
-import static net.minecraft.init.Blocks.*;
+import static net.minecraft.init.Blocks.AIR;
+import static net.minecraft.init.Blocks.END_STONE;
 
 public class WorldGenDragonTreeWorld {
-
-    protected static final NoiseGeneratorPerlin TREE_NOISE = new NoiseGeneratorPerlin(new Random(1234L), 1);
-
-    private WorldGenDragonTree generator = new WorldGenDragonTree(true);
 
     private IBlockState enderLog = EMBlocks.enderLog.getDefaultState();
     private IBlockState enderLeaves = EMBlocks.enderLeaves.getDefaultState();
@@ -122,7 +118,7 @@ public class WorldGenDragonTreeWorld {
                                     .map(pos::offset)
                                     .filter(i -> world.getBlockState(i).getBlock() == air)
                                     .map(i -> {
-                                        if (marks[i.getX() - start.getX()][i.getY() - start.getY()][i.getZ() - start.getZ()]) {
+                                        if (getMark(marks, i, start)) {
                                             return Pair.of(i, block);
                                         } else {
                                             boolean willBeAir = world.rand.nextFloat() > chance;
@@ -168,11 +164,6 @@ public class WorldGenDragonTreeWorld {
 
     private static int dotProduct(Vec3i a, Vec3i b) {
         return a.getX() * b.getX() + a.getY() * b.getY() + a.getZ() * b.getZ();
-    }
-
-    private static boolean chunkContains(Chunk chunk, BlockPos pos) {
-        return chunk.getPos().getXStart() <= pos.getX() && chunk.getPos().getXEnd() >= pos.getX() &&
-                chunk.getPos().getZStart() <= pos.getZ() && chunk.getPos().getZEnd() >= pos.getZ();
     }
 
 

@@ -3,7 +3,6 @@ package ru.mousecray.endmagic.init;
 import codechicken.lib.packet.PacketCustom;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,8 +24,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -39,50 +36,11 @@ import ru.mousecray.endmagic.network.ClientPacketHandler;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static net.minecraft.init.Items.STICK;
-import static ru.mousecray.endmagic.worldgen.WorldGenDragonTreeWorld.walkAround;
-
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
-    //@SubscribeEvent
-    public static void onRightClick(PlayerInteractEvent.RightClickBlock event) {
-        if (event.getEntityPlayer().getHeldItemMainhand().getItem() == STICK) {
-        }
-    }
-
-    //@SubscribeEvent
-    public static void onFurnacePlaced(BlockEvent.PlaceEvent event) {
-        if (event.getState().getBlock() == Blocks.FURNACE) {
-            EnumFacing direction = event.getState().getValue(BlockFurnace.FACING);
-            EnumFacing ground = Arrays.stream(EnumFacing.HORIZONTALS)
-                    .filter(side -> event.getWorld().getBlockState(event.getPos().offset(side)).getBlock() == Blocks.END_STONE).findFirst().get();
-
-            event.getWorld().setBlockToAir(event.getPos());
-
-
-            Stream<BlockPos> blockPosStream = walkAround(
-                    event.getWorld(),
-                    event.getPos(),
-                    direction,
-                    ground.getOpposite(),
-                    0
-            );
-
-            Stream<BlockPos> blockPosStream1 = takeWhile(blockPosStream, blockPos -> !blockPos.equals(event.getPos().offset(direction.getOpposite())));
-
-            List<BlockPos> collect = blockPosStream1.collect(Collectors.toList());
-            System.out.println(collect);
-            collect
-                    .forEach(pos -> {
-                        event.getWorld().setBlockState(pos, Blocks.WOOL.getDefaultState());
-                    });
-        }
-
-    }
 
     static <T> Spliterator<T> takeWhile(
             Spliterator<T> splitr, Predicate<? super T> predicate) {
