@@ -1,139 +1,138 @@
 package ru.mousecray.endmagic.worldgen;
 
-import com.google.common.collect.ImmutableList;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
+import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.init.EMBlocks;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.min;
-import static net.minecraft.block.BlockLog.EnumAxis.fromFacingAxis;
 import static net.minecraft.block.BlockLog.LOG_AXIS;
+import static net.minecraft.init.Blocks.AIR;
+import static net.minecraft.init.Blocks.END_STONE;
+import static ru.mousecray.endmagic.worldgen.WorldGenUtils.generateInArea;
 
 public class WorldGenDragonTree extends WorldGenAbstractTree {
-
-    private IBlockState enderLog = EMBlocks.enderLog.getDefaultState();
-    private IBlockState enderLeaves = EMBlocks.enderLeaves.getDefaultState();
-
     public WorldGenDragonTree(boolean notify) {
         super(notify);
     }
 
+    private IBlockState enderLog = EMBlocks.enderLog.getDefaultState();
+    private IBlockState enderLeaves = EMBlocks.enderLeaves.getDefaultState();
+
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
-        return findDirection(worldIn, position).map(direction -> {
-
-            enderLog = enderLog.withProperty(LOG_AXIS, fromFacingAxis(direction.getAxis()));
-
-            int size = rand.nextInt(3) + 1;
-
-            generateLog(worldIn, rand, position, direction, size);
-
-            if (size < 3)
-                generateSmallCrown(worldIn, rand, position, direction, size);
-            else
-                generateBigCrown(worldIn, rand, position, direction, size);
-
-            return true;
-        }).orElse(false);
+        return generate(worldIn, rand, position, new HashSet<>());
     }
 
-    private void generateBigCrown(World worldIn, Random rand, BlockPos position, EnumFacing direction, int size) {
-        EnumFacing side = direction.rotateY();
-        EnumFacing oppositeSide = side.getOpposite();
+    public boolean generate(World world, Random random, BlockPos pos, Set<BlockPos> alreadyChecked) {
+        EnumFacing direction = logDirection(world, pos).getOpposite();
+        BlockLog.EnumAxis value = BlockLog.EnumAxis.fromFacingAxis(direction.getAxis());
+        if (value != BlockLog.EnumAxis.Y) {
+            if (world.getBlockState(pos).getBlock() == END_STONE && aroundBlocks(world, pos, AIR, 77, alreadyChecked)) {
 
-        for (int i = 0; i < size; i++) {
-            BlockPos current = position.offset(direction, i);
+                int lvl = 2 + random.nextInt(3);
+                for (int i = 0; i < lvl; i++)
+                    world.setBlockState(pos.offset(direction, i), enderLog.withProperty(LOG_AXIS, value), 18);
 
-            if (i == 0 || i == size - 1) {
-                int i1 = min(size - i, 2);
-                ImmutableList.of(side, oppositeSide, EnumFacing.UP, EnumFacing.DOWN)
-                        .forEach(enumFacing -> generateLeaves(worldIn, rand, current, enumFacing, i1));
+                generateLeavesAround(world, pos.offset(direction), lvl);
+                return true;
             }
         }
-        if (size > 1)
-            ImmutableList.of(
-                    position.offset(side).offset(EnumFacing.UP),
-                    position.offset(oppositeSide).offset(EnumFacing.UP),
-                    position.offset(side).offset(EnumFacing.DOWN),
-                    position.offset(oppositeSide).offset(EnumFacing.DOWN)
-            ).forEach(pos ->
-                    worldIn.setBlockState(pos, enderLeaves));
-        worldIn.setBlockState(position.offset(direction, size), enderLeaves);
+        return false;
     }
 
-    private void generateSmallCrown(World worldIn, Random rand, BlockPos position, EnumFacing direction, int size) {
-        EnumFacing side = direction.rotateY();
-        EnumFacing oppositeSide = side.getOpposite();
-        for (int i = 0; i < size; i++) {
-            int diameter = size + 1 - i;
+    private void generateLeavesAround(World world, BlockPos pos, int lvl) {
+        spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3);
+        spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3);
+        spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3);
+    }
 
-            for (int y = -diameter; y <= diameter; y++) {
-                BlockPos vertical = position.offset(EnumFacing.UP, y).offset(direction, i);
-                for (int x = min(diameter - abs(y) + 1, diameter); x >= 1; x--) {
-                    generateOneLeaves(worldIn, vertical.offset(side, x));
-                    generateOneLeaves(worldIn, vertical.offset(oppositeSide, x));
+    public static boolean[][][] spreadOut(World world, BlockPos centerPos, IBlockState block, Block air, int lvl, double chance) {
+        HashSet<BlockPos> alreadyChecked = new HashSet<>();
+        List<Pair<BlockPos, IBlockState>> setLeaves = new ArrayList<>();
+
+        int areaSize = lvl * 2 + 1;
+        boolean[][][] marks = new boolean[areaSize][areaSize][areaSize];
+        BlockPos start = new BlockPos(centerPos.getX() - lvl, centerPos.getY() - lvl, centerPos.getZ() - lvl);
+        generateInArea(
+                start,
+                new BlockPos(centerPos.getX() + lvl, centerPos.getY() + lvl, centerPos.getZ() + lvl),
+                pos -> {
+                    if (pos.distanceSq(centerPos) < lvl * lvl) {
+                        if (world.getBlockState(pos).getBlock() == air && aroundBlocks(world, pos, air, 1, alreadyChecked)) {
+                            Arrays.stream(EnumFacing.values())
+                                    .map(pos::offset)
+                                    .filter(i -> world.getBlockState(i).getBlock() == air)
+                                    .map(i -> {
+                                        if (getMark(marks, i, start)) {
+                                            return Pair.of(i, block);
+                                        } else {
+                                            boolean willBeAir = world.rand.nextFloat() > chance;
+                                            if (willBeAir) {
+                                                Arrays.stream(EnumFacing.values()).map(i::offset).forEach(markPos -> setMark(marks, markPos, start));
+                                                return Pair.of(i, air.getDefaultState());
+                                            } else
+                                                return Pair.of(i, block);
+                                        }
+                                    })
+                                    .forEach(setLeaves::add);
+                        }
+                        alreadyChecked.clear();
+                    }
                 }
-                if (y != 0)
-                    generateOneLeaves(worldIn, vertical);
-            }
+        );
+        setLeaves.forEach(i -> world.setBlockState(i.getLeft(), i.getRight(), 18));
+        return marks;
+    }
+
+
+    private static void setMark(boolean[][][] marks, BlockPos markPos, BlockPos start) {
+        int x = markPos.getX() - start.getX();
+        int y = markPos.getY() - start.getY();
+        int z = markPos.getZ() - start.getZ();
+
+        if (x > 0 && x < marks.length)
+            if (y >= 0 && y < marks[x].length)
+                if (z >= 0 && z < marks[x][y].length)
+                    marks[x][y][z] = true;
+    }
+
+    private static boolean getMark(boolean[][][] marks, BlockPos markPos, BlockPos start) {
+        int x = markPos.getX() - start.getX();
+        int y = markPos.getY() - start.getY();
+        int z = markPos.getZ() - start.getZ();
+
+        if (x > 0 && x < marks.length)
+            if (y >= 0 && y < marks[x].length)
+                if (z >= 0 && z < marks[x][y].length)
+                    return marks[x][y][z];
+        return false;
+    }
+
+
+    private EnumFacing logDirection(World world, BlockPos pos) {
+        return
+                Arrays.stream(EnumFacing.values())
+                        .filter((i -> world.getBlockState(pos.offset(i)).getBlock() == AIR))
+                        .findAny()
+                        .orElse(EnumFacing.UP);
+    }
+
+    public static boolean aroundBlocks(World world, BlockPos pos, Block air, int n, Set<BlockPos> alreadyChecked) {
+        alreadyChecked.add(pos);
+        if (n == 0)
+            return true;
+        else {
+            return Arrays.stream(EnumFacing.values())
+                    .map(pos::offset)
+                    .filter(i -> !alreadyChecked.contains(i))
+                    .anyMatch(i -> world.getBlockState(i).getBlock() == air && aroundBlocks(world, i, air, n - 1, alreadyChecked));
         }
-        BlockPos top = position.offset(direction, size);
-
-        generateOneLeaves(worldIn, top);
-        ImmutableList.of(side, oppositeSide, EnumFacing.UP, EnumFacing.DOWN)
-                .forEach(enumFacing ->
-                        generateOneLeaves(worldIn, top.offset(enumFacing)));
-
-        if (rand.nextBoolean()) {
-            ImmutableList.of(
-                    top.offset(side).offset(EnumFacing.UP),
-                    top.offset(oppositeSide).offset(EnumFacing.UP),
-                    top.offset(side).offset(EnumFacing.DOWN),
-                    top.offset(oppositeSide).offset(EnumFacing.DOWN)
-            ).forEach(pos -> {
-                if (rand.nextFloat() > 0.7)
-                    worldIn.setBlockState(pos, enderLeaves);
-            });
-        }
-    }
-
-    private void generateOneLeaves(World worldIn, BlockPos position) {
-        if (worldIn.getBlockState(position).getBlock() == Blocks.AIR)
-            worldIn.setBlockState(position, enderLeaves);
-    }
-
-    private void generateLog(World worldIn, Random rand, BlockPos position, EnumFacing direction, int size) {
-        for (int i = 0; i < size; i++) {
-            BlockPos current = position.offset(direction, i);
-            worldIn.setBlockState(current, enderLog);
-        }
-    }
-
-    private void generateLeaves(World worldIn, Random rand, BlockPos position, EnumFacing side, int i) {
-        for (int j = 1; j <= i; j++)
-            worldIn.setBlockState(position.offset(side, j), enderLeaves);
-        worldIn.setBlockState(position.offset(side, 1), enderLeaves);
-
-    }
-
-    public static Optional<EnumFacing> findDirection(World worldIn, BlockPos position) {
-        return Arrays.stream(EnumFacing.HORIZONTALS)
-                .filter(i -> worldIn.getBlockState(position.offset(i)).getBlock() == Blocks.END_STONE)
-                .map(EnumFacing::getOpposite)
-                .findFirst();
-    }
-
-    public void generateWorld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
     }
 }
