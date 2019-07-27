@@ -1,10 +1,11 @@
 package ru.mousecray.endmagic.init;
 
+import static ru.mousecray.endmagic.util.EnderBlockTypes.*;
+
 import ru.mousecray.endmagic.blocks.BlockBlastFurnace;
 import ru.mousecray.endmagic.blocks.BlockCurseBush;
 import ru.mousecray.endmagic.blocks.BlockEnderCoal;
 import ru.mousecray.endmagic.blocks.BlockNamed;
-import static ru.mousecray.endmagic.blocks.EnderBlockTypes.*;
 import ru.mousecray.endmagic.blocks.EnderCrops;
 import ru.mousecray.endmagic.blocks.EnderOre;
 import ru.mousecray.endmagic.blocks.EnderTallgrass;
