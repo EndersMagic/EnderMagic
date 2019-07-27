@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.blocks;
+package ru.mousecray.endmagic.util;
 
 import java.util.Arrays;
 
