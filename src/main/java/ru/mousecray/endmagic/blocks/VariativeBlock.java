@@ -51,17 +51,17 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
             Method valuesField = type.getDeclaredMethod("values");
             BlockType[] values = (BlockType[]) valuesField.invoke(null);
             this.metaCount = values.length;
-            if (metaCount > 4) throw new IllegalArgumentException(String.format("The given EnumType %s contains " 
-            + metaCount + " metadata. The maximum number of 4.", type.getName()));
             this.byIndex = i -> values[i];
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
             System.out.println(this.getClass().getName() + " loaded with error");
             this.byIndex = null;
         }
+        
+        if (metaCount > 4) throw new IllegalArgumentException(String.format("The given EnumType %s contains " 
+        + metaCount + " metadata. The maximum number of 4.", type.getName()));
 
-        setDefaultState(blockState.getBaseState()
-                .withProperty(blockType, byIndex.apply(0)));
+        setDefaultState(blockState.getBaseState().withProperty(blockType, byIndex.apply(0)));
     }
     
     public VariativeBlock(Class<BlockType> type, Material material) {
