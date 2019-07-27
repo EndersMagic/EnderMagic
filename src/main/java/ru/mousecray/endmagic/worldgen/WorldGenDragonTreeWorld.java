@@ -8,18 +8,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.worldgen.monad.WorldIO;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static net.minecraft.block.BlockLog.LOG_AXIS;
-import static net.minecraft.init.Blocks.*;
+import static net.minecraft.init.Blocks.AIR;
+import static net.minecraft.init.Blocks.END_STONE;
+import static ru.mousecray.endmagic.worldgen.monad.WorldIO.*;
 
 public class WorldGenDragonTreeWorld {
 
@@ -27,13 +29,58 @@ public class WorldGenDragonTreeWorld {
 
     private WorldGenDragonTree generator = new WorldGenDragonTree(true);
 
-    private IBlockState enderLog = EMBlocks.enderLog.getDefaultState();
-    private IBlockState enderLeaves = EMBlocks.enderLeaves.getDefaultState();
+    private static IBlockState enderLog = EMBlocks.enderLog.getDefaultState();
+    private static IBlockState enderLeaves = EMBlocks.enderLeaves.getDefaultState();
 
     public static int centralIslandSize = 9;
     //3;minecraft:bedrock,2*minecraft:dirt,minecraft:end_portal;1;
 
-    public void generateWorld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+    private static WorldIO<Pair<Integer, Integer>> getChunkStart = (world, chunkX, chunkZ) -> Pair.of(chunkX << 4, chunkZ << 4);
+
+    public static WorldIO<Void> generateInArea1(BlockPos start, BlockPos end, Function<BlockPos, WorldIO<?>> generate) {
+        WorldIO<?> r = none;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        for (int x = start.getX(); x <= end.getX(); x++)
+            for (int z = start.getZ(); z <= end.getZ(); z++)
+                for (int y = start.getY(); y <= end.getY(); y++) {
+                    pos.setPos(x, y, z);
+                    r = r.andThen(generate.apply(pos));
+                }
+        return r.andThen(none);
+    }
+
+    public static WorldIO<Void> generateWorld =
+            start()
+                    .andThen(
+                            whenEffect((__, chunkX, chunkZ) -> chunkX * chunkX + chunkZ * chunkZ < centralIslandSize * centralIslandSize,
+                                    getChunkFromChunkCoords
+                                            .flatMap(chunk ->
+                                                    when(!chunk.isEmpty(),
+                                                            (world, chunkX, chunkZ) -> {
+                                                                int startX = chunkX << 4;
+                                                                int startZ = chunkZ << 4;
+                                                                return generateInArea1(
+                                                                        new BlockPos(startX, 30, startZ),
+                                                                        new BlockPos(startX + 15, 50, startZ + 15),
+                                                                        pos ->
+                                                                                whenEffect(onlyWorld(w -> w.rand.nextInt(40) == 0), onlyWorld(w1 -> logDirection(w1, pos).getOpposite())
+                                                                                        .flatMap(direction -> {
+                                                                                            BlockLog.EnumAxis value = BlockLog.EnumAxis.fromFacingAxis(direction.getAxis());
+                                                                                            return whenEffect(onlyWorld(w1 -> value != BlockLog.EnumAxis.Y && w1.getBlockState(pos).getBlock() == END_STONE && aroundBlocks(w1, pos, AIR, 4, new HashSet<>())),
+                                                                                                    effect(() -> {
+                                                                                                        int lvl = 2 + world.rand.nextInt(3);
+                                                                                                        for (int i = 0; i < lvl; i++)
+                                                                                                            world.setBlockState(pos.offset(direction, i), enderLog.withProperty(LOG_AXIS, value), 18);
+
+                                                                                                        generateLeaveaAround(world, pos.offset(direction), lvl);
+                                                                                                    })
+                                                                                            );
+                                                                                        }))
+                                                                );
+                                                            }
+                                                    ))));
+
+    public void generateWorld(Random random, int chunkX, int chunkZ, World world) {
         if (chunkX * chunkX + chunkZ * chunkZ < centralIslandSize * centralIslandSize) {
             Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
             if (!chunk.isEmpty()) {
@@ -67,13 +114,13 @@ public class WorldGenDragonTreeWorld {
         }
     }
 
-    private void generateLeaveaAround(World world, BlockPos pos, int lvl) {
+    private static void generateLeaveaAround(World world, BlockPos pos, int lvl) {
         spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3);
         spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3);
         spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3);
     }
 
-    private EnumFacing logDirection(World world, BlockPos pos) {
+    private static EnumFacing logDirection(World world, BlockPos pos) {
         return
                 Arrays.stream(EnumFacing.values())
                         .filter((i -> world.getBlockState(pos.offset(i)).getBlock() == AIR))
