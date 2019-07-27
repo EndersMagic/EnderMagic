@@ -12,8 +12,7 @@ public class EMPlanks<TreeType extends Enum<TreeType> & IStringSerializable> ext
 		super(type, Material.WOOD, "_planks");
 		setHardness(2.5F);
 		setResistance(7.0F);
-		setSoundType(SoundType.WOOD);
-		
+		setSoundType(SoundType.WOOD);	
 	}
 
 	@Override
