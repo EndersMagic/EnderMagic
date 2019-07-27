@@ -15,7 +15,6 @@ import ru.mousecray.endmagic.init.EMBlocks;
 
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 import static net.minecraft.block.BlockLog.LOG_AXIS;
 import static net.minecraft.init.Blocks.AIR;
@@ -166,45 +165,5 @@ public class WorldGenDragonTreeWorld {
         return a.getX() * b.getX() + a.getY() * b.getY() + a.getZ() * b.getZ();
     }
 
-
-    public static Stream<BlockPos> walkAround(World world, BlockPos current, EnumFacing dirrection, EnumFacing up, int step) {
-        return Stream.iterate(new TraverseState(current, dirrection, up, 0),
-                state -> nextTraverseState(world, state)).map(TraverseState::getCurrent);
-    }
-
-    private static TraverseState nextTraverseState(World world, TraverseState state) {
-        if (world.getBlockState(state.current.offset(state.ground)).getBlock() == END_STONE) {
-            BlockPos next = state.current.offset(state.dirrection);
-            if (world.isAirBlock(next))
-                return new TraverseState(next, state.dirrection, state.up, state.stepCount + 1);
-            else {
-                if (world.isAirBlock(state.current.offset(state.up)))
-                    return new TraverseState(state.current.offset(state.up), state.up, state.dirrection.getOpposite(), state.stepCount + 1);
-                else
-                    return new TraverseState(state.current.offset(state.dirrection.getOpposite()), state.dirrection.getOpposite(), state.ground, state.stepCount + 1);
-            }
-        } else
-            return new TraverseState(state.current.offset(state.ground), state.ground, state.dirrection, state.stepCount + 1);
-    }
-
-    private static class TraverseState {
-        public BlockPos getCurrent() {
-            return current;
-        }
-
-        public final BlockPos current;
-        public final EnumFacing dirrection;
-        public final EnumFacing up;
-        public final int stepCount;
-        public final EnumFacing ground;
-
-        public TraverseState(BlockPos current, EnumFacing dirrection, EnumFacing up, int stepCount) {
-            this.current = current;
-            this.dirrection = dirrection;
-            this.up = up;
-            this.stepCount = stepCount;
-            ground = up.getOpposite();
-        }
-    }
 
 }
