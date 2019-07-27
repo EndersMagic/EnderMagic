@@ -2,7 +2,7 @@
     "forge_marker": 1,
     "defaults": {
         "textures": {
-            "cross": "endmagic:blocks/ender_grass"
+            "cross": "endmagic:blocks/ender_tallgrass"
         }
     },
     "variants": {

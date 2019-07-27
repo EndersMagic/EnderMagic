@@ -30,11 +30,11 @@ import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.util.IEMModel;
 
-public class EnderGrass extends BlockBush implements IShearable, IEMModel {
+public class EnderTallgrass extends BlockBush implements IShearable, IEMModel {
 	
     protected static final AxisAlignedBB END_GRASS_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
 
-    public EnderGrass() {
+    public EnderTallgrass() {
         super(Material.VINE);
         setHardness(0.0F);
         setResistance(0.0F);

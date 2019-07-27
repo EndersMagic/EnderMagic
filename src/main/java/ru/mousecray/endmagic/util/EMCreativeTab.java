@@ -12,6 +12,6 @@ public class EMCreativeTab extends CreativeTabs {
 
 	@Override
 	public ItemStack getTabIconItem() {
-		return new ItemStack(EMBlocks.enderGrass);
+		return new ItemStack(EMBlocks.enderTallgrass);
 	}
 }

@@ -5,7 +5,7 @@ import ru.mousecray.endmagic.blocks.BlockCurseBush;
 import ru.mousecray.endmagic.blocks.BlockEnderCoal;
 import ru.mousecray.endmagic.blocks.BlockNamed;
 import ru.mousecray.endmagic.blocks.EnderCrops;
-import ru.mousecray.endmagic.blocks.EnderGrass;
+import ru.mousecray.endmagic.blocks.EnderTallgrass;
 import ru.mousecray.endmagic.blocks.EnderOre;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterDarkPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterStaticPortal;
@@ -20,7 +20,7 @@ import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
 
-    public static final EnderGrass enderGrass = new EnderGrass();
+    public static final EnderTallgrass enderTallgrass = new EnderTallgrass();
 
     public static final BlockBlastFurnace blockBlastFurnace = new BlockBlastFurnace();
 
