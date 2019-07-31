@@ -20,11 +20,11 @@ public class EMMaterials {
     public static Item.ToolMaterial NATURAL_DIAMOND_TOOL_MATERIAL =
             EnumHelper.addToolMaterial("em_natural_diamond", 3, 1000, 8, 3F, 20);
     public static Item.ToolMaterial PHANTOM_DIAMOND_TOOL_MATERIAL =
-            EnumHelper.addToolMaterial("em_phantom_diamond", 4, 2000, 9, 3.5F, 20);
+            EnumHelper.addToolMaterial("em_phantom_diamond", 4, 2000, 9, 4, 20);
     public static Item.ToolMaterial DRAGON_DIAMOND_TOOL_MATERIAL =
-            EnumHelper.addToolMaterial("em_dragon_diamond", 4, 3000, 10, 4F, 22);
+            EnumHelper.addToolMaterial("em_dragon_diamond", 4, 3000, 10, 5, 22);
     public static Item.ToolMaterial IMMORTAL_DIAMOND_TOOL_MATERIAL =
-            EnumHelper.addToolMaterial("em_immortal_diamond", 5, 4000, 12, 7, 22);
+            EnumHelper.addToolMaterial("em_immortal_diamond", 5, 4000, 12, 10, 22);
 
     public static ItemArmor.ArmorMaterial NATURAL_STEEL_ARMOR_MATERIAL =
             EnumHelper.addArmorMaterial("em_natural_steel", EM.ID + ":natural_steel", 16, new int[]{2, 5, 6, 2}, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0);
