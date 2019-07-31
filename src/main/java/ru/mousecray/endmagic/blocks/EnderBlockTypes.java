@@ -40,8 +40,8 @@ public class EnderBlockTypes {
 	        return name;
 	    }
 	}
-	
-	public static enum EndeGrassType implements IStringSerializable {
+
+	public static enum EnderGrassType implements IStringSerializable {
 	    LIVE("live", MapColor.BLUE),
 	    DEAD("dead", MapColor.GRAY),
 	    FROZEN("frozen", MapColor.DIAMOND);
@@ -49,7 +49,7 @@ public class EnderBlockTypes {
 	    private final String name;
 	    private final MapColor mapColor;
 
-	    EndeGrassType(String name, MapColor mapColor) {
+	    EnderGrassType(String name, MapColor mapColor) {
 	        this.name = name;
 	        this.mapColor = mapColor;
 	    }
