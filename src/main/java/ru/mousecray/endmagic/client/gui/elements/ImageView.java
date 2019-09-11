@@ -1,13 +1,8 @@
 package ru.mousecray.endmagic.client.gui.elements;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.PngSizeInfo;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.util.Rectangle;
 import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
