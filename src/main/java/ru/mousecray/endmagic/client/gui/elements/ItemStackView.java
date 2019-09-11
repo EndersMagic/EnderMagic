@@ -40,6 +40,7 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
         ItemStack stack = cycleItemStack(itemStack);
         if (!stack.isEmpty()) {
             drawItemStack(stack, x, y);
+            
             if (itemArea.contains(mouseX, mouseY))
                 renderTooltip(mouseX, mouseY, stack.getTooltip(mc().player, ITooltipFlag.TooltipFlags.NORMAL), 0x505000ff, 0xf0100010);
         }
@@ -68,8 +69,9 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
 
     public void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2) {
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0, 0, 100);
+        GlStateManager.translate(0, 0, 300);
         GlStateManager.disableDepth();
+
         boolean lighting = GL11.glGetBoolean(GL11.GL_LIGHTING);
         if (lighting)
             net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
