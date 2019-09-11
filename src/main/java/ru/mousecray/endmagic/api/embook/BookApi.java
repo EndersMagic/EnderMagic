@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.api.embook;
 
+import ru.mousecray.endmagic.api.embook.components.ILinkLocation;
 import ru.mousecray.endmagic.api.embook.components.LinksComponent;
 import ru.mousecray.endmagic.api.embook.pages.EmptyPage;
 
@@ -67,21 +68,23 @@ public class BookApi {
         if (pages.size() % 2 == 1)
             pages.add(new EmptyPage());
 
-        if (pages.size() > 0) {
-            List<PageContainer> groupedPairs = new ArrayList<>(pages.size() / 2);
+        if (pages.isEmpty()) {
+            pages.add(new EmptyPage());
+            pages.add(new EmptyPage());
+        }
 
-            for (int i = 0; i < pages.size(); i += 2)
-                groupedPairs.add(new PageContainer(pages.get(i), pages.get(i + 1)));
+        List<PageContainer> groupedPairs = new ArrayList<>(pages.size() / 2);
 
-            Function<Integer, Optional<PageContainer>> getMaybePage = lift(groupedPairs::get);
+        for (int i = 0; i < pages.size(); i += 2)
+            groupedPairs.add(new PageContainer(pages.get(i), pages.get(i + 1)));
 
-            for (int i = 0; i < groupedPairs.size(); i++) {
-                groupedPairs.get(i).left = getMaybePage.apply(i - 1);
-                groupedPairs.get(i).right = getMaybePage.apply(i + 1);
-            }
-            return groupedPairs.get(0);
-        } else
-            return null;
+        Function<Integer, Optional<PageContainer>> getMaybePage = lift(groupedPairs::get);
+
+        for (int i = 0; i < groupedPairs.size(); i++) {
+            groupedPairs.get(i).left = getMaybePage.apply(i - 1);
+            groupedPairs.get(i).right = getMaybePage.apply(i + 1);
+        }
+        return groupedPairs.get(0);
     }
 
     private static <A, B> Function<A, Optional<B>> lift(Function<A, B> partialFunction) {
