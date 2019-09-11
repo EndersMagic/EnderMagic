@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "Z#Z",
+    "#X#",
+    "Z#Z"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:iron_ingot"
+        },
+        "X": {
+            "item": "minecraft:compass"
+        },
+        "Z": {
+            "item": "minecraft:end_stone"
+        }
+    },
+    "result": {
+        "item": "endmagic:block_top_mark"
+    }
+}

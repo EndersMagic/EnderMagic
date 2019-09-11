@@ -1,16 +1,123 @@
 tile.ender_grass.name=Трава Края
-tile.block_master_static_portal.name=Статичный телепорт
-tile.block_master_dark_portal.name=Тёмный телепорт
+tile.block_master_static_portal.name=Статический телепорт
+tile.block_master_dark_portal.name=Тёмный пелепорт
+tile.block_blast_furnace.name=Доменная печь
+tile.block_portal.name=Портал
+tile.block_top_mark.name=Блок управления
+tile.block_curse_bush.name=Проклятый куст
+tile.dragon_coal_block.name=Блок драконьего угля
+tile.natural_coal_block.name=Блок природного угля
+tile.immortal_coal_block.name=Блок бессмертного угля
+tile.phantom_coal_block.name=Блок призрачного угля
+tile.enderite.name=Эндерит
+tile.ender_ore.name=Руда Края
 
-item.ender_seeds.name=Семена пурпурной жемчужины
-item.purple_ender_pearl.name=Пурпурная жемчужина
-item.blue_ender_pearl.name=Голубая жемчужина
+tile.ender_tree_log.dragon.name=Драконье дерево
+tile.ender_tree_log.natural.name=Природное дерево
+tile.ender_tree_log.immortal.name=Бессмертное дерево
+tile.ender_tree_log.phantom.name=Призрачное дерево
+
+tile.ender_tree_leaves.dragon.name=Листья драконьего дерева
+tile.ender_tree_leaves.natural.name=Листья природного дерева
+tile.ender_tree_leaves.immortal.name=Листья бессмертия
+tile.ender_tree_leaves.phantom.name=Призрачные листья
+
+tile.ender_tree_sapling.dragon.name=Саженец драконьго дерева
+tile.ender_tree_sapling.natural.name=Саженец природного дерева
+tile.ender_tree_sapling.immortal.name=Саженец бессмертия
+tile.ender_tree_sapling.phantom.name=Призрачный саженец
+
+item.ender_seeds.name=Семена пурпурного жемчуга
+item.purple_ender_pearl.name=Пурпурная Жемчужина
+item.blue_ender_pearl.name=Голубая Жемчужина
 item.ender_arrow.name=Стрела Края
 item.em_book.name=Книга Края
 item.ender_apple.name=Яблоко Края
+item.ender_compass.name=Компас Края
+item.item_portal_binder.name=Координатор порталов
+item.raw_enderite.name=Необработанный эндерит
 
-itemGroup.em_cretive_tab=Магия Края
+item.dragon_coal.name=Драконий уголёк
+item.natural_coal.name=Природный уголёк
+item.immortal_coal.name=Уголёк бессмертия
+item.phantom_coal.name=Уголёк призрака
 
-tooltip.ender_seeds=Их можно посадить на Эндерняк
+item.dragon_steel.name=Драконья сталь
+item.natural_steel.name=Природная сталь
+item.immortal_steel.name=Сталь бессмертия
+item.phantom_steel.name=Призрачная сталь
+
+item.dragon_diamond.name=Драконий алмаз
+item.natural_diamond.name=Природный алмаз
+item.immortal_diamond.name=Алмаз бессмертия
+item.phantom_diamond.name=Призрачный алмаз
+
+item.natural_steel_shovel.name=Лопата из природной стали
+item.natural_steel_pickaxe.name=Кирка из природной стали
+item.natural_steel_axe.name=Топор из природной стали
+item.natural_steel_sword.name=Меч из природной стали
+item.natural_steel_hoe.name=Мотыга из природной стали
+item.natural_steel_helmet.name=Шлем из природной стали
+item.natural_steel_chestplate.name=Нагрудник из природной стали
+item.natural_steel_leggings.name=Поножи из природной стали
+item.natural_steel_boots.name=Сапоги из природной стали
+
+item.immortal_steel_shovel.name=Лопата из стали бессмертия
+item.immortal_steel_pickaxe.name=Кирка из стали бессмертия
+item.immortal_steel_axe.name=Топор из стали бессмертия
+item.immortal_steel_sword.name=Меч из стали бессмертия
+item.immortal_steel_hoe.name=Мотыга из стали бессмертия
+item.immortal_steel_helmet.name=Шлем из стали бессмертия
+item.immortal_steel_chestplate.name=Нагрудник из стали бессмертия
+item.immortal_steel_leggings.name=Поножи из стали бессмертия
+item.immortal_steel_boots.name=Сапоги из стали бессмертия
+
+item.dragon_steel_shovel.name=Лопата из драконьей стали
+item.dragon_steel_pickaxe.name=Кирка из драконьей стали
+item.dragon_steel_axe.name=Топор из драконьей стали
+item.dragon_steel_sword.name=Меч из драконьей стали
+item.dragon_steel_hoe.name=Мотыга из драконьей стали
+item.dragon_steel_helmet.name=Шлем из драконьей стали
+item.dragon_steel_chestplate.name=Нагрудник из драконьей стали
+item.dragon_steel_leggings.name=Поножи из драконьей стали
+item.dragon_steel_boots.name=Сапоги из драконьей стали
+
+item.phantom_steel_shovel.name=Лопата из призрачной стали
+item.phantom_steel_pickaxe.name=Кирка из призрачной стали
+item.phantom_steel_axe.name=Топор из призрачной стали
+item.phantom_steel_sword.name=Меч из призрачной стали
+item.phantom_steel_hoe.name=Мотыга из призрачной стали
+item.phantom_steel_helmet.name=Шлем из призрачной стали
+item.phantom_steel_chestplate.name=Нагрудник из призрачной стали
+item.phantom_steel_leggings.name=Поножи из призрачной стали
+item.phantom_steel_boots.name=Сапоги из призрачной стали
+
+item.natural_diamond_shovel.name=Лопата из природного алмаза
+item.natural_diamond_pickaxe.name=Кирка из природного алмаза
+item.natural_diamond_axe.name=Топор из природного алмаза
+item.natural_diamond_sword.name=Меч из природного алмаза
+item.natural_diamond_hoe.name=Мотыга из природного алмаза
+
+item.immortal_diamond_shovel.name=Лопата из алмаза бессмертия
+item.immortal_diamond_pickaxe.name=Кирка из алмаза бессмертия
+item.immortal_diamond_axe.name=Топор из алмаза бессмертия
+item.immortal_diamond_sword.name=Меч из алмаза бессмертия
+item.immortal_diamond_hoe.name=Мотыга из алмаза бессмертия
+
+item.dragon_diamond_shovel.name=Лопата из драконьего алмаза
+item.dragon_diamond_pickaxe.name=Кирка из драконьего алмаза
+item.dragon_diamond_axe.name=Топор из драконьего алмаза
+item.dragon_diamond_sword.name=Меч из драконьего алмаза
+item.dragon_diamond_hoe.name=Мотыга из драконьего алмаза
+
+item.phantom_diamond_shovel.name=Лопата из призрачного алмаза
+item.phantom_diamond_pickaxe.name=Кирка из призрачного алмаза
+item.phantom_diamond_axe.name=Топор из призрачного алмаза
+item.phantom_diamond_sword.name=Меч из призрачного алмаза
+item.phantom_diamond_hoe.name=Мотыга из призрачного алмаза
+
+itemGroup.em_cretive_tab=Магия края
+tooltip.ender_seeds=Растут на эндерняке
 
 book.test=Сайт рыбатекст поможет дизайнеру, верстальщику, вебмастеру сгенерировать несколько абзацев более менее осмысленного текста рыбы на русском языке, а начинающему оратору отточить навык публичных выступлений в домашних условиях. При создании генератора мы использовали небезизвестный универсальный код речей. Текст генерируется абзацами случайным образом от двух до десяти предложений в абзаце, что позволяет сделать текст более привлекательным и живым для визуально-слухового восприятия. По своей сути рыбатекст является альтернативой традиционному lorem ipsum, который вызывает у некторых людей недоумение при попытках прочитать рыбу текст. В отличии от lorem ipsum, текст рыба на русском языке наполнит любой макет непонятным смыслом и придаст неповторимый колорит советских времен.
+

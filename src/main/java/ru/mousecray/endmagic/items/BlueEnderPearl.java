@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import ru.mousecray.endmagic.entity.EntityBluePearl;
 import ru.mousecray.endmagic.util.EntityImpact;
 
-public class BlueEnderPearl extends Item implements EntityImpact {
+public class BlueEnderPearl extends Item implements EntityImpact,ItemOneWhiteEMTextured {
 
 	public BlueEnderPearl() {
 		setMaxStackSize(16);
@@ -55,4 +55,9 @@ public class BlueEnderPearl extends Item implements EntityImpact {
         player.addStat(StatList.getObjectUseStats(this));
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
     }
+
+	@Override
+	public String texture() {
+		return "blue_ender_pearl";
+	}
 }

@@ -1,5 +1,6 @@
 {
     "variants": {
-        "normal": { "model": "endmagic:block_master_static_portal" }
+        "normal": { "model": "endmagic:block_master_static_portal" },
+        "inventory": { "model": "endmagic:block_master_static_portal" }
     }
 }

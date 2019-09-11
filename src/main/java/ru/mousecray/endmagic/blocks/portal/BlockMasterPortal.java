@@ -1,8 +1,5 @@
 package ru.mousecray.endmagic.blocks.portal;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -11,15 +8,19 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import ru.mousecray.endmagic.Configuration;
 import ru.mousecray.endmagic.blocks.BlockWithTile;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.teleport.Location;
 import ru.mousecray.endmagic.tileentity.portal.TileMasterPortal;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class BlockMasterPortal<A extends TileMasterPortal> extends BlockWithTile<A> {
-	
-	protected static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
-	
+
+    protected static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
+
     public BlockMasterPortal() {
         super(Material.PORTAL);
     }
@@ -34,23 +35,23 @@ public abstract class BlockMasterPortal<A extends TileMasterPortal> extends Bloc
             }
         }
     }
-	
-	@Override
+
+    @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
     }
-    
+
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
-    
+
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-    	return DEFAULT_AABB;
+        return DEFAULT_AABB;
     }
 
-    public final int limit = 10;//todo: extract to config
+    public final int limit = Configuration.portalSizeLimit;
 
     private void openPortal(BlockPos pos, World worldIn) {
         int length = 0;

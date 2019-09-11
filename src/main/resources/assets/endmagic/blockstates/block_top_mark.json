@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "normal": {
+      "model": "end_stone"
+    },
+    "inventory": {
+      "model": "end_stone"
+    }
+  }
+}

@@ -1,11 +1,11 @@
 package ru.mousecray.endmagic.proxy;
 
-import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,12 +26,19 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.blocks.VariativeBlock;
+import ru.mousecray.endmagic.init.ClassFieldSource;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMEntities;
 import ru.mousecray.endmagic.init.EMItems;
+import ru.mousecray.endmagic.init.EMRecipes;
+import ru.mousecray.endmagic.init.ListSource;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
-import ru.mousecray.endmagic.util.NameAndTabUtils;
+import ru.mousecray.endmagic.network.ServerPacketHandler;
+import ru.mousecray.endmagic.util.EMItemBlock;
+import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
+import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
 
 public class CommonProxy implements IGuiHandler {
 
@@ -43,36 +50,21 @@ public class CommonProxy implements IGuiHandler {
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
 
+        PacketCustom.assignHandler(EM.ID, new ServerPacketHandler());
+
         //Registration Blocks
-        for (Field field : EMBlocks.class.getFields()) {
-            try {
-                Block block = (Block) field.get(null);
-                registerBlock(block);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+        new ClassFieldSource<Block>(EMBlocks.class).elemes().forEach(this::registerBlock);
 
         //Registration Items
-        for (Field field : EMItems.class.getFields()) {
-            try {
-                Item item = (Item) field.get(null);
-                registerItem(item);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        
+        new ClassFieldSource<Item>(EMItems.class).and(new ListSource<>(EMItems.createToolsAndArmor()))
+                .elemes().forEach(this::registerItem);
+
         //Registration Entity
-        for (Field field : EMEntities.class.getFields()) {
-            try {
-                EntityEntry entity = (EntityEntry) field.get(null);
-                entityToRegister.add(entity);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        
+        entityToRegister.addAll(new ClassFieldSource<EntityEntry>(EMEntities.class).elemes());
+
+        //Registration Recipes
+        EMRecipes.initRecipes();
+
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
     }
 
@@ -88,7 +80,8 @@ public class CommonProxy implements IGuiHandler {
         }
 
         blocksToRegister.add(block);
-        registerItem(new ItemBlock(block), block.getRegistryName().toString());
+        if(block instanceof VariativeBlock) registerItem(new EMItemBlock(block), block.getRegistryName().toString());
+        else registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 
     private void registerTile(Class<? extends TileEntity> tile) {
@@ -118,15 +111,18 @@ public class CommonProxy implements IGuiHandler {
     public void registerItems(RegistryEvent.Register<Item> e) {
         itemsToRegister.forEach(e.getRegistry()::register);
     }
-    
+
     @SubscribeEvent
     public void registerEntities(RegistryEvent.Register<EntityEntry> e) {
-    	entityToRegister.forEach(e.getRegistry()::register);
+        entityToRegister.forEach(e.getRegistry()::register);
     }
 
-    public void init(FMLInitializationEvent event) {}
+    public void init(FMLInitializationEvent event) {
+        GameRegistry.registerWorldGenerator(new WorldGenEnderTrees(), 10);
+    }
 
-    public void postInit(FMLPostInitializationEvent event) {}
+    public void postInit(FMLPostInitializationEvent event) {
+    }
 
     public static int blastFurnaceGui = 0;
 
@@ -134,7 +130,7 @@ public class CommonProxy implements IGuiHandler {
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         if (id == blastFurnaceGui)
-            return new ContainerBlastFurnace(player,EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z)));
+            return new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z)));
 
         return null;
     }

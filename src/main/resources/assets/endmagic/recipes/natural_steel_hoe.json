@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "##",
+    " X",
+    " X"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:natural_steel"
+        },
+        "X": {
+            "item": "minecraft:stick"
+        }
+    },
+    "result": {
+        "item": "endmagic:natural_steel_hoe"
+    }
+}

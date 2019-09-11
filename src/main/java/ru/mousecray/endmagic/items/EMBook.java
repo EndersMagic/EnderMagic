@@ -11,13 +11,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.client.gui.GuiScreenEMBook;
-import ru.mousecray.endmagic.util.NameProvider;
+import ru.mousecray.endmagic.util.registry.NameProvider;
 
-public class EMBook extends Item implements NameProvider {
+public class EMBook extends Item implements NameProvider, ItemOneWhiteEMTextured {
 
-	public EMBook() {
-		setMaxStackSize(1);
-	}
+    public EMBook() {
+        setMaxStackSize(1);
+    }
 
 	@Override
 	public String name() {
@@ -32,4 +32,9 @@ public class EMBook extends Item implements NameProvider {
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
+
+    @Override
+    public String texture() {
+        return "em_book";
+    }
 }

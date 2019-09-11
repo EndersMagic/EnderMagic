@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "# #",
+    "###",
+	"###"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:natural_steel"
+        }
+    },
+    "result": {
+        "item": "endmagic:natural_steel_chestplate"
+    }
+}
