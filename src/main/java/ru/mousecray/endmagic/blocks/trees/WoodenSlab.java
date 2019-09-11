@@ -53,6 +53,6 @@ public class WoodenSlab extends EMSlab {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return isDouble() ? new BlockStateContainer(this, new IProperty[] {blockType}) : new BlockStateContainer(this, new IProperty[] {HALF, blockType});
+		return isDouble() ? new BlockStateContainer(this) : new BlockStateContainer(this, new IProperty[] {HALF});
 	}
 }
