@@ -4,15 +4,12 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.api.embook.IChapterComponent;
 import ru.mousecray.endmagic.api.embook.IPage;
-import ru.mousecray.endmagic.api.embook.pages.RecipePage;
 import ru.mousecray.endmagic.api.embook.pages.SmeltingRecipePage;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static net.minecraft.init.Blocks.AIR;
 
