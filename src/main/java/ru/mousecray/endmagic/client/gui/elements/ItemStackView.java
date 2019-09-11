@@ -147,6 +147,7 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
 
     @Override
     public void click() {
-        GuiScreenEMBook.instance.setCurrentPage(BookApi.findLink(new ItemStackMapKey(cycleItemStack(itemStack))));
+        BookApi.findLink(new ItemStackMapKey(cycleItemStack(itemStack)))
+                .ifPresent(GuiScreenEMBook.instance::setCurrentPage);
     }
 }

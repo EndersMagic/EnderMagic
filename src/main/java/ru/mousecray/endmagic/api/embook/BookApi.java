@@ -108,7 +108,7 @@ public class BookApi {
         };
     }
 
-    public static PageContainer findLink(Object linkObject) {
-        return links.get(linkObject);
+    public static Optional<PageContainer> findLink(Object linkObject) {
+        return Optional.ofNullable(links.get(linkObject));
     }
 }
