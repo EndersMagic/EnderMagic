@@ -67,7 +67,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         super.postInit(event);
 
         //Add default book chapters
-        BookApi.addChapter("Test",
+        BookApi.addChapter("test", "Test",
                 new TextComponent("book.test"),
                 new ImageComponent(new ResourceLocation(EM.ID, "textures/blocks/ender_grass.png"), "Grass"),
                 new SmeltingRecipeComponent(new ItemStack(Items.IRON_INGOT)),

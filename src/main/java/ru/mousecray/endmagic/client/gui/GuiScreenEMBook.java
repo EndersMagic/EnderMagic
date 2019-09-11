@@ -16,6 +16,7 @@ import ru.mousecray.endmagic.api.embook.IPage;
 import ru.mousecray.endmagic.api.embook.PageContainer;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -30,7 +31,7 @@ public class GuiScreenEMBook extends GuiScreen {
     private static int bookFullHeight = 192;
 
     public void setCurrentPage(Optional<PageContainer> currentPage) {
-        this.currentPage = currentPage.orElse(BookApi.mainPage());
+        this.currentPage = currentPage.orElse(BookApi.mainChapter());
         updateButtons();
     }
 
@@ -39,9 +40,9 @@ public class GuiScreenEMBook extends GuiScreen {
         updateButtons();
     }
 
-    private PageContainer currentPage = BookApi.mainPage();
+    private PageContainer currentPage = BookApi.mainChapter();
 
-    private ImmutableMap<String, PageContainer> bookContent = BookApi.getBookContent();
+    private Map<String, PageContainer> bookContent = BookApi.getBookContent();
 
     private static final ResourceLocation BOOK_TEXTURES = new ResourceLocation(EM.ID, "textures/gui/book.png");
 
@@ -101,7 +102,7 @@ public class GuiScreenEMBook extends GuiScreen {
     private void updateButtons() {
         buttonPreviousPage.visible = currentPage.left.isPresent();
         buttonNextPage.visible = currentPage.right.isPresent();
-        buttonBack.visible = currentPage != BookApi.mainPage();
+        buttonBack.visible = currentPage != BookApi.mainChapter();
     }
 
     @Override
@@ -176,7 +177,7 @@ public class GuiScreenEMBook extends GuiScreen {
     @SideOnly(Side.CLIENT)
     static class BackButton extends PageButton {
         public BackButton(int button, int x, int y) {
-            super(button, x, y, 0, 218, () -> Optional.ofNullable(BookApi.mainPage()));
+            super(button, x, y, 0, 218, () -> Optional.ofNullable(BookApi.mainChapter()));
         }
     }
 }

@@ -1,60 +1,68 @@
 package ru.mousecray.endmagic.api.embook;
 
-import com.google.common.collect.ImmutableMap;
+import ru.mousecray.endmagic.api.embook.components.LinksComponent;
 import ru.mousecray.endmagic.api.embook.pages.EmptyPage;
-import ru.mousecray.endmagic.api.embook.pages.MainPage;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 public class BookApi {
     public static final int pageWidth = 104;
     public static final int pageHeight = 147;
 
-    static Map<String, PageContainer> book = new HashMap<String, PageContainer>() {
-        @Override
-        public PageContainer put(String key, PageContainer value) {
-            dirty = true;
-            return super.put(key, value);
-        }
-    };
+    static Map<String, Set<String>> categories = new HashMap<>();
+
+    static Map<String, PageContainer> pageByName = new HashMap<>();
 
     private static boolean dirty = true;
 
-    private static ImmutableMap<String, PageContainer> immutableMap;
-
-    public static ImmutableMap<String, PageContainer> getBookContent() {
-        checkAndResolveDirty();
-        return immutableMap;
+    public static Map<String, PageContainer> getBookContent() {
+        return pageByName;
     }
 
-    private static PageContainer mainPage;
+    private static PageContainer mainChapter;
 
-    public static PageContainer mainPage() {
+    public static PageContainer mainChapter() {
         checkAndResolveDirty();
-        return mainPage;
+        return mainChapter;
     }
 
     private static void checkAndResolveDirty() {
         if (dirty) {
-            immutableMap = ImmutableMap.copyOf(book);
-            mainPage = new PageContainer(new MainPage(immutableMap), new EmptyPage());
+
+            for (Map.Entry<String, Set<String>> category : categories.entrySet())
+                pageByName.put(category.getKey(), createPageContainerForLinks(category.getValue()));
+
+            mainChapter = createPageContainerForLinks(categories.keySet());
+
+
             dirty = false;
         }
     }
 
-    public static void addChapter(String name, List<IChapterComponent> content) {
-        book.put(name, flatMapToPages(content.stream()));
+    private static PageContainer createPageContainerForLinks(Set<String> strings) {
+        return flatMapToPages(Stream.of(new LinksComponent(new ArrayList<>(strings))));
     }
 
-    public static void addChapter(String name, IChapterComponent... content) {
-        book.put(name, flatMapToPages(Stream.of(content)));
+    public static void addChapter(String category, String name, List<IChapterComponent> content) {
+        addChapter(category, name, content.stream());
+    }
+
+    public static void addChapter(String category, String name, IChapterComponent... content) {
+        addChapter(category, name, Stream.of(content));
+    }
+
+    public static void addChapter(String category, String name, Stream<IChapterComponent> content) {
+        pageByName.put(name, flatMapToPages(content));
+        categories.computeIfAbsent(category, __ -> new HashSet<>()).add(name);
+        dirty = true;
     }
 
     private static PageContainer flatMapToPages(Stream<IChapterComponent> stream) {
-        List<IPage> pages = stream.flatMap(i -> i.pages().stream()).collect(Collectors.toList());
+        List<IPage> pages = stream.flatMap(i -> i.pages().stream()).collect(toList());
 
         if (pages.size() % 2 == 1)
             pages.add(new EmptyPage());
