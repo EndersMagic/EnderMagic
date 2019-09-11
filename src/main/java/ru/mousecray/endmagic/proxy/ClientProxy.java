@@ -1,11 +1,5 @@
 package ru.mousecray.endmagic.proxy;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-
 import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -49,9 +43,10 @@ import ru.mousecray.endmagic.network.ClientPacketHandler;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
@@ -84,7 +79,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 new TextComponent("book.test"),
                 new ImageComponent(new ResourceLocation(EM.ID, "textures/blocks/ender_grass.png"), "Grass"),
                 new SmeltingRecipeComponent(new ItemStack(Items.IRON_INGOT)),
-                new RecipeComponent(new ItemStack(Items.IRON_INGOT))
+                new RecipeComponent(new ItemStack(Items.IRON_INGOT)),
+                new RecipeComponent(new ItemStack(Items.IRON_PICKAXE))
         );
     }
 
