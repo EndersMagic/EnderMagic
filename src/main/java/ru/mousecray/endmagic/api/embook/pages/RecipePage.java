@@ -32,10 +32,10 @@ public class RecipePage extends ImagePage {
         ImmutableList.Builder<IStructuralGuiElement> builder = ImmutableList.builder();
         builder.add(new ItemStackView(result, BookApi.pageWidth - 20, BookApi.pageHeight / 2 - 8));
         builder.addAll(super.elements());
-        for (int x = 0; x < cratingGrid.size(); x++) {
-            ImmutableList<Ingredient> col = cratingGrid.get(x);
-            for (int y = 0; y < col.size(); y++)
-                builder.add(new ItemStackView(ImmutableList.copyOf(col.get(y).getMatchingStacks()), x * 16, BookApi.pageHeight / 2 - 8 - 16 + y * 16));
+        for (int y = 0; y < cratingGrid.size(); y++) {
+            ImmutableList<Ingredient> col = cratingGrid.get(y);
+            for (int x = 0; x < col.size(); x++)
+                builder.add(new ItemStackView(ImmutableList.copyOf(col.get(x).getMatchingStacks()), x * 16, BookApi.pageHeight / 2 - 8 - 16 + y * 16));
         }
         return builder.build();
     }
