@@ -28,7 +28,7 @@ public class SmeltingRecipePage extends ImagePage implements ILinkLocation<ItemS
         ImmutableList.Builder<IStructuralGuiElement> builder = ImmutableList.builder();
         builder.addAll(super.elements());
         builder.add(new ItemStackView(result, BookApi.pageWidth - 31, BookApi.pageHeight / 2 - 8));
-        builder.add(new ItemStackView(result, 9, BookApi.pageHeight / 2 - 27));
+        builder.add(new ItemStackView(input, 9, BookApi.pageHeight / 2 - 27));
         return builder.build();
     }
 

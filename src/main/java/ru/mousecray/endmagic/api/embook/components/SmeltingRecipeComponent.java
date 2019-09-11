@@ -34,7 +34,7 @@ public class SmeltingRecipeComponent implements IChapterComponent {
                         .stream()
                         .filter(i -> ItemStack.areItemStacksEqual(i.getValue(), result))
                         .findAny()
-                        .map(Map.Entry::getValue)
+                        .map(Map.Entry::getKey)
                         .orElse(new ItemStack(Item.getItemFromBlock(AIR))),
                 label);
     }
