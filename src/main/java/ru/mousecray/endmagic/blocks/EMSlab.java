@@ -12,7 +12,6 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -106,9 +105,5 @@ public abstract class EMSlab<SlabType extends Enum<SlabType> & IStringSerializab
         return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 	
-	public abstract String getUnlocalizedName(int meta);
-	
     public abstract IProperty<?> getVariantProperty();
-
-    public abstract Comparable<?> getTypeForItem(ItemStack stack);
 }

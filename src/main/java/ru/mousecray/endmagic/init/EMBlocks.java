@@ -49,5 +49,6 @@ public final class EMBlocks {
     public static final EMLeaves<EnderTreeType> enderLeaves = new EMLeaves<>(EnderTreeType.class, type -> ((EnderTreeType)type).getMapColor());
     public static final EMPlanks<EnderTreeType> enderPlanks = new EMPlanks<>(EnderTreeType.class, type -> ((EnderTreeType)type).getMapColor());
     
-    public static final WoodenSlab enderSlab = new WoodenSlab(EnderTreeType.class, false, type -> ((EnderTreeType)type).getMapColor());
+    public static final WoodenSlab enderWoodenHalfSlab = new WoodenSlab(EnderTreeType.class, false, type -> ((EnderTreeType)type).getMapColor());
+    public static final WoodenSlab enderWoodenDoubleSlab = new WoodenSlab(EnderTreeType.class, true, type -> ((EnderTreeType)type).getMapColor());
 }
