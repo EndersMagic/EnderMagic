@@ -26,13 +26,17 @@ public class RecipePage extends ImagePage implements ILinkLocation<ItemStackMapK
     @Override
     public List<IStructuralGuiElement> elements() {
         ImmutableList.Builder<IStructuralGuiElement> builder = ImmutableList.builder();
-        builder.add(new ItemStackView(result, BookApi.pageWidth - 20, BookApi.pageHeight / 2 - 8));
+
         builder.addAll(super.elements());
+
+        builder.add(new ItemStackView(result, BookApi.pageWidth - 20, BookApi.pageHeight / 2 - 8));
+
         for (int y = 0; y < cratingGrid.size(); y++) {
             ImmutableList<Ingredient> col = cratingGrid.get(y);
             for (int x = 0; x < col.size(); x++)
                 builder.add(new ItemStackView(ImmutableList.copyOf(col.get(x).getMatchingStacks()), x * 16, BookApi.pageHeight / 2 - 8 - 16 + y * 16));
         }
+
         return builder.build();
     }
 
