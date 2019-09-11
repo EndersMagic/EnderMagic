@@ -2,21 +2,23 @@ package ru.mousecray.endmagic.client.gui.elements;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
+import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.Rectangle;
+import ru.mousecray.endmagic.client.gui.GuiScreenEMBook;
+import ru.mousecray.endmagic.client.gui.IClickable;
 import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
+import ru.mousecray.endmagic.util.ItemStackMapKey;
 
 import java.util.List;
 
-public class ItemStackView implements IStructuralGuiElement {
+public class ItemStackView implements IStructuralGuiElement, IClickable {
     public final ImmutableList<ItemStack> itemStack;
     public final int x;
     public final int y;
@@ -136,5 +138,15 @@ public class ItemStackView implements IStructuralGuiElement {
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
+    }
+
+    @Override
+    public Rectangle area() {
+        return itemArea;
+    }
+
+    @Override
+    public void click() {
+        GuiScreenEMBook.instance.setCurrentPage(BookApi.findLink(new ItemStackMapKey(cycleItemStack(itemStack))));
     }
 }
