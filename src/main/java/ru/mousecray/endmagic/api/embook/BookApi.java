@@ -34,17 +34,17 @@ public class BookApi {
         if (dirty) {
 
             for (Map.Entry<String, Set<String>> category : categories.entrySet())
-                pageByName.put(category.getKey(), createPageContainerForLinks(category.getValue()));
+                pageByName.put(category.getKey(), createPageContainerForLinks(category.getValue(), category.getKey()));
 
-            mainChapter = createPageContainerForLinks(categories.keySet());
+            mainChapter = createPageContainerForLinks(categories.keySet(), "book.main_page_title");
 
 
             dirty = false;
         }
     }
 
-    private static PageContainer createPageContainerForLinks(Set<String> strings) {
-        return flatMapToPages(Stream.of(new LinksComponent(new ArrayList<>(strings))));
+    private static PageContainer createPageContainerForLinks(Set<String> strings, String title) {
+        return flatMapToPages(Stream.of(new LinksComponent(new ArrayList<>(strings),title)));
     }
 
     public static void addChapter(String category, String name, List<IChapterComponent> content) {

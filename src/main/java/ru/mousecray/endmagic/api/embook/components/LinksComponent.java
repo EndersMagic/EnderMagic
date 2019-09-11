@@ -18,16 +18,22 @@ public class LinksComponent implements IChapterComponent {
     public final static int pageSize = BookApi.pageHeight / Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
     private ImmutableList<IPage> pages;
 
-    public LinksComponent(List<String> links) {
-        pages = buildPagesForFont(links);
+    public LinksComponent(List<String> links, String title) {
+        pages = buildPagesForFont(links, title);
     }
 
-    private ImmutableList<IPage> buildPagesForFont(List<String> links) {
+    private ImmutableList<IPage> buildPagesForFont(List<String> links, String title) {
         GroupIterator<String> pages = new GroupIterator<>(Arrays.asList(links.toArray(new String[0])).listIterator(), pageSize, __ -> 1);
 
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(pages, Spliterator.ORDERED), false)
+        ImmutableList.Builder<IPage> builder = ImmutableList.builder();
+
+        builder.add(new LinksPage(pages.next(), title));
+
+        StreamSupport.stream(Spliterators.spliteratorUnknownSize(pages, Spliterator.ORDERED), false)
                 .map(LinksPage::new)
-                .collect(ImmutableList.toImmutableList());
+                .forEach(builder::add);
+
+        return builder.build();
     }
 
     @Override
