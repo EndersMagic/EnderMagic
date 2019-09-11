@@ -30,7 +30,7 @@ public class EMBook extends Item implements NameProvider, ItemOneWhiteEMTextured
 		if(world.isRemote) {
 			Minecraft.getMinecraft().displayGuiScreen(GuiScreenEMBook.instance);
 		}
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<>(EnumActionResult.PASS, player.getHeldItem(hand));
 	}
 
     @Override
