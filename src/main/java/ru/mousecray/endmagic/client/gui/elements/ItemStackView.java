@@ -67,6 +67,9 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
     //Source is https://github.com/Vazkii/Botania/blob/master/src/main/java/vazkii/botania/client/core/helper/RenderHelper.java
 
     public void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0, 0, 100);
+        GlStateManager.disableDepth();
         boolean lighting = GL11.glGetBoolean(GL11.GL_LIGHTING);
         if (lighting)
             net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
@@ -98,7 +101,6 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
             drawGradientRect(var6 - 3, var7 - 3, z, var6 + var5 + 3, var7 - 3 + 1, color, color);
             drawGradientRect(var6 - 3, var7 + var9 + 2, z, var6 + var5 + 3, var7 + var9 + 3, var12, var12);
 
-            GlStateManager.disableDepth();
             for (int var13 = 0; var13 < tooltipData.size(); ++var13) {
                 String var14 = tooltipData.get(var13);
                 fontRenderer.drawStringWithShadow(var14, var6, var7, -1);
@@ -106,11 +108,14 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
                     var7 += 2;
                 var7 += 10;
             }
-            GlStateManager.enableDepth();
         }
+
         if (!lighting)
             net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+
+        GlStateManager.enableDepth();
         GlStateManager.color(1F, 1F, 1F, 1F);
+        GlStateManager.popMatrix();
     }
 
     public static void drawGradientRect(int par1, int par2, float z, int par3, int par4, int par5, int par6) {
