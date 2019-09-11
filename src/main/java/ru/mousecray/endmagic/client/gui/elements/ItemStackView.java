@@ -40,7 +40,7 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
         ItemStack stack = cycleItemStack(itemStack);
         if (!stack.isEmpty()) {
             drawItemStack(stack, x, y);
-            
+
             if (itemArea.contains(mouseX, mouseY))
                 renderTooltip(mouseX, mouseY, stack.getTooltip(mc().player, ITooltipFlag.TooltipFlags.NORMAL), 0x505000ff, 0xf0100010);
         }
@@ -49,13 +49,10 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
     public void drawItemStack(ItemStack stack, int x, int y) {
         GlStateManager.disableLighting();
         RenderItem itemRender = mc().getRenderItem();
-        FontRenderer fontRenderer = mc().fontRenderer;
         GlStateManager.translate(0.0F, 0.0F, 32.0F);
-        itemRender.zLevel = 200.0F;
-        FontRenderer font = stack.getItem().getFontRenderer(stack);
-        if (font == null) font = fontRenderer;
+        itemRender.zLevel = 32;
         itemRender.renderItemAndEffectIntoGUI(stack, x, y);
-        itemRender.zLevel = 0.0F;
+        itemRender.zLevel = 0;
     }
 
     private ItemStack cycleItemStack(ImmutableList<ItemStack> itemStack) {
@@ -69,8 +66,8 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
 
     public void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2) {
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0, 0, 300);
-        GlStateManager.disableDepth();
+        GlStateManager.translate(0, 0, 100);
+        //GlStateManager.disableDepth();
 
         boolean lighting = GL11.glGetBoolean(GL11.GL_LIGHTING);
         if (lighting)
@@ -103,6 +100,7 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
             drawGradientRect(var6 - 3, var7 - 3, z, var6 + var5 + 3, var7 - 3 + 1, color, color);
             drawGradientRect(var6 - 3, var7 + var9 + 2, z, var6 + var5 + 3, var7 + var9 + 3, var12, var12);
 
+            GlStateManager.disableDepth();
             for (int var13 = 0; var13 < tooltipData.size(); ++var13) {
                 String var14 = tooltipData.get(var13);
                 fontRenderer.drawStringWithShadow(var14, var6, var7, -1);
@@ -110,12 +108,13 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
                     var7 += 2;
                 var7 += 10;
             }
+            GlStateManager.enableDepth();
         }
 
         if (!lighting)
             net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 
-        GlStateManager.enableDepth();
+        //GlStateManager.enableDepth();
         GlStateManager.color(1F, 1F, 1F, 1F);
         GlStateManager.popMatrix();
     }
