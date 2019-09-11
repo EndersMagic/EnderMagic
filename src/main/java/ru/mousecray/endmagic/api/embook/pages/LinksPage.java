@@ -17,6 +17,10 @@ public class LinksPage implements IPage {
     private final List<IStructuralGuiElement> linkElementStream;
 
     public LinksPage(List<String> links) {
+        this(links, "");
+    }
+
+    public LinksPage(List<String> links, String title) {
         linkElementStream = new ArrayList<>();
 
         for (int i = 0; i < links.size(); i++) {
@@ -25,7 +29,7 @@ public class LinksPage implements IPage {
             linkElementStream.add(new LinkElement(I18n.format(link), chapter, 0, i * Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT + 20));
         }
 
-        linkElementStream.add(new TextLine(I18n.format("book.main_page_title"), 0, 0));
+        linkElementStream.add(new TextLine(I18n.format(title), 0, 0));
     }
 
     @Override
