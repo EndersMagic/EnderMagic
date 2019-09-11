@@ -101,7 +101,7 @@ public class EnderTallgrass extends BlockBush implements IShearable, IEMModel {
     
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-    	if (RANDOM.nextInt(30) != 0) return;
+    	if (RANDOM.nextInt(60) != 0) return;
         ItemStack seed = new ItemStack(EMItems.enderSeeds, fortune);
         if (!seed.isEmpty()) drops.add(seed);
     }

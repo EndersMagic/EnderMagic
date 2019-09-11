@@ -1,7 +1,5 @@
 package ru.mousecray.endmagic.init;
 
-import static ru.mousecray.endmagic.util.EnderBlockTypes.*;
-
 import ru.mousecray.endmagic.blocks.BlockBlastFurnace;
 import ru.mousecray.endmagic.blocks.BlockCurseBush;
 import ru.mousecray.endmagic.blocks.BlockEnderCoal;
@@ -17,6 +15,8 @@ import ru.mousecray.endmagic.blocks.trees.EMLeaves;
 import ru.mousecray.endmagic.blocks.trees.EMLog;
 import ru.mousecray.endmagic.blocks.trees.EMPlanks;
 import ru.mousecray.endmagic.blocks.trees.EMSapling;
+import ru.mousecray.endmagic.blocks.trees.WoodenSlab;
+import ru.mousecray.endmagic.util.EnderBlockTypes.EnderTreeType;
 import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
@@ -44,8 +44,10 @@ public final class EMBlocks {
     public static final BlockNamed enderite = new BlockNamed("enderite");
     public static final EnderOre enderOre = new EnderOre("ender_ore");
 
-    public static final EMLog<EnderTreeType> enderLog = new EMLog<>(EnderTreeType.class);
-    public static final EMSapling<EnderTreeType> enderSapling = new EMSapling<>(EnderTreeType.class);
-    public static final EMLeaves<EnderTreeType> enderLeaves = new EMLeaves<>(EnderTreeType.class);
-    public static final EMPlanks<EnderTreeType> enderPlanks = new EMPlanks<>(EnderTreeType.class);
+    public static final EMLog<EnderTreeType> enderLog = new EMLog<>(EnderTreeType.class, type -> ((EnderTreeType)type).getMapColor());
+    public static final EMSapling<EnderTreeType> enderSapling = new EMSapling<>(EnderTreeType.class, type -> ((EnderTreeType)type).getMapColor());
+    public static final EMLeaves<EnderTreeType> enderLeaves = new EMLeaves<>(EnderTreeType.class, type -> ((EnderTreeType)type).getMapColor());
+    public static final EMPlanks<EnderTreeType> enderPlanks = new EMPlanks<>(EnderTreeType.class, type -> ((EnderTreeType)type).getMapColor());
+    
+    public static final WoodenSlab enderSlab = new WoodenSlab(EnderTreeType.class, false, type -> ((EnderTreeType)type).getMapColor());
 }

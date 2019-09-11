@@ -7,6 +7,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,6 +24,16 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
 		setResistance(10.0F);
 		setTickRandomly(true);
 		setSoundType(SoundType.GROUND);
+	}
+	
+	@Override
+	public int damageDropped(IBlockState state) {
+		return 0;
+	}
+	
+	@Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return Item.getItemFromBlock(Blocks.END_STONE);
 	}
 	
 	@Override

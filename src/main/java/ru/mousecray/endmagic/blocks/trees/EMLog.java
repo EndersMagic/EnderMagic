@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.blocks.trees;
 
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -14,10 +15,12 @@ import ru.mousecray.endmagic.blocks.VariativeBlock;
 
 import static net.minecraft.block.BlockLog.LOG_AXIS;
 
+import java.util.function.Function;
+
 public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extends VariativeBlock<TreeType> {
 
-    public EMLog(Class<TreeType> type) {
-        super(type, Material.WOOD, "_log");
+    public EMLog(Class<TreeType> type, Function<TreeType, MapColor> mapFunc) {
+        super(type, Material.WOOD, "_log", mapFunc);
 
       setHardness(2.5F);
       setResistance(4.0F);
@@ -28,9 +31,9 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extend
       setHarvestLevel("axe", 3, getDefaultState().withProperty(blockType, byIndex.apply(2)));
       setHarvestLevel("axe", 1, getDefaultState().withProperty(blockType, byIndex.apply(3)));
 
-        setDefaultState(blockState.getBaseState()
-                .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y)
-                .withProperty(blockType, byIndex.apply(0)));
+      setDefaultState(blockState.getBaseState()
+              .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y)
+              .withProperty(blockType, byIndex.apply(0)));
     }
 
     @Override

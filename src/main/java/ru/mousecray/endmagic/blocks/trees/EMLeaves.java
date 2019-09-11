@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.blocks.trees;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -31,8 +32,8 @@ import java.util.stream.Stream;
 
 public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> extends VariativeBlock<TreeType> implements IShearable {
 
-    public EMLeaves(Class<TreeType> type) {
-        super(type, Material.LEAVES, "_leaves");
+    public EMLeaves(Class<TreeType> type, Function<TreeType, MapColor> mapFunc) {
+        super(type, Material.LEAVES, "_leaves", mapFunc);
 
         setTickRandomly(true);
         setHardness(0.2F);
@@ -119,6 +120,7 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
 
     @Override
     public void beginLeavesDecay(IBlockState state, World world, BlockPos pos) {
+    	//Add Change leaves
     }
 
 

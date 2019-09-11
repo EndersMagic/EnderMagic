@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.function.Function;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -19,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
@@ -33,12 +35,14 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     private final Class<BlockType> type;
     private String suffix;
     private int metaCount;
+	private Function<BlockType, MapColor> mapFunc;
 
-    public VariativeBlock(Class<BlockType> type, Material material, String suffix) {
+    public VariativeBlock(Class<BlockType> type, Material material, String suffix, Function<BlockType, MapColor> mapFunc) {
         super(material);
         this.type = type;
         blockType = PropertyEnum.create("tree_type", type);
         this.suffix = suffix;
+        this.mapFunc = mapFunc;
 
         //super
         Collection<IProperty<?>> baseProperties = createBlockState().getProperties();
@@ -64,8 +68,8 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         setDefaultState(blockState.getBaseState().withProperty(blockType, byIndex.apply(0)));
     }
     
-    public VariativeBlock(Class<BlockType> type, Material material) {
-    	this(type, material, null);
+    public VariativeBlock(Class<BlockType> type, Material material, Function<BlockType, MapColor> mapFunc) {
+    	this(type, material, null, mapFunc);
     }
 
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
@@ -87,6 +91,11 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(blockType).ordinal();
+    }
+    
+    @Override
+    public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+    	return mapFunc == null ? super.getMapColor(state, world, pos) : mapFunc.apply(state.getValue(blockType));
     }
 
     @Override

@@ -34,6 +34,10 @@ public class EnderBlockTypes {
 	        this.name = name;
 	        this.mapColor = mapColor;
 	    }
+	    
+	    public MapColor getMapColor() {
+			return mapColor;
+		}
 
 	    @Override
 	    public String getName() {
@@ -53,6 +57,10 @@ public class EnderBlockTypes {
 	        this.name = name;
 	        this.mapColor = mapColor;
 	    }
+	    
+	    public MapColor getMapColor() {
+			return mapColor;
+		}
 
 	    @Override
 	    public String getName() {
