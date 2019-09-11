@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic.api.embook;
 
-import ru.mousecray.endmagic.api.embook.components.ILinkLocation;
 import ru.mousecray.endmagic.api.embook.components.LinksComponent;
 import ru.mousecray.endmagic.api.embook.pages.EmptyPage;
 
@@ -17,6 +16,8 @@ public class BookApi {
     static Map<String, Set<String>> categories = new HashMap<>();
 
     static Map<String, PageContainer> pageByName = new HashMap<>();
+
+    static Map<Object, PageContainer> links = new HashMap<>();
 
     private static boolean dirty = true;
 
@@ -45,7 +46,7 @@ public class BookApi {
     }
 
     private static PageContainer createPageContainerForLinks(Set<String> strings, String title) {
-        return flatMapToPages(Stream.of(new LinksComponent(new ArrayList<>(strings),title)));
+        return flatMapToPages(Stream.of(new LinksComponent(new ArrayList<>(strings), title))).get(0);
     }
 
     public static void addChapter(String category, String name, List<IChapterComponent> content) {
@@ -57,12 +58,22 @@ public class BookApi {
     }
 
     public static void addChapter(String category, String name, Stream<IChapterComponent> content) {
-        pageByName.put(name, flatMapToPages(content));
+        List<PageContainer> value = flatMapToPages(content);
+        value.forEach(pageContainer -> {
+            tryToRegisterLinkLocation(pageContainer, pageContainer.page1);
+            tryToRegisterLinkLocation(pageContainer, pageContainer.page2);
+        });
+        pageByName.put(name, value.get(0));
         categories.computeIfAbsent(category, __ -> new HashSet<>()).add(name);
         dirty = true;
     }
 
-    private static PageContainer flatMapToPages(Stream<IChapterComponent> stream) {
+    private static void tryToRegisterLinkLocation(PageContainer pageContainer, IPage page1) {
+        if (page1 instanceof ILinkLocation)
+            links.put(((ILinkLocation) page1).linkObject(), pageContainer);
+    }
+
+    private static List<PageContainer> flatMapToPages(Stream<IChapterComponent> stream) {
         List<IPage> pages = stream.flatMap(i -> i.pages().stream()).collect(toList());
 
         if (pages.size() % 2 == 1)
@@ -84,7 +95,7 @@ public class BookApi {
             groupedPairs.get(i).left = getMaybePage.apply(i - 1);
             groupedPairs.get(i).right = getMaybePage.apply(i + 1);
         }
-        return groupedPairs.get(0);
+        return groupedPairs;
     }
 
     private static <A, B> Function<A, Optional<B>> lift(Function<A, B> partialFunction) {
@@ -95,5 +106,9 @@ public class BookApi {
                 return Optional.empty();
             }
         };
+    }
+
+    public static PageContainer findLink(Object linkObject) {
+        return links.get(linkObject);
     }
 }
