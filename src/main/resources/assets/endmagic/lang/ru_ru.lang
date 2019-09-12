@@ -119,6 +119,7 @@ item.phantom_diamond_hoe.name=Мотыга из призрачного алма�
 itemGroup.em_cretive_tab=Магия края
 tooltip.ender_seeds=Растут на эндерняке
 
+book.main_page_title=Книга Края
 #Categories
 book.category.items=Предметы
 book.category.ilocks=Блоки
