@@ -67,7 +67,6 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
     public void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(0, 0, 100);
-        //GlStateManager.disableDepth();
 
         boolean lighting = GL11.glGetBoolean(GL11.GL_LIGHTING);
         if (lighting)
@@ -114,7 +113,6 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
         if (!lighting)
             net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
 
-        //GlStateManager.enableDepth();
         GlStateManager.color(1F, 1F, 1F, 1F);
         GlStateManager.popMatrix();
     }
