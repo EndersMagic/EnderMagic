@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "normal": {
+      "model": "endmagic:enderite"
+    },
+    "inventory": {
+      "model": "endmagic:enderite"
+    }
+  }
+}
