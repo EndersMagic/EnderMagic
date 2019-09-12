@@ -63,8 +63,9 @@ public class BookApi {
             tryToRegisterLinkLocation(pageContainer, pageContainer.page1);
             tryToRegisterLinkLocation(pageContainer, pageContainer.page2);
         });
-        pageByName.put(name, value.get(0));
-        categories.computeIfAbsent(category, __ -> new HashSet<>()).add(name);
+        String name1 = "book.chapter.name." + name;
+        pageByName.put(name1, value.get(0));
+        categories.computeIfAbsent("book.category." + category, __ -> new HashSet<>()).add(name1);
         dirty = true;
     }
 
