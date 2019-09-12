@@ -120,10 +120,13 @@ itemGroup.em_cretive_tab=Магия края
 tooltip.ender_seeds=Растут на эндерняке
 
 #Categories
-book.category.Items=Предметы
-book.category.Blocks=Блоки
-book.category.Mechanics=Механики
+book.category.items=Предметы
+book.category.ilocks=Блоки
+book.category.mechanics=Механики
 
 #Articles
-book.chapter.name.EnderApple=Яблоко края
-book.chapter.text.EnderApple=Усиливает эффекты от зелий и магии. Некоторые девушки полагают, что, если съесть много таких яблок, можно стать Прекрасной Нимфой. Так говорят Пылевые Торговцы. Правда не все знают, что «Прекрасная Нимфа» на языке этих карликов, означает «Фиолетовая Выпь».
+book.chapter.name.ender_apple=Яблоко края
+book.chapter.text.ender_apple=Усиливает эффекты от зелий и магии. Некоторые девушки полагают, что, если съесть много таких яблок, можно стать Прекрасной Нимфой. Так говорят Пылевые Торговцы. Правда не все знают, что «Прекрасная Нимфа» на языке этих карликов, означает «Фиолетовая Выпь».
+
+book.test=Test test test
+#
