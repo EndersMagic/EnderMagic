@@ -48,8 +48,6 @@ class RunModelWrapper(baseModel: IBakedModel) extends BakedModelDelegate(baseMod
         .groupBy(_.getFace)
         .filter(_._2.nonEmpty)
 
-      //facingToQuads.map { case (face, faceQuads) => facingToQuads.max(FaceOrdering(face)) }
-
       val (sides, other) = findEdge(facingToQuads)
 
       (sides.values.map(new FlatableBakedQuad(_)) ++ other.values.flatten)
@@ -59,18 +57,6 @@ class RunModelWrapper(baseModel: IBakedModel) extends BakedModelDelegate(baseMod
         .asInstanceOf[util.List[BakedQuad]]
     })
   }
-
-  /*
-  override def getOverrides: ItemOverrideList = new ItemOverrideList(Collections.emptyList()){
-    override def handleItemState(originalModel: IBakedModel, stack: ItemStack, world: World, entity: EntityLivingBase): IBakedModel = {
-      super.handleItemState(originalModel, stack, world, entity)
-    }
-  }*/
-
-  /*
-  case class FaceOrdering(face: EnumFacing) extends Ordering[BakedQuad] {
-    override def compare(x: BakedQuad, y: BakedQuad): Int = x.face.getDirectionVec
-  }*/
 
 }
 
