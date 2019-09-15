@@ -3,7 +3,7 @@ tile.block_master_static_portal.name=Статический телепорт
 tile.block_master_dark_portal.name=Тёмный пелепорт
 tile.block_blast_furnace.name=Доменная печь
 tile.block_portal.name=Портал
-tile.block_top_mark.name=Блок управления
+tile.block_top_mark.name=Блок верхней метки
 tile.block_curse_bush.name=Проклятый куст
 tile.dragon_coal_block.name=Блок драконьего угля
 tile.natural_coal_block.name=Блок природного угля
@@ -117,5 +117,14 @@ item.phantom_diamond_sword.name=Меч из призрачного алмаза
 item.phantom_diamond_hoe.name=Мотыга из призрачного алмаза
 
 itemGroup.em_cretive_tab=Магия края
-
 tooltip.ender_seeds=Растут на эндерняке
+
+book.main_page_title=Книга Края
+#Categories
+book.category.items=Предметы
+book.category.ilocks=Блоки
+book.category.mechanics=Механики
+
+#Articles
+book.chapter.name.ender_apple=Яблоко края
+book.chapter.text.ender_apple=Усиливает эффекты от зелий и магии. Некоторые девушки полагают, что, если съесть много таких яблок, можно стать Прекрасной Нимфой. Так говорят Пылевые Торговцы. Правда не все знают, что «Прекрасная Нимфа» на языке этих карликов, означает «Фиолетовая Выпь».
