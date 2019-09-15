@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.util.elix_x.baked.vertex;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 
@@ -20,7 +21,7 @@ public class DefaultUnpackedVertices implements Iterable<DefaultUnpackedVertex> 
 	}
 
 	public DefaultUnpackedVertices(VertexFormat format, List<PackedVertex> vertices){
-		this(Lists.transform(vertices, vertex -> vertex.unpack()));
+		this(vertices.stream().map(PackedVertex::unpack).collect(Collectors.toList()));
 	}
 
 	public List<DefaultUnpackedVertex> getVertices(){

@@ -2,7 +2,6 @@ package ru.mousecray.endmagic;
 
 import javax.annotation.Nullable;
 
-import hohserg.jhocon.JHoconConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.DamageSource;
@@ -37,7 +36,7 @@ public class EM {
 
     }
 
-    public final static Config config = JHoconConfig.getOrCreateConfig(ID, Config::new);
+    public final static Config config = new Config();
 
     @SidedProxy(clientSide = EM.CLIENT, serverSide = EM.SERVER)
     public static CommonProxy proxy;

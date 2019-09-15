@@ -10,16 +10,16 @@ object Utils {
 
     override def apply(): mutable.Builder[((K, V1), (K, V2)), Map[K, (V1, V2)]] =
       new mutable.Builder[((K, V1), (K, V2)), Map[K, (V1, V2)]] {
-        private var map = Map[K, (V1, V2)]()
+        private val map = new mutable.OpenHashMap[K, (V1, V2)]()
 
         override def +=(elem: ((K, V1), (K, V2))): this.type = {
           map += elem._1._1 -> (elem._1._2, elem._2._2)
           this
         }
 
-        override def clear(): Unit = map = Map[K, (V1, V2)]()
+        override def clear(): Unit = map.clear()
 
-        override def result(): Map[K, (V1, V2)] = map
+        override def result(): Map[K, (V1, V2)] = map.toMap
       }
   }
 }
