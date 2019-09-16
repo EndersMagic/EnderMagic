@@ -49,12 +49,12 @@ public abstract class EMSlab<SlabType extends Enum<SlabType> & IStringSerializab
 
     @Override
     public boolean isTopSolid(IBlockState state) {
-        return ((EMSlab)state.getBlock()).isDouble() || state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP;
+        return isDouble || state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP;
     }
     
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
-        if (((EMSlab)state.getBlock()).isDouble()) return BlockFaceShape.SOLID;
+        if (isDouble) return BlockFaceShape.SOLID;
         else if (face == EnumFacing.UP && state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP) return BlockFaceShape.SOLID;
         else return face == EnumFacing.DOWN && state.getValue(HALF) == BlockSlab.EnumBlockHalf.BOTTOM ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
     }
@@ -82,6 +82,21 @@ public abstract class EMSlab<SlabType extends Enum<SlabType> & IStringSerializab
         if (isDouble) return iblockstate;
         else return facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double)hitY <= 0.5D) ? iblockstate : iblockstate.withProperty(HALF, BlockSlab.EnumBlockHalf.TOP);
     }
+    
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        int i = super.getMetaFromState(state);
+        if (!isDouble && state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP) i |= 8;
+        
+		return i;
+    }
+    
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+    	IBlockState state = super.getStateFromMeta(meta);
+        if (!this.isDouble()) state = state.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
+    	return state;
+    }
 	
     @Override
     public int quantityDropped(Random random) {
@@ -90,7 +105,7 @@ public abstract class EMSlab<SlabType extends Enum<SlabType> & IStringSerializab
 
 	public boolean isDouble() {
 		return isDouble;
-	};
+	}
 	
     @Override
     public boolean isFullCube(IBlockState state) {

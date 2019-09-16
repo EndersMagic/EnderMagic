@@ -1,8 +1,10 @@
 package ru.mousecray.endmagic.blocks.dimensional;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -16,8 +18,8 @@ import ru.mousecray.endmagic.blocks.VariativeBlock;
 
 public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializable> extends VariativeBlock<GrassType> {
 
-	public BlockEnderGrass(Class<GrassType> type) {
-		super(type, Material.GRASS);
+	public BlockEnderGrass(Class<GrassType> type, Function<GrassType, MapColor> mapFunc) {
+		super(type, Material.GRASS, mapFunc);
 		
 		setHarvestLevel("pickaxe", 1);	
 		setHardness(3.0F);

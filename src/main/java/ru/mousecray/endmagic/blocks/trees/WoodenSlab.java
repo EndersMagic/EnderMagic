@@ -3,7 +3,6 @@ package ru.mousecray.endmagic.blocks.trees;
 import java.util.Random;
 import java.util.function.Function;
 
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -20,6 +19,7 @@ public class WoodenSlab extends EMSlab {
 		super(type, Material.WOOD, isDouble, mapFunc);
         IBlockState iblockstate = this.blockState.getBaseState();
         if (!isDouble) iblockstate = iblockstate.withProperty(HALF, BlockSlab.EnumBlockHalf.BOTTOM);
+        
 	}
 	
 	@Override
@@ -30,26 +30,7 @@ public class WoodenSlab extends EMSlab {
 	@Override
 	public IProperty getVariantProperty() {
 		return blockType;
-	}
-	
-	@Override
-    public IBlockState getStateFromMeta(int meta) {
-        IBlockState iblockstate = this.getDefaultState().withProperty(blockType, BlockPlanks.EnumType.byMetadata(meta & 7));
-
-        if (!this.isDouble()) iblockstate = iblockstate.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
-
-        return iblockstate;
-    }
-
-	@Override
-    public int getMetaFromState(IBlockState state) {
-        int i = 0;
-        i = i | ((BlockPlanks.EnumType)state.getValue(blockType)).getMetadata();
-
-        if (!this.isDouble() && state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP) i |= 8;
-
-        return i;
-    }
+	}	
 
 	@Override
 	protected BlockStateContainer createBlockState() {
