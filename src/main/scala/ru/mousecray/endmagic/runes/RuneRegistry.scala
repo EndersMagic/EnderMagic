@@ -1,5 +1,7 @@
 package ru.mousecray.endmagic.runes
 
+import RunePartEntryWrapper._
+
 import scala.collection.mutable
 
 object RuneRegistry {
@@ -14,23 +16,23 @@ object RuneRegistry {
   registerColor(1, 0xff00ff)
 
 
-  def findRuneEffect(parts: Set[RunePart]): RuneEffect =
+  def findRuneEffect(parts: Map[(Int, Int), RunePart]): RuneEffect =
     map.getOrElse(nailToCenter(parts), EmptyEffect)
 
-  def addRuneEffect(parts: Set[RunePart], effect: RuneEffect): Unit =
+  def addRuneEffect(parts: Map[(Int, Int), RunePart], effect: RuneEffect): Unit =
     map += nailToCenter(parts) -> effect
 
-  private def nailToCenter(parts: Set[RunePart]): Set[RunePart] =
+  private def nailToCenter(parts: Map[(Int, Int), RunePart]): Map[(Int, Int), RunePart] =
     nailY(nailX(parts, findLeft(parts).x), findBottom(parts).y)
 
-  private val map = new mutable.OpenHashMap[Set[RunePart], RuneEffect]()
+  private val map = new mutable.OpenHashMap[Map[(Int, Int), RunePart], RuneEffect]()
 
-  private def findLeft(parts: Set[RunePart]) = parts.minBy(_.x)
+  private def findLeft(parts: Map[(Int, Int), RunePart]) = parts.minBy(_.x)
 
-  private def findBottom(parts: Set[RunePart]) = parts.minBy(_.y)
+  private def findBottom(parts: Map[(Int, Int), RunePart]) = parts.minBy(_.y)
 
-  private def nailX(parts: Set[RunePart], xl: Int) = parts.map(p => p.copy(x = p.x - xl))
+  private def nailX(parts: Map[(Int, Int), RunePart], xl: Int) = parts.map(p => xl -> p.y -> p._2)
 
-  private def nailY(parts: Set[RunePart], yl: Int) = parts.map(p => p.copy(y = p.y - yl))
+  private def nailY(parts: Map[(Int, Int), RunePart], yl: Int) = parts.map(p => p.x -> yl -> p._2)
 
 }

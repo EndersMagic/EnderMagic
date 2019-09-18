@@ -13,21 +13,23 @@ import ru.mousecray.endmagic.teleport.Location
 import scala.collection.mutable
 
 object RuneIndex {
-  private val index: mutable.Map[(Block, Location), RuneState] = new mutable.HashMap[(Block, Location), RuneState]().withDefaultValue(EmptyRuneState)
+  private val index = new mutable.OpenHashMap[(Block, Location), RuneState]().withDefaultValue(EmptyRuneState)
 
   def getRuneAt(pos: Location, block: Block): RuneState = index((block, pos))
 
-  @SideOnly(Side.CLIENT)
-  def refreshChunk(pos: BlockPos): Unit =
-    mc.renderGlobal.notifyBlockUpdate(
-      world, pos, world.getBlockState(pos), world.getBlockState(pos), 2)
+  object client {
+    @SideOnly(Side.CLIENT)
+    def refreshChunk(pos: BlockPos): Unit =
+      client.mc.renderGlobal.notifyBlockUpdate(
+        client.world, pos, client.world.getBlockState(pos), client.world.getBlockState(pos), 2)
 
-  @SideOnly(Side.CLIENT)
-  private def mc: Minecraft = Minecraft.getMinecraft
+    @SideOnly(Side.CLIENT)
+    private def mc: Minecraft = Minecraft.getMinecraft
 
+    @SideOnly(Side.CLIENT)
+    private def world: WorldClient = client.mc.world
+  }
 
-  @SideOnly(Side.CLIENT)
-  private def world: WorldClient = mc.world
 
   def addRunePart(pos: Location, block: Block, face: EnumFacing, part: RunePart): Unit = {
     setRuneAt(pos, block,
@@ -40,7 +42,7 @@ object RuneIndex {
   def setRuneAt(pos: Location, block: Block, state: RuneState): Unit = {
     index.put((block, pos), state)
     if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
-      refreshChunk(pos.toPos)
+      client.refreshChunk(pos.toPos)
   }
 
 

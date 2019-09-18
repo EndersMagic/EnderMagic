@@ -1,21 +1,15 @@
 package ru.mousecray.endmagic.runes
 
-case class Rune(parts: Set[RunePart], runeEffect: RuneEffect = EmptyEffect) {
+case class Rune(parts: Map[(Int, Int), RunePart], runeEffect: RuneEffect = EmptyEffect, averageCreatingTime: Long = 0, lastTime: Long = 0) {
 
   val isFinished: Boolean = runeEffect != EmptyEffect
 
-  def +(part: RunePart): Rune = {
-    val newParts = parts + part
-    copy(newParts, RuneRegistry.findRuneEffect(newParts))
+  def +(x: Int, y: Int, part: RunePart, currentTime: Long): Rune = {
+    if (parts.get((x, y)).isDefined)
+      this
+    else {
+      val newParts = parts + (x -> y -> part)
+      Rune(newParts, RuneRegistry.findRuneEffect(newParts), (averageCreatingTime + (currentTime - lastTime)) / 2, currentTime)
+    }
   }
-
-  def ++(rune: Rune): Rune = {
-    val newParts = parts ++ rune.parts
-    copy(newParts, RuneRegistry.findRuneEffect(newParts))
-  }
-}
-
-object Rune {
-  object EmptyRune extends Rune(Set())
-
 }

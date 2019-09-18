@@ -7,7 +7,6 @@ import net.minecraftforge.client.model.pipeline.{BlockInfoLense, IVertexConsumer
 import net.minecraftforge.fluids.FluidRegistry
 import ru.mousecray.endmagic.client.render.model.baked.RichRectangleBakedQuad
 import ru.mousecray.endmagic.client.render.rune.FlatableBakedQuad._
-import ru.mousecray.endmagic.runes.Rune.EmptyRune
 import ru.mousecray.endmagic.runes.{Rune, RuneIndex, RuneRegistry}
 import ru.mousecray.endmagic.teleport.Location
 import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA
@@ -39,11 +38,14 @@ class FlatableBakedQuad(quad: BakedQuad) extends BakedQuad(
   val zero: Byte = 0
 
   override def pipe(consumer: IVertexConsumer): Unit = {
+    import ru.mousecray.endmagic.runes.RunePartEntryWrapper._
     consumer match {
       case consumer: VertexLighterFlat =>
-        RuneIndex.getRuneAt(new Location(BlockInfoLense.get(consumer).getBlockPos, Minecraft.getMinecraft.world), BlockInfoLense.get(consumer).getState.getBlock)
+        val maybeRune: Option[Rune] = RuneIndex.getRuneAt(new Location(BlockInfoLense.get(consumer).getBlockPos, Minecraft.getMinecraft.world), BlockInfoLense.get(consumer).getState.getBlock)
           .sides.get(quad.getFace)
-          .collect { case rune: Rune if rune != EmptyRune =>
+
+        maybeRune
+          .collect { case rune: Rune =>
             val richQuad = RichRectangleBakedQuad(quad)
             val pixelSize = 1f / 16
             richQuad.slicedArea(pixelSize)
