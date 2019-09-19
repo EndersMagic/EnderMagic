@@ -31,9 +31,9 @@ object RuneIndex {
   }
 
 
-  def addRunePart(pos: Location, block: Block, face: EnumFacing, part: RunePart): Unit = {
+  def addRunePart(pos: Location, block: Block, face: EnumFacing, x: Int, y: Int, part: RunePart): Unit = {
     setRuneAt(pos, block,
-      getRuneAt(pos, block) + (face, part)
+      getRuneAt(pos, block) + (face, x, y, part, System.currentTimeMillis())
     )
 
   }

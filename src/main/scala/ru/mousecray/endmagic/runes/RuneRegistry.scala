@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.runes
 
+import scala.language.implicitConversions
 import RunePartEntryWrapper._
 
 import scala.collection.mutable
@@ -31,8 +32,8 @@ object RuneRegistry {
 
   private def findBottom(parts: Map[(Int, Int), RunePart]) = parts.minBy(_.y)
 
-  private def nailX(parts: Map[(Int, Int), RunePart], xl: Int) = parts.map(p => xl -> p.y -> p._2)
+  private def nailX(parts: Map[(Int, Int), RunePart], xl: Int) = parts.map(p => (p.x - xl) -> p.y -> p._2)
 
-  private def nailY(parts: Map[(Int, Int), RunePart], yl: Int) = parts.map(p => p.x -> yl -> p._2)
+  private def nailY(parts: Map[(Int, Int), RunePart], yl: Int) = parts.map(p => p.x -> (p.y - yl) -> p._2)
 
 }

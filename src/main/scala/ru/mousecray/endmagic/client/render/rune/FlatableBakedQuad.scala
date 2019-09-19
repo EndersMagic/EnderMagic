@@ -7,68 +7,72 @@ import net.minecraftforge.client.model.pipeline.{BlockInfoLense, IVertexConsumer
 import net.minecraftforge.fluids.FluidRegistry
 import ru.mousecray.endmagic.client.render.model.baked.RichRectangleBakedQuad
 import ru.mousecray.endmagic.client.render.rune.FlatableBakedQuad._
-import ru.mousecray.endmagic.runes.{Rune, RuneIndex, RuneRegistry}
+import ru.mousecray.endmagic.runes.RunePartEntryWrapper._
+import ru.mousecray.endmagic.runes.{Rune, RuneIndex}
 import ru.mousecray.endmagic.teleport.Location
 import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA
 
+import scala.language.implicitConversions
 import scala.util.Random
 
 class FlatableBakedQuad(quad: BakedQuad) extends BakedQuad(
   quad.getVertexData, quad.getTintIndex, quad.getFace, atlasSpriteRune, quad.shouldApplyDiffuseLighting(), quad.getFormat
 ) {
 
-  def makeRuneQuad(x: Float, y: Float, x2: Float, y2: Float, richQuad: RichRectangleBakedQuad, color: Int): RichRectangleBakedQuad = {
-    val const = richQuad.const
-    val nvu1 = (x, y, const)
-    val nvu3 = (x2, y2, const)
-
-    val nvu4 = (nvu3._1, nvu1._2, const)
-    val nvu2 = (nvu1._1, nvu3._2, const)
-    RichRectangleBakedQuad(richQuad.format,
-      richQuad.prepareVertex(nvu1),
-      richQuad.prepareVertex(nvu2),
-      richQuad.prepareVertex(nvu3),
-      richQuad.prepareVertex(nvu4),
-      richQuad.tintIndexIn, richQuad.faceIn, atlasSpriteRune, richQuad.applyDiffuseLighting
-    )
-      .texture(atlasSpriteRune)
-      .color(color)
-  }
-
   val zero: Byte = 0
 
+
   override def pipe(consumer: IVertexConsumer): Unit = {
-    import ru.mousecray.endmagic.runes.RunePartEntryWrapper._
     consumer match {
       case consumer: VertexLighterFlat =>
-        val maybeRune: Option[Rune] = RuneIndex.getRuneAt(new Location(BlockInfoLense.get(consumer).getBlockPos, Minecraft.getMinecraft.world), BlockInfoLense.get(consumer).getState.getBlock)
+        RuneIndex.getRuneAt(new Location(BlockInfoLense.get(consumer).getBlockPos, Minecraft.getMinecraft.world), BlockInfoLense.get(consumer).getState.getBlock)
           .sides.get(quad.getFace)
-
-        maybeRune
           .collect { case rune: Rune =>
+
             val richQuad = RichRectangleBakedQuad(quad)
-            val pixelSize = 1f / 16
-            richQuad.slicedArea(pixelSize)
-              .eraseBy(r => rune.parts.foreach(i => r(i.x)(i.y) = i.colorId))
-              .grouped
-              .overlay {
-                case (x, y, e) =>
-                  val qx = x * pixelSize
-                  val qy = y * pixelSize
-                  if (e != zero)
-                    makeRuneQuad(qx, qy, qx + pixelSize, qy + pixelSize, richQuad, RuneRegistry.getColor(e))
-                  else
-                    richQuad.slice(qx, qy, qx + pixelSize, qy + pixelSize)
-              }
-              .map(_.toQuad)
+
+            def toQuad(textureAtlasSprite: TextureAtlasSprite)(elongateQuadData: ElongateQuadData): BakedQuad = {
+              richQuad
+                .texture(textureAtlasSprite)
+                .slice(
+                  elongateQuadData.x.toFloat / 16,
+                  elongateQuadData.y1.toFloat / 16,
+                  (elongateQuadData.x + 1).toFloat / 16,
+                  (elongateQuadData.y2.toFloat + 1) / 16
+                ).toQuad
+            }
+
+            val data = (for {
+              x <- 0 to 15
+            } yield {
+              val line = ElongateQuadData(x, 0, 15)
+
+              val runePoints = rune.parts.filter(_.x == x).map(_.y).toSeq.sortBy(-_)
+              runePoints.foldLeft(line :: Nil) { case (last :: other, p) =>
+                last.splitFirst(p) :: last.splitSecond(p) :: other
+              } filter (i => i.y1 <= i.y2)
+            }).flatten
+
+            println(data)
+            data map toQuad(quad.getSprite)
           }.getOrElse(Seq(quad)).foreach(_.pipe(consumer))
 
       case _ => quad.pipe(consumer)
     }
   }
+
+
 }
 
 object FlatableBakedQuad {
+
+  case class ElongateQuadData(x: Int, y1: Int, y2: Int) {
+    def splitFirst(y: Int) = ElongateQuadData(x, y1, y - 1)
+
+    def splitSecond(y: Int) = ElongateQuadData(x, y + 1, y2)
+  }
+
+
   val atlasSpriteRune: TextureAtlasSprite = Minecraft.getMinecraft.getTextureMapBlocks
     .getAtlasSprite(FluidRegistry.WATER.getStill().toString)
 

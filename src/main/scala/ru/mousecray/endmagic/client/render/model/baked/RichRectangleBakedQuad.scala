@@ -46,8 +46,8 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
     new SlicedArea(((floor(x2) - ceil(x)) / by).toInt, ((floor(y2) - ceil(y)) / by).toInt)
 
   //flat
-  val (x, y, const) = projectTo2d(minVertex._1)
-  val (x2, y2, _) = projectTo2d(maxVertex._1)
+  val VertexPos(x, y, const) = projectTo2d(minVertex._1)
+  val VertexPos(x2, y2, _) = projectTo2d(maxVertex._1)
 
   implicit def toQuad: BakedQuad = {
     val v = Seq(
@@ -60,7 +60,7 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
   }
 
   /*
-  def projectTo2d(v: VertexPos): (Float, Float, Float) = {
+  def projectTo2d(v: VertexPos): VertexPos = {
     val x = v._1
     val y = v._2
     val z = v._3
@@ -77,7 +77,7 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
 
   val returnTo3dTupled = (returnTo3d _).tupled
 
-  def returnTo3d(x: Float, y: Float, const: Float): (Float, Float, Float) =
+  def returnTo3d(x: Float, y: Float, const: Float): VertexPos =
     faceIn match {
       case DOWN => (x, const, y)
       case UP => (x, const, y)
@@ -87,7 +87,7 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
       case EAST => (const, y, x)
     }*/
 
-  def calculateBaricentric(a: (Float, Float), b: (Float, Float), c: (Float, Float), nvu: (Float, Float, Float)): (Float, Float) = {
+  def calculateBaricentric(a: (Float, Float), b: (Float, Float), c: (Float, Float), nvu: VertexPos): (Float, Float) = {
     val ab = new Vector3f(b._1 - a._1, b._2 - a._2, 0)
     val ac = new Vector3f(c._1 - a._1, c._2 - a._2, 0)
 
@@ -99,7 +99,7 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
     (sqrt(sabn / s).toFloat, sqrt(sacn / s).toFloat)
   }
 
-  def interpolateColor[A](nvu: (Float, Float, Float), by: Vertex => A)(implicit scalable: Scalable[A], blendable: Blendable[A]): A = {
+  def interpolateColor[A](nvu: VertexPos, by: Vertex => A)(implicit scalable: Scalable[A], blendable: Blendable[A]): A = {
     import blendable._
     import scalable._
 
@@ -112,7 +112,7 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
     }
   }
 
-  def calculateUV[A: Numeric](nvu: (Float, Float, Float), by: Vertex => A): (Float, Float) = ???
+  def calculateUV[A: Numeric](nvu: VertexPos, by: Vertex => A): (Float, Float) = ???
 
   def slice(_nx: Float, _ny: Float, _nx2: Float, _ny2: Float): RichRectangleBakedQuad = {
     val nx = min(_nx, _nx2)
@@ -135,8 +135,8 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
 
   }
 
-  def prepareVertex(nvu: (Float, Float, Float)): Vertex = {
-    (
+  def prepareVertex(nvu: VertexPos): Vertex = {
+    Vertex(
       returnTo3dTupled(nvu),
       RGBA.fromRGBA(0xffffffff),
       //interpolateColor(nvu, _._2),
@@ -147,8 +147,8 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
   }
 
   def slice(nv1: VertexPos, nv2: VertexPos): RichRectangleBakedQuad = {
-    val (nx, ny, nz) = projectTo2d(nv1)
-    val (nx2, ny2, nz2) = projectTo2d(nv2)
+    val VertexPos(nx, ny, nz) = projectTo2d(nv1)
+    val VertexPos(nx2, ny2, nz2) = projectTo2d(nv2)
     slice(nx, ny, nx2, ny2)
   }
 
@@ -157,7 +157,7 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
 
 object RichRectangleBakedQuad {
 
-  def projectTo2d(v: VertexPos)(implicit faceIn: EnumFacing): (Float, Float, Float) = {
+  def projectTo2d(v: VertexPos)(implicit faceIn: EnumFacing): VertexPos = {
     val x = v._1
     val y = v._2
     val z = v._3
@@ -172,9 +172,9 @@ object RichRectangleBakedQuad {
     }
   }
 
-  def returnTo3dTupled(i: (Float, Float, Float))(implicit faceIn: EnumFacing): (Float, Float, Float) = returnTo3d(i._1, i._2, i._3)(faceIn)
+  def returnTo3dTupled(i: VertexPos)(implicit faceIn: EnumFacing): VertexPos = returnTo3d(i._1, i._2, i._3)(faceIn)
 
-  def returnTo3d(x: Float, y: Float, const: Float)(implicit faceIn: EnumFacing): (Float, Float, Float) =
+  def returnTo3d(x: Float, y: Float, const: Float)(implicit faceIn: EnumFacing): VertexPos =
     faceIn match {
       case DOWN => (x, const, y)
       case UP => (x, const, y)
@@ -207,6 +207,7 @@ object RichRectangleBakedQuad {
   implicit val scalableLightmap: Scalable[(Int, Int, Int)] = new Scalable[(Int, Int, Int)] {
     override def scale(a: (Int, Int, Int), b: Float): (Int, Int, Int) = ((a._1 * b).toInt, (a._2 * b).toInt, (a._3 * b).toInt)
   }
+  implicit val orderingOfVertexPos: Ordering[VertexPos] = Ordering.by(VertexPos.unapply)
 
 
   trait Blendable[A] {
@@ -251,7 +252,7 @@ object RichRectangleBakedQuad {
   def buildVertex(v1: Vertex): DefaultUnpackedVertex = new DefaultUnpackedVertex(v1._1, v1._2, v1._3, v1._4, v1._5)
 
   def unpackVertex(v1: DefaultUnpackedVertex): Vertex = {
-    (v1.getPos, v1.getColor, v1.getTexture, if (v1.getLightmap == null) new Vec3i(1, 1, 0) else v1.getLightmap, v1.getNormal)
+    Vertex(v1.getPos, v1.getColor, v1.getTexture, if (v1.getLightmap == null) new Vec3i(1, 1, 0) else v1.getLightmap, v1.getNormal)
   }
 
   def buildVertexData(format: VertexFormat, v1: Vertex*): Array[Int] =
@@ -260,17 +261,18 @@ object RichRectangleBakedQuad {
       0, null, null, false, format
     ).getVertexData
 
-  type VertexPos = (Float, Float, Float)
+  case class VertexPos(_1: Float, _2: Float, _3: Float)
+
+  case class Vertex(_1: VertexPos, _2: RGBA, _3: (Float, Float), _4: (Int, Int, Int), _5: (Int, Int, Int))
+
+  implicit private def tupple2VertexPos(t: (Float, Float, Float)): VertexPos = VertexPos.tupled(t)
 
 
-  type Vertex = (VertexPos, RGBA, (Float, Float), (Int, Int, Int), (Int, Int, Int))
-
-
-  @inline implicit private def tuple2VertexPos(t: (Float, Float, Float)): Vector3f =
+  @inline implicit private def tuple2Vector3f(t: VertexPos): Vector3f =
     new Vector3f(t._1, t._2, t._3)
 
-  @inline implicit private def vertexPos2Tuple(t: Vector3f): (Float, Float, Float) =
-    (t.x, t.y, t.z)
+  @inline implicit private def vertexPos2Tuple(t: Vector3f): VertexPos =
+    VertexPos(t.x, t.y, t.z)
 
   @inline implicit private def tuple2TexturePos(t: (Float, Float)): Vector2f =
     new Vector2f(t._1, t._2)

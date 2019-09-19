@@ -17,10 +17,10 @@ import scala.Tuple3;
 public class TestItem extends Item {
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        Tuple3<Object, Object, Object> projectedCoords = RichRectangleBakedQuad.projectTo2d(Tuple3.apply(hitX * 16, hitY * 16, hitZ * 16), facing);
+        RichRectangleBakedQuad.VertexPos projectedCoords = RichRectangleBakedQuad.projectTo2d(new RichRectangleBakedQuad.VertexPos(hitX * 16, hitY * 16, hitZ * 16), facing);
 
         RuneIndex.addRunePart(new Location(pos, world), world.getBlockState(pos).getBlock(),
-                facing, RunePart.apply((int) ((float) projectedCoords._1()), (int) ((float) projectedCoords._2()), EnumPartType.FullPixel, 1));
+                facing, (int) ((float) projectedCoords._1()), (int) ((float) projectedCoords._2()), RunePart.apply(EnumPartType.FullPixel, 1));
         return EnumActionResult.SUCCESS;
     }
 }

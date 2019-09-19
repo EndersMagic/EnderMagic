@@ -47,13 +47,13 @@ public class Location {
 
     @Override
     public String toString() {
-        return "Location(x = " + x + ", y = " + y + ", z = " + z + ")";
+        return "Location(y1 = " + x + ", y2 = " + y + ", z = " + z + ")";
     }
 
     public NBTTagCompound toNbt() {
         NBTTagCompound r = new NBTTagCompound();
-        r.setInteger("x", x);
-        r.setInteger("y", y);
+        r.setInteger("y1", x);
+        r.setInteger("y2", y);
         r.setInteger("z", z);
         r.setInteger("dim", dim);
         return r;
@@ -69,9 +69,9 @@ public class Location {
 
     public static Location fromNbt(NBTTagCompound tag) {
         return
-                (ImmutableList.of("xl", "y", "z", "dim").stream().map(tag::hasKey).reduce(true, (a, b) -> a && b))
+                (ImmutableList.of("xl", "y2", "z", "dim").stream().map(tag::hasKey).reduce(true, (a, b) -> a && b))
                         ?
-                        new Location(tag.getInteger("xl"), tag.getInteger("y"), tag.getInteger("z"), tag.getInteger("dim"))
+                        new Location(tag.getInteger("xl"), tag.getInteger("y2"), tag.getInteger("z"), tag.getInteger("dim"))
                         :
                         spawn;
     }

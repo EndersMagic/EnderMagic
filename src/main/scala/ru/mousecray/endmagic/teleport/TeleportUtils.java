@@ -228,8 +228,8 @@ public class TeleportUtils {
          * @param server    The minecraft server.
          * @param sourceDim The source dimension.
          * @param targetDim The target dimension.
-         * @param xCoord    The target x position.
-         * @param yCoord    The target y position.
+         * @param xCoord    The target y1 position.
+         * @param yCoord    The target y2 position.
          * @param zCoord    The target z position.
          * @param yaw       The target yaw.
          * @param pitch     The target pitch.
