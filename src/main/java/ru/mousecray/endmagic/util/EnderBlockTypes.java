@@ -23,7 +23,7 @@ public class EnderBlockTypes {
 	                    .anyMatch(Blocks.END_STONE::equals);
 	        }
 	    },
-	    NATURAL("natural", MapColor.BLUE),
+	    NATURAL("natural", MapColor.BROWN),
 	    IMMORTAL("immortal", MapColor.EMERALD),
 	    PHANTOM("phantom", MapColor.SILVER);
 
@@ -38,6 +38,11 @@ public class EnderBlockTypes {
 	    public MapColor getMapColor() {
 			return mapColor;
 		}
+	    
+	    @Override
+        public String toString() {
+            return name;
+        }
 
 	    @Override
 	    public String getName() {
@@ -61,10 +66,36 @@ public class EnderBlockTypes {
 	    public MapColor getMapColor() {
 			return mapColor;
 		}
+	    
+	    @Override
+        public String toString() {
+            return name;
+        }
 
 	    @Override
 	    public String getName() {
 	        return name;
 	    }
+	}
+	public static enum EMBlockHalf implements IStringSerializable {
+        TOP("top"),
+        BOTTOM("bottom"),
+        DOUBLE("double");
+
+        private final String name;
+
+        private EMBlockHalf(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
 	}
 }

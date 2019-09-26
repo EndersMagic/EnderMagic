@@ -20,7 +20,7 @@ import java.util.function.Function;
 public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extends VariativeBlock<TreeType> {
 
     public EMLog(Class<TreeType> type, Function<TreeType, MapColor> mapFunc) {
-        super(type, Material.WOOD, "_log", mapFunc);
+        super(type, Material.WOOD, "log", mapFunc);
 
       setHardness(2.5F);
       setResistance(4.0F);

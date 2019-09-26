@@ -12,7 +12,7 @@ import ru.mousecray.endmagic.blocks.VariativeBlock;
 public class EMPlanks<TreeType extends Enum<TreeType> & IStringSerializable> extends VariativeBlock<TreeType> {
 
 	public EMPlanks(Class<TreeType> type, Function<TreeType, MapColor> mapFunc) {
-		super(type, Material.WOOD, "_planks", mapFunc);
+		super(type, Material.WOOD, "planks", mapFunc);
 		setHardness(2.5F);
 		setResistance(7.0F);
 		setSoundType(SoundType.WOOD);	

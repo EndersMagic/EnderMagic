@@ -1,9 +1,11 @@
 package ru.mousecray.endmagic.init;
 
+import net.minecraft.block.material.Material;
 import ru.mousecray.endmagic.blocks.BlockBlastFurnace;
 import ru.mousecray.endmagic.blocks.BlockCurseBush;
 import ru.mousecray.endmagic.blocks.BlockEnderCoal;
 import ru.mousecray.endmagic.blocks.BlockNamed;
+import ru.mousecray.endmagic.blocks.EMSlab;
 import ru.mousecray.endmagic.blocks.EnderCrops;
 import ru.mousecray.endmagic.blocks.EnderOre;
 import ru.mousecray.endmagic.blocks.EnderTallgrass;
@@ -16,7 +18,6 @@ import ru.mousecray.endmagic.blocks.trees.EMLeaves;
 import ru.mousecray.endmagic.blocks.trees.EMLog;
 import ru.mousecray.endmagic.blocks.trees.EMPlanks;
 import ru.mousecray.endmagic.blocks.trees.EMSapling;
-import ru.mousecray.endmagic.blocks.trees.WoodenSlab;
 import ru.mousecray.endmagic.util.EnderBlockTypes.EnderGrassType;
 import ru.mousecray.endmagic.util.EnderBlockTypes.EnderTreeType;
 import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
@@ -51,8 +52,7 @@ public final class EMBlocks {
     public static final EMLeaves<EnderTreeType> enderLeaves = new EMLeaves<>(EnderTreeType.class, type -> ((EnderTreeType)type).getMapColor());
     public static final EMPlanks<EnderTreeType> enderPlanks = new EMPlanks<>(EnderTreeType.class, type -> ((EnderTreeType)type).getMapColor());
     
-    public static final WoodenSlab enderWoodenHalfSlab = new WoodenSlab(EnderTreeType.class, false, type -> ((EnderTreeType)type).getMapColor());
-    public static final WoodenSlab enderWoodenDoubleSlab = new WoodenSlab(EnderTreeType.class, true, type -> ((EnderTreeType)type).getMapColor());
+    public static final EMSlab<EnderTreeType> enderWoodenSlab = new EMSlab<>(EnderTreeType.class, Material.WOOD, type -> ((EnderTreeType)type).getMapColor());  
     
     public static final BlockEnderGrass blockEnderGrass = new BlockEnderGrass(EnderGrassType.class, type -> ((EnderGrassType)type).getMapColor());
 }

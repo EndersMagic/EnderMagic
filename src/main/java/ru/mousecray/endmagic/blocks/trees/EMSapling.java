@@ -32,7 +32,7 @@ import ru.mousecray.endmagic.blocks.VariativeBlock;
 public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & EMSapling.SaplingThings> extends VariativeBlock<TreeType> implements IGrowable {
 
     public EMSapling(Class<TreeType> type, Function<TreeType, MapColor> mapFunc) {
-        super(type, Material.PLANTS, "_sapling", mapFunc);
+        super(type, Material.PLANTS, "sapling", mapFunc);
 
         setResistance(0.0F);
         setHardness(0.0F);

@@ -33,7 +33,7 @@ import java.util.stream.Stream;
 public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> extends VariativeBlock<TreeType> implements IShearable {
 
     public EMLeaves(Class<TreeType> type, Function<TreeType, MapColor> mapFunc) {
-        super(type, Material.LEAVES, "_leaves", mapFunc);
+        super(type, Material.LEAVES, "leaves", mapFunc);
 
         setTickRandomly(true);
         setHardness(0.2F);

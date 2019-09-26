@@ -104,7 +104,7 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     @Override
     public String name() {
         String rawName = NameAndTabUtils.getName(type);
-        return suffix != null ? rawName.substring(0, rawName.lastIndexOf('_')) + suffix : rawName;
+        return suffix != null ? rawName.substring(0, rawName.lastIndexOf('_')+1) + suffix : rawName.substring(0, rawName.lastIndexOf('_'));
     }
 
     public String getNameForStack(ItemStack stack) {
