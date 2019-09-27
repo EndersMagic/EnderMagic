@@ -27,6 +27,20 @@ tile.ender_tree_sapling.natural.name=Саженец природного дер�
 tile.ender_tree_sapling.immortal.name=Саженец бессмертия
 tile.ender_tree_sapling.phantom.name=Призрачный саженец
 
+tile.ender_tree_planks.dragon.name=Драконьи Доски
+tile.ender_tree_planks.natural.name=Природные Доски
+tile.ender_tree_planks.immortal.name=Доски из бессмертного дерева
+tile.ender_tree_planks.phantom.name=Призрачные Доски
+
+tile.ender_tree_slab.dragon.name=Драконья плита
+tile.ender_tree_slab.natural.name=Природная плита
+tile.ender_tree_slab.immortal.name=Плита из бессмертного дерева
+tile.ender_tree_slab.phantom.name=Призрачная плита
+
+tile.ender_grass.live.name=Мёртвая поросль
+tile.ender_grass.dead.name=Живая поросль
+tile.ender_grass.frozen.name=Замёрзшая поросль
+
 item.ender_seeds.name=Семена пурпурного жемчуга
 item.purple_ender_pearl.name=Пурпурная Жемчужина
 item.blue_ender_pearl.name=Голубая Жемчужина

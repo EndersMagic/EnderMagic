@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "state=buttom,tree_type=dragon":  { "model": "endmagic:trees/bottom_slab_dragon" },
+    "state=top,tree_type=dragon":   { "model": "endmagic:trees/upper_slab_dragon" },
+    "state=double,tree_type=dragon":   { "model": "endmagic:trees/dragon_planks" },
+
+
+    "state=bottom,tree_type=natural":  { "model": "endmagic:trees/bottom_slab_natural" },
+    "state=top,tree_type=natural":   { "model": "endmagic:trees/upper_slab_natural" },
+    "state=double,tree_type=natural":   { "model": "endmagic:trees/natural_planks" },
+
+    "state=bottom,tree_type=immortal":  { "model": "endmagic:trees/bottom_slab_immortal" },
+    "state=top,tree_type=immortal":   { "model": "endmagic:trees/upper_slab_immortal" },
+    "state=double,tree_type=immortal":   { "model": "endmagic:trees/immortal_planks" },
+
+    "state=bottom,tree_type=phantom":  { "model": "endmagic:trees/bottom_slab_phantom" },
+    "state=top,tree_type=phantom":   { "model": "endmagic:trees/upper_slab_phantom" },
+    "state=double,tree_type=phantom":   { "model": "endmagic:trees/phantom_planks" },
+
+    "inventory":  { "model": "endmagic:trees/bottom_slab_dragon" },
+    "inventory,meta=1":  { "model": "endmagic:trees/bottom_slab_natural" },
+    "inventory,meta=2":  { "model": "endmagic:trees/bottom_slab_immortal" },
+    "inventory,meta=3":  { "model": "endmagic:trees/bottom_slab_phantom" }
+  }
+}

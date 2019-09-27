@@ -86,6 +86,7 @@ public class EMSlab<SlabType extends Enum<SlabType> & IStringSerializable> exten
         
         if (state.getBlock() == this && state.getValue(STATE) != EMBlockHalf.DOUBLE) {     	
             if (facing == EnumFacing.DOWN) {
+            	//Dammet mousecray
             	world.setBlockState(blockpos, state.withProperty(STATE, EMBlockHalf.DOUBLE));
             	return Blocks.AIR.getDefaultState();
             }

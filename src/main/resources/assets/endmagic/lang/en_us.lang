@@ -27,6 +27,20 @@ tile.ender_tree_sapling.natural.name=Natural Sapling
 tile.ender_tree_sapling.immortal.name=Immortal Sapling
 tile.ender_tree_sapling.phantom.name=Phantom Sapling
 
+tile.ender_tree_planks.dragon.name=Dragon Planks
+tile.ender_tree_planks.natural.name=Natural Planks
+tile.ender_tree_planks.immortal.name=Immortal Planks
+tile.ender_tree_planks.phantom.name=Phantom Planks
+
+tile.ender_tree_slab.dragon.name=Dragon Slab
+tile.ender_tree_slab.natural.name=Natural Slab
+tile.ender_tree_slab.immortal.name=Immortal Slab
+tile.ender_tree_slab.phantom.name=Phantom Slab
+
+tile.ender_grass.live.name=Dead Growth
+tile.ender_grass.dead.name=Live Growth
+tile.ender_grass.frozen.name=Frozen Growth
+
 item.ender_seeds.name=Purple Pearl Seeds
 item.purple_ender_pearl.name=Purple Pearl
 item.blue_ender_pearl.name=Blue Pearl

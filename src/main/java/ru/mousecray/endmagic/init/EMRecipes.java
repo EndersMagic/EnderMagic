@@ -9,5 +9,6 @@ public class EMRecipes {
 		GameRegistry.addSmelting(new ItemStack(EMBlocks.enderLog, 1, 1), new ItemStack(EMItems.naturalCoal), 0.2F);
 		GameRegistry.addSmelting(new ItemStack(EMBlocks.enderLog, 1, 2), new ItemStack(EMItems.immortalCoal), 0.2F);
 		GameRegistry.addSmelting(new ItemStack(EMBlocks.enderLog, 1, 3), new ItemStack(EMItems.phantomCoal), 0.2F);
+		GameRegistry.addSmelting(new ItemStack(EMBlocks.enderOre, 1), new ItemStack(EMItems.rawEnderite), 0.3F);
 	}
 }

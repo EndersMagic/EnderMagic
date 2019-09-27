@@ -27,15 +27,29 @@ tile.ender_tree_sapling.natural.name=Саджанець природного д�
 tile.ender_tree_sapling.immortal.name=Саджанець безсмертя
 tile.ender_tree_sapling.phantom.name=Примарний саджанець
 
+tile.ender_tree_planks.dragon.name=Драконячи дошки
+tile.ender_tree_planks.natural.name=Природні дошки
+tile.ender_tree_planks.immortal.name=Дошки из бессмертного дерева
+tile.ender_tree_planks.phantom.name=Примарні дошки
+
+tile.ender_tree_slab.dragon.name=Драконяча плита
+tile.ender_tree_slab.natural.name=Природна плита
+tile.ender_tree_slab.immortal.name=Плита из бессмертного дерева
+tile.ender_tree_slab.phantom.name=Примарна плита
+
+tile.ender_grass.live.name=Мертва поросль
+tile.ender_grass.dead.name=Зелена поросль
+tile.ender_grass.frozen.name=Замерзша поросль
+
 item.ender_seeds.name=Насіння пурпурної перлини
 item.purple_ender_pearl.name=Пурпурна Перлина
 item.blue_ender_pearl.name=Блакитна Перлина
 item.ender_arrow.name=Стріла Краю
-item.em_book.name=Книга Кордону
+item.em_book.name=Книга Краю
 item.ender_apple.name=Яблуко Краю
 item.ender_compass.name=Компас Краю
 item.item_portal_binder.name=Координатор порталів
-item.raw_enderite.name=Необроблений эндерит
+item.raw_enderite.name=Необроблений эндеріт
 
 item.dragon_coal.name=Драконячий угольок
 item.natural_coal.name=Природний угольок
@@ -116,6 +130,6 @@ item.phantom_diamond_axe.name=Сокира з примарного діаман�
 item.phantom_diamond_sword.name=Меч з примарного діаманту
 item.phantom_diamond_hoe.name=Мотика з примарного діаманту
 
-itemGroup.em_cretive_tab=Магія Кордону
+itemGroup.em_cretive_tab=Магія Краю
 
 tooltip.ender_seeds=Ростуть на камінні Енду
