@@ -40,7 +40,7 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     public VariativeBlock(Class<BlockType> type, Material material, String suffix, Function<BlockType, MapColor> mapFunc) {
         super(material);
         this.type = type;
-        blockType = PropertyEnum.create("tree_type", type);
+        blockType = PropertyEnum.create("type", type);
         this.suffix = suffix;
         this.mapFunc = mapFunc;
 

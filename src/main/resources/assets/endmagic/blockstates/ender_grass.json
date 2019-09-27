@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "type=live":  { "model": "endmagic:dimensional/live_grass" },
+        "type=dead":  { "model": "endmagic:dimensional/dead_grass" },
+        "type=frozen":  { "model": "endmagic:dimensional/frozen_grass" },
+
+        "inventory":  { "model": "endmagic:dimensional/live_grass" },
+        "inventory,meta=1":  { "model": "endmagic:dimensional/dead_grass" },
+        "inventory,meta=2":  { "model": "endmagic:dimensional/frozen_grass" }
+    }
+}

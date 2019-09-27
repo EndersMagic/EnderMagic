@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.init;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import ru.mousecray.endmagic.blocks.BlockBlastFurnace;
 import ru.mousecray.endmagic.blocks.BlockCurseBush;
@@ -52,7 +53,7 @@ public final class EMBlocks {
     public static final EMLeaves<EnderTreeType> enderLeaves = new EMLeaves<>(EnderTreeType.class, type -> ((EnderTreeType)type).getMapColor());
     public static final EMPlanks<EnderTreeType> enderPlanks = new EMPlanks<>(EnderTreeType.class, type -> ((EnderTreeType)type).getMapColor());
     
-    public static final EMSlab<EnderTreeType> enderWoodenSlab = new EMSlab<>(EnderTreeType.class, Material.WOOD, type -> ((EnderTreeType)type).getMapColor());  
+    public static final EMSlab<EnderTreeType> enderWoodenSlab = new EMSlab<>(EnderTreeType.class, Material.WOOD, type -> ((EnderTreeType)type).getMapColor()).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);  
     
     public static final BlockEnderGrass blockEnderGrass = new BlockEnderGrass(EnderGrassType.class, type -> ((EnderGrassType)type).getMapColor());
 }

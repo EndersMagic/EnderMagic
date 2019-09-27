@@ -1,13 +1,10 @@
 {
   "variants": {
-    "tree_type=dragon":  { "model": "endmagic:trees/dragon_leaves" },
-
-    "tree_type=natural":  { "model": "endmagic:trees/natural_leaves" },
-
-    "tree_type=immortal":  { "model": "endmagic:trees/immortal_leaves" },
-
-    "tree_type=phantom":  { "model": "endmagic:trees/phantom_leaves" },
-
+    "type=dragon":  { "model": "endmagic:trees/dragon_leaves" },
+    "type=natural":  { "model": "endmagic:trees/natural_leaves" },
+    "type=immortal":  { "model": "endmagic:trees/immortal_leaves" },
+    "type=phantom":  { "model": "endmagic:trees/phantom_leaves" },
+    
     "inventory":  { "model": "endmagic:trees/dragon_leaves" },
     "inventory,meta=1":  { "model": "endmagic:trees/natural_leaves" },
     "inventory,meta=2":  { "model": "endmagic:trees/immortal_leaves" },

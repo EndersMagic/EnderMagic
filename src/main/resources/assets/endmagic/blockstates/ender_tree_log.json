@@ -1,26 +1,26 @@
 {
   "variants": {
-    "axis=y,tree_type=dragon":  { "model": "endmagic:trees/dragon_log" },
-    "axis=z,tree_type=dragon":   { "model": "endmagic:trees/dragon_log", "x": 90 },
-    "axis=x,tree_type=dragon":   { "model": "endmagic:trees/dragon_log", "x": 90, "y": 90 },
+    "axis=y,type=dragon":  { "model": "endmagic:trees/dragon_log" },
+    "axis=z,type=dragon":   { "model": "endmagic:trees/dragon_log", "x": 90 },
+    "axis=x,type=dragon":   { "model": "endmagic:trees/dragon_log", "x": 90, "y": 90 },
 
 
-    "axis=y,tree_type=natural":  { "model": "endmagic:trees/natural_log" },
-    "axis=z,tree_type=natural":   { "model": "endmagic:trees/natural_log", "x": 90 },
-    "axis=x,tree_type=natural":   { "model": "endmagic:trees/natural_log", "x": 90, "y": 90 },
+    "axis=y,type=natural":  { "model": "endmagic:trees/natural_log" },
+    "axis=z,type=natural":   { "model": "endmagic:trees/natural_log", "x": 90 },
+    "axis=x,type=natural":   { "model": "endmagic:trees/natural_log", "x": 90, "y": 90 },
 
-    "axis=y,tree_type=immortal":  { "model": "endmagic:trees/immortal_log" },
-    "axis=z,tree_type=immortal":   { "model": "endmagic:trees/immortal_log", "x": 90 },
-    "axis=x,tree_type=immortal":   { "model": "endmagic:trees/immortal_log", "x": 90, "y": 90 },
+    "axis=y,type=immortal":  { "model": "endmagic:trees/immortal_log" },
+    "axis=z,type=immortal":   { "model": "endmagic:trees/immortal_log", "x": 90 },
+    "axis=x,type=immortal":   { "model": "endmagic:trees/immortal_log", "x": 90, "y": 90 },
 
-    "axis=y,tree_type=phantom":  { "model": "endmagic:trees/phantom_log" },
-    "axis=z,tree_type=phantom":   { "model": "endmagic:trees/phantom_log", "x": 90 },
-    "axis=x,tree_type=phantom":   { "model": "endmagic:trees/phantom_log", "x": 90, "y": 90 },
+    "axis=y,type=phantom":  { "model": "endmagic:trees/phantom_log" },
+    "axis=z,type=phantom":   { "model": "endmagic:trees/phantom_log", "x": 90 },
+    "axis=x,type=phantom":   { "model": "endmagic:trees/phantom_log", "x": 90, "y": 90 },
 
-    "axis=none,tree_type=dragon":  { "model": "endmagic:trees/dragon_log" },
-    "axis=none,tree_type=immortal":  { "model": "endmagic:trees/immortal_log" },
-    "axis=none,tree_type=natural":  { "model": "endmagic:trees/natural_log" },
-    "axis=none,tree_type=phantom":  { "model": "endmagic:trees/phantom_log" },
+    "axis=none,type=dragon":  { "model": "endmagic:trees/dragon_log" },
+    "axis=none,type=immortal":  { "model": "endmagic:trees/immortal_log" },
+    "axis=none,type=natural":  { "model": "endmagic:trees/natural_log" },
+    "axis=none,type=phantom":  { "model": "endmagic:trees/phantom_log" },
 
     "inventory":  { "model": "endmagic:trees/dragon_log" },
     "inventory,meta=1":  { "model": "endmagic:trees/natural_log" },

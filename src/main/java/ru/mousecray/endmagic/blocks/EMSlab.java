@@ -3,6 +3,7 @@ package ru.mousecray.endmagic.blocks;
 import java.util.Random;
 import java.util.function.Function;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -33,6 +34,21 @@ public class EMSlab<SlabType extends Enum<SlabType> & IStringSerializable> exten
     public EMSlab(Class<SlabType> type, Material material,Function<SlabType, MapColor> mapColors) {
 		super(type, material, "slab", mapColors);
 		setLightOpacity(255);
+    }
+    
+    @Override
+    public EMSlab setResistance(float resistance) {
+        return (EMSlab) super.setResistance(resistance);
+    }
+    
+    @Override
+    public EMSlab setHardness(float hardness) {
+        return (EMSlab) super.setHardness(hardness);
+    }
+    
+    @Override
+    public EMSlab setSoundType(SoundType sound) {
+		return (EMSlab) super.setSoundType(sound);	
     }
 	
 	@Override

@@ -1,9 +1,9 @@
 {
   "variants": {
-    "tree_type=dragon":  { "model": "endmagic:trees/dragon_planks" },
-    "tree_type=natural":  { "model": "endmagic:trees/natural_planks" },
-    "tree_type=immortal":  { "model": "endmagic:trees/immortal_planks" },
-    "tree_type=phantom":  { "model": "endmagic:trees/phantom_planks" },
+    "type=dragon":  { "model": "endmagic:trees/dragon_planks" },
+    "type=natural":  { "model": "endmagic:trees/natural_planks" },
+    "type=immortal":  { "model": "endmagic:trees/immortal_planks" },
+    "type=phantom":  { "model": "endmagic:trees/phantom_planks" },
 
     "inventory":  { "model": "endmagic:trees/dragon_planks" },
     "inventory,meta=1":  { "model": "endmagic:trees/natural_planks" },

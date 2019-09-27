@@ -1,0 +1,8 @@
+{
+    "parent": "block/half_slab",
+    "textures": {
+        "bottom": "endmagic:blocks/trees/immortal_planks",
+        "top": "endmagic:blocks/trees/immortal_planks",
+        "side": "endmagic:blocks/trees/immortal_planks"
+    }
+}
