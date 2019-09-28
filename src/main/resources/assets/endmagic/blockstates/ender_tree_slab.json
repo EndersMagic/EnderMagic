@@ -1,9 +1,8 @@
 {
   "variants": {
-    "state=buttom,type=dragon":  { "model": "endmagic:trees/bottom_slab_dragon" },
+    "state=bottom,type=dragon":  { "model": "endmagic:trees/bottom_slab_dragon" },
     "state=top,type=dragon":   { "model": "endmagic:trees/upper_slab_dragon" },
     "state=double,type=dragon":   { "model": "endmagic:trees/dragon_planks" },
-
 
     "state=bottom,type=natural":  { "model": "endmagic:trees/bottom_slab_natural" },
     "state=top,type=natural":   { "model": "endmagic:trees/upper_slab_natural" },

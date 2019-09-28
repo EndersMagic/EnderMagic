@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.util;
 
 import java.util.Arrays;
 
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -50,21 +51,27 @@ public class EnderBlockTypes {
 	    }
 	}
 
-	public static enum EnderGrassType implements IStringSerializable {
-	    LIVE("live", MapColor.BLUE),
-	    DEAD("dead", MapColor.GRAY),
-	    FROZEN("frozen", MapColor.DIAMOND);
+	public static enum EnderGroundType implements IStringSerializable {
+	    LIVE("live", MapColor.BLUE, SoundType.GROUND),
+	    DEAD("dead", MapColor.GRAY, SoundType.SAND),
+	    FROZEN("frozen", MapColor.DIAMOND, SoundType.SNOW);
 
 	    private final String name;
 	    private final MapColor mapColor;
+	    private final SoundType sound;
 
-	    EnderGrassType(String name, MapColor mapColor) {
+	    EnderGroundType(String name, MapColor mapColor, SoundType sound) {
 	        this.name = name;
 	        this.mapColor = mapColor;
+	        this.sound = sound;
 	    }
 	    
 	    public MapColor getMapColor() {
 			return mapColor;
+		}
+	    
+	    public SoundType getSound() {
+			return sound;
 		}
 	    
 	    @Override

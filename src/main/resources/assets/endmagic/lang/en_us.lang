@@ -37,9 +37,13 @@ tile.ender_tree_slab.natural.name=Natural Slab
 tile.ender_tree_slab.immortal.name=Immortal Slab
 tile.ender_tree_slab.phantom.name=Phantom Slab
 
-tile.ender_grass.live.name=Dead Growth
-tile.ender_grass.dead.name=Live Growth
-tile.ender_grass.frozen.name=Frozen Growth
+tile.ender_ground_grass.live.name=Dead Growth
+tile.ender_ground_grass.dead.name=Live Growth
+tile.ender_ground_grass.frozen.name=Frozen Growth
+
+tile.ender_ground_stone.live.name=Dead End Stone
+tile.ender_ground_stone.dead.name=Live End Stone
+tile.ender_ground_stone.frozen.name=Frozen End Stone
 
 item.ender_seeds.name=Purple Pearl Seeds
 item.purple_ender_pearl.name=Purple Pearl

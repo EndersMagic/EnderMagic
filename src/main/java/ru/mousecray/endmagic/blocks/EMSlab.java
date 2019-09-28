@@ -33,7 +33,11 @@ public class EMSlab<SlabType extends Enum<SlabType> & IStringSerializable> exten
 	
     public EMSlab(Class<SlabType> type, Material material,Function<SlabType, MapColor> mapColors) {
 		super(type, material, "slab", mapColors);
-		setLightOpacity(255);
+    }
+    
+    @Override
+    public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return state.getValue(STATE) == EMBlockHalf.DOUBLE ? 255 : 0;
     }
     
     @Override
@@ -102,13 +106,19 @@ public class EMSlab<SlabType extends Enum<SlabType> & IStringSerializable> exten
         
         if (state.getBlock() == this && state.getValue(STATE) != EMBlockHalf.DOUBLE) {     	
             if (facing == EnumFacing.DOWN) {
-            	//Dammet mousecray
-            	world.setBlockState(blockpos, state.withProperty(STATE, EMBlockHalf.DOUBLE));
-            	return Blocks.AIR.getDefaultState();
+            	if (state.getValue(STATE) == EMBlockHalf.BOTTOM) return iblockstate;
+            	else {
+                	//Dammet mousecray
+                	world.setBlockState(blockpos, state.withProperty(STATE, EMBlockHalf.DOUBLE));
+                	return Blocks.AIR.getDefaultState();
+            	}
             }
             else if (facing == EnumFacing.UP) {
-            	world.setBlockState(blockpos, state.withProperty(STATE, EMBlockHalf.DOUBLE));
-            	return Blocks.AIR.getDefaultState();
+            	if(state.getValue(STATE) == EMBlockHalf.TOP) return iblockstate;
+            	else {
+            		world.setBlockState(blockpos, state.withProperty(STATE, EMBlockHalf.DOUBLE));
+            		return Blocks.AIR.getDefaultState();
+            	}
             }
             else return state;
         }
@@ -139,6 +149,16 @@ public class EMSlab<SlabType extends Enum<SlabType> & IStringSerializable> exten
     @Override
     public boolean isFullCube(IBlockState state) {
         return state.isOpaqueCube();
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public static boolean isHalfSlab(IBlockState state) {
+        return state.getValue(STATE) != EMBlockHalf.DOUBLE;
+    }
+    
+    @Override
+    public boolean isFullBlock(IBlockState state) {
+        return false;
     }
 	
     @Override

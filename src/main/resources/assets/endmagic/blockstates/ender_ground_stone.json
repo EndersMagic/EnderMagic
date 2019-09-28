@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "type=live":  { "model": "endmagic:dimensional/live_stone" },
+        "type=dead":  { "model": "endmagic:dimensional/dead_stone" },
+        "type=frozen":  { "model": "endmagic:dimensional/frozen_stone" },
+
+        "inventory":  { "model": "endmagic:dimensional/live_stone" },
+        "inventory,meta=1":  { "model": "endmagic:dimensional/dead_stone" },
+        "inventory,meta=2":  { "model": "endmagic:dimensional/frozen_stone" }
+    }
+}

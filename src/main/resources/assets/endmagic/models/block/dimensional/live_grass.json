@@ -1,11 +1,11 @@
 {
   "parent": "block/cube",
   "textures": {
-    "north": "endmagic:blocks/blast_furnace_side",
-    "south": "endmagic:blocks/blast_furnace_side",
-    "west": "endmagic:blocks/blast_furnace_side",
-    "east": "endmagic:blocks/blast_furnace_side",
-    "down": "blocks/brick",
-    "up": "blocks/brick"
+    "north": "endmagic:blocks/dimensional/live_grass_side",
+    "south": "endmagic:blocks/dimensional/live_grass_side",
+    "west": "endmagic:blocks/dimensional/live_grass_side",
+    "east": "endmagic:blocks/dimensional/live_grass_side",
+    "down": "endmagic:blocks/dimensional/live_stone",
+    "up": "endmagic:blocks/dimensional/live_grass_top"
   }
 }
