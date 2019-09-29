@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.ModelEnderCompass;
-import ru.mousecray.endmagic.util.IEMModel;
+import ru.mousecray.endmagic.util.registry.IEMModel;
 
 import java.util.Optional;
 import java.util.UUID;

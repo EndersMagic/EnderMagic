@@ -1,7 +1,7 @@
 package ru.mousecray.endmagic.items.tools;
 
 import net.minecraft.item.ItemSpade;
-import ru.mousecray.endmagic.util.NameProvider;
+import ru.mousecray.endmagic.util.registry.NameProvider;
 
 public class EMShovel extends ItemSpade implements NameProvider, ItemTexturedTool {
 

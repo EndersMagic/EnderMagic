@@ -1,0 +1,15 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "endmagic:enderite"
+    }
+  },
+  "result": {
+    "item": "endmagic:raw_enderite",
+    "count": 9
+  }
+}

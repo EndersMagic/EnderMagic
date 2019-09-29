@@ -1,10 +1,10 @@
 {
   "variants": {
     "normal": {
-      "model": "end_stone"
+      "model": "endmagic:enderite_bricks"
     },
     "inventory": {
-      "model": "end_stone"
+      "model": "endmagic:enderite_bricks"
     }
   }
 }

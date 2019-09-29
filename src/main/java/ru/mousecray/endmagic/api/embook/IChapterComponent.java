@@ -1,8 +1,7 @@
 package ru.mousecray.endmagic.api.embook;
 
-/*
- * Don't use this interface
- */
+import java.util.List;
+
 public interface IChapterComponent {
-	public ComponentType getComponentType();
+    List<IPage> pages();
 }

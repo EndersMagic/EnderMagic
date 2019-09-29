@@ -1,8 +1,17 @@
 package ru.mousecray.endmagic.init;
 
-import codechicken.lib.packet.PacketCustom;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Random;
+
 import com.google.common.collect.ImmutableMap;
+
+import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiListWorldSelection;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiWorldSelection;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +30,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
@@ -32,10 +42,6 @@ import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
-
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Random;
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
@@ -52,6 +58,20 @@ public class EMEvents {
                                         .writePos(pos))
                         .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
             }
+    }
+
+    @SubscribeEvent
+    public static void loadLastWorld(GuiOpenEvent event) {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (event.getGui() instanceof GuiMainMenu) {
+            mc.displayGuiScreen(new GuiWorldSelection((GuiMainMenu) event.getGui()));
+        } else if (event.getGui() instanceof GuiWorldSelection) {
+            GuiListWorldSelection guiListWorldSelection = new GuiListWorldSelection((GuiWorldSelection) event.getGui(), mc, 100, 100, 32, 100 - 64, 36);
+            try {
+                guiListWorldSelection.getListEntry(0).joinWorld();
+            } catch (Exception ignore) {
+            }
+        }
     }
 
     @SubscribeEvent

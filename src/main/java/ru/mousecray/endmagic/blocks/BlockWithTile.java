@@ -13,6 +13,5 @@ public abstract class BlockWithTile<A extends TileEntity> extends BlockContainer
 
     public A tile(World world, BlockPos pos) {
         return (A) world.getTileEntity(pos);
-
     }
 }

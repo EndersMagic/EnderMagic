@@ -19,9 +19,9 @@ import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.util.CreativeTabProvider;
 import ru.mousecray.endmagic.util.EMUtils;
-import ru.mousecray.endmagic.util.IEMModel;
+import ru.mousecray.endmagic.util.registry.CreativeTabProvider;
+import ru.mousecray.endmagic.util.registry.IEMModel;
 
 public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvider {
 
