@@ -22,7 +22,9 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.entity.EntityCurseBush;
+import ru.mousecray.endmagic.util.EMUtils;
 
 public class BlockCurseBush extends BlockBush {
 	
@@ -131,11 +133,11 @@ public class BlockCurseBush extends BlockBush {
     
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE;
+        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && (EMUtils.isSoil(world, pos.down(), EndSoilType.GRASS) || world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE);
     }
 
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-        return world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE;
+        return (EMUtils.isSoil(world, pos.down(), EndSoilType.GRASS) || world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE);
     }
 }

@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic.client.gui;
 
-import com.google.common.collect.ImmutableMap;
 import com.sun.istack.internal.NotNull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.blocks.BlockWithTile;
 import ru.mousecray.endmagic.teleport.TeleportUtils;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
-import ru.mousecray.endmagic.util.CreativeTabProvider;
+import ru.mousecray.endmagic.util.registry.CreativeTabProvider;
 
 public class BlockPortal extends BlockWithTile<TilePortal> implements CreativeTabProvider {
     public BlockPortal() {
