@@ -7,13 +7,13 @@
     ],
     "key": {
         "#": {
-            "item": "minecraft:iron_ingot"
+            "item": "minecraft:end_bricks"
         },
         "X": {
             "item": "minecraft:compass"
         },
         "Z": {
-            "item": "minecraft:end_stone"
+            "item": "endmagic:raw_enderite"
         }
     },
     "result": {

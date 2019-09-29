@@ -2,7 +2,7 @@ package ru.mousecray.endmagic.items.tools;
 
 import net.minecraft.item.ItemPickaxe;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.util.NameProvider;
+import ru.mousecray.endmagic.util.registry.NameProvider;
 
 public class EMPickaxe extends ItemPickaxe implements NameProvider, ItemTexturedTool {
 

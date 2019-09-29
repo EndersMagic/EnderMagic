@@ -6,8 +6,8 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
-import ru.mousecray.endmagic.util.elix_x.baked.UnpackedBakedQuad;
-import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
+import ru.mousecray.endmagic.util.render.elix_x.baked.UnpackedBakedQuad;
+import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 import javax.annotation.Nullable;
 import java.util.List;

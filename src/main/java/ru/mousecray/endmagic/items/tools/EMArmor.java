@@ -7,7 +7,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.items.ItemTextured;
-import ru.mousecray.endmagic.util.NameProvider;
+import ru.mousecray.endmagic.util.registry.NameProvider;
 
 import java.util.Map;
 

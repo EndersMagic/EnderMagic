@@ -21,7 +21,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.pipeline.UnpackedBakedQuad;
 import net.minecraftforge.client.model.pipeline.VertexLighterFlat;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import ru.mousecray.endmagic.util.RenderUtils;
+import ru.mousecray.endmagic.util.render.RenderUtils;
 
 public class BakedModelFullbright extends BakedModelDelegate {
 

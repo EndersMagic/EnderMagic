@@ -6,8 +6,8 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.ColoredModel;
-import ru.mousecray.endmagic.util.IEMModel;
-import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
+import ru.mousecray.endmagic.util.registry.IEMModel;
+import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public interface BlockColored extends IEMModel {
 

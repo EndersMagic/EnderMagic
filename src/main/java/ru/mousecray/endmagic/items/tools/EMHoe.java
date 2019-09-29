@@ -1,7 +1,7 @@
 package ru.mousecray.endmagic.items.tools;
 
 import net.minecraft.item.ItemHoe;
-import ru.mousecray.endmagic.util.NameProvider;
+import ru.mousecray.endmagic.util.registry.NameProvider;
 
 public class EMHoe extends ItemHoe implements NameProvider, ItemTexturedTool {
 

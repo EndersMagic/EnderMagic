@@ -5,6 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -68,6 +69,15 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         playerIn.openGui(EM.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        if(!worldIn.isRemote){
+            TileBlastFurnace furnace = (TileBlastFurnace) worldIn.getTileEntity(pos);
+            InventoryHelper.dropInventoryItems(worldIn,pos,furnace.inv);
+        }
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Nullable

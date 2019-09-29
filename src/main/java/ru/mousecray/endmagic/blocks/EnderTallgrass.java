@@ -28,7 +28,7 @@ import ru.mousecray.endmagic.api.blocks.IEndPlant;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.util.IEMModel;
+import ru.mousecray.endmagic.util.registry.IEMModel;
 
 public class EnderTallgrass extends BlockBush implements IShearable, IEMModel, IEndPlant {
 	
