@@ -114,6 +114,9 @@ case class RichRectangleBakedQuad(format: VertexFormat, v1: Vertex, v2: Vertex, 
 
   def calculateUV[A: Numeric](nvu: VertexPos, by: Vertex => A): (Float, Float) = ???
 
+  def slicePixeled(_nx: Int, _ny: Int, _nx2: Int, _ny2: Int, pixelSize: Float = 1f / 16): RichRectangleBakedQuad =
+    slice(_nx.toFloat * pixelSize, _ny.toFloat * pixelSize, (_nx2 + 1).toFloat * pixelSize, (_ny2 + 1).toFloat * pixelSize)
+
   def slice(_nx: Float, _ny: Float, _nx2: Float, _ny2: Float): RichRectangleBakedQuad = {
     val nx = min(_nx, _nx2)
     val nx2 = max(_nx, _nx2)

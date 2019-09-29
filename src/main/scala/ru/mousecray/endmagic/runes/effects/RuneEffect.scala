@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.runes
+package ru.mousecray.endmagic.runes.effects
 
 import net.minecraft.entity.Entity
 import net.minecraftforge.registries.IForgeRegistryEntry

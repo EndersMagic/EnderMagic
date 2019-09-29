@@ -27,7 +27,7 @@ import ru.mousecray.endmagic.init.EMEntities;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
-import ru.mousecray.endmagic.runes.RuneEffect;
+import ru.mousecray.endmagic.runes.effects.RuneEffect;
 import ru.mousecray.endmagic.util.NameAndTabUtils;
 
 import javax.annotation.Nullable;

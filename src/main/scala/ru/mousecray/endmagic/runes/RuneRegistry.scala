@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.runes
 
 import scala.language.implicitConversions
 import RunePartEntryWrapper._
+import ru.mousecray.endmagic.runes.effects.{EmptyEffect, RuneEffect}
 
 import scala.collection.mutable
 

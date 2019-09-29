@@ -8,8 +8,9 @@ import net.minecraftforge.fluids.FluidRegistry
 import ru.mousecray.endmagic.client.render.model.baked.RichRectangleBakedQuad
 import ru.mousecray.endmagic.client.render.rune.FlatableBakedQuad._
 import ru.mousecray.endmagic.runes.RunePartEntryWrapper._
-import ru.mousecray.endmagic.runes.{Rune, RuneIndex}
+import ru.mousecray.endmagic.runes.{Rune, RuneIndex, RunePartEntryWrapper}
 import ru.mousecray.endmagic.teleport.Location
+import ru.mousecray.endmagic.util.baked.lens.immutable.VertexGetLens
 import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA
 
 import scala.language.implicitConversions
@@ -19,8 +20,6 @@ class FlatableBakedQuad(quad: BakedQuad) extends BakedQuad(
   quad.getVertexData, quad.getTintIndex, quad.getFace, atlasSpriteRune, quad.shouldApplyDiffuseLighting(), quad.getFormat
 ) {
 
-  val zero: Byte = 0
-
 
   override def pipe(consumer: IVertexConsumer): Unit = {
     consumer match {
@@ -29,17 +28,31 @@ class FlatableBakedQuad(quad: BakedQuad) extends BakedQuad(
           .sides.get(quad.getFace)
           .collect { case rune: Rune =>
 
+
+            println(VertexGetLens.getPos(quad.getVertexData, quad.getFormat,0, Tuple3.apply))
+
             val richQuad = RichRectangleBakedQuad(quad)
 
             def toQuad(textureAtlasSprite: TextureAtlasSprite)(elongateQuadData: ElongateQuadData): BakedQuad = {
               richQuad
                 .texture(textureAtlasSprite)
-                .slice(
-                  elongateQuadData.x.toFloat / 16,
-                  elongateQuadData.y1.toFloat / 16,
-                  (elongateQuadData.x + 1).toFloat / 16,
-                  (elongateQuadData.y2.toFloat + 1) / 16
+                .slicePixeled(
+                  elongateQuadData.x,
+                  elongateQuadData.y1,
+                  elongateQuadData.x,
+                  elongateQuadData.y2
                 ).toQuad
+            }
+
+            def makeRuneQuad(entry: RunePartEntryWrapper): Seq[BakedQuad] = {
+              Seq(
+                richQuad
+                  .texture(atlasSpriteRune)
+                  .slicePixeled(
+                    entry.x, entry.y,
+                    entry.x, entry.y
+                  ).toQuad
+              )
             }
 
             val data = (for {
@@ -47,14 +60,13 @@ class FlatableBakedQuad(quad: BakedQuad) extends BakedQuad(
             } yield {
               val line = ElongateQuadData(x, 0, 15)
 
-              val runePoints = rune.parts.filter(_.x == x).map(_.y).toSeq.sortBy(-_)
+              val runePoints = rune.parts.filter(_.x == x).map(_.y).toSeq.sorted
               runePoints.foldLeft(line :: Nil) { case (last :: other, p) =>
-                last.splitFirst(p) :: last.splitSecond(p) :: other
+                last.splitSecond(p) :: last.splitFirst(p) :: other
               } filter (i => i.y1 <= i.y2)
             }).flatten
 
-            println(data)
-            data map toQuad(quad.getSprite)
+            data.map(toQuad(quad.getSprite)) ++ rune.parts.flatMap(makeRuneQuad(_))
           }.getOrElse(Seq(quad)).foreach(_.pipe(consumer))
 
       case _ => quad.pipe(consumer)
