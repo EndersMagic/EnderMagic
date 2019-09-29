@@ -41,7 +41,7 @@ public class EnderOrchid extends BlockBush implements IShearable {
     
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) &&  EMUtils.isSoil(world, pos.down(), EndSoilType.GRASS) || world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE;
+        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && (EMUtils.isSoil(world, pos.down(), EndSoilType.GRASS) || world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE);
     }
 
     @Override

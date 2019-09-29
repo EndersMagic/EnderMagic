@@ -38,8 +38,8 @@ tile.ender_tree_slab.natural.name=Природна плита
 tile.ender_tree_slab.immortal.name=Плита из бессмертного дерева
 tile.ender_tree_slab.phantom.name=Примарна плита
 
-tile.ender_ground_grass.live.name=Мертва поросль
-tile.ender_ground_grass.dead.name=Зелена поросль
+tile.ender_ground_grass.live.name=Зелена поросль
+tile.ender_ground_grass.dead.name=Мертва поросль
 tile.ender_ground_grass.frozen.name=Замерзша поросль
 
 tile.ender_ground_stone.live.name=Квітучий камінь Енду
