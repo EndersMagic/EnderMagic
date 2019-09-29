@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -25,6 +26,8 @@ import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.IChapterComponent;
 import ru.mousecray.endmagic.api.embook.IPage;
+import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
+import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
 import ru.mousecray.endmagic.api.embook.pages.EmptyPage;
 import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
@@ -36,6 +39,7 @@ import ru.mousecray.endmagic.entity.EntityBluePearl;
 import ru.mousecray.endmagic.entity.EntityCurseBush;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.EntityPurplePearl;
+import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.items.ItemTextured;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
@@ -71,9 +75,39 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         super.postInit(event);
 
         //Add default book chapters
-        BookApi.addChapter("items", "ender_apple",
-                new TextComponent("book.chapter.text.ender_apple")
+        BookApi.addStandartChapter("items", "ender_apple");
+        BookApi.addStandartChapter("items", "book_of_the_end");
+        BookApi.addStandartChapter("items", "ender_arrow", new RecipeComponent(new ItemStack(EMItems.enderArrow)));
+        BookApi.addStandartChapter("items", "purple_pearl");
+        BookApi.addStandartChapter("items", "blue_pearl");
+        BookApi.addStandartChapter("items", "portal_coordinator", new RecipeComponent(new ItemStack(EMItems.itemPortalBinder)));
+        BookApi.addStandartChapter("items", "ender_compass", new RecipeComponent(new ItemStack(EMItems.enderCompass)));
+        BookApi.addChapter("items", "carbonic_materials",
+                new TextComponent("book.chapter.text.carbonic_materials.1"),
+                new SmeltingRecipeComponent(ImmutableList.of(
+                        new ItemStack(EMItems.dragonCoal),
+                        new ItemStack(EMItems.naturalCoal),
+                        new ItemStack(EMItems.immortalCoal),
+                        new ItemStack(EMItems.phantomCoal)), "test"),
+                new TextComponent("book.chapter.text.carbonic_materials.2"),
+                new RecipeComponent(ImmutableList.of(
+                        new ItemStack(EMItems.createToolsAndArmor()),
+                        new ItemStack(EMItems.naturalCoal),
+                        new ItemStack(EMItems.immortalCoal),
+                        new ItemStack(EMItems.phantomCoal)), "test"),
+                new TextComponent("book.chapter.text.carbonic_materials.3"),
+                new RecipeComponent()
         );
+
+        BookApi.addStandartChapter("blocks", "enderite_ore");
+        BookApi.addStandartChapter("blocks", "blast_furnace", new RecipeComponent(new ItemStack(EMBlocks.blockBlastFurnace)));
+        BookApi.addStandartChapter("blocks", "static_teleport", new RecipeComponent(new ItemStack(EMBlocks.blockMasterStaticPortal)));
+        BookApi.addStandartChapter("blocks", "dark_teleport", new RecipeComponent(new ItemStack(EMBlocks.blockMasterDarkPortal)));
+        BookApi.addStandartChapter("blocks", "portal_marker", new RecipeComponent(new ItemStack(EMBlocks.blockTopMark)));
+
+        BookApi.addStandartChapter("plants", "ender_grass");
+        BookApi.addStandartChapter("plants", "purple_pearl_sprout");
+        BookApi.addStandartChapter("plants", "curse_bush");
     }
 
     @SubscribeEvent

@@ -13,10 +13,10 @@ import ru.mousecray.endmagic.util.ItemStackMapKey;
 import java.util.List;
 
 public class SmeltingRecipePage extends ImagePage implements ILinkLocation<ItemStackMapKey> {
-    public final ItemStack result;
-    private final ItemStack input;
+    public final ImmutableList<ItemStack> result;
+    private final ImmutableList<ItemStack> input;
 
-    public SmeltingRecipePage(ItemStack result, ItemStack input, String label) {
+    public SmeltingRecipePage(ImmutableList<ItemStack> result, ImmutableList<ItemStack> input, String label) {
         super(new ResourceLocation(EM.ID, "textures/gui/smelting_grid.png"), label);
         this.result = result;
         this.input = input;
@@ -34,6 +34,6 @@ public class SmeltingRecipePage extends ImagePage implements ILinkLocation<ItemS
 
     @Override
     public ItemStackMapKey linkObject() {
-        return new ItemStackMapKey(result);
+        return new ItemStackMapKey(result.iterator().next());
     }
 }

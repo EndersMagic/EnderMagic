@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.api.embook;
 
 import ru.mousecray.endmagic.api.embook.components.LinksComponent;
+import ru.mousecray.endmagic.api.embook.components.TextComponent;
 import ru.mousecray.endmagic.api.embook.pages.EmptyPage;
 
 import java.util.*;
@@ -55,6 +56,10 @@ public class BookApi {
 
     public static void addChapter(String category, String name, IChapterComponent... content) {
         addChapter(category, name, Stream.of(content));
+    }
+
+    public static void addStandartChapter(String category, String name, IChapterComponent... content) {
+        addChapter(category, name, Stream.concat(Stream.of(new TextComponent("book.chapter.text." + name)), Stream.of(content)));
     }
 
     public static void addChapter(String category, String name, Stream<IChapterComponent> content) {

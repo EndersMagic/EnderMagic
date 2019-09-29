@@ -14,13 +14,19 @@ import java.util.Map;
 import static net.minecraft.init.Blocks.AIR;
 
 public class SmeltingRecipeComponent implements IChapterComponent {
-    public final ItemStack result;
-    public final ItemStack input;
+    public final ImmutableList<ItemStack> result;
+    public final ImmutableList<ItemStack> input;
     private String label;
 
-    public SmeltingRecipeComponent(ItemStack result, ItemStack input, String label) {
+    public SmeltingRecipeComponent(ImmutableList<ItemStack> result, ImmutableList<ItemStack> input, String label) {
         this.result = result;
         this.input = input;
+        this.label = label;
+    }
+
+    public SmeltingRecipeComponent(ItemStack result, ItemStack input, String label) {
+        this.result = ImmutableList.of(result);
+        this.input = ImmutableList.of(input);
         this.label = label;
     }
 
@@ -29,13 +35,19 @@ public class SmeltingRecipeComponent implements IChapterComponent {
     }
 
     public SmeltingRecipeComponent(ItemStack result, String label) {
+        this(ImmutableList.of(result), label);
+    }
+
+    public SmeltingRecipeComponent(ImmutableList<ItemStack> result, String label) {
         this(result,
-                FurnaceRecipes.instance().getSmeltingList().entrySet()
-                        .stream()
-                        .filter(i -> ItemStack.areItemStacksEqual(i.getValue(), result))
-                        .findAny()
-                        .map(Map.Entry::getKey)
-                        .orElse(new ItemStack(Item.getItemFromBlock(AIR))),
+                result.stream().map(r ->
+                        FurnaceRecipes.instance().getSmeltingList().entrySet()
+                                .stream()
+                                .filter(i -> ItemStack.areItemStacksEqual(i.getValue(), r))
+                                .findAny()
+                                .map(Map.Entry::getKey)
+                                .orElse(new ItemStack(Item.getItemFromBlock(AIR))))
+                        .collect(ImmutableList.toImmutableList()),
                 label);
     }
 
