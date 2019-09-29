@@ -75,8 +75,13 @@ public class BookApi {
     }
 
     private static void tryToRegisterLinkLocation(PageContainer pageContainer, IPage page1) {
-        if (page1 instanceof ILinkLocation)
-            links.put(((ILinkLocation) page1).linkObject(), pageContainer);
+        if (page1 instanceof ILinkLocation) {
+            Object key = ((ILinkLocation) page1).linkObject();
+            if (key instanceof List)
+                ((List) key).forEach(i -> links.put(i, pageContainer));
+            else
+                links.put(key, pageContainer);
+        }
     }
 
     private static List<PageContainer> flatMapToPages(Stream<IChapterComponent> stream) {
