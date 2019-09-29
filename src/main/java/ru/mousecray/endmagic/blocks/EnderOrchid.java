@@ -21,36 +21,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.blocks.IEndPlant;
-import ru.mousecray.endmagic.client.render.model.IModelRegistration;
-import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
-import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.util.IEMModel;
 
-public class EnderTallgrass extends BlockBush implements IShearable, IEMModel, IEndPlant {
-	
-    protected static final AxisAlignedBB END_GRASS_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
+public class EnderOrchid extends BlockBush implements IShearable, IEndPlant {
 
-    public EnderTallgrass() {
+	public EnderOrchid() {
         super(Material.VINE);
         setHardness(0.0F);
         setResistance(0.0F);
         setSoundType(SoundType.PLANT);
-		setLightLevel(0.1F);
-    }
-    
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerModels(IModelRegistration modelRegistration) {
-        modelRegistration.addBakedModelOverride(this.getRegistryName(), base -> new BakedModelFullbright(base, EM.ID + ":blocks/ender_grass"));
-    }
-    
+	}
+	
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return END_GRASS_AABB;
+        return EnderTallgrass.END_GRASS_AABB;
     }
     
     @Override
@@ -70,12 +54,7 @@ public class EnderTallgrass extends BlockBush implements IShearable, IEMModel, I
     
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return EMItems.enderSeeds;
-    }
-    
-    @Override
-    public int quantityDroppedWithBonus(int fortune, Random random) {
-        return 1 + random.nextInt(fortune * 2 + 1);
+        return Items.AIR;
     }
 
     @Override
@@ -97,12 +76,5 @@ public class EnderTallgrass extends BlockBush implements IShearable, IEMModel, I
     public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
         if (!world.isRemote && stack.getItem() == Items.SHEARS) player.addStat(StatList.getBlockStats(this));
         else super.harvestBlock(world, player, pos, state, te, stack);
-    }
-    
-    @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-    	if (RANDOM.nextInt(60) != 0) return;
-        ItemStack seed = new ItemStack(EMItems.enderSeeds, fortune);
-        if (!seed.isEmpty()) drops.add(seed);
     }
 }

@@ -1,5 +1,7 @@
 package ru.mousecray.endmagic.blocks.portal;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -9,7 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -21,8 +22,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.blocks.BlockWithTile;
 import ru.mousecray.endmagic.teleport.TeleportUtils;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
-
-import java.util.Random;
 
 public class BlockPortal extends BlockWithTile<TilePortal> {
     public BlockPortal() {
@@ -41,12 +40,7 @@ public class BlockPortal extends BlockWithTile<TilePortal> {
 
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
-    }
-    
-    @Override
-    public BlockRenderLayer getBlockLayer() {
-    	return BlockRenderLayer.TRANSLUCENT;
+        return EnumBlockRenderType.INVISIBLE;
     }
 
     @SideOnly(Side.CLIENT)

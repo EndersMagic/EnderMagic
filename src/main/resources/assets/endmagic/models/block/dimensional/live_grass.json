@@ -1,10 +1,10 @@
 {
   "parent": "block/cube",
   "textures": {
-    "north": "endmagic:blocks/dimensional/live_grass_side",
-    "south": "endmagic:blocks/dimensional/live_grass_side",
-    "west": "endmagic:blocks/dimensional/live_grass_side",
-    "east": "endmagic:blocks/dimensional/live_grass_side",
+    "north": "endmagic:blocks/dimensional/live_stone",
+    "south": "endmagic:blocks/dimensional/live_stone",
+    "west": "endmagic:blocks/dimensional/live_stone",
+    "east": "endmagic:blocks/dimensional/live_stone",
     "down": "endmagic:blocks/dimensional/live_stone",
     "up": "endmagic:blocks/dimensional/live_grass_top"
   }

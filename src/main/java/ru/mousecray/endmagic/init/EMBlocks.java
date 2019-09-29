@@ -8,6 +8,7 @@ import ru.mousecray.endmagic.blocks.BlockEnderCoal;
 import ru.mousecray.endmagic.blocks.BlockNamed;
 import ru.mousecray.endmagic.blocks.EMSlab;
 import ru.mousecray.endmagic.blocks.EnderCrops;
+import ru.mousecray.endmagic.blocks.EnderOrchid;
 import ru.mousecray.endmagic.blocks.EnderOre;
 import ru.mousecray.endmagic.blocks.EnderTallgrass;
 import ru.mousecray.endmagic.blocks.dimensional.BlockEnderGrass;
@@ -27,6 +28,7 @@ import ru.mousecray.endmagic.util.elix_x.ecomms.color.RGBA;
 public final class EMBlocks {
 
     public static final EnderTallgrass enderTallgrass = new EnderTallgrass();
+    public static final EnderOrchid enderOrchid = new EnderOrchid();
 
     public static final BlockBlastFurnace blockBlastFurnace = new BlockBlastFurnace();
 

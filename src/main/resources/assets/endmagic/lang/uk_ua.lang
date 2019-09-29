@@ -1,4 +1,5 @@
 tile.ender_tallgrass.name=Трава Краю
+tile.ender_orchid.name=Орхідея Краю
 tile.block_master_static_portal.name=Статичний телепорт
 tile.block_master_dark_portal.name=Темний пелепорт
 tile.block_blast_furnace.name=Доменна піч
@@ -41,8 +42,8 @@ tile.ender_ground_grass.live.name=Мертва поросль
 tile.ender_ground_grass.dead.name=Зелена поросль
 tile.ender_ground_grass.frozen.name=Замерзша поросль
 
-tile.ender_ground_stone.live.name=Мертвий камінь Енду
-tile.ender_ground_stone.dead.name=Квітучий камінь Енду
+tile.ender_ground_stone.live.name=Квітучий камінь Енду
+tile.ender_ground_stone.dead.name=Мертвий камінь Енду
 tile.ender_ground_stone.frozen.name=Замерзший камінь Енду
 
 item.ender_seeds.name=Насіння пурпурної перлини

@@ -1,4 +1,5 @@
 tile.ender_tallgrass.name=Трава Края
+tile.ender_orchid.name=Орхидея Края
 tile.block_master_static_portal.name=Статический телепорт
 tile.block_master_dark_portal.name=Тёмный пелепорт
 tile.block_blast_furnace.name=Доменная печь
@@ -41,8 +42,8 @@ tile.ender_ground_grass.live.name=Мёртвая поросль
 tile.ender_ground_grass.dead.name=Живая поросль
 tile.ender_ground_grass.frozen.name=Замёрзшая поросль
 
-tile.ender_ground_stone.live.name=Мёртвый эндерняк
-tile.ender_ground_stone.dead.name=Цветущий эндерняк
+tile.ender_ground_stone.live.name=Цветущий эндерняк
+tile.ender_ground_stone.dead.name=Мёртвый эндерняк
 tile.ender_ground_stone.frozen.name=Замёрзший эндерняк
 
 item.ender_seeds.name=Семена пурпурного жемчуга

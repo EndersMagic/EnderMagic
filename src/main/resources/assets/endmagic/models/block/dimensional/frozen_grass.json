@@ -1,10 +1,10 @@
 {
   "parent": "block/cube",
   "textures": {
-    "north": "endmagic:blocks/dimensional/frozen_grass_side",
-    "south": "endmagic:blocks/dimensional/frozen_grass_side",
-    "west": "endmagic:blocks/dimensional/frozen_grass_side",
-    "east": "endmagic:blocks/dimensional/frozen_grass_side",
+    "north": "endmagic:blocks/dimensional/frozen_stone",
+    "south": "endmagic:blocks/dimensional/frozen_stone",
+    "west": "endmagic:blocks/dimensional/frozen_stone",
+    "east": "endmagic:blocks/dimensional/frozen_stone",
     "down": "endmagic:blocks/dimensional/frozen_stone",
     "up": "endmagic:blocks/dimensional/frozen_grass_top"
   }
