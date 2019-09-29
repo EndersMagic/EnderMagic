@@ -56,7 +56,7 @@ public class CommonProxy implements IGuiHandler {
         new ClassFieldSource<Block>(EMBlocks.class).elemes().forEach(this::registerBlock);
 
         //Registration Items
-        new ClassFieldSource<Item>(EMItems.class).and(new ListSource<>(EMItems.createToolsAndArmor()))
+        new ClassFieldSource<Item>(EMItems.class).and(new ListSource<>(EMItems.steelToolsAndArmor())).and(new ListSource<>(EMItems.diamondTools()))
                 .elemes().forEach(this::registerItem);
 
         //Registration Entity
