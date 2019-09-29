@@ -15,15 +15,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.api.blocks.EndBlockType;
-import ru.mousecray.endmagic.api.blocks.IEndPlant;
+import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.util.CreativeTabProvider;
+import ru.mousecray.endmagic.util.EMUtils;
 import ru.mousecray.endmagic.util.IEMModel;
 
-public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvider, IEndPlant {
+public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvider {
 
     private static final AxisAlignedBB[] ENDER_AABB = new AxisAlignedBB[] {new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.1875D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.3125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.4375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5625D, 1.0D)};
 
@@ -54,17 +54,12 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
     
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && isSoil(world, pos.down());
+        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && EMUtils.isSoil(world, pos.down(), EndSoilType.DIRT, EndSoilType.GRASS);
     }
 
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-    	return isSoil(world, pos.down());
-    }
-    
-    @Override
-    public EndBlockType getBlockType() {
-    	return EndBlockType.CROP;
+    	return EMUtils.isSoil(world, pos.down(), EndSoilType.DIRT, EndSoilType.GRASS);
     }
     
     @Override
