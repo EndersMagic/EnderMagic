@@ -1,6 +1,11 @@
 package ru.mousecray.endmagic.util;
 
+import net.minecraft.block.Block;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import ru.mousecray.endmagic.api.blocks.EndSoilType;
+import ru.mousecray.endmagic.api.blocks.IEndSoil;
 
 public class EMUtils {
 
@@ -13,5 +18,15 @@ public class EMUtils {
 			case WEST: return EnumFacing.EAST;
 			case EAST: default: return EnumFacing.WEST;
 		}
+	}
+	
+	public static boolean isSoil(World world, BlockPos pos, EndSoilType... types) {
+		boolean isSoil = false;
+		Block block = world.getBlockState(pos).getBlock();
+		if (types.length > 0 && block instanceof IEndSoil) {
+			EndSoilType type = ((IEndSoil)block).getSoilType();
+			for (int i = 0; i < types.length; ++i) isSoil = type == types[i];
+		}
+		return isSoil;
 	}
 }

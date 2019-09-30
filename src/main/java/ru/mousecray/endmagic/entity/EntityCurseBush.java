@@ -128,16 +128,18 @@ public class EntityCurseBush extends EntityMob {
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if(source.getTrueSource() instanceof EntityLivingBase) {
 			EntityLivingBase living = (EntityLivingBase) source.getTrueSource();
-			ItemStack stack = living.getHeldItem(living.getActiveHand());
-			if(stack.getItem() instanceof ItemSword) {
-				NBTTagList enchantments = stack.getEnchantmentTagList();
-				for (int i = 0; i < enchantments.tagCount(); ++i) {
-					NBTTagCompound tag = enchantments.getCompoundTagAt(i);
-					Enchantment itemEnchant = Enchantment.getEnchantmentByID(tag.getShort("id"));
-					if (itemEnchant == Enchantments.FIRE_ASPECT) {
-						setFire(3);
-						dealFireDamageM(tag.getShort("lvl"));
-						return true;
+			if(living.getActiveHand() != null) {
+				ItemStack stack = living.getHeldItem(living.getActiveHand());
+				if(stack.getItem() instanceof ItemSword) {
+					NBTTagList enchantments = stack.getEnchantmentTagList();
+					for (int i = 0; i < enchantments.tagCount(); ++i) {
+						NBTTagCompound tag = enchantments.getCompoundTagAt(i);
+						Enchantment itemEnchant = Enchantment.getEnchantmentByID(tag.getShort("id"));
+						if (itemEnchant == Enchantments.FIRE_ASPECT) {
+							setFire(3);
+							dealFireDamageM(tag.getShort("lvl"));
+							return true;
+						}
 					}
 				}
 			}

@@ -8,5 +8,5 @@ import ru.mousecray.endmagic.client.render.model.IModelRegistration;
  * Interface for blocks with custom models
  */
 public interface IEMModel {
-	@SideOnly(Side.CLIENT) public void registerModels(IModelRegistration modelRegistration);
+	@SideOnly(Side.CLIENT) public default void registerModels(IModelRegistration modelRegistration) {}
 }

@@ -15,10 +15,12 @@ import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import ru.mousecray.endmagic.api.blocks.EndSoilType;
+import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 import ru.mousecray.endmagic.init.EMBlocks;
 
-public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializable> extends VariativeBlock<GrassType> {
+public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializable> extends VariativeBlock<GrassType> implements IEndSoil {
 	
 	private final Function<GrassType, SoundType> soundFunc;
 	
@@ -30,6 +32,11 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
 		setHardness(3.0F);
 		setResistance(10.0F);
 		setTickRandomly(true);
+	}
+	
+	@Override
+	public EndSoilType getSoilType() {
+		return EndSoilType.GRASS;
 	}
 	
 	@Override

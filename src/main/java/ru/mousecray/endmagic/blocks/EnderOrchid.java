@@ -10,6 +10,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,9 +22,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
-import ru.mousecray.endmagic.api.blocks.IEndPlant;
+import ru.mousecray.endmagic.api.blocks.EndSoilType;
+import ru.mousecray.endmagic.util.EMUtils;
 
-public class EnderOrchid extends BlockBush implements IShearable, IEndPlant {
+public class EnderOrchid extends BlockBush implements IShearable {
 
 	public EnderOrchid() {
         super(Material.VINE);
@@ -39,12 +41,12 @@ public class EnderOrchid extends BlockBush implements IShearable, IEndPlant {
     
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && isSoil(world, pos.down());
+        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && (EMUtils.isSoil(world, pos.down(), EndSoilType.GRASS) || world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE);
     }
 
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-        return isSoil(world, pos.down());
+        return EMUtils.isSoil(world, pos.down(), EndSoilType.GRASS) || world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE;
     }
     
     @Override

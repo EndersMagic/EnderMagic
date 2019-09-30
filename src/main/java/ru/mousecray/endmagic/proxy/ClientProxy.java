@@ -1,7 +1,12 @@
 package ru.mousecray.endmagic.proxy;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+
 import codechicken.lib.packet.PacketCustom;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -23,10 +28,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
-import ru.mousecray.endmagic.api.embook.IChapterComponent;
-import ru.mousecray.endmagic.api.embook.IPage;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
-import ru.mousecray.endmagic.api.embook.pages.EmptyPage;
 import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
 import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
@@ -41,9 +43,6 @@ import ru.mousecray.endmagic.items.ItemTextured;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.registry.IEMModel;
-
-import java.util.*;
-import java.util.function.Function;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
     public ClientProxy() {
@@ -123,7 +122,6 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
             ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
 
             if (bakedModelOverridesR.containsKey(key)) {
-                System.out.println(resource);
                 e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
             }
         }

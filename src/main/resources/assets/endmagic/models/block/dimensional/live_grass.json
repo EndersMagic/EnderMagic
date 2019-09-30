@@ -1,6 +1,7 @@
 {
   "parent": "block/cube",
   "textures": {
+    "particle": "endmagic:blocks/dimensional/dead_stone",
     "north": "endmagic:blocks/dimensional/live_stone",
     "south": "endmagic:blocks/dimensional/live_stone",
     "west": "endmagic:blocks/dimensional/live_stone",
