@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -36,20 +37,31 @@ public class BlockPortal extends BlockWithTile<TilePortal> implements CreativeTa
         if (!world.isRemote)
             TeleportUtils.teleportToBlockLocation(entity, tile(world, pos).distination);
     }
-
+    
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+    	return true;
+    }
+    
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new TilePortal();
+    	return new TilePortal();
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.TRANSLUCENT;
+    }
+    
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+    	return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
     }
     
     @Override
     public CreativeTabs creativeTab() {
     	return null;
-    }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
