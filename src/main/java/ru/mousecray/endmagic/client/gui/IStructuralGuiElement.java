@@ -1,8 +1,8 @@
 package ru.mousecray.endmagic.client.gui;
 
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 import ru.mousecray.endmagic.util.Vec2i;
 
 public interface IStructuralGuiElement {

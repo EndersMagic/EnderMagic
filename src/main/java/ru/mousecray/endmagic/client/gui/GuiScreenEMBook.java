@@ -1,7 +1,10 @@
 package ru.mousecray.endmagic.client.gui;
 
-import com.google.common.collect.ImmutableMap;
-import com.sun.istack.internal.NotNull;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -14,11 +17,6 @@ import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.IPage;
 import ru.mousecray.endmagic.api.embook.PageContainer;
-
-import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 @SideOnly(Side.CLIENT)
 public class GuiScreenEMBook extends GuiScreen {
@@ -35,7 +33,7 @@ public class GuiScreenEMBook extends GuiScreen {
         updateButtons();
     }
 
-    public void setCurrentPage(@NotNull PageContainer page) {
+    public void setCurrentPage(PageContainer page) {
         currentPage = page;
         updateButtons();
     }

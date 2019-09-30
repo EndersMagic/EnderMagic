@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic.client.gui.elements;
 
-import com.google.common.collect.ImmutableList;
 import ru.mousecray.endmagic.client.gui.IStructuralGuiElement;
 
 public class TextLine implements IStructuralGuiElement {

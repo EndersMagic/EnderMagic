@@ -1,17 +1,17 @@
 package ru.mousecray.endmagic.util;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.crafting.IShapedRecipe;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import com.google.common.collect.ImmutableList;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.crafting.IShapedRecipe;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RecipeHelper {
     public static ImmutableList<ImmutableList<ItemStack>> findRecipeGrid(ItemStack r) {
