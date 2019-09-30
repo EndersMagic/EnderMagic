@@ -117,6 +117,9 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         BookApi.addStandartChapter("plants", "ender_grass");
         BookApi.addStandartChapter("plants", "purple_pearl_sprout");
         BookApi.addStandartChapter("plants", "curse_bush");
+
+        BookApi.addStandartChapter("mechanics", "compression_system");
+        BookApi.addStandartChapter("mechanics", "teleport_construction");
     }
 
     private RecipeComponent recipesForItems(List<Item> items) {
