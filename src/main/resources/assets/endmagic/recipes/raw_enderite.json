@@ -1,15 +1,12 @@
 {
-  "type": "crafting_shaped",
-  "pattern": [
-    "#"
-  ],
-  "key": {
-    "#": {
-      "item": "endmagic:enderite"
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "endmagic:enderite"
+        }
+    ],
+    "result": {
+        "item": "endmagic:raw_enderite",
+        "count": 9
     }
-  },
-  "result": {
-    "item": "endmagic:raw_enderite",
-    "count": 9
-  }
 }
