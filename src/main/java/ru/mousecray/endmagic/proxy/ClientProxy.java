@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
+import ru.mousecray.endmagic.api.embook.components.ImageComponent;
 import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
@@ -118,7 +119,11 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         BookApi.addStandartChapter("plants", "purple_pearl_sprout");
         BookApi.addStandartChapter("plants", "curse_bush");
 
-        BookApi.addStandartChapter("mechanics", "compression_system");
+        BookApi.addStandartChapter("mechanics", "compression_system",
+                new ImageComponent(new ResourceLocation(EM.ID,"textures/book/compression_system_1.png"),""),
+                new ImageComponent(new ResourceLocation(EM.ID,"textures/book/compression_system_2.png"),""),
+                new ImageComponent(new ResourceLocation(EM.ID,"textures/book/compression_system_3.png"),"")
+        );
         BookApi.addStandartChapter("mechanics", "teleport_construction");
     }
 
