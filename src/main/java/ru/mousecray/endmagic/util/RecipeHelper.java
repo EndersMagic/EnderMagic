@@ -43,13 +43,12 @@ public class RecipeHelper {
 
             NonNullList<Ingredient> ingredients = recipe.getIngredients();
 
-            System.out.println("test");
-            for (int x = 0; x < w; x++) {
+            for (int x = 0; x < w; x++)
                 for (int y = 0; y < h; y++) {
                     int index = x + y * w;
                     cratingGrid1[x][y] = first(ingredients.get(index).getMatchingStacks());
                 }
-            }
+
             return Stream.of(cratingGrid1).map(ImmutableList::copyOf).collect(ImmutableList.toImmutableList());
         }).orElseGet(() -> {
             ImmutableList<ItemStack> e = ImmutableList.of(ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY);
