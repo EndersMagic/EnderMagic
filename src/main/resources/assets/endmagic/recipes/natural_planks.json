@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "endmagic:ender_tree_log",
+            "data": 1
+        }
+    ],
+    "result": {
+        "item": "endmagic:ender_tree_planks",
+        "count": 4,
+        "data": 1
+    }
+}

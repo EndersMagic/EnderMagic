@@ -24,8 +24,9 @@ import ru.mousecray.endmagic.blocks.BlockWithTile;
 import ru.mousecray.endmagic.teleport.TeleportUtils;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.registry.CreativeTabProvider;
+import ru.mousecray.endmagic.util.registry.IEMModel;
 
-public class BlockPortal extends BlockWithTile<TilePortal> implements CreativeTabProvider {
+public class BlockPortal extends BlockWithTile<TilePortal> implements CreativeTabProvider, IEMModel {
     public BlockPortal() {
         super(Material.PORTAL);
     }
@@ -37,7 +38,7 @@ public class BlockPortal extends BlockWithTile<TilePortal> implements CreativeTa
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TilePortal();
     }
     

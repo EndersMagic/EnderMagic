@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "###"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:ender_tree_planks",
+            "data": 3
+        }
+    },
+    "result": {
+        "item": "endmagic:ender_tree_slab",
+        "count": 6,
+        "data": 3
+    }
+}

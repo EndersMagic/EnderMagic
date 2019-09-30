@@ -1,6 +1,7 @@
 {
   "parent": "block/cube",
   "textures": {
+    "particle": "endmagic:blocks/blast_furnace_side",
     "north": "endmagic:blocks/blast_furnace_side",
     "south": "endmagic:blocks/blast_furnace_side",
     "west": "endmagic:blocks/blast_furnace_side",
