@@ -18,14 +18,9 @@ import static ru.mousecray.endmagic.api.embook.alignment.Alignment.centerX;
 public class ImagePage implements IPage {
 
     private final ResourceLocation texture;
-    private final ImmutableList<String> label;
+    private final String label;
 
     public ImagePage(ResourceLocation texture, String label) {
-        this.texture = texture;
-        this.label = ImmutableList.of(label);
-    }
-
-    public ImagePage(ResourceLocation texture, ImmutableList<String> label) {
         this.texture = texture;
         this.label = label;
     }

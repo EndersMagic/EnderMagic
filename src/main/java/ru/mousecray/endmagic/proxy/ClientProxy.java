@@ -22,14 +22,12 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
-import ru.mousecray.endmagic.api.embook.IChapterComponent;
-import ru.mousecray.endmagic.api.embook.IPage;
 import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
-import ru.mousecray.endmagic.api.embook.pages.EmptyPage;
 import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
 import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
@@ -44,10 +42,13 @@ import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.items.ItemTextured;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
+import ru.mousecray.endmagic.util.RecipeHelper;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 
 import java.util.*;
 import java.util.function.Function;
+
+import static com.google.common.collect.ImmutableList.toImmutableList;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
     public ClientProxy() {
@@ -70,6 +71,12 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         ClientRegistry.bindTileEntitySpecialRenderer(TilePortal.class, new TileEntityPortalRenderer());
     }
 
+    @GameRegistry.ObjectHolder(EM.ID + ":dragon_steel_pickaxe")
+    public static Item steelPickaxe;
+
+    @GameRegistry.ObjectHolder(EM.ID + ":immortal_diamond_hoe")
+    public static Item diamondPickaxe;
+
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
@@ -88,15 +95,17 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                         new ItemStack(EMItems.dragonCoal),
                         new ItemStack(EMItems.naturalCoal),
                         new ItemStack(EMItems.immortalCoal),
-                        new ItemStack(EMItems.phantomCoal)), "test"),
+                        new ItemStack(EMItems.phantomCoal)),
+                        ImmutableList.of(
+                                new ItemStack(EMBlocks.enderLog, 1, 0),
+                                new ItemStack(EMBlocks.enderLog, 1, 1),
+                                new ItemStack(EMBlocks.enderLog, 1, 2),
+                                new ItemStack(EMBlocks.enderLog, 1, 3)
+                        ), "test"),
                 new TextComponent("book.chapter.text.carbonic_materials.2"),
-                new RecipeComponent(ImmutableList.of(
-                        new ItemStack(EMItems.createToolsAndArmor()),
-                        new ItemStack(EMItems.naturalCoal),
-                        new ItemStack(EMItems.immortalCoal),
-                        new ItemStack(EMItems.phantomCoal)), "test"),
+                recipesForItems(EMItems.steelToolsAndArmor()),
                 new TextComponent("book.chapter.text.carbonic_materials.3"),
-                new RecipeComponent()
+                recipesForItems(EMItems.diamondTools())
         );
 
         BookApi.addStandartChapter("blocks", "enderite_ore");
@@ -108,6 +117,16 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         BookApi.addStandartChapter("plants", "ender_grass");
         BookApi.addStandartChapter("plants", "purple_pearl_sprout");
         BookApi.addStandartChapter("plants", "curse_bush");
+    }
+
+    private RecipeComponent recipesForItems(List<Item> items) {
+        return new RecipeComponent(
+                items.stream().map(ItemStack::new).collect(toImmutableList()),
+                items.stream().map(r -> RecipeHelper.findRecipeGrid(new ItemStack(r))).collect(toImmutableList()), "");
+    }
+
+    private <A> ImmutableList<A> list(A... e) {
+        return ImmutableList.copyOf(e);
     }
 
     @SubscribeEvent

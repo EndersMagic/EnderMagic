@@ -80,7 +80,7 @@ public class CommonProxy implements IGuiHandler {
         }
 
         blocksToRegister.add(block);
-        if(block instanceof VariativeBlock) registerItem(new EMItemBlock(block), block.getRegistryName().toString());
+        if (block instanceof VariativeBlock) registerItem(new EMItemBlock(block), block.getRegistryName().toString());
         else registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 
