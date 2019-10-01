@@ -14,6 +14,7 @@ public class WorldGenNaturalTree extends WorldGenAbstractTree {
 		super(notify);
 	}
 	
+	//fill 1724 15 -967 1713 0 -959 endmagic:ender_tree_log 13 replace endmagic:ender_tree_log
     private IBlockState enderLog = EMBlocks.enderLog.getDefaultState().withProperty(EMBlocks.enderLog.getVariantType(), EnderBlockTypes.EnderTreeType.NATURAL);
     private IBlockState enderLeaves = EMBlocks.enderLeaves.getDefaultState().withProperty(EMBlocks.enderLeaves.getVariantType(), EnderBlockTypes.EnderTreeType.NATURAL);
 
