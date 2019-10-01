@@ -26,22 +26,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
+import ru.mousecray.endmagic.util.EMUtils;
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
@@ -72,6 +76,24 @@ public class EMEvents {
             } catch (Exception ignore) {
             }
         }
+    }
+    
+    @SubscribeEvent
+    public static void onUseBonemeal(BonemealEvent event) {
+    	World world  = event.getWorld();
+    	BlockPos pos = event.getPos();
+    	Random rand = event.getEntityPlayer().getRNG();
+    	if (EMUtils.isSoil(world, pos)) ((IEndSoil)event.getBlock()).onUseBonemeal(world, pos, event.getEntityPlayer().getRNG(), event.getEntityPlayer());
+    	else if (event.getBlock().getBlock() == Blocks.END_STONE) {
+    		for (int x = 0; x < 3; ++x) {
+    			for (int z = 0; z < 3; ++z) {
+        			if (world.isAirBlock(pos.add(x, 1, z)) && event.getEntityPlayer().getRNG().nextInt(10) > 7) {
+        				world.setBlockState(pos.add(x, 1, z), EMBlocks.enderOrchid.getDefaultState());	
+        			}
+    			}
+    		}
+    		for (int i = 0; i < 32; ++i) world.spawnParticle(EnumParticleTypes.PORTAL, pos.up().getX(), pos.up().getY() + rand.nextDouble() * 2.0D, pos.up().getZ(), rand.nextGaussian(), 0.0D, rand.nextGaussian());
+    	}
     }
 
     @SubscribeEvent

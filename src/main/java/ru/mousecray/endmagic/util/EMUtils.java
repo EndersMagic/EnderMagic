@@ -23,9 +23,12 @@ public class EMUtils {
 	public static boolean isSoil(World world, BlockPos pos, EndSoilType... types) {
 		boolean isSoil = false;
 		Block block = world.getBlockState(pos).getBlock();
-		if (types.length > 0 && block instanceof IEndSoil) {
-			EndSoilType type = ((IEndSoil)block).getSoilType();
-			for (int i = 0; i < types.length; ++i) isSoil = type == types[i];
+		if (block instanceof IEndSoil) {
+			if (types.length > 0) {
+				EndSoilType type = ((IEndSoil)block).getSoilType();
+				for (int i = 0; i < types.length; ++i) isSoil = type == types[i];
+			}
+			else isSoil = true;
 		}
 		return isSoil;
 	}

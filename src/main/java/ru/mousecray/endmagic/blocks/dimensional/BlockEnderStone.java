@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.blocks.dimensional;
 
+import java.util.Random;
 import java.util.function.Function;
 
 import net.minecraft.block.SoundType;
@@ -7,9 +8,11 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 
@@ -31,5 +34,10 @@ public class BlockEnderStone<StoneType extends Enum<StoneType> & IStringSerializ
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this);
+	}
+
+	@Override
+	public boolean onUseBonemeal(World world, BlockPos pos, Random rand, EntityPlayer player) {
+		return false;
 	}
 }
