@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+    "##",
+    "##"
+    ],
+    "key": {
+        "#": {
+            "item": "endmagic:ender_tree_log",
+            "data": 1
+        }
+    },
+    "result": {
+        "item": "endmagic:ender_tree_log",
+        "data": 13,
+        "count": 3
+    }
+}
