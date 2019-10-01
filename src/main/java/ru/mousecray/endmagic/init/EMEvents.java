@@ -60,7 +60,7 @@ public class EMEvents {
             }
     }
 
-//    @SubscribeEvent
+    @SubscribeEvent
     public static void loadLastWorld(GuiOpenEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         if (event.getGui() instanceof GuiMainMenu) {

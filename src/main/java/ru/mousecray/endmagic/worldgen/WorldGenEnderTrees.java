@@ -11,6 +11,7 @@ import java.util.Random;
 public class WorldGenEnderTrees implements IWorldGenerator {
 
     private WorldGenDragonTreeWorld dragonGenerator = new WorldGenDragonTreeWorld();
+    private WorldGenNaturalTreeWorld naturalGenerator = new WorldGenNaturalTreeWorld();
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
