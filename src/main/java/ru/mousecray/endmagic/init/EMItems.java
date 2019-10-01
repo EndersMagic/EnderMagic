@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 
 public class EMItems {
     public static final Item enderCompass = new EnderCompass();
-    public static final Item enderSeeds = new EMSeeds(EMBlocks.enderCrops, Blocks.END_STONE, "ender_seeds", "tooltip.ender_seeds");
+    public static final Item enderSeeds = new EMSeeds(EMBlocks.enderCrops, "ender_seeds", "tooltip.ender_seeds", Blocks.END_STONE, EMBlocks.blockEnderGrass);
     public static final ItemPortalBinder itemPortalBinder = new ItemPortalBinder();
 
     //public static final ItemTextured simpletexturemodel = ItemTextured.companion.simpletexturemodelItem; //may be unused

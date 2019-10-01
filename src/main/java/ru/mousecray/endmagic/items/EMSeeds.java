@@ -26,12 +26,12 @@ import ru.mousecray.endmagic.util.registry.NameProvider;
 public class EMSeeds extends Item implements IPlantable, NameProvider, ItemOneWhiteEMTextured {
 
     private final Block crops;
-    private final Block soilBlockID;
+    private final Block[] soilBlockID;
     @Nullable
     private final String textTooltip;
     private final String name;
 
-    public EMSeeds(Block crops, Block soil, String name, @Nullable String text) {
+    public EMSeeds(Block crops, String name, @Nullable String text, Block... soil) {
         this.crops = crops;
         this.name = name;
         soilBlockID = soil;
@@ -47,15 +47,29 @@ public class EMSeeds extends Item implements IPlantable, NameProvider, ItemOneWh
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack itemstack = player.getHeldItem(hand);
         IBlockState state = world.getBlockState(pos);
-        if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, itemstack) && state.getBlock() == soilBlockID && world.isAirBlock(pos.up())) {
-            world.setBlockState(pos.up(), crops.getDefaultState());
-
-            if (player instanceof EntityPlayerMP) {
-                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos.up(), itemstack);
+        if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, itemstack) && world.isAirBlock(pos.up())) {
+            
+        	boolean isTrue = false;
+        	
+            for (int i = 0; i < soilBlockID.length; ++i) {
+            	if (state.getBlock() == soilBlockID[i]) {
+            		isTrue = true;
+            		break;
+            	}
             }
-
-            itemstack.shrink(1);
-            return EnumActionResult.SUCCESS;
+            
+            if(isTrue) {
+	        	world.setBlockState(pos.up(), crops.getDefaultState());
+	
+	            if (player instanceof EntityPlayerMP) {
+	                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos.up(), itemstack);
+	            }
+	
+	            itemstack.shrink(1);
+	            return EnumActionResult.SUCCESS;
+            }
+            else return EnumActionResult.FAIL;
+            
         } else return EnumActionResult.FAIL;
     }
 

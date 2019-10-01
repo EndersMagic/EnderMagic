@@ -68,8 +68,8 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
 			for (int z = -1; z < 2; ++z) {
 				if (world.isAirBlock(pos.add(x, 1, z))) {
 					int chance = rand.nextInt(10);
-					if (chance > 6) world.setBlockState(pos.add(x, 1, z), EMBlocks.enderOrchid.getDefaultState());
-					else if(chance > 4) world.setBlockState(pos.add(x, 1, z), EMBlocks.enderTallgrass.getDefaultState());
+					if (chance > 8) world.setBlockState(pos.add(x, 1, z), EMBlocks.enderOrchid.getDefaultState());
+					else if(chance > 6) world.setBlockState(pos.add(x, 1, z), EMBlocks.enderTallgrass.getDefaultState());
 				}
 			}
 		}
