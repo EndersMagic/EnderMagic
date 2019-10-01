@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
@@ -47,6 +48,12 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extend
     public int getMetaFromState(IBlockState state) {
         int r = super.getMetaFromState(state);
         return (state.getValue(LOG_AXIS).ordinal() << 2) + r;
+    }
+    
+    @Override
+    public String getNameForStack(ItemStack stack) {
+    	if(stack.getMetadata() > 12) return byIndex.apply(stack.getMetadata()).getName() + "_bark";
+    	else return byIndex.apply(stack.getMetadata()).getName();
     }
 
     @Override
