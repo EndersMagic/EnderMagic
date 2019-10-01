@@ -83,10 +83,10 @@ public class EMEvents {
     	World world  = event.getWorld();
     	BlockPos pos = event.getPos();
     	Random rand = event.getEntityPlayer().getRNG();
-    	if (EMUtils.isSoil(world, pos)) ((IEndSoil)event.getBlock()).onUseBonemeal(world, pos, event.getEntityPlayer().getRNG(), event.getEntityPlayer());
+    	if (EMUtils.isSoil(world, pos)) ((IEndSoil)event.getBlock().getBlock()).onUseBonemeal(world, pos, event.getEntityPlayer().getRNG(), event.getEntityPlayer());
     	else if (event.getBlock().getBlock() == Blocks.END_STONE) {
-    		for (int x = 0; x < 3; ++x) {
-    			for (int z = 0; z < 3; ++z) {
+    		for (int x = -1; x < 2; ++x) {
+    			for (int z = -1; z < 2; ++z) {
         			if (world.isAirBlock(pos.add(x, 1, z)) && event.getEntityPlayer().getRNG().nextInt(10) > 7) {
         				world.setBlockState(pos.add(x, 1, z), EMBlocks.enderOrchid.getDefaultState());	
         			}
