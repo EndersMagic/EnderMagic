@@ -17,10 +17,10 @@
     "axis=z,type=phantom":   { "model": "endmagic:trees/phantom_log", "x": 90 },
     "axis=x,type=phantom":   { "model": "endmagic:trees/phantom_log", "x": 90, "y": 90 },
 
-    "axis=none,type=dragon":  { "model": "endmagic:trees/dragon_log" },
-    "axis=none,type=immortal":  { "model": "endmagic:trees/immortal_log" },
-    "axis=none,type=natural":  { "model": "endmagic:trees/natural_log" },
-    "axis=none,type=phantom":  { "model": "endmagic:trees/phantom_log" },
+    "axis=none,type=dragon":  { "model": "endmagic:trees/dragon_bark" },
+    "axis=none,type=immortal":  { "model": "endmagic:trees/immortal_bark" },
+    "axis=none,type=natural":  { "model": "endmagic:trees/natural_bark" },
+    "axis=none,type=phantom":  { "model": "endmagic:trees/phantom_bark" },
 
     "inventory":  { "model": "endmagic:trees/dragon_log" },
     "inventory,meta=1":  { "model": "endmagic:trees/natural_log" },
