@@ -27,9 +27,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
-import ru.mousecray.endmagic.util.EMUtils;
 
 public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & EMSapling.SaplingThings> extends VariativeBlock<TreeType> implements IGrowable {
 
@@ -112,7 +112,7 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
 
     public interface SaplingThings {
         default boolean canPlaceBlockAt(World world, BlockPos pos) {
-            return EMUtils.isSoil(world, pos.down(), EndSoilType.DIRT, EndSoilType.GRASS) || world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE;
+            return EMUtils.isSoil(world, pos.down(), true, EndSoilType.DIRT, EndSoilType.GRASS);
         }
 
         default void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {

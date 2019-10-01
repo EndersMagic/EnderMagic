@@ -15,11 +15,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.util.EMUtils;
 import ru.mousecray.endmagic.util.registry.CreativeTabProvider;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 
@@ -54,12 +54,12 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
     
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && EMUtils.isSoil(world, pos.down(), EndSoilType.DIRT, EndSoilType.GRASS);
+        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && EMUtils.isSoil(world, pos.down(), false, EndSoilType.DIRT, EndSoilType.GRASS);
     }
 
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-    	return EMUtils.isSoil(world, pos.down(), EndSoilType.DIRT, EndSoilType.GRASS);
+    	return EMUtils.isSoil(world, pos.down(), false, EndSoilType.DIRT, EndSoilType.GRASS);
     }
     
     @Override

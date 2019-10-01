@@ -22,7 +22,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ru.mousecray.endmagic.util.EMUtils;
+import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.util.EnderBlockTypes.EMBlockHalf;
 
 public class EMSlab<SlabType extends Enum<SlabType> & IStringSerializable> extends VariativeBlock<SlabType> {

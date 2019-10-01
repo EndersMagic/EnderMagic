@@ -40,12 +40,12 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
-import ru.mousecray.endmagic.util.EMUtils;
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
@@ -83,7 +83,7 @@ public class EMEvents {
     	World world  = event.getWorld();
     	BlockPos pos = event.getPos();
     	Random rand = event.getEntityPlayer().getRNG();
-    	if (EMUtils.isSoil(world, pos)) ((IEndSoil)event.getBlock().getBlock()).onUseBonemeal(world, pos, event.getEntityPlayer().getRNG(), event.getEntityPlayer());
+    	if (EMUtils.isSoil(world, pos, false)) ((IEndSoil)event.getBlock().getBlock()).onUseBonemeal(world, pos, event.getEntityPlayer().getRNG(), event.getEntityPlayer());
     	else if (event.getBlock().getBlock() == Blocks.END_STONE) {
     		for (int x = -1; x < 2; ++x) {
     			for (int z = -1; z < 2; ++z) {

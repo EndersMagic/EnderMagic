@@ -1,6 +1,7 @@
-package ru.mousecray.endmagic.util;
+package ru.mousecray.endmagic.api;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -20,7 +21,7 @@ public class EMUtils {
 		}
 	}
 	
-	public static boolean isSoil(World world, BlockPos pos, EndSoilType... types) {
+	public static boolean isSoil(World world, BlockPos pos, boolean vanillaEnd, EndSoilType... types) {
 		boolean isSoil = false;
 		Block block = world.getBlockState(pos).getBlock();
 		if (block instanceof IEndSoil) {
@@ -30,6 +31,7 @@ public class EMUtils {
 			}
 			else isSoil = true;
 		}
+		else if (vanillaEnd) isSoil = block == Blocks.END_STONE;
 		return isSoil;
 	}
 }

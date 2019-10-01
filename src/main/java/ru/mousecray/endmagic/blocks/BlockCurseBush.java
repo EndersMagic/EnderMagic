@@ -13,7 +13,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.PotionTypes;
@@ -22,9 +21,9 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.entity.EntityCurseBush;
-import ru.mousecray.endmagic.util.EMUtils;
 
 public class BlockCurseBush extends BlockBush {
 	
@@ -133,11 +132,11 @@ public class BlockCurseBush extends BlockBush {
     
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && (EMUtils.isSoil(world, pos.down(), EndSoilType.GRASS) || world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE);
+        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && EMUtils.isSoil(world, pos.down(), true, EndSoilType.GRASS);
     }
 
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-        return (EMUtils.isSoil(world, pos.down(), EndSoilType.GRASS) || world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE);
+        return EMUtils.isSoil(world, pos.down(), true, EndSoilType.GRASS);
     }
 }

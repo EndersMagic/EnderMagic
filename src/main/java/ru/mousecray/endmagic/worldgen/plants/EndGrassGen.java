@@ -2,18 +2,26 @@ package ru.mousecray.endmagic.worldgen.plants;
 
 import java.util.Random;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import ru.mousecray.endmagic.api.EMUtils;
+import ru.mousecray.endmagic.api.blocks.EndSoilType;
 
 public class EndGrassGen extends WorldGenerator {
-
+	
 	public EndGrassGen() {
+		super(false);
 	}
 
 	@Override
-	public boolean generate(World worldIn, Random rand, BlockPos position) {
-		return false;
+	public boolean generate(World world, Random rand, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		if(EMUtils.isSoil(world, pos, true, EndSoilType.GRASS, EndSoilType.DIRT)) {
+			
+		}
+		return true;
 	}
 
 }

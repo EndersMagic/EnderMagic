@@ -21,6 +21,7 @@ import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.util.EnderBlockTypes.EnderGroundType;
 
 public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializable> extends VariativeBlock<GrassType> implements IEndSoil {
 	
@@ -64,12 +65,16 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
 
 	@Override
 	public boolean onUseBonemeal(World world, BlockPos pos, Random rand, EntityPlayer player) {
+		IBlockState state = world.getBlockState(pos);
+		IBlockState[] genBlocks = {EMBlocks.enderOrchid.getDefaultState(), EMBlocks.enderTallgrass.getDefaultState()};
+		if (state.getValue(blockType) == EnderGroundType.DEAD) genBlocks = new IBlockState[] {EMBlocks.blockCurseBush.getDefaultState()};
+		else if (state.getValue(blockType) == EnderGroundType.FROZEN) //TODO:Frozen plants;
 		for (int x = -1; x < 2; ++x) {
 			for (int z = -1; z < 2; ++z) {
 				if (world.isAirBlock(pos.add(x, 1, z))) {
 					int chance = rand.nextInt(10);
-					if (chance > 8) world.setBlockState(pos.add(x, 1, z), EMBlocks.enderOrchid.getDefaultState());
-					else if(chance > 6) world.setBlockState(pos.add(x, 1, z), EMBlocks.enderTallgrass.getDefaultState());
+					if (chance > 8) world.setBlockState(pos.add(x, 1, z), genBlocks[0]);
+					else if(chance > 6) world.setBlockState(pos.add(x, 1, z), genBlocks[1]);
 				}
 			}
 		}
