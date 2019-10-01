@@ -13,15 +13,10 @@ tile.phantom_coal_block.name=Блок призрачного угля
 tile.enderite.name=Эндерит
 tile.ender_ore.name=Руда Края
 
-tile.ender_tree_log.dragon.name=Бревно Драконьего дерева
-tile.ender_tree_log.natural.name=Бревно Природного дерева
-tile.ender_tree_log.immortal.name=Бревно Бессмертного дерева
-tile.ender_tree_log.phantom.name=Бревно Призрачного дерева
-
-tile.ender_tree_log.dragon_bark.name=Драконье дерево
-tile.ender_tree_log.natural_bark.name=Природное дерево
-tile.ender_tree_log.immortal_bark.name=Бессмертное дерево
-tile.ender_tree_log.phantom_bark.name=Призрачное дерево
+tile.ender_tree_log.dragon.name=Драконье дерево
+tile.ender_tree_log.natural.name=Драконье дерево
+tile.ender_tree_log.immortal.name=Бессмертное дерево
+tile.ender_tree_log.phantom.name=Призрачное дерево
 
 tile.ender_tree_leaves.dragon.name=Листья драконьего дерева
 tile.ender_tree_leaves.natural.name=Листья природного дерева

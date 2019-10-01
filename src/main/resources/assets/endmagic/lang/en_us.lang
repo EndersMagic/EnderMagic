@@ -13,15 +13,10 @@ tile.phantom_coal_block.name=Block of Phantom Coal
 tile.enderite.name=Enderite
 tile.ender_ore.name=Ender Ore
 
-tile.ender_tree_log.dragon.name=Dragon Log
-tile.ender_tree_log.natural.name=Natural Log
-tile.ender_tree_log.immortal.name=Immortal Log
-tile.ender_tree_log.phantom.name=Phantom Log
-
-tile.ender_tree_log.dragon_bark.name=Dragon Wood
-tile.ender_tree_log.natural_bark.name=Natural Wood
-tile.ender_tree_log.immortal_bark.name=Immortal Wood
-tile.ender_tree_log.phantom_bark.name=Phantom Wood
+tile.ender_tree_log.dragon.name=Dragon Wood
+tile.ender_tree_log.natural.name=Natural Wood
+tile.ender_tree_log.immortal.name=Immortal Wood
+tile.ender_tree_log.phantom.name=Phantom Wood
 
 tile.ender_tree_leaves.dragon.name=Dragon Leaves
 tile.ender_tree_leaves.natural.name=Natural Leaves

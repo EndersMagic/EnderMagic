@@ -1,5 +1,9 @@
 package ru.mousecray.endmagic.blocks.trees;
 
+import static net.minecraft.block.BlockLog.LOG_AXIS;
+
+import java.util.function.Function;
+
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -7,16 +11,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
-
-import static net.minecraft.block.BlockLog.LOG_AXIS;
-
-import java.util.function.Function;
 
 public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extends VariativeBlock<TreeType> {
 
@@ -48,12 +47,6 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable> extend
     public int getMetaFromState(IBlockState state) {
         int r = super.getMetaFromState(state);
         return (state.getValue(LOG_AXIS).ordinal() << 2) + r;
-    }
-    
-    @Override
-    public String getNameForStack(ItemStack stack) {
-    	if(stack.getMetadata() > 12) return byIndex.apply(stack.getMetadata()).getName() + "_bark";
-    	else return byIndex.apply(stack.getMetadata()).getName();
     }
 
     @Override
