@@ -20,7 +20,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -213,21 +212,13 @@ public class EMEvents {
 
     //TODO: Publishing standard ItemBow's method
     private static ItemStack findAmmo(EntityPlayer player) {
-        if (isArrow(player.getHeldItem(EnumHand.OFF_HAND))) return player.getHeldItem(EnumHand.OFF_HAND);
-        else if (isArrow(player.getHeldItem(EnumHand.MAIN_HAND))) return player.getHeldItem(EnumHand.MAIN_HAND);
+        if (EMUtils.isArrow(player.getHeldItem(EnumHand.OFF_HAND))) return player.getHeldItem(EnumHand.OFF_HAND);
+        else if (EMUtils.isArrow(player.getHeldItem(EnumHand.MAIN_HAND))) return player.getHeldItem(EnumHand.MAIN_HAND);
         else for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
                 ItemStack stack = player.inventory.getStackInSlot(i);
-                if (isArrow(stack)) return stack;
+                if (EMUtils.isArrow(stack)) return stack;
             }
 
         return ItemStack.EMPTY;
-    }
-
-    private static boolean isEnderArrow(ItemStack stack) {
-        return stack.getItem() == EMItems.enderArrow;
-    }
-
-    private static boolean isArrow(ItemStack stack) {
-        return stack.getItem() instanceof ItemArrow;
     }
 }

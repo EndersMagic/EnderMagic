@@ -72,8 +72,9 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     	this(type, material, null, mapFunc);
     }
 
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        worldIn.setBlockState(pos, state.withProperty(blockType, byIndex.apply(stack.getItemDamage())));
+    @Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        world.setBlockState(pos, state.withProperty(blockType, byIndex.apply(stack.getItemDamage())));
     }
     
     @Override

@@ -32,7 +32,6 @@ public class Junction<I, O> implements PipelineElement<I, List<O>> {
 		this.elements = ImmutableList.copyOf(elements);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<O> pipe(I in){
 		return elements.stream().map(element -> (O) ((PipelineElement<Object, Object>) element).pipe(in)).collect(Collectors.toList());

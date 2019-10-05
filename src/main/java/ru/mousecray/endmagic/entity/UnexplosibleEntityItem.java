@@ -14,7 +14,8 @@ public class UnexplosibleEntityItem extends EntityItem {
         super(world, x, y, z, itemStack);
     }
 
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    @Override
+	public boolean attackEntityFrom(DamageSource source, float amount) {
         return !source.isExplosion() && super.attackEntityFrom(source, amount);
     }
 }

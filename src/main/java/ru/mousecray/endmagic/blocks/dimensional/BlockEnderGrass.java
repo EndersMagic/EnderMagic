@@ -55,7 +55,7 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		super.updateTick(world, pos, state, rand);
-		//TODO:Custom mechanics
+		//TODO: Custom mechanics
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
 		IBlockState state = world.getBlockState(pos);
 		IBlockState[] genBlocks = {EMBlocks.enderOrchid.getDefaultState(), EMBlocks.enderTallgrass.getDefaultState()};
 		if (state.getValue(blockType) == EnderGroundType.DEAD) genBlocks = new IBlockState[] {EMBlocks.blockCurseBush.getDefaultState()};
-		else if (state.getValue(blockType) == EnderGroundType.FROZEN) //TODO:Frozen plants;
+		else if (state.getValue(blockType) == EnderGroundType.FROZEN) //TODO: Frozen plants
 		for (int x = -1; x < 2; ++x) {
 			for (int z = -1; z < 2; ++z) {
 				if (world.isAirBlock(pos.add(x, 1, z))) {

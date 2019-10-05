@@ -7,7 +7,8 @@ import ru.mousecray.endmagic.items.ItemTextured;
 import java.util.Map;
 
 public interface ItemTexturedTool extends ItemTextured {
-    default Map<String, Integer> textures() {
+    @Override
+	default Map<String, Integer> textures() {
         return ImmutableMap.of(
                 stick(), 0xffffffff,
                 EM.ID + ":items/tools/colorless_" + toolType(), color());

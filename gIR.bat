@@ -1,1 +1,1 @@
-gradlew gIR
+gradlew gER

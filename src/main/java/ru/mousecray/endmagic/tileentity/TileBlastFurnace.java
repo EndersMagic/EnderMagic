@@ -60,7 +60,8 @@ public class TileBlastFurnace extends EMTileEntity implements ITickable {
         }
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
+    @Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
         NBTTagList list = new NBTTagList();
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack item = inv.getStackInSlot(i);
@@ -77,7 +78,8 @@ public class TileBlastFurnace extends EMTileEntity implements ITickable {
         return super.writeToNBT(tagCompound);
     }
 
-    public void readFromNBT(NBTTagCompound tagCompound) {
+    @Override
+	public void readFromNBT(NBTTagCompound tagCompound) {
         NBTTagList list = tagCompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < list.tagCount(); i++) {
             NBTTagCompound comp = list.getCompoundTagAt(i);

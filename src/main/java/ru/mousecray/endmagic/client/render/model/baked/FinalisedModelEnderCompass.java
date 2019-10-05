@@ -29,7 +29,6 @@ public class FinalisedModelEnderCompass extends BakedModelDelegate {
     private final float rollMin = (float) (-Math.PI / 16);
     private final float rollMax = (float) (Math.PI / 16);
     private final IBakedModel originalModel;
-    private final ItemStack stack;
     private final EntityLivingBase entity;
     private final float nineteenDegs = (float) (Math.PI / 2);
 
@@ -49,7 +48,6 @@ public class FinalisedModelEnderCompass extends BakedModelDelegate {
     public FinalisedModelEnderCompass(IBakedModel originalModel, ItemStack stack, EntityLivingBase entity) {
         super(originalModel);
         this.originalModel = originalModel;
-        this.stack = stack;
         this.entity = entity;
     }
 

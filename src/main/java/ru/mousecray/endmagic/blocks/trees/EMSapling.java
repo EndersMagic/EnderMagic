@@ -56,7 +56,8 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
     }
 
 
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+    @Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         TreeType blockType1 = byIndex.apply(stack.getItemDamage());
         worldIn.setBlockState(pos, state.withProperty(blockType, blockType1));
         if (!blockType1.canPlaceBlockAt(worldIn, pos))
@@ -83,25 +84,30 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
         return SAPLING_AABB;
     }
 
-    @Nullable
+    @Override
+	@Nullable
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
         return NULL_AABB;
     }
 
-    public boolean isOpaqueCube(IBlockState state) {
+    @Override
+	public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
-    public boolean isFullCube(IBlockState state) {
+    @Override
+	public boolean isFullCube(IBlockState state) {
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    @Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         return BlockFaceShape.UNDEFINED;
     }
 

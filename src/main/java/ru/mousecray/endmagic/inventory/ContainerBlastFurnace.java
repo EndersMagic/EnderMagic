@@ -8,11 +8,9 @@ import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.tileentity.TileBlastFurnace;
 
 public class ContainerBlastFurnace extends Container {
-    private EntityPlayer player;
     public TileBlastFurnace tile;
 
     public ContainerBlastFurnace(EntityPlayer player, TileBlastFurnace tile) {
-        this.player = player;
         this.tile = tile;
         addSlotToContainer(new FilteredSlot(tile.inv, 0, 70, 70, EMBlocks.blockBlastFurnace.coalSet()));//coal
         addSlotToContainer(new FilteredSlot(tile.inv, 1, 70, 48, EMBlocks.blockBlastFurnace.ironSet()));//iron
@@ -26,7 +24,8 @@ public class ContainerBlastFurnace extends Container {
             addSlotToContainer(new Slot(player.inventory, i, 16 + i * 18, 209));
     }
 
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+    @Override
+	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(index);
         if (slot != null && slot.getHasStack()) {

@@ -160,9 +160,10 @@ public class EntityCurseBush extends EntityMob {
         if (!isImmuneToFire) attackEntityFrom(DamageSource.IN_FIRE, amount);
     }
 	
+	@Override
 	protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source) {
 		if(source.isFireDamage()) InventoryHelper.spawnItemStack(world, posX, posY, posZ, new ItemStack(Items.COAL));
-	};
+	}
 
 	@Override
 	public boolean canBeHitWithPotion() {

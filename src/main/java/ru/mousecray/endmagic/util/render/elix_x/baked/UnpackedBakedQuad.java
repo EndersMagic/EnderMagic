@@ -92,7 +92,7 @@ public class UnpackedBakedQuad {
         return new UnpackedBakedQuad(unpackedData.get(quad).get(), quad.getFormat(), quad.getTintIndex(), quad.getFace(), quad.getSprite(), quad.shouldApplyDiffuseLighting());
     }
 
-    // TODO - Move to functional models utils class once created.
+    //TODO: Move to functional models utils class once created.
     @Deprecated
     public static net.minecraftforge.client.model.pipeline.UnpackedBakedQuad unpackForge(BakedQuad quad) {
         if (quad instanceof net.minecraftforge.client.model.pipeline.UnpackedBakedQuad)

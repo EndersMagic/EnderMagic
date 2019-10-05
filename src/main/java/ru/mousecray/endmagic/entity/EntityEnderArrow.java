@@ -22,19 +22,10 @@ import ru.mousecray.endmagic.init.EMItems;
 
 public class EntityEnderArrow extends EntityArrow {
 	
-    private int xTile;
-    private int yTile;
-    private int zTile;
     private Block inTile;
-    private int inData;
     private int knockbackStrength;
-    private int ticksInAir;
-
     public EntityEnderArrow(World world) {
         super(world);
-        this.xTile = -1;
-        this.yTile = -1;
-        this.zTile = -1;
         setDamage(1D);
         this.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
 
@@ -104,8 +95,6 @@ public class EntityEnderArrow extends EntityArrow {
                 motionZ *= -0.10000000149011612D;
                 rotationYaw += 180.0F;
                 prevRotationYaw += 180.0F;
-                ticksInAir = 0;
-
                 if (!world.isRemote && motionX * motionX + motionY * motionY + motionZ * motionZ < 0.0010000000474974513D) {
                     if (pickupStatus == EntityArrow.PickupStatus.ALLOWED) entityDropItem(getArrowStack(), 0.1F);
                     setDead();
@@ -114,12 +103,12 @@ public class EntityEnderArrow extends EntityArrow {
         }
         else {
             BlockPos blockpos = raytraceResult.getBlockPos();
-            xTile = blockpos.getX();
-            yTile = blockpos.getY();
-            zTile = blockpos.getZ();
+            blockpos.getX();
+            blockpos.getY();
+            blockpos.getZ();
             IBlockState iblockstate = world.getBlockState(blockpos);
             inTile = iblockstate.getBlock();
-            inData = inTile.getMetaFromState(iblockstate);
+            inTile.getMetaFromState(iblockstate);
             motionX = (double)((float)(raytraceResult.hitVec.x - posX));
             motionY = (double)((float)(raytraceResult.hitVec.y - posY));
             motionZ = (double)((float)(raytraceResult.hitVec.z - posZ));

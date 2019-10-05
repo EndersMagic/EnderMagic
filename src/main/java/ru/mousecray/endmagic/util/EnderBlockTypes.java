@@ -16,7 +16,8 @@ public class EnderBlockTypes {
 
 	public static enum EnderTreeType implements IStringSerializable, EMSapling.SaplingThings {
 	    DRAGON("dragon", MapColor.PURPLE) {
-	        public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+	        @Override
+			public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
 	            return Arrays.stream(EnumFacing.HORIZONTALS)
 	                    .map(pos::offset)
 	                    .map(worldIn::getBlockState)

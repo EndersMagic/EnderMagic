@@ -15,7 +15,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class EnderCompass extends Item implements IEMModel {
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+    @Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return false;
     }
 

@@ -1,12 +1,18 @@
 package ru.mousecray.endmagic.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemArrow;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.api.blocks.IEndSoil;
+import ru.mousecray.endmagic.init.EMItems;
 
 public class EMUtils {
 
@@ -34,4 +40,28 @@ public class EMUtils {
 		else if (vanillaEnd) isSoil = block == Blocks.END_STONE;
 		return isSoil;
 	}
+	
+	public static List<BlockPos> isSoil(World world, BlockPos posStart, BlockPos posEnd, boolean vanillaEnd, EndSoilType... types) {
+		List<BlockPos> existPos = new ArrayList();
+		int xS = posStart.getX();
+		int yS = posStart.getY();
+		int zS = posStart.getZ();
+		for (; xS < posEnd.getX(); ++xS) {
+			for (; yS < posEnd.getY(); ++yS) {
+				for (; zS < posEnd.getZ(); ++zS) {
+					BlockPos donePos = new BlockPos(xS, yS, zS);
+					if (isSoil(world, donePos, vanillaEnd, types)) existPos.add(donePos);
+				}
+			}
+		}
+		return existPos;
+	}
+	
+    public static boolean isEnderArrow(ItemStack stack) {
+        return stack.getItem() == EMItems.enderArrow;
+    }
+
+    public static boolean isArrow(ItemStack stack) {
+        return stack.getItem() instanceof ItemArrow;
+    }
 }

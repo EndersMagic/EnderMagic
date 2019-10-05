@@ -142,7 +142,8 @@ public class EMSlab<SlabType extends Enum<SlabType> & IStringSerializable> exten
     	else return state.withProperty(STATE, EMBlockHalf.BOTTOM);
     }
     
-    public int quantityDropped(IBlockState state, int fortune, Random random) {
+    @Override
+	public int quantityDropped(IBlockState state, int fortune, Random random) {
     	return state.getValue(STATE) == EMBlockHalf.DOUBLE ? 2 : 1;
     }
 	

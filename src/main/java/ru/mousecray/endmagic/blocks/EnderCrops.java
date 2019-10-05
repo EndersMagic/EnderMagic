@@ -28,6 +28,8 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
     private static final AxisAlignedBB[] ENDER_AABB = new AxisAlignedBB[] {new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.1875D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.3125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.4375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5625D, 1.0D)};
 
     public EnderCrops() {
+    	super();
+    	this.setDefaultState(this.blockState.getBaseState().withProperty(this.getAgeProperty(), Integer.valueOf(0)));
 		setLightLevel(0.3F);
 		setResistance(0.0F);
 		setSoundType(SoundType.PLANT);
@@ -54,12 +56,12 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
     
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && EMUtils.isSoil(world, pos.down(), false, EndSoilType.DIRT, EndSoilType.GRASS);
+        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && EMUtils.isSoil(world, pos.down(), true, EndSoilType.GRASS);
     }
 
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-    	return EMUtils.isSoil(world, pos.down(), false, EndSoilType.DIRT, EndSoilType.GRASS);
+    	return EMUtils.isSoil(world, pos.down(), true, EndSoilType.GRASS);
     }
     
     @Override
@@ -69,7 +71,7 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
 
     @Override
     protected Item getCrop() {
-        return Items.APPLE;
+        return EMItems.purpleEnderPearl;
     }
 
     @Override
