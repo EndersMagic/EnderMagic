@@ -24,18 +24,19 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
+import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.NameProvider;
 
 public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable> extends Block implements NameProvider, IEMModel {
 
-    protected final IProperty<BlockType> blockType;
+    public final IProperty<BlockType> blockType;
     protected Function<Integer, BlockType> byIndex;
     private final Class<BlockType> type;
     private String suffix;
     private int metaCount;
-	private Function<BlockType, MapColor> mapFunc;
+    private Function<BlockType, MapColor> mapFunc;
 
     public VariativeBlock(Class<BlockType> type, Material material, String suffix, Function<BlockType, MapColor> mapFunc) {
         super(material);
@@ -50,32 +51,32 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         fullProperties[baseProperties.size()] = blockType;
         blockState = new BlockStateContainer(this, fullProperties);
         //
-        
+
         try {
             Method valuesField = type.getDeclaredMethod("values");
             BlockType[] values = (BlockType[]) valuesField.invoke(null);
-            this.metaCount = values.length;
-            this.byIndex = i -> values[i];
+            metaCount = values.length;
+            byIndex = i -> values[i];
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
-            System.out.println(this.getClass().getName() + " loaded with error");
-            this.byIndex = null;
+            System.out.println(getClass().getName() + " loaded with error");
+            byIndex = null;
         }
-        
-        if (metaCount > 4) throw new IllegalArgumentException(String.format("The given EnumType %s contains " 
-        + metaCount + " metadata. The maximum number of 4.", type.getName()));
+
+        if (metaCount > 4) throw new IllegalArgumentException(String.format("The given EnumType %s contains "
+                + metaCount + " metadata. The maximum number of 4.", type.getName()));
 
         setDefaultState(blockState.getBaseState().withProperty(blockType, byIndex.apply(0)));
     }
-    
+
     public VariativeBlock(Class<BlockType> type, Material material, Function<BlockType, MapColor> mapFunc) {
-    	this(type, material, null, mapFunc);
+        this(type, material, null, mapFunc);
     }
 
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         worldIn.setBlockState(pos, state.withProperty(blockType, byIndex.apply(stack.getItemDamage())));
     }
-    
+
     @Override
     public int damageDropped(IBlockState state) {
         return state.getValue(blockType).ordinal();
@@ -92,10 +93,10 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     public int getMetaFromState(IBlockState state) {
         return state.getValue(blockType).ordinal();
     }
-    
+
     @Override
     public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
-    	return mapFunc == null ? super.getMapColor(state, world, pos) : mapFunc.apply(state.getValue(blockType));
+        return mapFunc == null ? super.getMapColor(state, world, pos) : mapFunc.apply(state.getValue(blockType));
     }
 
     @Override
@@ -104,7 +105,7 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     @Override
     public String name() {
         String rawName = NameAndTabUtils.getName(type);
-        return suffix != null ? rawName.substring(0, rawName.lastIndexOf('_')+1) + suffix : rawName.substring(0, rawName.lastIndexOf('_'));
+        return suffix != null ? rawName.substring(0, rawName.lastIndexOf('_') + 1) + suffix : rawName.substring(0, rawName.lastIndexOf('_'));
     }
 
     public String getNameForStack(ItemStack stack) {
@@ -122,5 +123,9 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (int i = 0; i < metaCount; i++)
             items.add(new ItemStack(this, 1, i));
+    }
+
+    public IBlockState stateWithBlockType(BlockType type1) {
+        return getDefaultState().withProperty(blockType, type1);
     }
 }
