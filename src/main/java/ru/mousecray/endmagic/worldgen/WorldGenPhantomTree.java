@@ -54,4 +54,12 @@ public class WorldGenPhantomTree extends WorldGenAbstractTree {
         return true;
     }
 
+    private IBlockState[][] variant1WeepingLeaves = new IBlockState[][]{
+            {phantomLeaves, air,            phantomLeaves,  phantomLeaves,  air},
+            {phantomLeaves, phantomLeaves,  air,            phantomLeaves,  phantomLeaves},
+            {phantomLeaves, phantomLeaves,  air,            phantomLeaves,  phantomLeaves},
+            {phantomLeaves, phantomLeaves,  air,            phantomLeaves,  phantomLeaves},
+            {phantomLeaves, phantomLeaves,  air,            air,            phantomLeaves},
+            {air,           phantomLeaves,  air,            air,            phantomLeaves}
+    };
 }
