@@ -16,6 +16,38 @@ import java.util.Collections;
 import java.util.Random;
 
 public class WorldGenPhantomTree extends WorldGenAbstractTree {
+
+    private final BlockPos[] airPositions1 = new BlockPos[]{
+            new BlockPos(-2, 7, -1),
+            new BlockPos(-2, 7, 0),
+            new BlockPos(-2, 7, 1)
+    };
+    private final BlockPos[] airPositions2 = new BlockPos[]{
+            new BlockPos(2, 7, -1),
+            new BlockPos(2, 7, 0),
+            new BlockPos(2, 7, 1)
+    };
+    private final BlockPos[] airPositions3 = new BlockPos[]{
+            new BlockPos(-1, 7, 2),
+            new BlockPos(0, 7, 2),
+            new BlockPos(1, 7, 2)
+    };
+    private final BlockPos[] airPositions4 = new BlockPos[]{
+            new BlockPos(-1, 7, -2),
+            new BlockPos(0, 7, -2),
+            new BlockPos(1, 7, -2)
+    };
+    private final BlockPos[] airPositions5 = new BlockPos[]{
+            new BlockPos(0, 8, -1),
+            new BlockPos(1, 8, -1),
+            new BlockPos(1, 8, 0),
+            new BlockPos(1, 8, 1),
+            new BlockPos(0, 8, 1),
+            new BlockPos(-1, 8, 1),
+            new BlockPos(-1, 8, 0),
+            new BlockPos(-1, 8, -1),
+    };
+
     public WorldGenPhantomTree(boolean notify) {
         super(notify);
     }
@@ -31,17 +63,15 @@ public class WorldGenPhantomTree extends WorldGenAbstractTree {
                 worldIn.setBlockState(position.add(0, y, 0), phantomLog);
             }
             WorldGenUtils.generateInArea(position.add(-2, 5, -2), position.add(2, 6, 2), pos -> worldIn.setBlockState(pos, phantomLeaves));
-            WorldGenUtils.generateInArea(position.add(-2, 7, -2), position.add(2, 7, 2), pos -> {
-                if (rand.nextFloat() > 3f / 25)
-                    worldIn.setBlockState(pos, phantomLeaves);
-            });
-            int c=0;
-            WorldGenUtils.generateInArea(position.add(-1, 8, -1), position.add(1, 8, 1), pos -> {
-                if (rand.nextFloat() > 2f / 9)
-                    worldIn.setBlockState(pos, phantomLeaves);
-                else
-                    c++;
-            });
+            WorldGenUtils.generateInArea(position.add(-2, 7, -2), position.add(2, 7, 2), pos -> worldIn.setBlockState(pos, phantomLeaves));
+            WorldGenUtils.generateInArea(position.add(-1, 8, -1), position.add(1, 8, 1), pos -> worldIn.setBlockState(pos, phantomLeaves));
+
+            aireLeaves(worldIn, rand, position, airPositions1, 0.8);
+            aireLeaves(worldIn, rand, position, airPositions2, 0.8);
+            aireLeaves(worldIn, rand, position, airPositions3, 0.8);
+            aireLeaves(worldIn, rand, position, airPositions4, 0.8);
+            aireLeaves(worldIn, rand, position, airPositions5, 0.9);
+
             ArrayList<IBlockState[][]> list = Lists.newArrayList(variant1WeepingLeaves, variant2WeepingLeaves, variant3WeepingLeaves, variant4WeepingLeaves);
             Collections.shuffle(list);
 
@@ -60,9 +90,18 @@ public class WorldGenPhantomTree extends WorldGenAbstractTree {
             generatePlaneWithAxis(worldIn, position.add(inverted ? -2 : 2, 6, -3), new Vec2i(inverted ? 1 : -1, 0), list.get(3));
 
             return true;
-
         } else
             return false;
+    }
+
+    private void aireLeaves(World worldIn, Random rand, BlockPos position, BlockPos[] airPositions, double chance) {
+        boolean prevAired = false;
+        for (BlockPos pos : airPositions)
+            if (!prevAired && rand.nextFloat() > chance) {
+                worldIn.setBlockState(position.add(pos), air);
+                prevAired = true;
+            } else
+                prevAired = false;
     }
 
     private void generatePlaneWithAxis(World world, BlockPos start, Vec2i vec2i, IBlockState[][] iBlockStates) {
