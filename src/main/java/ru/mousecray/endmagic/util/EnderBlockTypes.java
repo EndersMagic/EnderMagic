@@ -4,13 +4,17 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
+import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.trees.EMSapling;
+import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
+import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockMaster;
 import ru.mousecray.endmagic.worldgen.WorldGenDragonTree;
+import ru.mousecray.endmagic.worldgen.WorldGenEnderTree;
 import ru.mousecray.endmagic.worldgen.WorldGenPhantomTree;
 
 import java.lang.reflect.InvocationTargetException;
@@ -19,7 +23,7 @@ import java.util.Random;
 
 public class EnderBlockTypes {
 
-    public static enum EnderTreeType implements IStringSerializable, EMSapling.SaplingThings {
+    public static enum EnderTreeType implements IStringSerializable, EMSapling.SaplingThings, BlockTypeBase {
         DRAGON("dragon", MapColor.PURPLE, WorldGenDragonTree.class) {
             public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
                 return Arrays.stream(EnumFacing.HORIZONTALS)
@@ -31,14 +35,24 @@ public class EnderBlockTypes {
         },
         NATURAL("natural", MapColor.BROWN, null),
         IMMORTAL("immortal", MapColor.EMERALD, null),
-        PHANTOM("phantom", MapColor.SILVER, WorldGenPhantomTree.class);
+        PHANTOM("phantom", MapColor.SILVER, WorldGenPhantomTree.class) {
+            @Override
+            public boolean hasTileEntity(IBlockState state) {
+                return true;
+            }
+
+            @Override
+            public TileEntity createTileEntity(World world, IBlockState state) {
+                return new TilePhantomAvoidingBlockBase();
+            }
+        };
 
         private final String name;
         private final MapColor mapColor;
-        private final Class<? extends WorldGenAbstractTree> generatorClass;
-        private WorldGenAbstractTree generator;
+        private final Class<? extends WorldGenEnderTree> generatorClass;
+        private WorldGenEnderTree generator;
 
-        private WorldGenAbstractTree generator() {
+        public WorldGenEnderTree generator() {
             if (generator == null)
                 try {
                     generator = generatorClass.getDeclaredConstructor(boolean.class).newInstance(true);
@@ -48,7 +62,7 @@ public class EnderBlockTypes {
             return generator;
         }
 
-        EnderTreeType(String name, MapColor mapColor, Class<? extends WorldGenAbstractTree> generator) {
+        EnderTreeType(String name, MapColor mapColor, Class<? extends WorldGenEnderTree> generator) {
             this.name = name;
             this.mapColor = mapColor;
             generatorClass = generator;

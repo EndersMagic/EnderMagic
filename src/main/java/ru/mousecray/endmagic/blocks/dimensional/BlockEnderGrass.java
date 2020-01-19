@@ -17,10 +17,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.api.blocks.IEndSoil;
+import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 import ru.mousecray.endmagic.init.EMBlocks;
 
-public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializable> extends VariativeBlock<GrassType> implements IEndSoil {
+public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializable & BlockTypeBase> extends VariativeBlock<GrassType> implements IEndSoil {
 	
 	private final Function<GrassType, SoundType> soundFunc;
 	

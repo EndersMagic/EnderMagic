@@ -17,6 +17,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +30,7 @@ import ru.mousecray.endmagic.util.registry.IEMModel;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.NameProvider;
 
-public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable> extends Block implements NameProvider, IEMModel {
+public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable & BlockTypeBase> extends Block implements NameProvider, IEMModel {
 
     public final IProperty<BlockType> blockType;
     protected Function<Integer, BlockType> byIndex;
@@ -71,6 +72,16 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
 
     public VariativeBlock(Class<BlockType> type, Material material, Function<BlockType, MapColor> mapFunc) {
         this(type, material, null, mapFunc);
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return state.getValue(blockType).createTileEntity(world,state);
+    }
+
+    public boolean hasTileEntity(IBlockState state)
+    {
+        return state.getValue(blockType).hasTileEntity(state);
     }
 
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {

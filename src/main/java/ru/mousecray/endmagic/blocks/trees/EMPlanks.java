@@ -7,9 +7,10 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.util.IStringSerializable;
+import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 
-public class EMPlanks<TreeType extends Enum<TreeType> & IStringSerializable> extends VariativeBlock<TreeType> {
+public class EMPlanks<TreeType extends Enum<TreeType> & IStringSerializable & BlockTypeBase> extends VariativeBlock<TreeType> {
 
 	public EMPlanks(Class<TreeType> type, Function<TreeType, MapColor> mapFunc) {
 		super(type, Material.WOOD, "planks", mapFunc);

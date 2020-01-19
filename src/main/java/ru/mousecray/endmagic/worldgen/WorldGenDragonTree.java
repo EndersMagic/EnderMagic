@@ -6,7 +6,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.init.EMBlocks;
 
@@ -17,9 +16,9 @@ import static net.minecraft.init.Blocks.AIR;
 import static net.minecraft.init.Blocks.END_STONE;
 import static ru.mousecray.endmagic.util.worldgen.WorldGenUtils.generateInArea;
 
-public class WorldGenDragonTree extends WorldGenAbstractTree {
+public class WorldGenDragonTree extends WorldGenEnderTree {
     public WorldGenDragonTree(boolean notify) {
-        super(notify);
+        super(notify,null,null);
     }
 
     private IBlockState enderLog = EMBlocks.enderLog.getDefaultState();

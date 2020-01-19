@@ -36,6 +36,8 @@ import ru.mousecray.endmagic.init.ListSource;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
+import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
+import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockMaster;
 import ru.mousecray.endmagic.util.EMItemBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
@@ -54,6 +56,8 @@ public class CommonProxy implements IGuiHandler {
 
         //Registration Blocks
         new ClassFieldSource<Block>(EMBlocks.class).elemes().forEach(this::registerBlock);
+        registerTile(TilePhantomAvoidingBlockMaster.class);
+        registerTile(TilePhantomAvoidingBlockBase.class);
 
         //Registration Items
         new ClassFieldSource<Item>(EMItems.class).and(new ListSource<>(EMItems.createToolsAndArmor()))

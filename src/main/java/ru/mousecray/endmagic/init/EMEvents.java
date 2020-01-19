@@ -1,13 +1,9 @@
 package ru.mousecray.endmagic.init;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Random;
-
-import com.google.common.collect.ImmutableMap;
-
 import codechicken.lib.packet.PacketCustom;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiListWorldSelection;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -24,16 +20,18 @@ import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -42,9 +40,31 @@ import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
+import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
+import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockMaster;
+import ru.mousecray.endmagic.util.EnderBlockTypes;
+
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Random;
+
+import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
+
+    @SubscribeEvent
+    public static void onPhantomTreeCuting(PlayerEvent.BreakSpeed event) {
+        World world = event.getEntityPlayer().world;
+        BlockPos pos = event.getPos();
+        IBlockState blockState = world.getBlockState(pos);
+        if (blockState.getBlock() == enderLog && blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
+            TileEntity currentTile = world.getTileEntity(pos);
+            if(currentTile instanceof TilePhantomAvoidingBlockBase)
+                world.setTileEntity(pos,new TilePhantomAvoidingBlockMaster(currentTile));
+
+        }
+    }
 
     @SubscribeEvent
     public static void onPlayerEnter(EntityJoinWorldEvent event) {
@@ -60,7 +80,7 @@ public class EMEvents {
             }
     }
 
-//    @SubscribeEvent
+    //    @SubscribeEvent
     public static void loadLastWorld(GuiOpenEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         if (event.getGui() instanceof GuiMainMenu) {
