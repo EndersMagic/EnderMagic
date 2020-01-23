@@ -1,14 +1,12 @@
 package ru.mousecray.endmagic.blocks.trees;
 
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
@@ -69,6 +67,16 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable & Block
     @Override
     public boolean isWood(net.minecraft.world.IBlockAccess world, BlockPos pos) {
         return true;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
     }
 
 }

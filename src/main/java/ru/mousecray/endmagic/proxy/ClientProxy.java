@@ -34,6 +34,7 @@ import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
+import ru.mousecray.endmagic.client.render.tileentity.TilePhantomAvoidingBlockRenderer;
 import ru.mousecray.endmagic.entity.EntityBluePearl;
 import ru.mousecray.endmagic.entity.EntityCurseBush;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
@@ -41,6 +42,7 @@ import ru.mousecray.endmagic.entity.EntityPurplePearl;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.items.ItemTextured;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
+import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 
@@ -63,6 +65,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     public void init(FMLInitializationEvent event) {
         super.init(event);
         ClientRegistry.bindTileEntitySpecialRenderer(TilePortal.class, new TileEntityPortalRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TilePhantomAvoidingBlockBase.class, new TilePhantomAvoidingBlockRenderer());
     }
 
     @Override

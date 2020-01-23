@@ -26,13 +26,11 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
-import ru.mousecray.endmagic.capability.world.PhantomTreeCapability;
 import ru.mousecray.endmagic.init.*;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
-import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockMaster;
 import ru.mousecray.endmagic.util.EMItemBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
@@ -55,7 +53,6 @@ public class CommonProxy implements IGuiHandler {
 
         //Registration Blocks
         new ClassFieldSource<Block>(EMBlocks.class).elemes().forEach(this::registerBlock);
-        registerTile(TilePhantomAvoidingBlockMaster.class);
         registerTile(TilePhantomAvoidingBlockBase.class);
 
         //Registration Items
@@ -70,6 +67,7 @@ public class CommonProxy implements IGuiHandler {
 
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
 
+        /*
         CapabilityManager.INSTANCE.register(PhantomTreeCapability.class, new Capability.IStorage<PhantomTreeCapability>() {
             @Nullable
             @Override
@@ -81,7 +79,7 @@ public class CommonProxy implements IGuiHandler {
             public void readNBT(Capability<PhantomTreeCapability> capability, PhantomTreeCapability instance, EnumFacing side, NBTBase nbt) {
 
             }
-        }, () -> new PhantomTreeCapability(null));
+        }, () -> new PhantomTreeCapability(null));*/
     }
 
     private void registerBlock(Block block) {

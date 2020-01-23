@@ -1,10 +1,5 @@
 package ru.mousecray.endmagic.blocks;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.function.Function;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -18,6 +13,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -25,10 +21,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
-import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.NameProvider;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.function.Function;
 
 public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable & BlockTypeBase> extends Block implements NameProvider, IEMModel {
 
@@ -74,13 +74,16 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         this(type, material, null, mapFunc);
     }
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return state.getValue(blockType).createTileEntity(world,state);
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return state.getValue(blockType).getRenderType(state);
     }
 
-    public boolean hasTileEntity(IBlockState state)
-    {
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return state.getValue(blockType).createTileEntity(world, state);
+    }
+
+    public boolean hasTileEntity(IBlockState state) {
         return state.getValue(blockType).hasTileEntity(state);
     }
 

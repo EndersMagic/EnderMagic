@@ -5,14 +5,15 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.trees.EMSapling;
+import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
-import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockMaster;
 import ru.mousecray.endmagic.worldgen.WorldGenDragonTree;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTree;
 import ru.mousecray.endmagic.worldgen.WorldGenPhantomTree;
@@ -38,12 +39,17 @@ public class EnderBlockTypes {
         PHANTOM("phantom", MapColor.SILVER, WorldGenPhantomTree.class) {
             @Override
             public boolean hasTileEntity(IBlockState state) {
-                return true;
+                return state.getBlock() == EMBlocks.enderLog || state.getBlock() == EMBlocks.enderLeaves;
             }
 
             @Override
             public TileEntity createTileEntity(World world, IBlockState state) {
                 return new TilePhantomAvoidingBlockBase();
+            }
+
+            @Override
+            public EnumBlockRenderType getRenderType(IBlockState state) {
+                return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
             }
         };
 

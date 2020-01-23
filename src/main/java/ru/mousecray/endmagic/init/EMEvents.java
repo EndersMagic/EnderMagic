@@ -28,7 +28,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -37,8 +36,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.capability.world.PhantomTreeCapabilityProvider;
-import ru.mousecray.endmagic.capability.world.PhantonTreeAvoidProcess;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
@@ -54,25 +51,25 @@ import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
 
-    @SubscribeEvent
+   /* @SubscribeEvent
     public static void onCapaAttachToWorld(AttachCapabilitiesEvent<World> event) {
         event.addCapability(PhantomTreeCapabilityProvider.name, new PhantomTreeCapabilityProvider(event.getObject()));
-    }
+    }*/
 
     @SubscribeEvent
     public static void onPhantomTreeCutting(PlayerEvent.BreakSpeed event) throws Exception {
         World world = event.getEntityPlayer().world;
         BlockPos pos = event.getPos();
         IBlockState blockState = world.getBlockState(pos);
-        if (!event.getEntityPlayer().world.isRemote &&blockState.getBlock() == enderLog && blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
-            PhantonTreeAvoidProcess tree = world.getCapability(PhantomTreeCapabilityProvider.phantomTreeCapability, null).getTree(event.getPos());
-            tree.notifyCutting();
+        if (!event.getEntityPlayer().world.isRemote && blockState.getBlock() == enderLog && blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
+            //PhantonTreeAvoidProcess tree = world.getCapability(PhantomTreeCapabilityProvider.phantomTreeCapability, null).getTree(event.getPos());
+            //tree.notifyCutting();
         }
     }
 
     @SubscribeEvent
     public static void onWorldTick(TickEvent.WorldTickEvent event) {
-        event.world.getCapability(PhantomTreeCapabilityProvider.phantomTreeCapability, null).processes.forEach(PhantonTreeAvoidProcess::tick);
+        //event.world.getCapability(PhantomTreeCapabilityProvider.phantomTreeCapability, null).processes.forEach(PhantonTreeAvoidProcess::tick);
     }
 
     @SubscribeEvent
