@@ -28,25 +28,17 @@ public class TilePhantomAvoidingBlockMaster extends TilePhantomAvoidingBlockBase
         pos = baseTile.getPos();
         world = baseTile.getWorld();
 
-        WorldGenUtils.generateInArea(pos.add(areaRequirementsMin), pos.add(areaRequirementsMax), pos -> {
+        WorldGenUtils.generateInAreaBreakly(pos.add(areaRequirementsMin), pos.add(areaRequirementsMax), pos -> {
             TileEntity tileEntity = world.getTileEntity(pos);
-            if (tileEntity instanceof TilePhantomAvoidingBlockBase) {
+            if (tileEntity instanceof TilePhantomAvoidingBlockMaster) {
+                allBlocks = ((TilePhantomAvoidingBlockMaster) tileEntity).allBlocks;
+                return false;
+            } else {
                 allBlocks.add((TilePhantomAvoidingBlockBase) tileEntity);
+                return true;
             }
         });
         startAvoiding = true;
-    }
-
-    void notifyAboutCutting() {
-        if (!startAvoiding) {
-            WorldGenUtils.generateInArea(pos.add(areaRequirementsMin), pos.add(areaRequirementsMax), pos -> {
-                TileEntity tileEntity = world.getTileEntity(pos);
-                if (tileEntity instanceof TilePhantomAvoidingBlockBase) {
-                    allBlocks.add((TilePhantomAvoidingBlockBase) tileEntity);
-                }
-            });
-            startAvoiding = true;
-        }
     }
 
     @Override

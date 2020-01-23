@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.init.EMBlocks;
-import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockMaster;
+import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.Vec2i;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
@@ -59,16 +59,21 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
     private IBlockState phantomLeaves = EMBlocks.enderLeaves.stateWithBlockType(EnderBlockTypes.EnderTreeType.PHANTOM);
     private IBlockState air = Blocks.AIR.getDefaultState();
 
+    private void setWithOffset(World world, BlockPos position, Vec3i offset, IBlockState state) {
+        world.setBlockState(position.add(offset), state);
+        ((TilePhantomAvoidingBlockBase) world.getTileEntity(position)).offsetFromSapling = offset;
+    }
+
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
         if (canGenerateThere(worldIn, position)) {
             for (int y = 0; y < 5; y++) {
-                worldIn.setBlockState(position.add(0, y, 0), phantomLog);
+                setWithOffset(worldIn, position, new Vec3i(0, y, 0), phantomLog);
             }
-            worldIn.setTileEntity(position,new TilePhantomAvoidingBlockMaster());
-            WorldGenUtils.generateInArea(position.add(-2, 5, -2), position.add(2, 6, 2), pos -> worldIn.setBlockState(pos, phantomLeaves));
-            WorldGenUtils.generateInArea(position.add(-2, 7, -2), position.add(2, 7, 2), pos -> worldIn.setBlockState(pos, phantomLeaves));
-            WorldGenUtils.generateInArea(position.add(-1, 8, -1), position.add(1, 8, 1), pos -> worldIn.setBlockState(pos, phantomLeaves));
+            //worldIn.setTileEntity(position, new TilePhantomAvoidingBlockMaster());
+            WorldGenUtils.generateInArea(position.add(-2, 5, -2), position.add(2, 6, 2), pos -> setWithOffset(worldIn, position, pos.subtract(position), phantomLeaves));
+            WorldGenUtils.generateInArea(position.add(-2, 7, -2), position.add(2, 7, 2), pos -> setWithOffset(worldIn, position, pos.subtract(position), phantomLeaves));
+            WorldGenUtils.generateInArea(position.add(-1, 8, -1), position.add(1, 8, 1), pos -> setWithOffset(worldIn, position, pos.subtract(position), phantomLeaves));
 
             aireLeaves(worldIn, rand, position, airPositions1, 0.8);
             aireLeaves(worldIn, rand, position, airPositions2, 0.8);
@@ -82,16 +87,16 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
             //idea: генерировать вертикальные полосы листвы в точках
 
             boolean inverted = rand.nextBoolean();
-            generatePlaneWithAxis(worldIn, position.add(3, 6, inverted ? -2 : 2), new Vec2i(0, inverted ? 1 : -1), list.get(0));
+            generatePlaneWithAxis(worldIn, position.add(3, 6, inverted ? -2 : 2), new Vec2i(0, inverted ? 1 : -1), list.get(0),position);
 
             inverted = rand.nextBoolean();
-            generatePlaneWithAxis(worldIn, position.add(inverted ? -2 : 2, 6, 3), new Vec2i(inverted ? 1 : -1, 0), list.get(1));
+            generatePlaneWithAxis(worldIn, position.add(inverted ? -2 : 2, 6, 3), new Vec2i(inverted ? 1 : -1, 0), list.get(1), position);
 
             inverted = rand.nextBoolean();
-            generatePlaneWithAxis(worldIn, position.add(-3, 6, inverted ? -2 : 2), new Vec2i(0, inverted ? 1 : -1), list.get(2));
+            generatePlaneWithAxis(worldIn, position.add(-3, 6, inverted ? -2 : 2), new Vec2i(0, inverted ? 1 : -1), list.get(2), position);
 
             inverted = rand.nextBoolean();
-            generatePlaneWithAxis(worldIn, position.add(inverted ? -2 : 2, 6, -3), new Vec2i(inverted ? 1 : -1, 0), list.get(3));
+            generatePlaneWithAxis(worldIn, position.add(inverted ? -2 : 2, 6, -3), new Vec2i(inverted ? 1 : -1, 0), list.get(3), position);
 
             return true;
         } else
@@ -108,12 +113,12 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
                 prevAired = false;
     }
 
-    private void generatePlaneWithAxis(World world, BlockPos start, Vec2i vec2i, IBlockState[][] iBlockStates) {
+    private void generatePlaneWithAxis(World world, BlockPos start, Vec2i vec2i, IBlockState[][] iBlockStates, BlockPos saplingPosition) {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         for (int y = 0; y < iBlockStates.length; y++) {
             for (int horizontal = 0; horizontal < iBlockStates[y].length; horizontal++) {
                 pos.setPos(start.getX() + vec2i.x * horizontal, start.getY() - y, start.getZ() + vec2i.y * horizontal);
-                world.setBlockState(pos, iBlockStates[y][horizontal]);
+                setWithOffset(world,saplingPosition,pos.subtract(saplingPosition),iBlockStates[y][horizontal]);
             }
         }
     }

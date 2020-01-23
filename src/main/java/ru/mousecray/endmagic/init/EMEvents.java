@@ -20,7 +20,6 @@ import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -29,19 +28,21 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.capability.world.PhantomTreeCapabilityProvider;
+import ru.mousecray.endmagic.capability.world.PhantonTreeAvoidProcess;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
-import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
-import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockMaster;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import java.util.Arrays;
@@ -54,16 +55,24 @@ import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 public class EMEvents {
 
     @SubscribeEvent
-    public static void onPhantomTreeCuting(PlayerEvent.BreakSpeed event) {
+    public static void onCapaAttachToWorld(AttachCapabilitiesEvent<World> event) {
+        event.addCapability(PhantomTreeCapabilityProvider.name, new PhantomTreeCapabilityProvider(event.getObject()));
+    }
+
+    @SubscribeEvent
+    public static void onPhantomTreeCutting(PlayerEvent.BreakSpeed event) throws Exception {
         World world = event.getEntityPlayer().world;
         BlockPos pos = event.getPos();
         IBlockState blockState = world.getBlockState(pos);
-        if (blockState.getBlock() == enderLog && blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
-            TileEntity currentTile = world.getTileEntity(pos);
-            if(currentTile instanceof TilePhantomAvoidingBlockBase)
-                world.setTileEntity(pos,new TilePhantomAvoidingBlockMaster(currentTile));
-
+        if (!event.getEntityPlayer().world.isRemote &&blockState.getBlock() == enderLog && blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
+            PhantonTreeAvoidProcess tree = world.getCapability(PhantomTreeCapabilityProvider.phantomTreeCapability, null).getTree(event.getPos());
+            tree.notifyCutting();
         }
+    }
+
+    @SubscribeEvent
+    public static void onWorldTick(TickEvent.WorldTickEvent event) {
+        event.world.getCapability(PhantomTreeCapabilityProvider.phantomTreeCapability, null).processes.forEach(PhantonTreeAvoidProcess::tick);
     }
 
     @SubscribeEvent

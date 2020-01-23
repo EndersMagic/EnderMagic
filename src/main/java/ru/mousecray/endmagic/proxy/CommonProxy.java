@@ -1,21 +1,20 @@
 package ru.mousecray.endmagic.proxy;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -27,12 +26,8 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
-import ru.mousecray.endmagic.init.ClassFieldSource;
-import ru.mousecray.endmagic.init.EMBlocks;
-import ru.mousecray.endmagic.init.EMEntities;
-import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.init.EMRecipes;
-import ru.mousecray.endmagic.init.ListSource;
+import ru.mousecray.endmagic.capability.world.PhantomTreeCapability;
+import ru.mousecray.endmagic.init.*;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
@@ -41,6 +36,10 @@ import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockMaster;
 import ru.mousecray.endmagic.util.EMItemBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
+
+import javax.annotation.Nullable;
+import java.util.LinkedList;
+import java.util.List;
 
 public class CommonProxy implements IGuiHandler {
 
@@ -70,6 +69,19 @@ public class CommonProxy implements IGuiHandler {
         EMRecipes.initRecipes();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
+
+        CapabilityManager.INSTANCE.register(PhantomTreeCapability.class, new Capability.IStorage<PhantomTreeCapability>() {
+            @Nullable
+            @Override
+            public NBTBase writeNBT(Capability<PhantomTreeCapability> capability, PhantomTreeCapability instance, EnumFacing side) {
+                return null;
+            }
+
+            @Override
+            public void readNBT(Capability<PhantomTreeCapability> capability, PhantomTreeCapability instance, EnumFacing side, NBTBase nbt) {
+
+            }
+        }, () -> new PhantomTreeCapability(null));
     }
 
     private void registerBlock(Block block) {
@@ -84,7 +96,7 @@ public class CommonProxy implements IGuiHandler {
         }
 
         blocksToRegister.add(block);
-        if(block instanceof VariativeBlock) registerItem(new EMItemBlock(block), block.getRegistryName().toString());
+        if (block instanceof VariativeBlock) registerItem(new EMItemBlock(block), block.getRegistryName().toString());
         else registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 
