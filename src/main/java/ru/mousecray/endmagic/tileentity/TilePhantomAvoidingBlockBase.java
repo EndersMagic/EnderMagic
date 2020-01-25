@@ -25,12 +25,6 @@ public class TilePhantomAvoidingBlockBase extends TileEntity {
         this(0, new Vec3i(0, 0, 0));
     }
 
-    @Nullable
-    @Override
-    public ITextComponent getDisplayName() {
-        return new TextComponentString("Test");
-    }
-
     public void teleportBlock(Vec3i offset) {
         IBlockState blockState = world.getBlockState(pos);
         world.setBlockToAir(pos);
