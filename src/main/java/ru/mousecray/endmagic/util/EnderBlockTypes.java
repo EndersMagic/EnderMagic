@@ -49,7 +49,9 @@ public class EnderBlockTypes {
 
             @Override
             public EnumBlockRenderType getRenderType(IBlockState state) {
-                return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+                return state.getBlock() == EMBlocks.enderLog || state.getBlock() == EMBlocks.enderLeaves
+                        ? EnumBlockRenderType.ENTITYBLOCK_ANIMATED
+                        : EnumBlockRenderType.MODEL;
             }
         };
 
