@@ -26,6 +26,7 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
+import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.init.*;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
@@ -67,19 +68,19 @@ public class CommonProxy implements IGuiHandler {
 
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
 
-        /*
-        CapabilityManager.INSTANCE.register(PhantomTreeCapability.class, new Capability.IStorage<PhantomTreeCapability>() {
+
+        CapabilityManager.INSTANCE.register(PhantomAvoidingGroupCapability.class, new Capability.IStorage<PhantomAvoidingGroupCapability>() {
             @Nullable
             @Override
-            public NBTBase writeNBT(Capability<PhantomTreeCapability> capability, PhantomTreeCapability instance, EnumFacing side) {
+            public NBTBase writeNBT(Capability<PhantomAvoidingGroupCapability> capability, PhantomAvoidingGroupCapability instance, EnumFacing side) {
                 return null;
             }
 
             @Override
-            public void readNBT(Capability<PhantomTreeCapability> capability, PhantomTreeCapability instance, EnumFacing side, NBTBase nbt) {
+            public void readNBT(Capability<PhantomAvoidingGroupCapability> capability, PhantomAvoidingGroupCapability instance, EnumFacing side, NBTBase nbt) {
 
             }
-        }, () -> new PhantomTreeCapability(null));*/
+        }, PhantomAvoidingGroupCapability::new);
     }
 
     private void registerBlock(Block block) {

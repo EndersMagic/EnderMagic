@@ -2,11 +2,18 @@ package ru.mousecray.endmagic.tileentity;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.server.management.PlayerChunkMapEntry;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.WorldServer;
 
-public class TilePhantomAvoidingBlockBase extends TileEntity implements ITickable {
+import javax.annotation.Nullable;
+
+public class TilePhantomAvoidingBlockBase extends TileEntity {
     public static int maxAvoidTicks = 90;
 
     public TilePhantomAvoidingBlockBase(int avoidTicks, Vec3i offsetFromSapling) {
@@ -15,8 +22,13 @@ public class TilePhantomAvoidingBlockBase extends TileEntity implements ITickabl
     }
 
     public TilePhantomAvoidingBlockBase() {
-        offsetFromSapling = new Vec3i(0, 0, 0);
-        avoidTicks = 0;
+        this(0, new Vec3i(0, 0, 0));
+    }
+
+    @Nullable
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TextComponentString("Test");
     }
 
     public void teleportBlock(Vec3i offset) {
@@ -42,16 +54,39 @@ public class TilePhantomAvoidingBlockBase extends TileEntity implements ITickabl
         return super.writeToNBT(compound);
     }
 
-    public int avoidTicks;
-    public int increment = 1;
-    public Vec3i offsetFromSapling;
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Nullable
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 3, getUpdateTag());
+    }
 
     @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        readFromNBT(pkt.getNbtCompound());
+    }
+
+    private void sendUpdates() {
+        if (world instanceof WorldServer) {
+            PlayerChunkMapEntry chunk = ((WorldServer) world).getPlayerChunkMap().getEntry(pos.getX() >> 4, pos.getZ() >> 4);
+            if (chunk != null) chunk.sendPacket(getUpdatePacket());
+        }
+    }
+
+    public Vec3i offsetFromSapling;
+    public int avoidTicks;
+    public int increment = 1;
+
     public void update() {
         if (avoidTicks >= maxAvoidTicks)
             increment = -1;
         else if (avoidTicks <= 0)
             increment = 1;
         avoidTicks += increment;
+        sendUpdates();
     }
 }
