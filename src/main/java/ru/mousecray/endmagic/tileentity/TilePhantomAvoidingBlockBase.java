@@ -5,12 +5,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
 import javax.annotation.Nullable;
 
 public class TilePhantomAvoidingBlockBase extends TileEntity {
-    public static int maxAvoidTicks = 90;
+    public static int maxAvoidTicks = 20*5;
 
     public TilePhantomAvoidingBlockBase(int avoidTicks, Vec3i offsetFromSapling) {
         this.avoidTicks = avoidTicks;
@@ -21,11 +22,13 @@ public class TilePhantomAvoidingBlockBase extends TileEntity {
         this(0, new Vec3i(0, 0, 0));
     }
 
-    public void teleportBlock(Vec3i offset) {
+    public BlockPos teleportBlock(Vec3i offset) {
         IBlockState blockState = world.getBlockState(pos);
         world.setBlockToAir(pos);
-        world.setBlockState(pos.add(offset), blockState);
-        world.setTileEntity(pos.add(offset), new TilePhantomAvoidingBlockBase(avoidTicks, offsetFromSapling));
+        BlockPos newPos = pos.add(offset);
+        world.setBlockState(newPos, blockState);
+        world.setTileEntity(newPos, new TilePhantomAvoidingBlockBase(avoidTicks, offsetFromSapling));
+        return newPos;
     }
 
     @Override

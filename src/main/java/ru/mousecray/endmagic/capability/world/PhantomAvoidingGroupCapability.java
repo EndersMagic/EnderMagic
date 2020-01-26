@@ -10,4 +10,6 @@ import java.util.Set;
 public class PhantomAvoidingGroupCapability {
     public Map<BlockPos, PhantomAvoidingGroup> groupAtPos = new HashMap<>();
     public Set<PhantomAvoidingGroup> allGroups = new HashSet<>();
+    public Set<PhantomAvoidingGroup> forRemove = new HashSet<>();
+    public Set<PhantomAvoidingGroup> forAdded = new HashSet<>();
 }
