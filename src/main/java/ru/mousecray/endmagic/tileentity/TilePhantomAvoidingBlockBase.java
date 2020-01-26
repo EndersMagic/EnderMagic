@@ -7,8 +7,6 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.server.management.PlayerChunkMapEntry;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 
 import javax.annotation.Nullable;
@@ -74,13 +72,4 @@ public class TilePhantomAvoidingBlockBase extends TileEntity {
     public Vec3i offsetFromSapling;
     public int avoidTicks;
     public int increment = 1;
-
-    public void update() {
-        if (avoidTicks >= maxAvoidTicks)
-            increment = -1;
-        else if (avoidTicks <= 0)
-            increment = 1;
-        avoidTicks += increment;
-        sendUpdates();
-    }
 }

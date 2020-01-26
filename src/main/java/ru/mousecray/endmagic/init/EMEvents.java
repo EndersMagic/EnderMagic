@@ -37,6 +37,8 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
@@ -55,6 +57,7 @@ import java.util.Random;
 
 import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
+import static ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
 import static ru.mousecray.endmagic.worldgen.WorldGenPhantomTree.areaRequirementsMax;
 import static ru.mousecray.endmagic.worldgen.WorldGenPhantomTree.areaRequirementsMin;
 
@@ -71,7 +74,7 @@ public class EMEvents {
         World world = event.getEntityPlayer().world;
         BlockPos pos = event.getPos();
         IBlockState blockState = world.getBlockState(pos);
-        if (!event.getEntityPlayer().world.isRemote && (blockState.getBlock() == enderLog || blockState.getBlock() == enderLeaves) && blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
+        if (/*!event.getEntityPlayer().world.isRemote && */(blockState.getBlock() == enderLog || blockState.getBlock() == enderLeaves) && blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
             PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
             if (capability != null) {
                 PhantomAvoidingGroup tree = capability.groupAtPos.get(event.getPos());
@@ -85,7 +88,7 @@ public class EMEvents {
                     capability.allGroups.add(tree);
                 }
                 tree.avoidingStarted = true;
-                System.out.println();
+                System.out.print("");
             }
         }
     }
@@ -103,22 +106,39 @@ public class EMEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void onWorldTick(TickEvent.WorldTickEvent event) {
-        World world = event.world;
-        if (!world.isRemote) {
-            PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
-            if (capability != null) {
-                for (PhantomAvoidingGroup group : capability.allGroups) {
-                    for (BlockPos pos : group.blocks) {
-                        TileEntity tileEntity = world.getTileEntity(pos);
-                        if (tileEntity instanceof TilePhantomAvoidingBlockBase)
-                            ((TilePhantomAvoidingBlockBase) tileEntity).update();
+    private static void updateWorldCapability(World world) {
+        PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
+        if (capability != null) {
+            for (PhantomAvoidingGroup group : capability.allGroups) {
+
+                if (group.avoidTicks >= maxAvoidTicks)
+                    group.increment = -1;
+                else if (group.avoidTicks <= 0)
+                    group.increment = 1;
+                group.avoidTicks += group.increment;
+
+                for (BlockPos pos : group.blocks) {
+                    TileEntity tileEntity = world.getTileEntity(pos);
+                    if (tileEntity instanceof TilePhantomAvoidingBlockBase) {
+                        TilePhantomAvoidingBlockBase tilePhantomAvoidingBlock = (TilePhantomAvoidingBlockBase) tileEntity;
+                        tilePhantomAvoidingBlock.avoidTicks = group.avoidTicks;
+                        tilePhantomAvoidingBlock.increment = group.increment;
                     }
                 }
-
             }
         }
+    }
+
+    //@SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onWorldTickClient(TickEvent.ClientTickEvent event) {
+        if(Minecraft.getMinecraft().world!=null)
+        updateWorldCapability(Minecraft.getMinecraft().world);
+    }
+
+    @SubscribeEvent
+    public static void onWorldTick(TickEvent.WorldTickEvent event) {
+        updateWorldCapability(event.world);
     }
 
     @SubscribeEvent
