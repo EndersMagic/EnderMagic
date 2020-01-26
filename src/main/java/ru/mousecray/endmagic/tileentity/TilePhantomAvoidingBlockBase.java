@@ -62,13 +62,6 @@ public class TilePhantomAvoidingBlockBase extends TileEntity {
         readFromNBT(pkt.getNbtCompound());
     }
 
-    private void sendUpdates() {
-        if (world instanceof WorldServer) {
-            PlayerChunkMapEntry chunk = ((WorldServer) world).getPlayerChunkMap().getEntry(pos.getX() >> 4, pos.getZ() >> 4);
-            if (chunk != null) chunk.sendPacket(getUpdatePacket());
-        }
-    }
-
     public Vec3i offsetFromSapling;
     public int avoidTicks;
     public int increment = 1;
