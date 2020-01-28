@@ -53,8 +53,8 @@ public class TilePhantomAvoidingBlockRenderer extends TileEntitySpecialRenderer<
         mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
         GlStateManager.color(1, 1, 1, 1);
         GlStateManager.enableRescaleNormal();
-        GlStateManager.disableAlpha();
-        //GlStateManager.alphaFunc(516, 0F);
+        //GlStateManager.disableAlpha();
+        GlStateManager.alphaFunc(516, 0F);
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.pushMatrix();
