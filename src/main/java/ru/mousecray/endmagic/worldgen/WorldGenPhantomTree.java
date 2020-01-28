@@ -1,20 +1,21 @@
 package ru.mousecray.endmagic.worldgen;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.Vec2i;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class WorldGenPhantomTree extends WorldGenEnderTree {
@@ -59,6 +60,7 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
     private IBlockState phantomLog = EMBlocks.enderLog.stateWithBlockType(EnderBlockTypes.EnderTreeType.PHANTOM);
     private IBlockState phantomLeaves = EMBlocks.enderLeaves.stateWithBlockType(EnderBlockTypes.EnderTreeType.PHANTOM);
     private IBlockState air = Blocks.AIR.getDefaultState();
+    private IBlockState testLeaves = Blocks.LEAVES.getDefaultState();
 
     private void setWithOffset(World world, BlockPos position, Vec3i offset, IBlockState state) {
         world.setBlockState(position.add(offset), state);
@@ -85,28 +87,47 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
             aireLeaves(worldIn, rand, position, airPositions4, 0.8);
             aireLeaves(worldIn, rand, position, airPositions5, 0.9);
 
-            ArrayList<IBlockState[][]> list = Lists.newArrayList(variant1WeepingLeaves, variant2WeepingLeaves, variant3WeepingLeaves, variant4WeepingLeaves);
+            ArrayList<IBlockState[][][]> list = Lists.newArrayList(variant1WeepingLeaves, variant2WeepingLeaves, variant3WeepingLeaves, variant4WeepingLeaves);
             Collections.shuffle(list);
 
             //idea: генерировать вертикальные полосы листвы в точках
 
             boolean inverted = rand.nextBoolean();
-            generatePlaneWithAxis(specialWorld, position.add(3, 6, inverted ? -2 : 2), new Vec2i(0, inverted ? 1 : -1), list.get(0));
+            generatePlaneWithAxis(specialWorld, position.add(3, 6, inverted ? -2 : 2), new Vec2i(0, inverted ? 1 : -1), list.get(0)[0]);
+            generatePlaneWithAxis(specialWorld, position.add(2, 4, inverted ? -2 : 2), new Vec2i(0, inverted ? 1 : -1), list.get(0)[1]);
 
             inverted = rand.nextBoolean();
-            generatePlaneWithAxis(specialWorld, position.add(inverted ? -2 : 2, 6, 3), new Vec2i(inverted ? 1 : -1, 0), list.get(1));
+            generatePlaneWithAxis(specialWorld, position.add(inverted ? -2 : 2, 6, 3), new Vec2i(inverted ? 1 : -1, 0), list.get(1)[0]);
+            generatePlaneWithAxis(specialWorld, position.add(inverted ? -2 : 2, 4, 2), new Vec2i(inverted ? 1 : -1, 0), list.get(1)[1]);
 
             inverted = rand.nextBoolean();
-            generatePlaneWithAxis(specialWorld, position.add(-3, 6, inverted ? -2 : 2), new Vec2i(0, inverted ? 1 : -1), list.get(2));
+            generatePlaneWithAxis(specialWorld, position.add(-3, 6, inverted ? -2 : 2), new Vec2i(0, inverted ? 1 : -1), list.get(2)[0]);
+            generatePlaneWithAxis(specialWorld, position.add(-2, 4, inverted ? -2 : 2), new Vec2i(0, inverted ? 1 : -1), list.get(2)[1]);
 
             inverted = rand.nextBoolean();
-            generatePlaneWithAxis(specialWorld, position.add(inverted ? -2 : 2, 6, -3), new Vec2i(inverted ? 1 : -1, 0), list.get(3));
+            generatePlaneWithAxis(specialWorld, position.add(inverted ? -2 : 2, 6, -3), new Vec2i(inverted ? 1 : -1, 0), list.get(3)[0]);
+            generatePlaneWithAxis(specialWorld, position.add(inverted ? -2 : 2, 4, -2), new Vec2i(inverted ? 1 : -1, 0), list.get(3)[1]);
 
-            for (int x = 0; x < internalLeavesHeights.length; x++) {
-                for (int z = 0; z < internalLeavesHeights[x].length; z++) {
-                    internalLeavesHeights[x][z] *= (rand.nextInt(3) == 0 ? 1 : 0);
-                }
-            }
+            List<Pair<Vec3i, Set<Vec3i>>> centerLeaves = ImmutableList.of(
+                    Pair.of(new Vec3i(1, 4, 0), ImmutableSet.of(new Vec3i(1, 4, 1), new Vec3i(1, 4, -1))),
+                    Pair.of(new Vec3i(0, 4, 1), ImmutableSet.of(new Vec3i(1, 4, 1), new Vec3i(-1, 4, 1))),
+                    Pair.of(new Vec3i(-1, 4, 0), ImmutableSet.of(new Vec3i(-1, 4, 1), new Vec3i(-1, 4, -1))),
+                    Pair.of(new Vec3i(0, 4, -1), ImmutableSet.of(new Vec3i(-1, 4, -1), new Vec3i(1, 4, -1)))
+            );
+            Pair<Vec3i, Set<Vec3i>> centerChosenPos = centerLeaves.get(list.indexOf(rand.nextBoolean()?variant4WeepingLeaves:variant2WeepingLeaves));
+            specialWorld.setBlockState(position.add(centerChosenPos.getLeft()), testLeaves);
+
+            List<Vec3i> middleLeaves = Lists.newArrayList(
+                    new Vec3i(-1, 4, -1),
+                    new Vec3i(1, 4, -1),
+                    new Vec3i(1, 4, 1),
+                    new Vec3i(-1, 4, 1)
+            );
+            middleLeaves.removeAll(centerChosenPos.getRight());
+            BlockPos middleChosenPos = position.add(middleLeaves.get(rand.nextInt(middleLeaves.size())));
+
+            specialWorld.setBlockState(middleChosenPos, testLeaves);
+            specialWorld.setBlockState(middleChosenPos.down(), testLeaves);
 
             return true;
         } else
@@ -134,62 +155,62 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
     }
 
     //@formatter:off
-    private IBlockState[][] variant1WeepingLeaves = new IBlockState[][]{
+    private IBlockState[][][] variant1WeepingLeaves = new IBlockState[][][]{{
             {phantomLeaves, air,                phantomLeaves,  phantomLeaves,  air},
             {phantomLeaves, phantomLeaves,      air,            phantomLeaves,  phantomLeaves},
             {phantomLeaves, phantomLeaves,      air,            phantomLeaves,  phantomLeaves},
             {phantomLeaves, phantomLeaves,      air,            phantomLeaves,  phantomLeaves},
             {phantomLeaves, phantomLeaves,      air,            air,            phantomLeaves},
             {air,           phantomLeaves,      air,            air,            phantomLeaves}
-    };
+    },{
+            {air, air,      phantomLeaves,  air,  air},
+            {air, air,      phantomLeaves,            air,  air},
+            {air, air,      phantomLeaves,            air,  air},
+            {air, air,      air,            air,  air}
+    }};
 
-    private IBlockState[][] variant2WeepingLeaves = new IBlockState[][]{
+    private IBlockState[][][] variant2WeepingLeaves = new IBlockState[][][]{{
             {phantomLeaves, phantomLeaves,  air,            phantomLeaves,  phantomLeaves},
             {phantomLeaves, phantomLeaves,  phantomLeaves,  phantomLeaves,  phantomLeaves},
             {phantomLeaves, air,            phantomLeaves,  air,            air},
             {phantomLeaves, air,            phantomLeaves,  air,            air},
             {air,           air,            phantomLeaves,  air,            air},
             {air,           air,            air,            air,            air}
-    };
+    },{
+            {air, air,  air,  phantomLeaves,  air},
+            {air, air,  air,  phantomLeaves,  air},
+            {air, air,  air,  air,            air},
+            {air, air,  air,  air,            air}
+    }};
 
-    private IBlockState[][] variant3WeepingLeaves = new IBlockState[][]{
+    private IBlockState[][][] variant3WeepingLeaves = new IBlockState[][][]{{
             {phantomLeaves, air,            air, phantomLeaves, air},
             {phantomLeaves, phantomLeaves,  air, phantomLeaves, phantomLeaves},
             {air,           phantomLeaves,  air, air,           phantomLeaves},
             {air,           phantomLeaves,  air, air,           phantomLeaves},
             {air,           phantomLeaves,  air, air,           phantomLeaves},
             {air,           phantomLeaves,  air, air,           phantomLeaves},
-    };
-    private IBlockState[][] variant4WeepingLeaves = new IBlockState[][]{
+    },{
+            {air, air,  phantomLeaves, air, air},
+            {air, air,  phantomLeaves, air, air},
+            {air, air,  air,           air, air},
+            {air, air,  air,           air, air}
+    }};
+
+    private IBlockState[][][] variant4WeepingLeaves = new IBlockState[][][]{{
             {air, air, air,             phantomLeaves,  phantomLeaves},
             {air, air, phantomLeaves,   phantomLeaves,  phantomLeaves},
             {air, air, phantomLeaves,   air,            phantomLeaves},
             {air, air, phantomLeaves,   air,            phantomLeaves},
             {air, air, phantomLeaves,   air,            air},
             {air, air, phantomLeaves,   air,            air},
-    };
+    },{
+            {air, phantomLeaves,    air,   air,  air},
+            {air, phantomLeaves,    air,   air,  air},
+            {air, air,              air,   air,  air},
+            {air, air,              air,   air,  air}
+    }};
     //@formatter:on
-
-    private BlockPos[] centerInternalPositions=new BlockPos[]{
-            new BlockPos(-1,3,0),
-            new BlockPos(1,3,0),
-            new BlockPos(0,3,1),
-            new BlockPos(0,3,-1)
-    };
-    private BlockPos[] internalPositions=new BlockPos[]{
-            new BlockPos(-1,3,0),
-            new BlockPos(1,3,0),
-            new BlockPos(0,3,1),
-            new BlockPos(0,3,-1)
-    };
-
-    private int[][] internalLeavesHeights = new int[][]{
-            {2, 2, 2, 2, 2},
-            {2, 2, 1, 2, 2},
-            {2, 1, 0, 1, 2},
-            {2, 2, 1, 2, 2},
-            {2, 2, 2, 2, 2}
-    };
 
     private class WorldSetWithTile {
         private final World world;
