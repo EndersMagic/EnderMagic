@@ -60,7 +60,6 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
     private IBlockState phantomLog = EMBlocks.enderLog.stateWithBlockType(EnderBlockTypes.EnderTreeType.PHANTOM);
     private IBlockState phantomLeaves = EMBlocks.enderLeaves.stateWithBlockType(EnderBlockTypes.EnderTreeType.PHANTOM);
     private IBlockState air = Blocks.AIR.getDefaultState();
-    private IBlockState testLeaves = Blocks.LEAVES.getDefaultState();
 
     private void setWithOffset(World world, BlockPos position, Vec3i offset, IBlockState state) {
         world.setBlockState(position.add(offset), state);
@@ -115,7 +114,7 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
                     Pair.of(new Vec3i(0, 4, -1), ImmutableSet.of(new Vec3i(-1, 4, -1), new Vec3i(1, 4, -1)))
             );
             Pair<Vec3i, Set<Vec3i>> centerChosenPos = centerLeaves.get(list.indexOf(rand.nextBoolean()?variant4WeepingLeaves:variant2WeepingLeaves));
-            specialWorld.setBlockState(position.add(centerChosenPos.getLeft()), testLeaves);
+            specialWorld.setBlockState(position.add(centerChosenPos.getLeft()), phantomLeaves);
 
             List<Vec3i> middleLeaves = Lists.newArrayList(
                     new Vec3i(-1, 4, -1),
@@ -126,8 +125,8 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
             middleLeaves.removeAll(centerChosenPos.getRight());
             BlockPos middleChosenPos = position.add(middleLeaves.get(rand.nextInt(middleLeaves.size())));
 
-            specialWorld.setBlockState(middleChosenPos, testLeaves);
-            specialWorld.setBlockState(middleChosenPos.down(), testLeaves);
+            specialWorld.setBlockState(middleChosenPos, phantomLeaves);
+            specialWorld.setBlockState(middleChosenPos.down(), phantomLeaves);
 
             return true;
         } else
