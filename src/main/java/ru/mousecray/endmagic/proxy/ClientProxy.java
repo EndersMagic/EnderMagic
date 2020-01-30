@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -109,22 +110,25 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 recipesForItems(EMItems.diamondTools())
         );
 
-        BookApi.addStandartChapter("blocks", "enderite_ore");
+        BookApi.addStandartChapter("blocks", "enderite_ore", new SmeltingRecipeComponent(new ItemStack(EMItems.rawEnderite)));
         BookApi.addStandartChapter("blocks", "blast_furnace", new RecipeComponent(new ItemStack(EMBlocks.blockBlastFurnace)));
         BookApi.addStandartChapter("blocks", "static_teleport", new RecipeComponent(new ItemStack(EMBlocks.blockMasterStaticPortal)));
         BookApi.addStandartChapter("blocks", "dark_teleport", new RecipeComponent(new ItemStack(EMBlocks.blockMasterDarkPortal)));
         BookApi.addStandartChapter("blocks", "portal_marker", new RecipeComponent(new ItemStack(EMBlocks.blockTopMark)));
 
-        BookApi.addStandartChapter("plants", "ender_grass");
-        BookApi.addStandartChapter("plants", "purple_pearl_sprout");
+        BookApi.addStandartChapter("plants", "ender_grass", new ImageComponent(new ResourceLocation(EM.ID, "textures/book/ender_grass.png"), I18n.format("")));
+        BookApi.addStandartChapter("plants", "purple_pearl_sprout",
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/purple_pearl_sprout.png"), ""));
         BookApi.addStandartChapter("plants", "curse_bush");
 
         BookApi.addStandartChapter("mechanics", "compression_system",
-                new ImageComponent(new ResourceLocation(EM.ID,"textures/book/compression_system_1.png"),""),
-                new ImageComponent(new ResourceLocation(EM.ID,"textures/book/compression_system_2.png"),""),
-                new ImageComponent(new ResourceLocation(EM.ID,"textures/book/compression_system_3.png"),"")
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/compression_system_1.png"), ""),
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/compression_system_2.png"), ""),
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/compression_system_3.png"), "")
         );
-        BookApi.addStandartChapter("mechanics", "teleport_construction");
+        BookApi.addStandartChapter("mechanics", "teleport_construction",
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_1.png"), I18n.format("tile.block_master_static_portal.name")),
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_2.png"), I18n.format("tile.block_master_dark_portal.name")));
     }
 
     private RecipeComponent recipesForItems(List<Item> items) {
