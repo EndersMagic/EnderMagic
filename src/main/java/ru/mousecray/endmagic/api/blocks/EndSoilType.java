@@ -1,10 +1,8 @@
 package ru.mousecray.endmagic.api.blocks;
 
-public enum EndBlockType {
+public enum EndSoilType {
 	GRASS,
 	DIRT,
 	STONE,
-	WILD_PLANT,
-	CROP,
 	UNDEFINED;
 }

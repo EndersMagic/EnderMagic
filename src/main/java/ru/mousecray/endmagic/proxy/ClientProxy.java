@@ -1,7 +1,12 @@
 package ru.mousecray.endmagic.proxy;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+
 import codechicken.lib.packet.PacketCustom;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -26,6 +31,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
+
 import ru.mousecray.endmagic.api.embook.components.ImageComponent;
 import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
@@ -51,6 +57,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
+
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
     public ClientProxy() {
@@ -188,7 +195,6 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
             ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
 
             if (bakedModelOverridesR.containsKey(key)) {
-                System.out.println(resource);
                 e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
             }
         }

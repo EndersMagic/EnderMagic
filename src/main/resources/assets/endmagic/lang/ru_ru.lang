@@ -38,8 +38,8 @@ tile.ender_tree_slab.natural.name=Природная плита
 tile.ender_tree_slab.immortal.name=Плита из бессмертного дерева
 tile.ender_tree_slab.phantom.name=Призрачная плита
 
-tile.ender_ground_grass.live.name=Мёртвая поросль
-tile.ender_ground_grass.dead.name=Живая поросль
+tile.ender_ground_grass.live.name=Живая поросль
+tile.ender_ground_grass.dead.name=Мёртвая поросль
 tile.ender_ground_grass.frozen.name=Замёрзшая поросль
 
 tile.ender_ground_stone.live.name=Цветущий эндерняк
@@ -137,9 +137,8 @@ item.phantom_diamond_hoe.name=Мотыга из призрачного алма�
 
 itemGroup.em_cretive_tab=Магия края
 tooltip.ender_seeds=Растут на эндерняке
-
 book.main_page_title=Книга Края
-#Categories
+
 book.category.items=Предметы
 book.category.blocks=Блоки
 book.category.plants=Растения

@@ -10,9 +10,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 
-public class BlockEnderStone<StoneType extends Enum<StoneType> & IStringSerializable> extends VariativeBlock<StoneType>{
+public class BlockEnderStone<StoneType extends Enum<StoneType> & IStringSerializable> extends VariativeBlock<StoneType> implements IEndSoil {
 	public BlockEnderStone(Class<StoneType> type, Function<StoneType, MapColor> mapFunc) {
 		super(type, Material.ROCK, "stone", mapFunc);
 		
