@@ -27,7 +27,7 @@ public class Location {
 
     @Override
     public String toString() {
-        return "Location(dimension= " + dim + ", x = " + x + ", y = " + y + ", z = " + z + ")";
+        return "Location(dimension = " + dim + ", x = " + x + ", y = " + y + ", z = " + z + ")";
     }
 
     public NBTTagCompound toNbt() {
