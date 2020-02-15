@@ -16,6 +16,7 @@ import static ru.mousecray.endmagic.api.embook.alignment.Alignment.bottom;
 import static ru.mousecray.endmagic.api.embook.alignment.Alignment.centerX;
 
 public class ImagePage implements IPage {
+
     private final ResourceLocation texture;
     private final String label;
 
