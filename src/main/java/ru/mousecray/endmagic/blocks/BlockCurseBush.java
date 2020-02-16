@@ -3,8 +3,8 @@ package ru.mousecray.endmagic.blocks;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -22,14 +22,16 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.api.EMUtils;
+import ru.mousecray.endmagic.api.blocks.EMBlockBush;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.entity.EntityCurseBush;
 
-public class BlockCurseBush extends BlockBush {
+public class BlockCurseBush extends EMBlockBush {
 	
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 	
 	public BlockCurseBush() {
+		super(Material.PLANTS);
 		setDefaultState(blockState.getBaseState().withProperty(ACTIVE, Boolean.valueOf(false)));
 		setHardness(0.0F);
 		setSoundType(SoundType.PLANT);
@@ -129,14 +131,9 @@ public class BlockCurseBush extends BlockBush {
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return Items.AIR;
     }
-    
-    @Override
-    public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && EMUtils.isSoil(world, pos.down(), true, EndSoilType.GRASS);
-    }
 
-    @Override
-    public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-        return EMUtils.isSoil(world, pos.down(), true, EndSoilType.GRASS);
-    }
+	@Override
+	protected boolean canSustainBush(IBlockState state) {
+		return EMUtils.isSoil(state, true, false, EndSoilType.GRASS, EndSoilType.DIRT);
+	}
 }

@@ -12,11 +12,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
+import ru.mousecray.endmagic.api.blocks.EnderPlantType;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.init.EMItems;
@@ -56,12 +58,12 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
     
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && EMUtils.isSoil(world, pos.down(), true, EndSoilType.GRASS);
+        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && EMUtils.isSoil(world.getBlockState(pos.down()), true, false, EndSoilType.GRASS);
     }
 
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-    	return EMUtils.isSoil(world, pos.down(), true, EndSoilType.GRASS);
+    	return EMUtils.isSoil(world.getBlockState(pos.down()), true, false, EndSoilType.GRASS);
     }
     
     @Override
@@ -84,5 +86,10 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
         super.getDrops(drops, world, pos, state, fortune);
         if (this.isMaxAge(state) && RANDOM.nextInt(30) < 15)
             drops.add(new ItemStack(Items.DYE, 1, 4));
+    }
+    
+    @Override
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
+    	return EnderPlantType.end_crop;
     }
 }

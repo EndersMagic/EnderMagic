@@ -55,7 +55,6 @@ public class EntityEMEnderPearl extends EntityThrowable {
         		for(int i = -2; i < 2; i++) {
         			for(int j = -2; j < 2; j++) {
 		        		BlockPos blockpos = result.getBlockPos().add(i, 0, j);
-//		        		if(world.getBlockState(blockpos).getBlock() instanceof BlockContainer)
 		        		TileEntity tileentity = this.world.getTileEntity(blockpos);
 		        		if(tileentity == null) {
 			        		EntityFallingBlock entity = new EntityFallingBlock(world, blockpos.getX(), blockpos.getY(), blockpos.getZ(), world.getBlockState(blockpos));
@@ -65,7 +64,6 @@ public class EntityEMEnderPearl extends EntityThrowable {
 			                entity.moveToBlockPosAndAngles(blockpos, 0F, 0F);
 			        		
 			        		entity.setHurtEntities(true);
-//		        			if(tileentity != null) entity.tileEntityData = tileentity.getTileData();
 			        		world.spawnEntity(entity);
 		        		}
         			}

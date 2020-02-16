@@ -1,0 +1,13 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "cross": "endmagic:blocks/chrys_flower"
+        }
+    },
+    "variants": {
+        "normal": {
+            "model": "tinted_cross"
+        }
+    }
+}

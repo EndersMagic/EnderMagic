@@ -68,7 +68,7 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> ext
         }
 
         if (rand.nextInt(100) < chance) {
-            ItemStack drop = new ItemStack(getItemDropped(state, rand, fortune), 1, damageDropped(state));
+            ItemStack drop = new ItemStack(getItemDropped(state, rand, fortune), quantityDropped(rand), damageDropped(state));
             if (!drop.isEmpty())
                 drops.add(drop);
         }

@@ -118,7 +118,7 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
 
     public interface SaplingThings {
         default boolean canPlaceBlockAt(World world, BlockPos pos) {
-            return EMUtils.isSoil(world, pos.down(), true, EndSoilType.DIRT, EndSoilType.GRASS);
+            return EMUtils.isSoil(world.getBlockState(pos.down()), true, false, EndSoilType.DIRT, EndSoilType.GRASS);
         }
 
         default void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {

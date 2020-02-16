@@ -25,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -40,7 +39,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
-import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
@@ -63,7 +61,7 @@ public class EMEvents {
             }
     }
 
-    @SubscribeEvent
+//    @SubscribeEvent
     public static void loadLastWorld(GuiOpenEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         if (event.getGui() instanceof GuiMainMenu) {
@@ -77,22 +75,36 @@ public class EMEvents {
         }
     }
     
+    //TODO: onUseBonemeal
     @SubscribeEvent
     public static void onUseBonemeal(BonemealEvent event) {
     	World world  = event.getWorld();
     	BlockPos pos = event.getPos();
     	Random rand = event.getEntityPlayer().getRNG();
-    	if (EMUtils.isSoil(world, pos, false)) ((IEndSoil)event.getBlock().getBlock()).onUseBonemeal(world, pos, event.getEntityPlayer().getRNG(), event.getEntityPlayer());
-    	else if (event.getBlock().getBlock() == Blocks.END_STONE) {
-    		for (int x = -1; x < 2; ++x) {
-    			for (int z = -1; z < 2; ++z) {
-        			if (world.isAirBlock(pos.add(x, 1, z)) && event.getEntityPlayer().getRNG().nextInt(10) > 7) {
-        				world.setBlockState(pos.add(x, 1, z), EMBlocks.enderOrchid.getDefaultState());	
-        			}
-    			}
-    		}
-    		for (int i = 0; i < 32; ++i) world.spawnParticle(EnumParticleTypes.PORTAL, pos.up().getX(), pos.up().getY() + rand.nextDouble() * 2.0D, pos.up().getZ(), rand.nextGaussian(), 0.0D, rand.nextGaussian());
-    	}
+//    	if(event.getBlock().getBlock() instanceof IEndSoil) {
+//    		IEndSoil soil = (IEndSoil)event.getBlock().getBlock();
+//    		if(soil.canUseBonemeal()) {
+//	    		List<BlockPos> existPos = EMUtils.isSoil(world, pos.add(-1, 0, -1), pos.add(1, 0, 1), false, true, EndSoilType.DIRT, EndSoilType.GRASS);
+//	    		for(BlockPos pos2 : existPos) {
+//	    			IEndSoil soil2 = (IEndSoil)world.getBlockState(pos2).getBlock();
+//	    			IBlockState state = soil2.getBonemealCrops(rand, event.getEntityPlayer(), world.getBlockState(pos2));
+//	    			if (state.getBlock() != Blocks.AIR && world.isAirBlock(pos2.up())) world.setBlockState(pos2.up(), state);
+//	        		ItemDye.spawnBonemealParticles(world, pos, 5);
+//	    		}
+//	    		event.setResult(Result.ALLOW);
+//    		}
+//    	}
+//    	else if (event.getBlock().getBlock() == Blocks.END_STONE) {
+//    		for (int x = -1; x < 2; ++x) {
+//    			for (int z = -1; z < 2; ++z) {
+//        			if (world.isAirBlock(pos.add(x, 1, z)) && world.getBlockState(pos.add(x, 0, z)).getBlock() == Blocks.END_STONE && event.getEntityPlayer().getRNG().nextInt(500) > 498) {
+//        				world.setBlockState(pos.add(x, 1, z), EMBlocks.enderTallgrass.getDefaultState());
+//        	    		ItemDye.spawnBonemealParticles(world, pos, 5);
+//        			}
+//    			}
+//    		}
+//    		event.setResult(Result.ALLOW);
+//    	}
     }
 
     @SubscribeEvent

@@ -6,6 +6,9 @@ import ru.mousecray.endmagic.blocks.BlockBlastFurnace;
 import ru.mousecray.endmagic.blocks.BlockCurseBush;
 import ru.mousecray.endmagic.blocks.BlockEnderCoal;
 import ru.mousecray.endmagic.blocks.BlockNamed;
+import ru.mousecray.endmagic.blocks.ChrysofillumFlower;
+import ru.mousecray.endmagic.blocks.ChrysofillumFruit;
+import ru.mousecray.endmagic.blocks.ChrysofillumVine;
 import ru.mousecray.endmagic.blocks.EMSlab;
 import ru.mousecray.endmagic.blocks.EnderCrops;
 import ru.mousecray.endmagic.blocks.EnderOrchid;
@@ -57,4 +60,8 @@ public final class EMBlocks {
     
     public static final BlockEnderGrass blockEnderGrass = new BlockEnderGrass(EnderGroundType.class, type -> ((EnderGroundType)type).getMapColor(), type -> ((EnderGroundType)type).getSound());
     public static final BlockEnderStone blockEnderStone = new BlockEnderStone(EnderGroundType.class, type -> ((EnderGroundType)type).getMapColor());
+    
+    public static final ChrysofillumVine chrysVine = new ChrysofillumVine();
+    public static final ChrysofillumFlower chrysFlower = new ChrysofillumFlower();
+    public static final ChrysofillumFruit chrysFruit = new ChrysofillumFruit();
 }
