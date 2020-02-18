@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import codechicken.lib.packet.PacketCustom;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
