@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.items;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -28,14 +29,14 @@ import ru.mousecray.endmagic.util.registry.NameProvider;
 
 public class EMSeeds extends Item implements IPlantable, NameProvider, ItemOneWhiteEMTextured {
 
-    private final Block crops;
+    private final Supplier<Block> crops;
     private final EndSoilType[] soilBlockID;
     @Nullable
     private final String textTooltip;
     private final String name;
 	private boolean isEndStone;
 
-    public EMSeeds(Block crops, String name, @Nullable String text, boolean isEndStone, EndSoilType... soil) {
+    public EMSeeds(Supplier<Block> crops, String name, @Nullable String text, boolean isEndStone, EndSoilType... soil) {
         this.crops = crops;
         this.name = name;
         this.soilBlockID = soil;
@@ -105,7 +106,7 @@ public class EMSeeds extends Item implements IPlantable, NameProvider, ItemOneWh
 
     @Override
     public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
-        return crops.getDefaultState();
+        return crops.get().getDefaultState();
     }
 
     @Override
