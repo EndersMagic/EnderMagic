@@ -17,7 +17,7 @@ public class WorldGenEnderTrees implements IWorldGenerator {
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if (world.provider.getDimensionType() == DimensionType.THE_END) {
             dragonGenerator.generateWorld(random, chunkX, chunkZ, world);
-            naturalGenerator.generateWorld(random, chunkX, chunkZ, world);
+            naturalGenerator.generateWorld(random, chunkX * 16, chunkZ * 16, world);
         }
     }
 }

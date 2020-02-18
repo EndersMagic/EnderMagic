@@ -92,20 +92,14 @@ public class WorldGenNaturalTree extends WorldGenAbstractTree {
 			int[][] mainBranch = EMUtils.rotateForY(branches.get(9), new int[] { 0, 0, 0 }, rot3);
 			BlockPos[] lastPos1, lastPos2, lastPos3;
 			for (int h = 0; h < logHeight; ++h) { world.setBlockState(position.up(h + 1), enderLog); }
-			for (int z = -1; z < 2; ++z) {
-				for (int x = -1; x < 2; ++x) {
-					world.setBlockState(position.add(x, 1, z), enderLog.withProperty(BlockLog.LOG_AXIS,
-							world.rand.nextBoolean() ? EnumAxis.X : EnumAxis.Y));
-				}
-			}
-			world.setBlockState(position.add(-1, 2, 0), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
-			world.setBlockState(position.add(1, 2, 0), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
-			world.setBlockState(position.add(0, 2, 1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
-			world.setBlockState(position.add(0, 2, -1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
+			world.setBlockState(position.add(-1, 1, 0), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
+			world.setBlockState(position.add(1, 1, 0), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
+			world.setBlockState(position.add(0, 1, 1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
+			world.setBlockState(position.add(0, 1, -1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
 			if (world.rand.nextBoolean())
-				world.setBlockState(position.add(-2, 1, 0), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Z));
+				world.setBlockState(position.add(-1, 1, 1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Z));
 			if (world.rand.nextBoolean())
-				world.setBlockState(position.add(0, 1, -2), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Z));
+				world.setBlockState(position.add(1, 1, -1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Z));
 
 			lastPos1 = generateBranch(world, branch1, logHeight / 3, position, defaultAxis);
 			lastPos2 = generateBranch(world, branch2, logHeight / 3 * 2, position, defaultAxis);
@@ -116,18 +110,18 @@ public class WorldGenNaturalTree extends WorldGenAbstractTree {
 			generateLeaves(world, leaves.get(world.rand.nextInt(3)), lastPos3[0]);
 
 			if (lastPos1.length > 1) {
-				world.setBlockState(position.down(), EMBlocks.chrysVine.getDefaultState());
-				world.setBlockState(position.down(2), EMBlocks.chrysFlower.getDefaultState());
+				world.setBlockState(lastPos1[1].down(), EMBlocks.chrysVine.getDefaultState());
+				world.setBlockState(lastPos1[1].down(2), EMBlocks.chrysFlower.getDefaultState());
 			}
 			if (lastPos2.length > 1) {
-				world.setBlockState(position.down(), EMBlocks.chrysVine.getDefaultState());
-				world.setBlockState(position.down(2), EMBlocks.chrysVine.getDefaultState());
-				world.setBlockState(position.down(3), EMBlocks.chrysFruit.getDefaultState());
+				world.setBlockState(lastPos2[1].down(), EMBlocks.chrysVine.getDefaultState());
+				world.setBlockState(lastPos2[1].down(2), EMBlocks.chrysVine.getDefaultState());
+				world.setBlockState(lastPos2[1].down(3), EMBlocks.chrysFruit.getDefaultState());
 			}
 			if (lastPos3.length > 1) {
-				world.setBlockState(position.down(), EMBlocks.chrysVine.getDefaultState());
-				world.setBlockState(position.down(2), EMBlocks.chrysVine.getDefaultState());
-				world.setBlockState(position.down(3), EMBlocks.chrysFlower.getDefaultState());
+				world.setBlockState(lastPos3[1].down(), EMBlocks.chrysVine.getDefaultState());
+				world.setBlockState(lastPos3[1].down(2), EMBlocks.chrysVine.getDefaultState());
+				world.setBlockState(lastPos3[1].down(3), EMBlocks.chrysFlower.getDefaultState());
 			}
 			return true;
 		}
@@ -135,24 +129,23 @@ public class WorldGenNaturalTree extends WorldGenAbstractTree {
 	}
 
 	private boolean checkAirBound(World world, BlockPos position, int logHeight) {
-		boolean flag = false;
-		if (position.getY() >= 1 && position.getY() + logHeight + 1 <= world.getHeight()) {
-			for (int y = position.getY(); y <= position.getY() + 1 + logHeight; ++y) {
+		boolean flag = true;
+		if (position.getY() + 1 >= 1 && position.getY() + logHeight + 2 <= world.getHeight()) {
+			for (int y = position.getY() + 1; y <= position.getY() + 2 + logHeight; ++y) {
 				int k = 1;
-
-				if (y == position.getY()) k = 1;
-				else if (y == position.getY() + 1) k = 2;
+				if (y == position.getY() + 2) k = 2;
 				else k = 5;
 
 				BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
 				for (int x = position.getX() - k; x <= position.getX() + k && flag; ++x) {
 					for (int z = position.getZ() - k; z <= position.getZ() + k && flag; ++z) {
-						if (isReplaceable(world, mutablePos.setPos(x, y, z))) flag = true;
+						if (!isReplaceable(world, mutablePos.setPos(x, y, z))) flag = false;
 					}
 				}
 			}
 		}
+		else return false;
 		return flag;
 	}
 

@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.worldgen.plants;
 
 import java.util.Random;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -14,25 +15,23 @@ public class EndGrassGen extends WorldGenerator {
 	public EndGrassGen() {
 		super(false);
 	}
-
-	@SuppressWarnings("unused")
+	
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {
-        for (int f = 0; f < 64; ++f) {
-    		int x = rand.nextInt(8) - rand.nextInt(8);
-    		int y = rand.nextInt(4) - rand.nextInt(4);
-    		int z = rand.nextInt(8) - rand.nextInt(8);
-    		BlockPos pos2 = pos.add(x, -1, z);
+        for (int f = 0; f < 25; ++f) {
+    		int x = rand.nextInt(16);
+    		int z = rand.nextInt(16);
+    		BlockPos pos2 = world.getTopSolidOrLiquidBlock(pos.add(x, 0, z)).down();
+    		IBlockState state = world.getBlockState(pos2);
 			boolean flag = EMUtils.isSoil(world.getBlockState(pos2), true, false, EndSoilType.GRASS, EndSoilType.DIRT);
-			System.out.println("Start");
-			int chance = rand.nextInt(100);
+//			System.out.println("Start");
 			if (flag) {
-				System.out.println("/tp " + pos2.up().getX() + " " + pos2.up().getY() + " " + pos2.up().getZ());
-				if (chance > 80) world.setBlockState(pos2.up(), EMBlocks.enderOrchid.getDefaultState(), 18);
-				else if (chance > 50) world.setBlockState(pos2.up(), EMBlocks.enderTallgrass.getDefaultState(), 18);
+				int chance = rand.nextInt(10);
+//				System.out.println("/tp " + pos2.up().getX() + " " + pos2.up().getY() + " " + pos2.up().getZ());
+				if (chance > 8) world.setBlockState(pos2.up(), EMBlocks.enderOrchid.getDefaultState(), 18);
+				else /* if (chance > 50) */ world.setBlockState(pos2.up(), EMBlocks.enderTallgrass.getDefaultState(), 18);
 			}
-			return true;
 		}
-        return false;
+        return true;
 	}
 }

@@ -19,12 +19,11 @@ public class WorldGenEnderPlants implements IWorldGenerator {
 			IChunkProvider chunkProvider) {
 		if (world.provider.getDimensionType() == DimensionType.THE_END) {
 			Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
-			if (!chunk.isEmpty()) {
-				int x = chunkX + random.nextInt(16);
-				int y = random.nextInt(70);
-				int z = chunkZ + random.nextInt(16);
-				BlockPos pos = new BlockPos(x + 8, y, z + 8);
-				if (world.isAirBlock(pos)) endGrassGen.generate(world, random, pos);
+			if (random.nextInt(10) == 0 && !chunk.isEmpty()) {
+				int x = chunkX << 4;
+				int z = chunkZ << 4;
+				BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).down();
+				if (!world.isAirBlock(pos)) endGrassGen.generate(world, random, pos);
 			}
 		}
 	}

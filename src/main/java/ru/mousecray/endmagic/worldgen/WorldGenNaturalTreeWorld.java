@@ -12,12 +12,11 @@ public class WorldGenNaturalTreeWorld {
 
 	public void generateWorld(Random random, int chunkX, int chunkZ, World world) {
 		Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
-		if (!chunk.isEmpty()) {
-			int x = chunkX + random.nextInt(16);
-			int y = random.nextInt(70);
-			int z = chunkZ + random.nextInt(16);
-			BlockPos pos = new BlockPos(x + 8, y, z + 8);
-			if (world.isAirBlock(pos)) treeGen.generate(world, random, pos.down());
+		if (random.nextInt(10) == 0 && !chunk.isEmpty()) {
+				int x = random.nextInt(16);
+				int z = random.nextInt(16);
+				BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(chunkX + x + 8, 0, chunkZ + z + 8)).down();
+				treeGen.generate(world, random, pos);
 		}
 	}
 }
