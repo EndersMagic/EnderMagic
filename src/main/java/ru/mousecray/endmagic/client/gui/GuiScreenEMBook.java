@@ -1,7 +1,6 @@
 package ru.mousecray.endmagic.client.gui;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -39,8 +38,6 @@ public class GuiScreenEMBook extends GuiScreen {
     }
 
     private PageContainer currentPage = BookApi.mainChapter();
-
-    private Map<String, PageContainer> bookContent = BookApi.getBookContent();
 
     private static final ResourceLocation BOOK_TEXTURES = new ResourceLocation(EM.ID, "textures/gui/book.png");
 

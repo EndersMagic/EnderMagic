@@ -18,7 +18,8 @@ public class EMTileEntity extends TileEntity {
         readFromNBT(pkt.getNbtCompound());
     }
 
-    public SPacketUpdateTileEntity getUpdatePacket() {
+    @Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound tagCompound = new NBTTagCompound();
         writeToNBT(tagCompound);
         return new SPacketUpdateTileEntity(pos, 3, tagCompound);

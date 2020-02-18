@@ -97,8 +97,9 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         return state.getValue(blockType).isOpaqueCube();
     }
 
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        worldIn.setBlockState(pos, state.withProperty(blockType, byIndex.apply(stack.getItemDamage())));
+    @Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        world.setBlockState(pos, state.withProperty(blockType, byIndex.apply(stack.getItemDamage())));
     }
 
     @Override
@@ -148,8 +149,10 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         for (int i = 0; i < metaCount; i++)
             items.add(new ItemStack(this, 1, i));
     }
-
+    
     public IBlockState stateWithBlockType(BlockType type1) {
         return getDefaultState().withProperty(blockType, type1);
     }
+    
+	  public IProperty getVariantType() { return blockType; }
 }

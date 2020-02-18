@@ -19,6 +19,7 @@ import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
 
+	public static final EnderCrops enderCrops = new EnderCrops();
     public static final EnderTallgrass enderTallgrass = new EnderTallgrass();
     public static final EnderOrchid enderOrchid = new EnderOrchid();
 
@@ -29,7 +30,6 @@ public final class EMBlocks {
     public static final BlockPortal blockPortal = new BlockPortal();
     public static final BlockTopMark blockTopMark = new BlockTopMark();
 
-    public static final EnderCrops enderCrops = new EnderCrops();
     public static final BlockCurseBush blockCurseBush = new BlockCurseBush();
 
     public static final BlockEnderCoal dragonCoal = new BlockEnderCoal("dragon_coal_block", RGBA.fromRGB(0xff00ff));
@@ -49,4 +49,8 @@ public final class EMBlocks {
 
     public static final BlockEnderGrass<EnderGroundType> blockEnderGrass = new BlockEnderGrass<>(EnderGroundType.class, type -> type.getMapColor(), type -> type.getSound());
     public static final BlockEnderStone<EnderGroundType> blockEnderStone = new BlockEnderStone<>(EnderGroundType.class, type -> type.getMapColor());
+    
+    public static final ChrysofillumVine chrysVine = new ChrysofillumVine();
+    public static final ChrysofillumFlower chrysFlower = new ChrysofillumFlower();
+    public static final ChrysofillumFruit chrysFruit = new ChrysofillumFruit();
 }

@@ -28,7 +28,6 @@ public class Pipeline<I, O> implements PipelineElement<I, O> {
 		this.elements = ImmutableList.copyOf(elements);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public O pipe(I in){
 		Object o = in;

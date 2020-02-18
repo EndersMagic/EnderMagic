@@ -18,7 +18,6 @@ public class TextComponent implements IChapterComponent {
     private final String text;
     public final static int pageSize = BookApi.pageHeight / Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
     public final static int lineSize = BookApi.pageWidth;
-    private Map<FontRenderer, ImmutableList<IPage>> cache = new HashMap<>();
     private ImmutableList<IPage> pages;
 
     public TextComponent(String unlocalizedText) {

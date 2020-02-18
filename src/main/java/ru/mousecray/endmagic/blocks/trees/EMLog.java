@@ -1,9 +1,14 @@
 package ru.mousecray.endmagic.blocks.trees;
 
+import static net.minecraft.block.BlockLog.LOG_AXIS;
+
+import java.util.function.Function;
+
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,10 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
-
-import java.util.function.Function;
-
-import static net.minecraft.block.BlockLog.LOG_AXIS;
 
 public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable & BlockTypeBase> extends VariativeBlock<TreeType> {
 
@@ -55,7 +56,8 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable & Block
         return new BlockStateContainer(this, LOG_AXIS);
     }
 
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    @Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getStateFromMeta(meta).withProperty(LOG_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
     }
 

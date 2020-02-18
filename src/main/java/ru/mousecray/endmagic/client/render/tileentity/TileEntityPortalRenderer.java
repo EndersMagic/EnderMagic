@@ -21,7 +21,8 @@ public class TileEntityPortalRenderer extends TileEntitySpecialRenderer<TilePort
         }
     };
 
-    public void render(TilePortal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    @Override
+	public void render(TilePortal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         vanilaRender.render(teEndPortal, x, y, z, partialTicks, destroyStage, alpha);
     }
 }

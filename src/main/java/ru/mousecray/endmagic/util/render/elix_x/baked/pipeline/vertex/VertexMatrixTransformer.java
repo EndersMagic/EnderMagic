@@ -39,7 +39,7 @@ public class VertexMatrixTransformer implements PipelineElement<DefaultUnpackedV
     @Override
     public DefaultUnpackedVertex pipe(DefaultUnpackedVertex in) {
         matrix.transform(TRSRTransformation.toVecmath(new Vector3f((float) in.getPos().x, (float) in.getPos().y, (float) in.getPos().z)));
-        //TODO Normals
+        //TODO: Normals
         // TRSRTransformation.toVecmath(matrix)
         return in;
     }

@@ -33,4 +33,9 @@ public class BlockEnderStone<StoneType extends Enum<StoneType> & IStringSerializ
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this);
 	}
+	
+	@Override
+	public boolean canUseBonemeal() {
+		return false;
+	}
 }

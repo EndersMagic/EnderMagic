@@ -27,7 +27,8 @@ public class ItemNamed extends Item implements ItemTextured, NameProvider {
         return name;
     }
 
-    public Map<String, Integer> textures() {
+    @Override
+	public Map<String, Integer> textures() {
         return textures;
     }
 }

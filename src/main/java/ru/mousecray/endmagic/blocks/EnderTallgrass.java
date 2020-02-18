@@ -5,12 +5,10 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,14 +23,15 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.api.EMUtils;
+import ru.mousecray.endmagic.api.blocks.EMBlockBush;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.util.EMUtils;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 
-public class EnderTallgrass extends BlockBush implements IShearable, IEMModel {
+public class EnderTallgrass extends EMBlockBush implements IShearable, IEMModel {
 	
     protected static final AxisAlignedBB END_GRASS_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
 
@@ -47,22 +46,12 @@ public class EnderTallgrass extends BlockBush implements IShearable, IEMModel {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerModels(IModelRegistration modelRegistration) {
-        modelRegistration.addBakedModelOverride(this.getRegistryName(), base -> new BakedModelFullbright(base, EM.ID + ":blocks/ender_grass"));
+        modelRegistration.addBakedModelOverride(this.getRegistryName(), base -> new BakedModelFullbright(base, EM.ID + ":blocks/ender_tallgrass"));
     }
     
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return END_GRASS_AABB;
-    }
-    
-    @Override
-    public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && (EMUtils.isSoil(world, pos.down(), EndSoilType.GRASS) || world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE);
-    }
-
-    @Override
-    public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-        return  EMUtils.isSoil(world, pos.down(), EndSoilType.GRASS) || world.getBlockState(pos.down()).getBlock() == Blocks.END_STONE;
     }
     
     @Override
@@ -107,4 +96,9 @@ public class EnderTallgrass extends BlockBush implements IShearable, IEMModel {
         ItemStack seed = new ItemStack(EMItems.enderSeeds, fortune);
         if (!seed.isEmpty()) drops.add(seed);
     }
+
+	@Override
+	protected boolean canSustainBush(IBlockState state) {
+		return EMUtils.isSoil(state, true, false, EndSoilType.GRASS);
+	}
 }

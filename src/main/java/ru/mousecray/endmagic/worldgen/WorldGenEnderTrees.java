@@ -11,10 +11,13 @@ import java.util.Random;
 public class WorldGenEnderTrees implements IWorldGenerator {
 
     private WorldGenDragonTreeWorld dragonGenerator = new WorldGenDragonTreeWorld();
+    private WorldGenNaturalTreeWorld naturalGenerator = new WorldGenNaturalTreeWorld();
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        if (world.provider.getDimensionType() == DimensionType.THE_END)
+        if (world.provider.getDimensionType() == DimensionType.THE_END) {
             dragonGenerator.generateWorld(random, chunkX, chunkZ, world);
+            naturalGenerator.generateWorld(random, chunkX * 16, chunkZ * 16, world);
+        }
     }
 }

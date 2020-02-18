@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -57,9 +58,12 @@ public class EntityCurseBush extends EntityMob {
 	@Override
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
-		if(isBlock) {
-			setDead();
-			if(!world.isRemote) world.setBlockState(posToBlock, EMBlocks.blockCurseBush.getDefaultState());
+		if (!world.isRemote) {
+			if (isBlock) {
+				setDead();
+				world.setBlockState(posToBlock, EMBlocks.blockCurseBush.getDefaultState());
+			}
+			else if (isDead) isBlock = true;
 		}
 	}
 
@@ -131,15 +135,11 @@ public class EntityCurseBush extends EntityMob {
 			if(living.getActiveHand() != null) {
 				ItemStack stack = living.getHeldItem(living.getActiveHand());
 				if(stack.getItem() instanceof ItemSword) {
-					NBTTagList enchantments = stack.getEnchantmentTagList();
-					for (int i = 0; i < enchantments.tagCount(); ++i) {
-						NBTTagCompound tag = enchantments.getCompoundTagAt(i);
-						Enchantment itemEnchant = Enchantment.getEnchantmentByID(tag.getShort("id"));
-						if (itemEnchant == Enchantments.FIRE_ASPECT) {
-							setFire(3);
-							dealFireDamageM(tag.getShort("lvl"));
-							return true;
-						}
+					int level = EnchantmentHelper.getEnchantmentLevel(Enchantments.FIRE_ASPECT, stack);
+					if (level > 0) {
+						setFire(3);
+						dealFireDamageM(level);
+						return true;
 					}
 				}
 			}
@@ -160,9 +160,10 @@ public class EntityCurseBush extends EntityMob {
         if (!isImmuneToFire) attackEntityFrom(DamageSource.IN_FIRE, amount);
     }
 	
+	@Override
 	protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source) {
 		if(source.isFireDamage()) InventoryHelper.spawnItemStack(world, posX, posY, posZ, new ItemStack(Items.COAL));
-	};
+	}
 
 	@Override
 	public boolean canBeHitWithPotion() {

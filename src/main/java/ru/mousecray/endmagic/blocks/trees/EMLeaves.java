@@ -48,11 +48,13 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
         return new BlockStateContainer(this);
     }
 
-    public int quantityDropped(Random random) {
+    @Override
+	public int quantityDropped(Random random) {
         return random.nextInt(20) == 0 ? 1 : 0;
     }
 
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+    @Override
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return Item.getItemFromBlock(EMBlocks.enderSapling);
     }
 
@@ -67,7 +69,7 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
         }
 
         if (rand.nextInt(100) < chance) {
-            ItemStack drop = new ItemStack(getItemDropped(state, rand, fortune), 1, damageDropped(state));
+            ItemStack drop = new ItemStack(getItemDropped(state, rand, fortune), quantityDropped(rand), damageDropped(state));
             if (!drop.isEmpty())
                 drops.add(drop);
         }
@@ -107,7 +109,8 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
                 damageDropped(world.getBlockState(pos))));
     }
 
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    @Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         if (!worldIn.isRemote) {
             if (worldIn.isAreaLoaded(pos, 2)) {
                 if (findingArea(pos)
@@ -137,7 +140,8 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
     }
 
 
-    @SideOnly(Side.CLIENT)
+    @Override
+	@SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
         Blocks.LEAVES.randomDisplayTick(stateIn, worldIn, pos, rand);
     }

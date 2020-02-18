@@ -13,7 +13,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@SuppressWarnings("unchecked")
 public class ReflectionHelper {
 
 	private static final Field fieldConstructorModifiers;

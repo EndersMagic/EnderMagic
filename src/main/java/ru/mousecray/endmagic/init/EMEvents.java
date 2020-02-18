@@ -16,7 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -38,6 +37,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -228,6 +228,38 @@ public class EMEvents {
             }
         }
     }
+    
+    //TODO: onUseBonemeal
+    @SubscribeEvent
+    public static void onUseBonemeal(BonemealEvent event) {
+    	World world  = event.getWorld();
+    	BlockPos pos = event.getPos();
+    	Random rand = event.getEntityPlayer().getRNG();
+//    	if(event.getBlock().getBlock() instanceof IEndSoil) {
+//    		IEndSoil soil = (IEndSoil)event.getBlock().getBlock();
+//    		if(soil.canUseBonemeal()) {
+//	    		List<BlockPos> existPos = EMUtils.isSoil(world, pos.add(-1, 0, -1), pos.add(1, 0, 1), false, true, EndSoilType.DIRT, EndSoilType.GRASS);
+//	    		for(BlockPos pos2 : existPos) {
+//	    			IEndSoil soil2 = (IEndSoil)world.getBlockState(pos2).getBlock();
+//	    			IBlockState state = soil2.getBonemealCrops(rand, event.getEntityPlayer(), world.getBlockState(pos2));
+//	    			if (state.getBlock() != Blocks.AIR && world.isAirBlock(pos2.up())) world.setBlockState(pos2.up(), state);
+//	        		ItemDye.spawnBonemealParticles(world, pos, 5);
+//	    		}
+//	    		event.setResult(Result.ALLOW);
+//    		}
+//    	}
+//    	else if (event.getBlock().getBlock() == Blocks.END_STONE) {
+//    		for (int x = -1; x < 2; ++x) {
+//    			for (int z = -1; z < 2; ++z) {
+//        			if (world.isAirBlock(pos.add(x, 1, z)) && world.getBlockState(pos.add(x, 0, z)).getBlock() == Blocks.END_STONE && event.getEntityPlayer().getRNG().nextInt(500) > 498) {
+//        				world.setBlockState(pos.add(x, 1, z), EMBlocks.enderTallgrass.getDefaultState());
+//        	    		ItemDye.spawnBonemealParticles(world, pos, 5);
+//        			}
+//    			}
+//    		}
+//    		event.setResult(Result.ALLOW);
+//    	}
+    }
 
     @SubscribeEvent
     public static void onPressureExplosionCoal(ExplosionEvent.Start event) {
@@ -346,21 +378,13 @@ public class EMEvents {
 
     //TODO: Publishing standard ItemBow's method
     private static ItemStack findAmmo(EntityPlayer player) {
-        if (isArrow(player.getHeldItem(EnumHand.OFF_HAND))) return player.getHeldItem(EnumHand.OFF_HAND);
-        else if (isArrow(player.getHeldItem(EnumHand.MAIN_HAND))) return player.getHeldItem(EnumHand.MAIN_HAND);
+        if (EMUtils.isArrow(player.getHeldItem(EnumHand.OFF_HAND))) return player.getHeldItem(EnumHand.OFF_HAND);
+        else if (EMUtils.isArrow(player.getHeldItem(EnumHand.MAIN_HAND))) return player.getHeldItem(EnumHand.MAIN_HAND);
         else for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
                 ItemStack stack = player.inventory.getStackInSlot(i);
-                if (isArrow(stack)) return stack;
+                if (EMUtils.isArrow(stack)) return stack;
             }
 
         return ItemStack.EMPTY;
-    }
-
-    private static boolean isEnderArrow(ItemStack stack) {
-        return stack.getItem() == EMItems.enderArrow;
-    }
-
-    private static boolean isArrow(ItemStack stack) {
-        return stack.getItem() instanceof ItemArrow;
     }
 }

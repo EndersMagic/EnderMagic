@@ -27,11 +27,13 @@ public interface ItemTextured extends IEMModel {
     class companion {
         //may be unused
         public static ItemTextured simpletexturemodelItem = new ItemTextured() {
-            public Map<String, Integer> textures() {
+            @Override
+			public Map<String, Integer> textures() {
                 return ImmutableMap.of("none", 0xffffff);
             }
 
-            public CreativeTabs creativeTab() {
+            @SuppressWarnings("unused")
+			public CreativeTabs creativeTab() {
                 return null;
             }
         };
