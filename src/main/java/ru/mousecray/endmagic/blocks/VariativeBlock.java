@@ -89,16 +89,16 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
 
     @Override
     public boolean isFullCube(IBlockState state) {
-        return state.getValue(blockType).isFullCube();
+        return blockType == null || state.getValue(blockType).isFullCube();
     }
 
     @Override
     public boolean isOpaqueCube(IBlockState state) {
-        return state.getValue(blockType).isOpaqueCube();
+        return blockType == null || state.getValue(blockType).isOpaqueCube();
     }
 
     @Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         world.setBlockState(pos, state.withProperty(blockType, byIndex.apply(stack.getItemDamage())));
     }
 
@@ -149,10 +149,12 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         for (int i = 0; i < metaCount; i++)
             items.add(new ItemStack(this, 1, i));
     }
-    
+
     public IBlockState stateWithBlockType(BlockType type1) {
         return getDefaultState().withProperty(blockType, type1);
     }
-    
-	  public IProperty getVariantType() { return blockType; }
+
+    public IProperty getVariantType() {
+        return blockType;
+    }
 }
