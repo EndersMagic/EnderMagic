@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 import ru.mousecray.endmagic.init.EMBlocks;
 
@@ -30,7 +31,7 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable> extends VariativeBlock<TreeType> implements IShearable {
+public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & BlockTypeBase> extends VariativeBlock<TreeType> implements IShearable {
 
     public EMLeaves(Class<TreeType> type, Function<TreeType, MapColor> mapFunc) {
         super(type, Material.LEAVES, "leaves", mapFunc);

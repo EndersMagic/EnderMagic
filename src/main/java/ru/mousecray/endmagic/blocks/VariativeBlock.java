@@ -1,10 +1,5 @@
 package ru.mousecray.endmagic.blocks;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.function.Function;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -17,6 +12,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -28,14 +25,19 @@ import ru.mousecray.endmagic.util.registry.IEMModel;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.NameProvider;
 
-public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable> extends Block implements NameProvider, IEMModel {
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.function.Function;
 
-    protected final IProperty<BlockType> blockType;
+public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable & BlockTypeBase> extends Block implements NameProvider, IEMModel {
+
+    public final IProperty<BlockType> blockType;
     protected Function<Integer, BlockType> byIndex;
     private final Class<BlockType> type;
     private String suffix;
     private int metaCount;
-	private Function<BlockType, MapColor> mapFunc;
+    private Function<BlockType, MapColor> mapFunc;
 
     public VariativeBlock(Class<BlockType> type, Material material, String suffix, Function<BlockType, MapColor> mapFunc) {
         super(material);
@@ -50,32 +52,55 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         fullProperties[baseProperties.size()] = blockType;
         blockState = new BlockStateContainer(this, fullProperties);
         //
-        
+
         try {
             Method valuesField = type.getDeclaredMethod("values");
             BlockType[] values = (BlockType[]) valuesField.invoke(null);
-            this.metaCount = values.length;
-            this.byIndex = i -> values[i];
+            metaCount = values.length;
+            byIndex = i -> values[i];
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
-            System.out.println(this.getClass().getName() + " loaded with error");
-            this.byIndex = null;
+            System.out.println(getClass().getName() + " loaded with error");
+            byIndex = null;
         }
-        
-        if (metaCount > 4) throw new IllegalArgumentException(String.format("The given EnumType %s contains " 
-        + metaCount + " metadata. The maximum number of 4.", type.getName()));
+
+        if (metaCount > 4) throw new IllegalArgumentException(String.format("The given EnumType %s contains "
+                + metaCount + " metadata. The maximum number of 4.", type.getName()));
 
         setDefaultState(blockState.getBaseState().withProperty(blockType, byIndex.apply(0)));
     }
-    
+
     public VariativeBlock(Class<BlockType> type, Material material, Function<BlockType, MapColor> mapFunc) {
-    	this(type, material, null, mapFunc);
+        this(type, material, null, mapFunc);
+    }
+
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return state.getValue(blockType).getRenderType(state);
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return state.getValue(blockType).createTileEntity(world, state);
+    }
+
+    public boolean hasTileEntity(IBlockState state) {
+        return state.getValue(blockType).hasTileEntity(state);
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return state.getValue(blockType).isFullCube();
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return state.getValue(blockType).isOpaqueCube();
     }
 
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         worldIn.setBlockState(pos, state.withProperty(blockType, byIndex.apply(stack.getItemDamage())));
     }
-    
+
     @Override
     public int damageDropped(IBlockState state) {
         return state.getValue(blockType).ordinal();
@@ -92,10 +117,10 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     public int getMetaFromState(IBlockState state) {
         return state.getValue(blockType).ordinal();
     }
-    
+
     @Override
     public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
-    	return mapFunc == null ? super.getMapColor(state, world, pos) : mapFunc.apply(state.getValue(blockType));
+        return mapFunc == null ? super.getMapColor(state, world, pos) : mapFunc.apply(state.getValue(blockType));
     }
 
     @Override
@@ -104,7 +129,7 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     @Override
     public String name() {
         String rawName = NameAndTabUtils.getName(type);
-        return suffix != null ? rawName.substring(0, rawName.lastIndexOf('_')+1) + suffix : rawName.substring(0, rawName.lastIndexOf('_'));
+        return suffix != null ? rawName.substring(0, rawName.lastIndexOf('_') + 1) + suffix : rawName.substring(0, rawName.lastIndexOf('_'));
     }
 
     public String getNameForStack(ItemStack stack) {
@@ -122,5 +147,9 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (int i = 0; i < metaCount; i++)
             items.add(new ItemStack(this, 1, i));
+    }
+
+    public IBlockState stateWithBlockType(BlockType type1) {
+        return getDefaultState().withProperty(blockType, type1);
     }
 }

@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.util.EMUtils;
 import ru.mousecray.endmagic.util.EnderBlockTypes.EMBlockHalf;
 
-public class EMSlab<SlabType extends Enum<SlabType> & IStringSerializable> extends VariativeBlock<SlabType> {
+public class EMSlab<SlabType extends Enum<SlabType> & IStringSerializable & BlockTypeBase> extends VariativeBlock<SlabType> {
 	
     public static final PropertyEnum<EMBlockHalf> STATE = PropertyEnum.<EMBlockHalf>create("state", EMBlockHalf.class);
     protected static final AxisAlignedBB AABB_BOTTOM_HALF = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
