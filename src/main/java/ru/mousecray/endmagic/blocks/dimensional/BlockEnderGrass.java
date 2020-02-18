@@ -51,7 +51,7 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
 
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return Item.getItemFromBlock(EMBlocks.blockEnderStone);
+		return Item.getItemFromBlock(this);
 	}
 
 	@Override
