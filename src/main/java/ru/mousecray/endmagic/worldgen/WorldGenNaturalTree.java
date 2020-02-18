@@ -11,13 +11,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
-public class WorldGenNaturalTree extends WorldGenAbstractTree {
+public class WorldGenNaturalTree extends WorldGenEnderTree {
 
 	public static List<int[][]> branches = new ArrayList();
 	public static List<int[][]> leaves = new ArrayList();
@@ -75,7 +74,7 @@ public class WorldGenNaturalTree extends WorldGenAbstractTree {
 			.withProperty(EMBlocks.enderLeaves.getVariantType(), EnderBlockTypes.EnderTreeType.NATURAL);
 
 	public WorldGenNaturalTree(boolean notify) {
-		super(notify);
+		super(notify, null, null);
 	}
 
 	@Override

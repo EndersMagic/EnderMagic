@@ -12,7 +12,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -23,8 +22,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
+import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
-import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.util.registry.NameProvider;
 
 public class EMSeeds extends Item implements IPlantable, NameProvider, ItemOneWhiteEMTextured {
@@ -56,35 +55,10 @@ public class EMSeeds extends Item implements IPlantable, NameProvider, ItemOneWh
         
         if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, itemstack) && world.isAirBlock(pos.up())) {
             
-        	boolean isTrue = false;
-        	
-            for (int i = 0; i < soilBlockID.length; ++i) {
-            	if (state.getBlock() instanceof IEndSoil && ((IEndSoil)state.getBlock()).getSoilType() == soilBlockID[i]) {
-            		isTrue = true;
-            		break;
-            	}
-            }
-            System.out.println("test0");
-            System.out.println(isTrue);
-            System.out.println(crops.toString());
-            
-            if(isTrue || (isEndStone && state.getBlock() == Blocks.END_STONE)) {
-            	System.out.println("test1");
-                System.out.println(isTrue);
-                System.out.println(crops.toString());
-            	if(!world.isRemote) {
-                	System.out.println("test2");
-                    System.out.println(isTrue);
-                    System.out.println(crops.toString());
-            		world.setBlockState(pos.up(), getPlant(world, pos));
-            	}
-	
-            	System.out.println("test3");
-                System.out.println(isTrue);
-                System.out.println(crops.toString());
-	            if (player instanceof EntityPlayerMP) {
-	                CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos.up(), itemstack);
-	            }
+            if(EMUtils.isSoil(state, isEndStone, false, soilBlockID)) {
+            	if(!world.isRemote) world.setBlockState(pos.up(), getPlant(world, pos));
+
+	            if (player instanceof EntityPlayerMP) CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos.up(), itemstack);
 	
 	            itemstack.shrink(1);
 	            return EnumActionResult.SUCCESS;

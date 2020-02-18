@@ -1,5 +1,10 @@
 package ru.mousecray.endmagic.util;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
@@ -16,17 +21,15 @@ import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.worldgen.WorldGenDragonTree;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTree;
+import ru.mousecray.endmagic.worldgen.WorldGenNaturalTree;
 import ru.mousecray.endmagic.worldgen.WorldGenPhantomTree;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.Random;
 
 public class EnderBlockTypes {
 
     public static enum EnderTreeType implements IStringSerializable, EMSapling.SaplingThings, BlockTypeBase {
         DRAGON("dragon", MapColor.PURPLE, WorldGenDragonTree.class) {
-            public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+            @Override
+			public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
                 return Arrays.stream(EnumFacing.HORIZONTALS)
                         .map(pos::offset)
                         .map(worldIn::getBlockState)
@@ -34,7 +37,7 @@ public class EnderBlockTypes {
                         .anyMatch(Blocks.END_STONE::equals);
             }
         },
-        NATURAL("natural", MapColor.BROWN, null),
+        NATURAL("natural", MapColor.BROWN, WorldGenNaturalTree.class),
         IMMORTAL("immortal", MapColor.EMERALD, null),
         PHANTOM("phantom", MapColor.SILVER, WorldGenPhantomTree.class) {
             @Override
@@ -54,39 +57,35 @@ public class EnderBlockTypes {
                         : EnumBlockRenderType.MODEL;
             }
 
-            public boolean isFullCube() {
+            @Override
+			public boolean isFullCube() {
                 return false;
             }
 
-            public boolean isOpaqueCube() {
+            @Override
+			public boolean isOpaqueCube() {
                 return false;
             }
         };
 
         private final String name;
         private final MapColor mapColor;
-        private final Class<? extends WorldGenEnderTree> generatorClass;
         private WorldGenEnderTree generator;
 
-        public WorldGenEnderTree generator() {
-            if (generator == null)
+        EnderTreeType(String name, MapColor mapColor, @Nullable Class<? extends WorldGenEnderTree> generatorClass) {
+            this.name = name;
+            this.mapColor = mapColor;
+            if (generatorClass != null) {
                 try {
                     generator = generatorClass.getDeclaredConstructor(boolean.class).newInstance(true);
                 } catch (InstantiationException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
                     e.printStackTrace();
                 }
-            return generator;
+            }
         }
-
-        EnderTreeType(String name, MapColor mapColor, Class<? extends WorldGenEnderTree> generator) {
-            this.name = name;
-            this.mapColor = mapColor;
-            generatorClass = generator;
-        }
-
-        @Override
-        public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
-            generator().generate(worldIn, rand, pos);
+        
+        public WorldGenEnderTree getGenerator() { 
+        	return generator; 
         }
 
         public MapColor getMapColor() {

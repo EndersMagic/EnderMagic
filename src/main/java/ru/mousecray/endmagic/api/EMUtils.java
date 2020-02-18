@@ -53,7 +53,6 @@ public class EMUtils {
 
 	public static boolean isSoil(IBlockState state, boolean vanillaEnd, boolean bonemeal, EndSoilType... types) {
 		Block block = state.getBlock();
-		if (vanillaEnd) return block == Blocks.END_STONE;
 		boolean isSoil = false;
 		if (block instanceof IEndSoil) {
 			if (types.length > 0) {
@@ -66,6 +65,7 @@ public class EMUtils {
 			}
 			else isSoil = false;
 		}
+		if (vanillaEnd) isSoil = block == Blocks.END_STONE;
 
 		return isSoil;
 	}

@@ -41,7 +41,7 @@ public final class EMBlocks {
     public static final EnderOre enderOre = new EnderOre("ender_ore");
 
     public static final EMLog enderLog = new EMLog(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor());
-    public static final EMSapling enderSapling = new EMSapling(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor());
+    public static final EMSapling enderSapling = new EMSapling(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor(), type -> ((EnderTreeType) type).getGenerator());
     public static final EMLeaves enderLeaves = new EMLeaves(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor());
     public static final EMPlanks enderPlanks = new EMPlanks(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor());
 

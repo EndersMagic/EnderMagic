@@ -26,5 +26,5 @@ public interface BlockTypeBase {
         return true;
     }
 
-
+    
 }
