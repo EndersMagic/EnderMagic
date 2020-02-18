@@ -18,4 +18,13 @@ public interface BlockTypeBase {
         return EnumBlockRenderType.MODEL;
     }
 
+    default boolean isFullCube() {
+        return true;
+    }
+
+    default boolean isOpaqueCube() {
+        return true;
+    }
+
+
 }

@@ -69,14 +69,4 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable & Block
         return true;
     }
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
 }

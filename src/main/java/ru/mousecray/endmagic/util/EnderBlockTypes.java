@@ -53,6 +53,14 @@ public class EnderBlockTypes {
                         ? EnumBlockRenderType.ENTITYBLOCK_ANIMATED
                         : EnumBlockRenderType.MODEL;
             }
+
+            public boolean isFullCube() {
+                return false;
+            }
+
+            public boolean isOpaqueCube() {
+                return false;
+            }
         };
 
         private final String name;
