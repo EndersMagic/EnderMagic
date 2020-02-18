@@ -94,10 +94,6 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         return state.getValue(blockType).ordinal();
     }
     
-    public IProperty<BlockType> getVariantType() {
-    	return blockType;
-    }
-    
     @Override
     public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
     	return mapFunc == null ? super.getMapColor(state, world, pos) : mapFunc.apply(state.getValue(blockType));
@@ -128,4 +124,10 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         for (int i = 0; i < metaCount; i++)
             items.add(new ItemStack(this, 1, i));
     }
+    
+    public IBlockState stateWithBlockType(BlockType type1) {
+        return getDefaultState().withProperty(blockType, type1);
+    }
+    
+	public IProperty getVariantType() { return blockType; }
 }
