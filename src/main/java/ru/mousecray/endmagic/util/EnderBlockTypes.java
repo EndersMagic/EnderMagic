@@ -104,7 +104,7 @@ public class EnderBlockTypes {
         }
     }
 
-    public static enum EnderGroundType implements IStringSerializable {
+    public static enum EnderGroundType implements IStringSerializable, BlockTypeBase {
         LIVE("live", MapColor.BLUE, SoundType.GROUND),
         DEAD("dead", MapColor.GRAY, SoundType.SAND),
         FROZEN("frozen", MapColor.DIAMOND, SoundType.SNOW);
