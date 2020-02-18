@@ -28,8 +28,10 @@ public class ClassFieldSource<A> implements IRegistrySource<A> {
                         A elem = (A) field.get(null);
                         return Stream.of(elem);
                     } catch (IllegalArgumentException | IllegalAccessException | ClassCastException e) {
-                        if (traceErrors)
+                        if (traceErrors) {
+                            System.out.println("Problem with filed: "+field.getName());
                             e.printStackTrace();
+                        }
                         return Stream.empty();
                     }
                 })
