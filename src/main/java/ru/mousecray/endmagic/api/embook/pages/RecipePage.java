@@ -2,7 +2,6 @@ package ru.mousecray.endmagic.api.embook.pages;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
@@ -13,14 +12,16 @@ import ru.mousecray.endmagic.util.ItemStackMapKey;
 
 import java.util.List;
 
-public class RecipePage extends ImagePage implements ILinkLocation<ItemStackMapKey> {
-    public final ItemStack result;
-    public final ImmutableList<ImmutableList<Ingredient>> cratingGrid;
+import static com.google.common.collect.ImmutableList.toImmutableList;
 
-    public RecipePage(ItemStack result, ImmutableList<ImmutableList<Ingredient>> cratingGrid) {
-        super(new ResourceLocation(EM.ID, "textures/gui/crafting_grid.png"), result.getDisplayName());
-        this.result = result;
-        this.cratingGrid = cratingGrid;
+public class RecipePage extends ImagePage implements ILinkLocation<ImmutableList<ItemStackMapKey>> {
+    public final ImmutableList<ItemStack> listOfResult;
+    public final ImmutableList<ImmutableList<ImmutableList<ItemStack>>> listOfCratingGrid;
+
+    public RecipePage(ImmutableList<ItemStack> listOfResult, ImmutableList<ImmutableList<ImmutableList<ItemStack>>> listOfCratingGrid, String label) {
+        super(new ResourceLocation(EM.ID, "textures/gui/crafting_grid.png"), label);
+        this.listOfResult = listOfResult;
+        this.listOfCratingGrid = listOfCratingGrid;
     }
 
     @Override
@@ -29,19 +30,24 @@ public class RecipePage extends ImagePage implements ILinkLocation<ItemStackMapK
 
         builder.addAll(super.elements());
 
-        builder.add(new ItemStackView(result, BookApi.pageWidth - 20, BookApi.pageHeight / 2 - 8));
+        builder.add(new ItemStackView(listOfResult, BookApi.pageWidth - 20, BookApi.pageHeight / 2 - 8));
 
-        for (int y = 0; y < cratingGrid.size(); y++) {
-            ImmutableList<Ingredient> col = cratingGrid.get(y);
-            for (int x = 0; x < col.size(); x++)
-                builder.add(new ItemStackView(ImmutableList.copyOf(col.get(x).getMatchingStacks()), x * 16, BookApi.pageHeight / 2 - 8 - 16 + y * 16));
-        }
+
+        for (int x = 0; x < 3; x++)
+            for (int y = 0; y < 3; y++) {
+                ImmutableList.Builder<ItemStack> slotOfGrid = ImmutableList.builder();
+                for (ImmutableList<ImmutableList<ItemStack>> grid : listOfCratingGrid)
+                    slotOfGrid.add(grid.get(x).get(y));
+                builder.add(new ItemStackView(slotOfGrid.build(), x * 16, BookApi.pageHeight / 2 - 8 - 16 + y * 16));
+
+            }
+
 
         return builder.build();
     }
 
     @Override
-    public ItemStackMapKey linkObject() {
-        return new ItemStackMapKey(result);
+    public ImmutableList<ItemStackMapKey> linkObject() {
+        return listOfResult.stream().map(ItemStackMapKey::new).collect(toImmutableList());
     }
 }

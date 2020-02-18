@@ -1,5 +1,7 @@
 package ru.mousecray.endmagic.client.gui;
 
+import com.google.common.collect.ImmutableList;
+
 import net.minecraft.client.Minecraft;
 import ru.mousecray.endmagic.util.Vec2i;
 
@@ -21,4 +23,11 @@ public interface IStructuralGuiElement {
     }
 
     void render(int mouseX, int mouseY);
+
+    default <A> A cycleElementOf(ImmutableList<A> list, A defaultValue) {
+        if ((list.size() > 0))
+            return list.get((int) (System.currentTimeMillis() / 1000L % list.size()));
+        else
+            return defaultValue;
+    }
 }

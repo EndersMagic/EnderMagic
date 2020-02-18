@@ -3,6 +3,7 @@ package ru.mousecray.endmagic.client.gui.elements;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -37,7 +38,7 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
 
     @Override
     public void render(int mouseX, int mouseY) {
-        ItemStack stack = cycleItemStack(itemStack);
+        ItemStack stack = cycleElementOf(itemStack, ItemStack.EMPTY);
         if (!stack.isEmpty()) {
             drawItemStack(stack, x, y);
 
@@ -47,19 +48,13 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
     }
 
     public void drawItemStack(ItemStack stack, int x, int y) {
-        GlStateManager.disableLighting();
+        RenderHelper.enableStandardItemLighting();
         RenderItem itemRender = mc().getRenderItem();
         GlStateManager.translate(0.0F, 0.0F, 32.0F);
-        itemRender.zLevel = 32;
+        itemRender.zLevel = 90;
         itemRender.renderItemAndEffectIntoGUI(stack, x, y);
         itemRender.zLevel = 0;
-    }
-
-    private ItemStack cycleItemStack(ImmutableList<ItemStack> itemStack) {
-        if ((itemStack.size() > 0))
-            return itemStack.get((int) (System.currentTimeMillis() / 1000L % itemStack.size()));
-        else
-            return ItemStack.EMPTY;
+        RenderHelper.disableStandardItemLighting();
     }
 
     //Source is https://github.com/Vazkii/Botania/blob/master/src/main/java/vazkii/botania/client/core/helper/RenderHelper.java
@@ -151,7 +146,7 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
 
     @Override
     public void click() {
-        BookApi.findLink(new ItemStackMapKey(cycleItemStack(itemStack)))
+        BookApi.findLink(new ItemStackMapKey(cycleElementOf(itemStack, ItemStack.EMPTY)))
                 .ifPresent(GuiScreenEMBook.instance::setCurrentPage);
     }
 }

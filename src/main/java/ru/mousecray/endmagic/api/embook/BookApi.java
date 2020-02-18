@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.api.embook;
 
 import ru.mousecray.endmagic.api.embook.components.LinksComponent;
+import ru.mousecray.endmagic.api.embook.components.TextComponent;
 import ru.mousecray.endmagic.api.embook.pages.EmptyPage;
 
 import java.util.*;
@@ -57,6 +58,10 @@ public class BookApi {
         addChapter(category, name, Stream.of(content));
     }
 
+    public static void addStandartChapter(String category, String name, IChapterComponent... content) {
+        addChapter(category, name, Stream.concat(Stream.of(new TextComponent("book.chapter.text." + name)), Stream.of(content)));
+    }
+
     public static void addChapter(String category, String name, Stream<IChapterComponent> content) {
         List<PageContainer> value = flatMapToPages(content);
         value.forEach(pageContainer -> {
@@ -70,8 +75,13 @@ public class BookApi {
     }
 
     private static void tryToRegisterLinkLocation(PageContainer pageContainer, IPage page1) {
-        if (page1 instanceof ILinkLocation)
-            links.put(((ILinkLocation) page1).linkObject(), pageContainer);
+        if (page1 instanceof ILinkLocation) {
+            Object key = ((ILinkLocation) page1).linkObject();
+            if (key instanceof List)
+                ((List) key).forEach(i -> links.put(i, pageContainer));
+            else
+                links.put(key, pageContainer);
+        }
     }
 
     private static List<PageContainer> flatMapToPages(Stream<IChapterComponent> stream) {

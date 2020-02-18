@@ -29,9 +29,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
+import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 
-public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & EMSapling.SaplingThings> extends VariativeBlock<TreeType> implements IGrowable {
+public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & EMSapling.SaplingThings & BlockTypeBase> extends VariativeBlock<TreeType> implements IGrowable {
 
     public EMSapling(Class<TreeType> type, Function<TreeType, MapColor> mapFunc) {
         super(type, Material.PLANTS, "sapling", mapFunc);
@@ -76,7 +77,7 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
 
     @Override
     public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
-
+        state.getValue(blockType).grow(worldIn, rand, pos, state);
     }
 
     @Override

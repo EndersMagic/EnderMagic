@@ -57,44 +57,53 @@ public class EMItems {
     public static final ItemNamed dragonDiamond = new EnderDiamond("dragon_diamond", dragonColor, EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL);
     public static final ItemNamed immortalDiamond = new EnderDiamond("immortal_diamond", immortalColor, EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL);
 
-    public static List<Item> createToolsAndArmor() {
-        return Stream.<Item>concat(
-                Stream.of(naturalSteel, phantomSteel, dragonSteel, immortalSteel)
-                        .flatMap(material ->
-                                {
-                                    int materialColor = material.textures().values().iterator().next();
-                                    HSBA hsba = RGBA.fromARGB(materialColor).toHSBA();
-                                    int toolColor = hsba.setB(0.7f).setA(0.5f).toRGBA().argb();
-                                    return Stream.of(
-                                            new EMShovel(((MaterialProvider) material).material(), material.name() + "_shovel", toolColor),
-                                            new EMPickaxe(((MaterialProvider) material).material(), material.name() + "_pickaxe", toolColor),
-                                            new EMAxe(((MaterialProvider) material).material(), material.name() + "_axe", toolColor),
-                                            new EMSword(((MaterialProvider) material).material(), material.name() + "_sword", toolColor),
-                                            new EMHoe(((MaterialProvider) material).material(), material.name() + "_hoe", toolColor),
-                                            new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.HEAD, material.name() + "_helmet", material, toolColor),
-                                            new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.CHEST, material.name() + "_chestplate", material, toolColor),
-                                            new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.LEGS, material.name() + "_leggings", material, toolColor),
-                                            new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.FEET, material.name() + "_boots", material, toolColor)
-                                    );
-                                }
-                        ),
+    private static final List<Item> steelToolsAndArmor;
+    private static final List<Item> diamondTools;
 
-                Stream.of(naturalDiamond, phantomDiamond, dragonDiamond, immortalDiamond)
-                        .flatMap(material ->
-                                {
-                                    int materialColor = material.textures().values().iterator().next();
-                                    HSBA hsba = RGBA.fromARGB(materialColor).toHSBA();
-                                    int toolColor = hsba.setS(hsba.getS() + 0.3f).setB(1).setA(0.5f).toRGBA().argb();
-                                    return Stream.of(
-                                            new EMShovel(((MaterialProvider) material).material(), material.name() + "_shovel", toolColor),
-                                            new EMPickaxe(((MaterialProvider) material).material(), material.name() + "_pickaxe", toolColor),
-                                            new EMAxe(((MaterialProvider) material).material(), material.name() + "_axe", toolColor),
-                                            new EMSword(((MaterialProvider) material).material(), material.name() + "_sword", toolColor),
-                                            new EMHoe(((MaterialProvider) material).material(), material.name() + "_hoe", toolColor)
-                                    );
-                                }
-                        )).collect(Collectors.toList());
+    static {
+        steelToolsAndArmor = Stream.of(naturalSteel, phantomSteel, dragonSteel, immortalSteel)
+                .flatMap(material ->
+                        {
+                            int materialColor = material.textures().values().iterator().next();
+                            HSBA hsba = RGBA.fromARGB(materialColor).toHSBA();
+                            int toolColor = hsba.setB(0.7f).setA(0.5f).toRGBA().argb();
+                            return Stream.of(
+                                    new EMShovel(((MaterialProvider) material).material(), material.name() + "_shovel", toolColor),
+                                    new EMPickaxe(((MaterialProvider) material).material(), material.name() + "_pickaxe", toolColor),
+                                    new EMAxe(((MaterialProvider) material).material(), material.name() + "_axe", toolColor),
+                                    new EMSword(((MaterialProvider) material).material(), material.name() + "_sword", toolColor),
+                                    new EMHoe(((MaterialProvider) material).material(), material.name() + "_hoe", toolColor),
+                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.HEAD, material.name() + "_helmet", material, toolColor),
+                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.CHEST, material.name() + "_chestplate", material, toolColor),
+                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.LEGS, material.name() + "_leggings", material, toolColor),
+                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.FEET, material.name() + "_boots", material, toolColor)
+                            );
+                        }
+                ).collect(Collectors.toList());
 
+        diamondTools = Stream.of(naturalDiamond, phantomDiamond, dragonDiamond, immortalDiamond)
+                .flatMap(material ->
+                        {
+                            int materialColor = material.textures().values().iterator().next();
+                            HSBA hsba = RGBA.fromARGB(materialColor).toHSBA();
+                            int toolColor = hsba.setS(hsba.getS() + 0.3f).setB(1).setA(0.5f).toRGBA().argb();
+                            return Stream.of(
+                                    new EMShovel(((MaterialProvider) material).material(), material.name() + "_shovel", toolColor),
+                                    new EMPickaxe(((MaterialProvider) material).material(), material.name() + "_pickaxe", toolColor),
+                                    new EMAxe(((MaterialProvider) material).material(), material.name() + "_axe", toolColor),
+                                    new EMSword(((MaterialProvider) material).material(), material.name() + "_sword", toolColor),
+                                    new EMHoe(((MaterialProvider) material).material(), material.name() + "_hoe", toolColor)
+                            );
+                        }
+                ).collect(Collectors.toList());
+    }
+
+    public static List<Item> steelToolsAndArmor() {
+        return steelToolsAndArmor;
+    }
+
+    public static List<Item> diamondTools() {
+        return diamondTools;
     }
 
     public static final ItemNamed rawEnderite = new ItemNamed("raw_enderite");

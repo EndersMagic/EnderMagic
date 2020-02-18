@@ -17,6 +17,7 @@ import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.teleport.Location;
 import ru.mousecray.endmagic.tileentity.portal.TileMasterPortal;
+import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -63,6 +64,6 @@ public class ItemPortalBinder extends Item implements ItemTextured {
 
     @Override
     public Map<String, Integer> textures() {
-        return ImmutableMap.of(EM.ID + ":items/item_portal_binder", 0x88ffffff, EM.ID + ":items/item_portal_binder_glow", 0x88ffffff);
+        return ImmutableMap.of(EM.ID + ":items/item_portal_binder", 0xffffffff, EM.ID + ":items/item_portal_binder_glow", 0x3cffffff);
     }
 }

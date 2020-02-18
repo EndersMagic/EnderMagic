@@ -1,13 +1,9 @@
 package ru.mousecray.endmagic.init;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Random;
-
-import com.google.common.collect.ImmutableMap;
-
 import codechicken.lib.packet.PacketCustom;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiListWorldSelection;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -23,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -31,21 +28,178 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
+import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
+import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
+import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
-import ru.mousecray.endmagic.network.ClientPacketHandler;
+import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
+import ru.mousecray.endmagic.util.EnderBlockTypes;
+import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
+
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Random;
+
+import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
+import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
+import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
+import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_PHANROM_AVOIDINCAPABILITY;
+import static ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
+import static ru.mousecray.endmagic.worldgen.WorldGenPhantomTree.areaRequirementsMax;
+import static ru.mousecray.endmagic.worldgen.WorldGenPhantomTree.areaRequirementsMin;
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
+
+    @SubscribeEvent
+    public static void onCapaAttachToWorld(AttachCapabilitiesEvent<World> event) {
+        event.addCapability(PhantomAvoidingGroupCapabilityProvider.name, new PhantomAvoidingGroupCapabilityProvider());
+    }
+
+    @SubscribeEvent
+    public static void onPhantomTreeCutting(PlayerEvent.BreakSpeed event) {
+        World world = event.getEntityPlayer().world;
+        BlockPos pos = event.getPos();
+        IBlockState blockState = world.getBlockState(pos);
+        if (/*!event.getEntityPlayer().world.isRemote && */(blockState.getBlock() == enderLog || blockState.getBlock() == enderLeaves) && blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
+            PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
+            if (capability != null) {
+                PhantomAvoidingGroup tree = capability.groupAtPos.get(event.getPos());
+                if (tree == null) {
+                    tree = new PhantomAvoidingGroup();
+                    collectNewGroup(tree, pos, world);
+
+                    for (BlockPos p : tree.blocks)
+                        capability.groupAtPos.put(p, tree);
+
+                    capability.allGroups.add(tree);
+                }
+                tree.avoidingStarted = true;
+                System.out.print("");
+            }
+        }
+    }
+
+    private static void collectNewGroup(PhantomAvoidingGroup tree, BlockPos pos, World world) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TilePhantomAvoidingBlockBase) {
+            BlockPos saplingPos = pos.subtract(((TilePhantomAvoidingBlockBase) tileEntity).offsetFromSapling);
+            WorldGenUtils.generateInArea(saplingPos.add(areaRequirementsMin), saplingPos.add(areaRequirementsMax), p -> {
+                TileEntity tileEntity1 = world.getTileEntity(p);
+                if (tileEntity1 instanceof TilePhantomAvoidingBlockBase) {
+                    tree.blocks.add(p.toImmutable());
+                }
+            });
+        }
+    }
+
+    private static void updateWorldCapability(World world) {
+        PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
+        if (capability != null) {
+
+            capability.allGroups.removeAll(capability.forRemove);
+            capability.forRemove.forEach(g -> g.blocks.forEach(p -> capability.groupAtPos.remove(p)));
+            capability.allGroups.addAll(capability.forAdded);
+            capability.forAdded.forEach(g -> g.blocks.forEach(p -> capability.groupAtPos.put(p, g)));
+
+            capability.forRemove.clear();
+            capability.forAdded.clear();
+
+            for (PhantomAvoidingGroup group : capability.allGroups) {
+                if (group.avoidingStarted) {
+
+                    if (group.increment > 0) {
+                        if (group.avoidTicks >= maxAvoidTicks) {
+                            if (!world.isRemote)
+                                teleportTree(world, group, capability);
+                            capability.forRemove.add(group);
+                            group.avoidingStarted = false;
+                        } else
+                            group.avoidTicks += group.increment;
+                    } else if (group.increment < 0) {
+                        if (group.avoidTicks <= 0) {
+                            capability.forRemove.add(group);
+                            group.avoidingStarted = false;
+                        } else
+                            group.avoidTicks += group.increment;
+                    }
+                    for (BlockPos pos : group.blocks) {
+                        TileEntity tileEntity = world.getTileEntity(pos);
+                        if (tileEntity instanceof TilePhantomAvoidingBlockBase) {
+                            TilePhantomAvoidingBlockBase tilePhantomAvoidingBlock = (TilePhantomAvoidingBlockBase) tileEntity;
+                            tilePhantomAvoidingBlock.avoidTicks = group.avoidTicks;
+                            tilePhantomAvoidingBlock.increment = group.increment;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static final int teleportRadius = 40;
+
+    private static void teleportTree(World world, PhantomAvoidingGroup group, PhantomAvoidingGroupCapability capability) {
+        Optional<TilePhantomAvoidingBlockBase> anyTile = group.blocks.stream().map(world::getTileEntity).filter(t -> t instanceof TilePhantomAvoidingBlockBase).map(t -> (TilePhantomAvoidingBlockBase) t).findAny();
+        anyTile.ifPresent(t -> {
+            BlockPos saplingPos = t.getPos().subtract(t.offsetFromSapling);
+            BlockPos newSaplingPos;
+            do {
+                newSaplingPos = world.getTopSolidOrLiquidBlock(saplingPos.add(world.rand.nextInt(2 * teleportRadius) - teleportRadius, 0, world.rand.nextInt(2 * teleportRadius) - teleportRadius));
+            } while (newSaplingPos.getY() == -1);
+            System.out.println(world.getBlockState(newSaplingPos).getBlock());
+
+            BlockPos teleportOffset = newSaplingPos.subtract(saplingPos);
+
+            PhantomAvoidingGroup newGroup = new PhantomAvoidingGroup();
+            newGroup.avoidTicks = group.avoidTicks;
+            newGroup.increment = -1;
+            newGroup.avoidingStarted = true;
+
+            for (BlockPos pos : group.blocks) {
+                TileEntity tileEntity = world.getTileEntity(pos);
+                if (tileEntity instanceof TilePhantomAvoidingBlockBase)
+                    newGroup.blocks.add(((TilePhantomAvoidingBlockBase) tileEntity).teleportBlock(teleportOffset));
+            }
+            capability.forAdded.add(newGroup);
+            syncCapability(world, capability, newGroup);
+        });
+    }
+
+    private static void syncCapability(World world, PhantomAvoidingGroupCapability capability, PhantomAvoidingGroup newGroup) {
+        int toDimension = world.provider.getDimension();
+        PacketCustom packet = new PacketCustom(EM.ID, UPDATE_PHANROM_AVOIDINCAPABILITY.ordinal())
+                .writeInt(toDimension)
+                .writeBoolean(newGroup.avoidingStarted)
+                .writeInt(newGroup.avoidTicks)
+                .writeInt(newGroup.increment)
+                .writeInt(newGroup.blocks.size());
+        newGroup.blocks.forEach(packet::writePos);
+        packet.sendToDimension(toDimension);
+    }
+
+    //@SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onWorldTickClient(TickEvent.ClientTickEvent event) {
+        if (Minecraft.getMinecraft().world != null)
+            updateWorldCapability(Minecraft.getMinecraft().world);
+    }
+
+    @SubscribeEvent
+    public static void onWorldTick(TickEvent.WorldTickEvent event) {
+        updateWorldCapability(event.world);
+    }
 
     @SubscribeEvent
     public static void onPlayerEnter(EntityJoinWorldEvent event) {
@@ -54,14 +208,14 @@ public class EMEvents {
                 Optional.ofNullable(((WorldServer) event.getWorld()).getChunkProvider()
                         .getNearestStructurePos(event.getWorld(), "Stronghold", new BlockPos(event.getEntity()), false))
                         .map(pos ->
-                                new PacketCustom(EM.ID, ClientPacketHandler.UPDATE_COMPAS_TARGET)
+                                new PacketCustom(EM.ID, UPDATE_COMPAS_TARGET.ordinal())
                                         .writeInt(0)
                                         .writePos(pos))
                         .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
             }
     }
 
-//    @SubscribeEvent
+    //    @SubscribeEvent
     public static void loadLastWorld(GuiOpenEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         if (event.getGui() instanceof GuiMainMenu) {

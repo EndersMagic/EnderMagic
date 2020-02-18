@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.init;
 
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ public class ClassFieldSource<A> implements IRegistrySource<A> {
     @Override
     public List<A> elemes() {
         return Arrays.stream(sourceClass.getFields())
+                .filter(field -> Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers()))
                 .flatMap(field -> {
                     try {
                         A elem = (A) field.get(null);
