@@ -180,7 +180,7 @@ public class EMEvents {
 
     private static void syncCapability(World world, PhantomAvoidingGroupCapability capability, PhantomAvoidingGroup newGroup) {
         int toDimension = world.provider.getDimension();
-        PacketCustom packet = new PacketCustom(EM.ID, UPDATE_PHANROM_AVOIDINCAPABILITY.ordinal())
+        PacketCustom packet = new PacketCustom(EM.ID, UPDATE_PHANROM_AVOIDINCAPABILITY.id)
                 .writeInt(toDimension)
                 .writeBoolean(newGroup.avoidingStarted)
                 .writeInt(newGroup.avoidTicks)
@@ -209,7 +209,7 @@ public class EMEvents {
                 Optional.ofNullable(((WorldServer) event.getWorld()).getChunkProvider()
                         .getNearestStructurePos(event.getWorld(), "Stronghold", new BlockPos(event.getEntity()), false))
                         .map(pos ->
-                                new PacketCustom(EM.ID, UPDATE_COMPAS_TARGET.ordinal())
+                                new PacketCustom(EM.ID, UPDATE_COMPAS_TARGET.id)
                                         .writeInt(0)
                                         .writePos(pos))
                         .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
