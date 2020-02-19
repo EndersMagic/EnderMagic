@@ -90,15 +90,15 @@ public class WorldGenNaturalTree extends WorldGenEnderTree {
 			int[][] branch2 = EMUtils.rotateForY(branches.get(world.rand.nextInt(9)), new int[] { 0, 0, 0 }, rot2);
 			int[][] mainBranch = EMUtils.rotateForY(branches.get(9), new int[] { 0, 0, 0 }, rot3);
 			BlockPos[] lastPos1, lastPos2, lastPos3;
-			for (int h = 0; h < logHeight; ++h) { world.setBlockState(position.up(h + 1), enderLog); }
-			world.setBlockState(position.add(-1, 1, 0), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
-			world.setBlockState(position.add(1, 1, 0), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
-			world.setBlockState(position.add(0, 1, 1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
-			world.setBlockState(position.add(0, 1, -1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
+			for (int h = 0; h < logHeight; ++h) { world.setBlockState(position.up(h), enderLog); }
+			world.setBlockState(position.add(-1, 0, 0), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
+			world.setBlockState(position.add(1, 0, 0), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
+			world.setBlockState(position.add(0, 0, 1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
+			world.setBlockState(position.add(0, 0, -1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
 			if (world.rand.nextBoolean())
-				world.setBlockState(position.add(-1, 1, 1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Z));
+				world.setBlockState(position.add(-1, 0, 1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Z));
 			if (world.rand.nextBoolean())
-				world.setBlockState(position.add(1, 1, -1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Z));
+				world.setBlockState(position.add(1, 0, -1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Z));
 
 			lastPos1 = generateBranch(world, branch1, logHeight / 3, position, defaultAxis);
 			lastPos2 = generateBranch(world, branch2, logHeight / 3 * 2, position, defaultAxis);
@@ -132,7 +132,7 @@ public class WorldGenNaturalTree extends WorldGenEnderTree {
 		BlockPos middlePos = BlockPos.ORIGIN;
 		for (int c = 0; c < branch.length; ++c) {
 			int[] currBranch = branch[c];
-			BlockPos currPos = pos0.up(logHeight + 1).add(currBranch[0], currBranch[1], currBranch[2]);
+			BlockPos currPos = pos0.up(logHeight).add(currBranch[0], currBranch[1], currBranch[2]);
 			world.setBlockState(currPos, enderLog.withProperty(BlockLog.LOG_AXIS, axis));
 			if (c == branch.length - 1) lastPos = currPos;
 			else if (c == branch.length / 2) middlePos = currPos;

@@ -38,7 +38,8 @@ public class WorldGenDragonTree extends WorldGenEnderTree {
         EnumFacing direction = logDirection(world, pos).getOpposite();
         BlockLog.EnumAxis value = BlockLog.EnumAxis.fromFacingAxis(direction.getAxis());
         if (value != BlockLog.EnumAxis.Y) {
-            if (canGenerateThere(world, pos) && (check ? aroundBlocks(world, pos, AIR, 77, alreadyChecked) : true)) {
+        	BlockPos of = pos.offset(direction);
+            if (EMBlocks.enderSapling.canPlaceBlockAt(world, pos) && (check ? aroundBlocks(world, pos, AIR, 77, alreadyChecked) : true)) {
 
                 int lvl = 2 + random.nextInt(3);
                 for (int i = 0; i < lvl; i++)
@@ -119,10 +120,8 @@ public class WorldGenDragonTree extends WorldGenEnderTree {
         return false;
     }
 
-
     private EnumFacing logDirection(World world, BlockPos pos) {
-        return
-                Arrays.stream(EnumFacing.values())
+        return Arrays.stream(EnumFacing.values())
                         .filter((i -> world.getBlockState(pos.offset(i)).getBlock() == AIR))
                         .findAny()
                         .orElse(EnumFacing.UP);

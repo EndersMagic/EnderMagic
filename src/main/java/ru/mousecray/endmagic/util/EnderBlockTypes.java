@@ -34,8 +34,7 @@ public class EnderBlockTypes {
                 return Arrays.stream(EnumFacing.HORIZONTALS)
                         .map(pos::offset)
                         .map(worldIn::getBlockState)
-                        .anyMatch(state -> EMUtils.isSoil(state, true, false, EndSoilType.DIRT, EndSoilType.GRASS) 
-                        && EMUtils.isSoil(worldIn.getBlockState(pos.down()), true, false, EndSoilType.DIRT, EndSoilType.GRASS));
+                        .anyMatch(state -> EMUtils.isSoil(state, true, false, EndSoilType.DIRT, EndSoilType.GRASS));
             }
         },
         NATURAL("natural", MapColor.BROWN, WorldGenNaturalTree.class),

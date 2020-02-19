@@ -13,7 +13,7 @@ public class WorldGenPhantomTreeWorld {
 	public void generateWorld(Random random, int chunkX, int chunkZ, World world) {
 		int lchunkX = chunkX << 4;
 		int lchunkZ = chunkZ << 4;
-		Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
+		Chunk chunk = world.getChunkFromChunkCoords(lchunkX, lchunkZ);
 		if (random.nextInt(20) == 0 && !chunk.isEmpty()) {
 				int x = lchunkX + random.nextInt(16);
 				int z = lchunkZ + random.nextInt(16);
