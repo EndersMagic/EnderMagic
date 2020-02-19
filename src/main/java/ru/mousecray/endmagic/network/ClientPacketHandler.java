@@ -14,7 +14,7 @@ public class ClientPacketHandler implements ICustomPacketHandler.IClientPacketHa
 
     @Override
     public void handlePacket(PacketCustom packetCustom, Minecraft minecraft, INetHandlerPlayClient iNetHandlerPlayClient) {
-        switch (PacketTypes.values()[packetCustom.getType()]) {
+        switch (PacketTypes.valueOf(packetCustom.getType())) {
             case UPDATE_COMPAS_TARGET:
                 FinalisedModelEnderCompass.target.put(packetCustom.readInt(), packetCustom.readPos());
                 break;
