@@ -24,7 +24,7 @@ public class WorldGenEnderPlants implements IWorldGenerator {
 				int x = chunkX << 4;
 				int z = chunkZ << 4;
 				BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
-				if (!world.isAirBlock(pos)) endGrassGen.generate(world, random, pos);
+				endGrassGen.generate(world, random, pos);
 			}
 		}
 	}
