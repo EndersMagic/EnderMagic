@@ -58,8 +58,8 @@ import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_PHANROM_AVOIDINCAPABILITY;
 import static ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
-import static ru.mousecray.endmagic.worldgen.WorldGenPhantomTree.areaRequirementsMax;
-import static ru.mousecray.endmagic.worldgen.WorldGenPhantomTree.areaRequirementsMin;
+import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMax;
+import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMin;
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
@@ -233,9 +233,9 @@ public class EMEvents {
     //TODO: onUseBonemeal
     @SubscribeEvent
     public static void onUseBonemeal(BonemealEvent event) {
-    	World world  = event.getWorld();
-    	BlockPos pos = event.getPos();
-    	Random rand = event.getEntityPlayer().getRNG();
+//    	World world  = event.getWorld();
+//    	BlockPos pos = event.getPos();
+//    	Random rand = event.getEntityPlayer().getRNG();
 //    	if(event.getBlock().getBlock() instanceof IEndSoil) {
 //    		IEndSoil soil = (IEndSoil)event.getBlock().getBlock();
 //    		if(soil.canUseBonemeal()) {

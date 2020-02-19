@@ -69,19 +69,17 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
 	public IBlockState getBonemealCrops(Random rand, EntityPlayer player, IBlockState soil) {
 		int chance = rand.nextInt(1000) + 1;
 		IBlockState state = Blocks.AIR.getDefaultState();
-		if(soil.getBlock() instanceof BlockEnderGrass) {
-			GrassType type = soil.getValue(blockType);
-			if (type == EnderGroundType.LIVE) {
-				if (chance > 850) state = EMBlocks.enderTallgrass.getDefaultState();
-				else if (chance > 600) state = EMBlocks.enderOrchid.getDefaultState();
-			}
-			else if(type == EnderGroundType.DEAD) {
-				if (chance > 995) state = EMBlocks.enderTallgrass.getDefaultState();
-				else if (chance > 980) state = EMBlocks.blockCurseBush.getDefaultState();
-			}
-			else if (type == EnderGroundType.FROZEN) {
-				//TODO: Frozen plants
-			}
+		GrassType type = soil.getValue(blockType);
+		if (type == EnderGroundType.LIVE) {
+			if (chance > 850) state = EMBlocks.enderTallgrass.getDefaultState();
+			else if (chance > 600) state = EMBlocks.enderOrchid.getDefaultState();
+		}
+		else if(type == EnderGroundType.DEAD) {
+			if (chance > 995) state = EMBlocks.enderTallgrass.getDefaultState();
+			else if (chance > 980) state = EMBlocks.blockCurseBush.getDefaultState();
+		}
+		else if (type == EnderGroundType.FROZEN) {
+			//TODO: Frozen plants
 		}
 		else return IEndSoil.super.getBonemealCrops(rand, player, soil);
 		return state;

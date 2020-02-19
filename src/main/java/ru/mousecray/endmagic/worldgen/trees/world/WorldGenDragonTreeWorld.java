@@ -1,9 +1,10 @@
-package ru.mousecray.endmagic.worldgen;
+package ru.mousecray.endmagic.worldgen.trees.world;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
+import ru.mousecray.endmagic.worldgen.trees.WorldGenDragonTree;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -27,7 +28,7 @@ public class WorldGenDragonTreeWorld {
                         new BlockPos(startX + 15, 50, startZ + 15),
                         pos -> {
                             if (random.nextInt(40) == 0)
-                                treeGen.generate(world, random, pos, alreadyChecked);
+                                treeGen.generate(world, random, pos, true, alreadyChecked);
 
                             alreadyChecked.clear();
                         }

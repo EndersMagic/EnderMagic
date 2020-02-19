@@ -34,8 +34,8 @@ import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EMItemBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
+import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
-import ru.mousecray.endmagic.worldgen.plants.WorldGenEnderPlants;
 
 import javax.annotation.Nullable;
 import java.util.LinkedList;

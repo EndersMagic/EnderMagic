@@ -58,6 +58,7 @@ public class EMUtils {
 			if (types.length > 0) {
 				IEndSoil type = ((IEndSoil) block);
 				for (int i = 0; i < types.length; ++i) {
+					EndSoilType type2 = type.getSoilType();
 					isSoil = type.getSoilType() == types[i];
 					if (bonemeal) isSoil = isSoil && type.canUseBonemeal();
 					if(isSoil) break;
@@ -65,7 +66,7 @@ public class EMUtils {
 			}
 			else isSoil = false;
 		}
-		if (vanillaEnd) isSoil = block == Blocks.END_STONE;
+		if (vanillaEnd) isSoil = isSoil || block == Blocks.END_STONE;
 
 		return isSoil;
 	}

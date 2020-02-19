@@ -1,4 +1,17 @@
-package ru.mousecray.endmagic.worldgen;
+package ru.mousecray.endmagic.worldgen.trees;
+
+import static net.minecraft.block.BlockLog.LOG_AXIS;
+import static net.minecraft.init.Blocks.AIR;
+import static ru.mousecray.endmagic.util.worldgen.WorldGenUtils.generateInArea;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
@@ -6,15 +19,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.init.EMBlocks;
-
-import java.util.*;
-
-import static net.minecraft.block.BlockLog.LOG_AXIS;
-import static net.minecraft.init.Blocks.AIR;
-import static net.minecraft.init.Blocks.END_STONE;
-import static ru.mousecray.endmagic.util.worldgen.WorldGenUtils.generateInArea;
 
 public class WorldGenDragonTree extends WorldGenEnderTree {
     public WorldGenDragonTree(boolean notify) {
@@ -26,14 +31,14 @@ public class WorldGenDragonTree extends WorldGenEnderTree {
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
-        return generate(worldIn, rand, position, new HashSet<>());
+        return generate(worldIn, rand, position, false, new HashSet<>());
     }
 
-    public boolean generate(World world, Random random, BlockPos pos, Set<BlockPos> alreadyChecked) {
+    public boolean generate(World world, Random random, BlockPos pos, boolean check, Set<BlockPos> alreadyChecked) {
         EnumFacing direction = logDirection(world, pos).getOpposite();
         BlockLog.EnumAxis value = BlockLog.EnumAxis.fromFacingAxis(direction.getAxis());
         if (value != BlockLog.EnumAxis.Y) {
-            if (world.getBlockState(pos).getBlock() == END_STONE && aroundBlocks(world, pos, AIR, 77, alreadyChecked)) {
+            if (canGenerateThere(world, pos) && (check ? aroundBlocks(world, pos, AIR, 77, alreadyChecked) : true)) {
 
                 int lvl = 2 + random.nextInt(3);
                 for (int i = 0; i < lvl; i++)

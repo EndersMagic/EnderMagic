@@ -31,7 +31,7 @@ import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
-import ru.mousecray.endmagic.worldgen.WorldGenEnderTree;
+import ru.mousecray.endmagic.worldgen.trees.WorldGenEnderTree;
 
 public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & EMSapling.SaplingThings & BlockTypeBase> extends VariativeBlock<TreeType> implements IGrowable {
 

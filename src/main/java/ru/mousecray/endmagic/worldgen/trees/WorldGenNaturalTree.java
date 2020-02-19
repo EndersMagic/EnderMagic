@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.worldgen;
+package ru.mousecray.endmagic.worldgen.trees;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.api.EMUtils;
-import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
@@ -20,6 +20,9 @@ public class WorldGenNaturalTree extends WorldGenEnderTree {
 
 	public static List<int[][]> branches = new ArrayList();
 	public static List<int[][]> leaves = new ArrayList();
+	
+    public static final Vec3i areaRequirementsMin = new Vec3i(-3, 0, -3);
+    public static final Vec3i areaRequirementsMax = new Vec3i(3, 9, 3);
 
 	static {
 		int[][] branch1 = new int[][] { { 0, 0, 0 }, { 1, 0, 0 }, { 2, 1, 0 }, { 3, 1, 1 }, { 4, 2, 2 }, { 4, 2, 3 } };
@@ -68,20 +71,17 @@ public class WorldGenNaturalTree extends WorldGenEnderTree {
 		leaves.add(leaves3);
 	}
 
-	private IBlockState enderLog = EMBlocks.enderLog.getDefaultState().withProperty(EMBlocks.enderLog.getVariantType(),
-			EnderBlockTypes.EnderTreeType.NATURAL);
-	private IBlockState enderLeaves = EMBlocks.enderLeaves.getDefaultState()
-			.withProperty(EMBlocks.enderLeaves.getVariantType(), EnderBlockTypes.EnderTreeType.NATURAL);
+	private IBlockState enderLog = EMBlocks.enderLog.stateWithBlockType(EnderBlockTypes.EnderTreeType.NATURAL);
+	private IBlockState enderLeaves = EMBlocks.enderLeaves.stateWithBlockType(EnderBlockTypes.EnderTreeType.NATURAL);
 
 	public WorldGenNaturalTree(boolean notify) {
-		super(notify, null, null);
+		super(notify, areaRequirementsMin, areaRequirementsMax);
 	}
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos position) {
-		if (EMUtils.isSoil(world.getBlockState(position), true, false, EndSoilType.GRASS, EndSoilType.DIRT)) {
+		if (canGenerateThereAvaiable(world, position)) {
 			int logHeight = 7;
-			if (!checkAirBound(world, position, logHeight)) return false;
 			EnumAxis defaultAxis = EnumAxis.NONE;
 			Rotation rot1 = EMUtils.getRandomRotation(world.rand);
 			Rotation rot2 = EMUtils.getUnrepeatRotation(world.rand, rot1);
@@ -125,27 +125,6 @@ public class WorldGenNaturalTree extends WorldGenEnderTree {
 			return true;
 		}
 		else return false;
-	}
-
-	private boolean checkAirBound(World world, BlockPos position, int logHeight) {
-		boolean flag = true;
-		if (position.getY() + 1 >= 1 && position.getY() + logHeight + 2 <= world.getHeight()) {
-			for (int y = position.getY() + 1; y <= position.getY() + 2 + logHeight; ++y) {
-				int k = 1;
-				if (y == position.getY() + 2) k = 2;
-				else k = 5;
-
-				BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-
-				for (int x = position.getX() - k; x <= position.getX() + k && flag; ++x) {
-					for (int z = position.getZ() - k; z <= position.getZ() + k && flag; ++z) {
-						if (!isReplaceable(world, mutablePos.setPos(x, y, z))) flag = false;
-					}
-				}
-			}
-		}
-		else return false;
-		return flag;
 	}
 
 	private BlockPos[] generateBranch(World world, int[][] branch, int logHeight, BlockPos pos0, EnumAxis axis) {

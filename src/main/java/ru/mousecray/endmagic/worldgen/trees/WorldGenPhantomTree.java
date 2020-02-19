@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.worldgen;
+package ru.mousecray.endmagic.worldgen.trees;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -61,14 +61,15 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
     private IBlockState phantomLeaves = EMBlocks.enderLeaves.stateWithBlockType(EnderBlockTypes.EnderTreeType.PHANTOM);
     private IBlockState air = Blocks.AIR.getDefaultState();
 
-    private void setWithOffset(World world, BlockPos position, Vec3i offset, IBlockState state) {
+    @SuppressWarnings("unused")
+	private void setWithOffset(World world, BlockPos position, Vec3i offset, IBlockState state) {
         world.setBlockState(position.add(offset), state);
         ((TilePhantomAvoidingBlockBase) world.getTileEntity(position)).offsetFromSapling = offset;
     }
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
-        if (canGenerateThere(worldIn, position)) {
+        if (canGenerateThereAvaiable(worldIn, position)) {
             WorldSetWithTile specialWorld = new WorldSetWithTile(worldIn, position);
 
             for (int y = 0; y < 5; y++)
