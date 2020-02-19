@@ -74,7 +74,8 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         this(type, material, null, mapFunc);
     }
 
-    public EnumBlockRenderType getRenderType(IBlockState state) {
+    @Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
         return state.getValue(blockType).getRenderType(state);
     }
 
@@ -83,7 +84,8 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         return state.getValue(blockType).createTileEntity(world, state);
     }
 
-    public boolean hasTileEntity(IBlockState state) {
+    @Override
+	public boolean hasTileEntity(IBlockState state) {
         return state.getValue(blockType).hasTileEntity(state);
     }
 

@@ -57,7 +57,6 @@ import ru.mousecray.endmagic.util.RecipeHelper;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 
 import java.util.*;
-import java.util.function.Function;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
 
@@ -148,7 +147,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 items.stream().map(r -> RecipeHelper.findRecipeGrid(new ItemStack(r))).collect(toImmutableList()), "");
     }
 
-    private <A> ImmutableList<A> list(A... e) {
+    @SuppressWarnings("unused")
+	private <A> ImmutableList<A> list(A... e) {
         return ImmutableList.copyOf(e);
     }
 

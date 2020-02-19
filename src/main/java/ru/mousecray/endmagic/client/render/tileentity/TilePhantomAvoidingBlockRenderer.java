@@ -16,9 +16,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.client.event.RenderBlockOverlayEvent;
-import org.lwjgl.input.Keyboard;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
@@ -27,7 +24,8 @@ import java.util.List;
 import static org.lwjgl.opengl.GL11.*;
 
 public class TilePhantomAvoidingBlockRenderer extends TileEntitySpecialRenderer<TilePhantomAvoidingBlockBase> {
-    private static BlockPos.MutableBlockPos tempPos = new BlockPos.MutableBlockPos();
+    @SuppressWarnings("unused")
+	private static BlockPos.MutableBlockPos tempPos = new BlockPos.MutableBlockPos();
 
     Minecraft mc = Minecraft.getMinecraft();
 
