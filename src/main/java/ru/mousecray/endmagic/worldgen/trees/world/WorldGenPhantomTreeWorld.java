@@ -17,7 +17,7 @@ public class WorldGenPhantomTreeWorld {
             int lchunkX = chunkX << 4;
             int lchunkZ = chunkZ << 4;
             Chunk chunk = world.getChunkFromChunkCoords(lchunkX, lchunkZ);
-            if (random.nextInt(20) == 0 && !chunk.isEmpty()) {
+            if (random.nextInt(40) == 0 && !chunk.isEmpty()) {
                 int x = lchunkX + random.nextInt(16);
                 int z = lchunkZ + random.nextInt(16);
                 BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x + 8, 0, z + 8));

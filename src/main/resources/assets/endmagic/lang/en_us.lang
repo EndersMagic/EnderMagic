@@ -13,6 +13,10 @@ tile.phantom_coal_block.name=Block of Phantom Coal
 tile.enderite.name=Enderite
 tile.ender_ore.name=Ender Ore
 
+tile.chrysofillum_vine.name=Chrysofillum Vine
+tile.chrysofillum_flower.name=Chrysofillum Flower
+tile.chrysofillum_fruit.name=Chrysofillum Fruit
+
 tile.ender_tree_log.dragon.name=Dragon Wood
 tile.ender_tree_log.natural.name=Natural Wood
 tile.ender_tree_log.immortal.name=Immortal Wood
@@ -136,5 +140,72 @@ item.phantom_diamond_sword.name=Phantom Diamond Sword
 item.phantom_diamond_hoe.name=Phantom Diamond Hoe
 
 itemGroup.em_cretive_tab=Ender's Magic
-
 tooltip.ender_seeds=Grow on the End Stone
+book.main_page_title=Ender's Book
+
+book.category.items=Items
+book.category.blocks=Blocks
+book.category.plants=Plants
+book.category.mechanics=Mechanics
+
+#Articles
+##Items
+book.chapter.name.ender_apple=Ender Apple
+book.chapter.text.ender_apple=It are enhances the effects of potions and magic. Some girls believe that if you eat a lot of such apples, you can become a Beautiful Nymph. So say the Dust Traders. True, not everyone knows that the "Beautiful Nymph" in the language of these dwarfs means "Purple Bittern".
+
+book.chapter.name.book_of_the_end=Guide-book of End
+book.chapter.text.book_of_the_end=Inexplicable thing in terms of the laws of physics. Although, of course, she does not consider herself inexplicable. She just knows everything. By the way, this book is not alone. With the help of a simple ritual, anyone can call himself such a book, but it’s not known where they come from. Once, scientists tried to break through the portal into the home world of these books, but the darkness that came out of the portal destroyed the entire laboratory and themselves. But the books themselves are not dangerous, and therefore they need not be afraid. Moreover, do you read it in that very book, right?
+
+book.chapter.name.ender_arrow=Ender Arrow
+book.chapter.text.ender_arrow=You will terrify the Enderman with it. Well, at least you can scare them terribly. And then they are likely to kill you. But let's not talk about sad things. This arrow can hurt the Enderman, and he will not dodge it in any way. But the damage to such an arrow is small, so when the Enderman recovers from fright, run as fast as possible. True, arrows can be improved ... But only Dark Blacksmiths can do this.
+
+book.chapter.name.purple_pearl=Purple Pearl
+book.chapter.text.purple_pearl=Available from Purple Pearl Sprout. This pearl will be able to teleport to you any creature, if you, of course, hit it. If you get into an Enderman with such a pearl, then ... Well ... How to say ... Well, what do you want from me ... I don’t know what will happen! Well: “If you get into Enderman, something incredible will happen!” Will that be?
+
+book.chapter.name.blue_pearl=Blue Pearl
+book.chapter.text.blue_pearl=Unlike the purple pearl, this one will not only transfer another creature to you, but also send you to the place where this creature did been. I hope you do not throw this at the birds.
+
+book.chapter.name.portal_coordinator=Portal Binder
+book.chapter.text.portal_coordinator=Enderit, eye of the ender, a little glowstone dust... Now you can activate the portals! Sit down and click on the portal to save its coordinates to the coordinator. Click on another portal to link the two portals.
+
+book.chapter.name.ender_compass=Ender Compass
+book.chapter.text.ender_compass=Are your ender eyes stuck in the walls? Does break when flight? Ender compass will solve all problems! Traveling to the portal has never been so enjoyable.
+
+book.chapter.name.carbonic_materials=Carbonic Materials
+book.chapter.text.carbonic_materials.1=Each type of tree growing in The End corresponds to a sortes of coal. Just burn the wood in the furnace.
+book.chapter.text.carbonic_materials.2=Besides the fact that coal is a good fuel, it is possible to make steels and diamonds of the corresponding sortes from it. To make steel, place coal and iron in a blast furnace. Steels is easy to process, tools and armor can be made from.
+book.chapter.text.carbonic_materials.3=To make diamonds, put a block of coal and TNT nearby, overlay with obsidian and activate TNT. The coal will be compressed by an explosion, I will give a diamond. It’s more difficult to process diamonds, so you could only make tools.
+
+##Blocks
+book.chapter.name.enderite_ore=Ender Ore
+book.chapter.text.enderite_ore=Ender ore is may found only in the End. It can be processed into Enderit, the main component of any portal. Nevertheless, there are rumors that it is possible to smelt from this ore… And, however, why should we talk about those fiction... Besides, SHE hears everything...
+
+book.chapter.name.blast_furnace=Blast Furnace
+book.chapter.text.blast_furnace=Allows you to get the steel of the appropriate type with charcoal and iron. Put coal in the lower slot, and iron in the upper. The process may be long...
+
+book.chapter.name.static_teleport=Static Teleport Block
+book.chapter.text.static_teleport=One way ticket. Just tie the portal to the Bone Block using the portal coordinator.
+
+book.chapter.name.dark_teleport=Dark Teleport Block
+book.chapter.text.dark_teleport=Improved version of the portal. Link the two portals using the Portal Coordinator and you can to visit guests every morning.
+
+book.chapter.name.portal_marker=Top Mark Block
+book.chapter.text.portal_marker=The part of the portal structure that denotes its upper boundary.
+
+##Plants
+book.chapter.name.ender_grass=Ender Grass
+book.chapter.text.ender_grass=Sometimes, sprouts on Ender Stone. Glows weakly in the dark. Purple Pearl seeds may fall from it. This grass mainly grows in the upper edge, less often on average, and in the lower edge it has long died.
+
+book.chapter.name.purple_pearl_sprout=Purple Ender Sprout
+book.chapter.text.purple_pearl_sprout=It grows only in the dark and dies in the sun. Its seeds can only be find in the Ender Grass, or purchased from Dark Merchants. Fruit - Purple Pearl.
+
+book.chapter.name.curse_bush=Curse Bush
+book.chapter.text.curse_bush=In fact, these are ordinary bushes around a good golden tree. They are may found on the outer islands. But stay away from them, and in no case do not step on them, otherwise ... Are you familiar with the Ender Dragon? By chance, he did not tell you why he does not fly further than his island?
+
+##Mechanics
+book.chapter.name.compression_system=Compression System
+book.chapter.text.compression_system=By compressing coal with explosions, you can get diamonds that match the sorted of wood. Place a block of charcoal and tnt near. Surround with ten blocks of obsidian. Activate tnt.
+
+book.chapter.name.teleport_construction=Teleport Construction
+book.chapter.text.teleport_construction=Place the teleport block. Place a teleport marker block above it, at least 1 block away. Surround the teleport block and tags with any blocks on 5 sides, forming “caps”. You can use only blocks of the same type. There must be an empty space between the teleport block and the tag. The portal is activatable by a redstone signal. The easiest way is to place the button on one of the bottom “cap” blocks.
+Then you can link the built portals with the portal coordinator.
