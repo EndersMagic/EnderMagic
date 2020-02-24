@@ -17,9 +17,12 @@ public class WorldGenEnderOre extends WorldGenMinableEnd {
 	
 	@Override
 	public int calcHeight(World world, Random rand, BlockPos pos1) {
-		int currDown = 10;
+		int currDown = world.rand.nextInt(5) + 6;
 		while (world.isAirBlock(pos1.down(currDown))) {
-			if (currDown <= 1) break;
+			if (currDown <= 1) {
+				currDown = 1;
+				break;
+			}
 			currDown -= rand.nextInt(3);
 		}
 		return currDown;

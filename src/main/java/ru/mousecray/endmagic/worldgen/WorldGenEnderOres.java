@@ -22,18 +22,18 @@ public class WorldGenEnderOres implements IWorldGenerator {
 			if (!chunk.isEmpty()) {
 				int x = chunkX << 4;
 				int z = chunkZ << 4;
-				BlockPos position = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).down(3 + random.nextInt(5));
+				BlockPos position = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z)).down();
 				if (!world.isAirBlock(position)) {
-					int chance = random.nextInt(30);
-					if (chance > 25)  {
+					int chance = random.nextInt(100);
+					if (chance > 95)  {
 						enderOre.setNumberOfBlocks(7);
 						enderOre.generate(world, random, position);
 					}
-					else if (chance > 15) {
+					else if (chance > 70) {
 						enderOre.setNumberOfBlocks(5);
 						enderOre.generate(world, random, position);
 					}
-					else {
+					else if (chance > 50){
 						enderOre.setNumberOfBlocks(3);
 						enderOre.generate(world, random, position);
 					}

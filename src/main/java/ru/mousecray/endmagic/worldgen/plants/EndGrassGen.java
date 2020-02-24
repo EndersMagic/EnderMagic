@@ -22,10 +22,10 @@ public class EndGrassGen extends WorldGenerator {
 			boolean flag = EMBlocks.enderTallgrass.canSustainBush(world.getBlockState(pos2));
 			// System.out.println("Start");
 			if (flag) {
-				int chance = rand.nextInt(20);
+				int chance = rand.nextInt(10);
 				// System.out.println("/tp " + pos2.up().getX() + " " + pos2.up().getY() + " " +
 				// pos2.up().getZ());
-				if (chance == 0) setBlockAndNotifyAdequately(world, pos2.up(), EMBlocks.enderOrchid.getDefaultState());
+				if (chance > 8) setBlockAndNotifyAdequately(world, pos2.up(), EMBlocks.enderOrchid.getDefaultState());
 				else /* if (chance > 50) */ setBlockAndNotifyAdequately(world, pos2.up(), EMBlocks.enderTallgrass.getDefaultState());
 			}
 		}
