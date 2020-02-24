@@ -12,6 +12,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -36,6 +39,7 @@ import ru.mousecray.endmagic.util.EMItemBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
+import ru.mousecray.endmagic.worldgen.biomes.EMBiome;
 
 import javax.annotation.Nullable;
 import java.util.LinkedList;
@@ -43,10 +47,11 @@ import java.util.List;
 
 public class CommonProxy implements IGuiHandler {
 
-    protected List<Item> itemsToRegister = new LinkedList<>();
-    protected List<Class<? extends TileEntity>> tilesToRegister = new LinkedList<>();
-    protected List<Block> blocksToRegister = new LinkedList<>();
-    protected List<EntityEntry> entityToRegister = new LinkedList<>();
+    protected List<Item> itemsToRegister = new LinkedList();
+    protected List<Class<? extends TileEntity>> tilesToRegister = new LinkedList();
+    protected List<Block> blocksToRegister = new LinkedList();
+    protected List<EntityEntry> entityToRegister = new LinkedList();
+    protected List<Biome> biomesToRegister = new LinkedList();
 
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
@@ -63,6 +68,9 @@ public class CommonProxy implements IGuiHandler {
 
         //Registration Entity
         entityToRegister.addAll(new ClassFieldSource<EntityEntry>(EMEntities.class).elemes());
+        
+        //Registration Biomes
+        new ClassFieldSource<Biome>(EMBiomes.class).elemes().forEach(this::registerBiome);
 
         //Registration Recipes
         EMRecipes.initRecipes();
@@ -116,6 +124,20 @@ public class CommonProxy implements IGuiHandler {
     private void registerItem(Item item) {
         registerItem(item, NameAndTabUtils.getName(item));
     }
+    
+    private void registerBiome(Biome biome) {
+    	registerBiome(biome, NameAndTabUtils.getName(biome));
+    }
+    
+    private void registerBiome(Biome biome, String name) {
+    	if (biome instanceof EMBiome) {
+        	registerBiome(biome, NameAndTabUtils.getName(name));
+            biome.setRegistryName(name);
+            biomesToRegister.add(biome);
+            BiomeDictionary.addTypes(biome, ((EMBiome)biome).getForgeTypeForBiome());
+    	}
+    	else throw new RuntimeException("Biome" + name + "is't compatible with" + EM.ID);
+    }
 
     @SubscribeEvent
     public void registerBlocks(RegistryEvent.Register<Block> e) {
@@ -131,6 +153,11 @@ public class CommonProxy implements IGuiHandler {
     @SubscribeEvent
     public void registerEntities(RegistryEvent.Register<EntityEntry> e) {
         entityToRegister.forEach(e.getRegistry()::register);
+    }
+    
+    @SubscribeEvent
+    public void registerBiomes(RegistryEvent.Register<Biome> e) {
+        biomesToRegister.forEach(e.getRegistry()::register);
     }
 
     public void init(FMLInitializationEvent event) {
