@@ -119,7 +119,11 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 new TextComponent("book.chapter.text.carbonic_materials.3"),
                 recipesForItems(EMItems.diamondTools())
         );
-
+        
+        ItemStack rawE = new ItemStack(EMItems.rawEnderite);
+        ItemStack blockE = new ItemStack(EMBlocks.enderite);
+        BookApi.addStandartChapter("items", "enderite", new RecipeComponent(ImmutableList.of(rawE, blockE), ImmutableList.of(RecipeHelper.findRecipeGrid(rawE), RecipeHelper.findRecipeGrid(blockE)), I18n.format("book.chapter.text.enderite_recipes")));
+        
         BookApi.addStandartChapter("blocks", "enderite_ore", new SmeltingRecipeComponent(new ItemStack(EMItems.rawEnderite)));
         BookApi.addStandartChapter("blocks", "blast_furnace", new RecipeComponent(new ItemStack(EMBlocks.blockBlastFurnace)));
         BookApi.addStandartChapter("blocks", "static_teleport", new RecipeComponent(new ItemStack(EMBlocks.blockMasterStaticPortal)));
@@ -130,6 +134,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         BookApi.addStandartChapter("plants", "purple_pearl_sprout",
                 new ImageComponent(new ResourceLocation(EM.ID, "textures/book/purple_pearl_sprout.png"), ""));
         BookApi.addStandartChapter("plants", "curse_bush");
+        BookApi.addStandartChapter("plants", "ender_orchid");
 
         BookApi.addStandartChapter("mechanics", "compression_system",
                 new ImageComponent(new ResourceLocation(EM.ID, "textures/book/compression_system_1.png"), ""),

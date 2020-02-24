@@ -157,10 +157,10 @@ book.chapter.name.book_of_the_end=Guide-book of End
 book.chapter.text.book_of_the_end=Inexplicable thing in terms of the laws of physics. Although, of course, she does not consider herself inexplicable. She just knows everything. By the way, this book is not alone. With the help of a simple ritual, anyone can call himself such a book, but it’s not known where they come from. Once, scientists tried to break through the portal into the home world of these books, but the darkness that came out of the portal destroyed the entire laboratory and themselves. But the books themselves are not dangerous, and therefore they need not be afraid. Moreover, do you read it in that very book, right?
 
 book.chapter.name.ender_arrow=Ender Arrow
-book.chapter.text.ender_arrow=You will terrify the Enderman with it. Well, at least you can scare them terribly. And then they are likely to kill you. But let's not talk about sad things. This arrow can hurt the Enderman, and he will not dodge it in any way. But the damage to such an arrow is small, so when the Enderman recovers from fright, run as fast as possible. True, arrows can be improved ... But only Dark Blacksmiths can do this.
+book.chapter.text.ender_arrow=You will terrify the Enderman with it. Well, at least you can scare them terribly. And then they are likely to kill you. But let's not talk about sad things. This arrow can hurt the Enderman, and he will not dodge it in any way. But the damage to such an arrow is small, so when the Enderman recovers from fright, run as fast as possible. True, arrows can be improved... But only Dark Blacksmiths can do this.
 
 book.chapter.name.purple_pearl=Purple Pearl
-book.chapter.text.purple_pearl=Available from Purple Pearl Sprout. This pearl will be able to teleport to you any creature, if you, of course, hit it. If you get into an Enderman with such a pearl, then ... Well ... How to say ... Well, what do you want from me ... I don’t know what will happen! Well: “If you get into Enderman, something incredible will happen!” Will that be?
+book.chapter.text.purple_pearl=Available from Purple Pearl Sprout. This pearl will be able to teleport to you any creature, if you, of course, hit it. If you get into an Enderman with such a pearl, then... Well... How to say... Well, what do you want from me... I don’t know what will happen! Well: “If you get into Enderman, something incredible will happen!” Will that be?
 
 book.chapter.name.blue_pearl=Blue Pearl
 book.chapter.text.blue_pearl=Unlike the purple pearl, this one will not only transfer another creature to you, but also send you to the place where this creature did been. I hope you do not throw this at the birds.
@@ -176,9 +176,13 @@ book.chapter.text.carbonic_materials.1=Each type of tree growing in The End corr
 book.chapter.text.carbonic_materials.2=Besides the fact that coal is a good fuel, it is possible to make steels and diamonds of the corresponding sortes from it. To make steel, place coal and iron in a blast furnace. Steels is easy to process, tools and armor can be made from.
 book.chapter.text.carbonic_materials.3=To make diamonds, put a block of coal and TNT nearby, overlay with obsidian and activate TNT. The coal will be compressed by an explosion, I will give a diamond. It’s more difficult to process diamonds, so you could only make tools.
 
+book.chapter.name.enderite=Enderite
+book.chapter.text.enderite=This mineral is ubiquitous in The End.. Soft, but corrosion resistant, is an excellent constructing material.
+book.chapter.text.enderite_recipes=Recipes
+
 ##Blocks
 book.chapter.name.enderite_ore=Ender Ore
-book.chapter.text.enderite_ore=Ender ore is may found only in the End. It can be processed into Enderit, the main component of any portal. Nevertheless, there are rumors that it is possible to smelt from this ore… And, however, why should we talk about those fiction... Besides, SHE hears everything...
+book.chapter.text.enderite_ore=Ender ore is may found only in the End, underground. Landmark is the Ender Orchid, as it grows above the ore. But be careful: if the Ender Grass grows near the orchid, there is probably no ore there. Ender Ore can be processed into Enderit, the main component of any portal. Nevertheless, there are rumors that it is possible to smelt from this ore… And, however, why should we talk about those fiction... Besides, SHE hears everything...
 
 book.chapter.name.blast_furnace=Blast Furnace
 book.chapter.text.blast_furnace=Allows you to get the steel of the appropriate type with charcoal and iron. Put coal in the lower slot, and iron in the upper. The process may be long...
@@ -196,11 +200,14 @@ book.chapter.text.portal_marker=The part of the portal structure that denotes it
 book.chapter.name.ender_grass=Ender Grass
 book.chapter.text.ender_grass=Sometimes, sprouts on Ender Stone. Glows weakly in the dark. Purple Pearl seeds may fall from it. This grass mainly grows in the upper edge, less often on average, and in the lower edge it has long died.
 
+book.chapter.name.ender_orchid=Ender Orchid
+book.chapter.text.ender_orchid=Can be found in the End. If you meet her, you should know that deep below her you can find the Ender Ore. Orchid often grows above the ore. But there are exceptions, an orchid may appear near the Ender Grass.
+
 book.chapter.name.purple_pearl_sprout=Purple Ender Sprout
 book.chapter.text.purple_pearl_sprout=It grows only in the dark and dies in the sun. Its seeds can only be find in the Ender Grass, or purchased from Dark Merchants. Fruit - Purple Pearl.
 
 book.chapter.name.curse_bush=Curse Bush
-book.chapter.text.curse_bush=In fact, these are ordinary bushes around a good golden tree. They are may found on the outer islands. But stay away from them, and in no case do not step on them, otherwise ... Are you familiar with the Ender Dragon? By chance, he did not tell you why he does not fly further than his island?
+book.chapter.text.curse_bush=In fact, these are ordinary bushes around a good golden tree. They are may found on the outer islands. But stay away from them, and in no case do not step on them, otherwise... Are you familiar with the Ender Dragon? By chance, he did not tell you why he does not fly further than his island?
 
 ##Mechanics
 book.chapter.name.compression_system=Compression System
