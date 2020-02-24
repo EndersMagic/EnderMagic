@@ -98,7 +98,7 @@ public class EnderTallgrass extends EMBlockBush implements IShearable, IEMModel 
     }
 
 	@Override
-	protected boolean canSustainBush(IBlockState state) {
-		return EMUtils.isSoil(state, true, false, EndSoilType.GRASS);
+	public boolean canSustainBush(IBlockState state) {
+		return EMUtils.isSoil(state, true, false, EndSoilType.GRASS, EndSoilType.DIRT);
 	}
 }

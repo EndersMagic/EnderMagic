@@ -34,6 +34,7 @@ import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EMItemBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
+import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
 
@@ -136,6 +137,7 @@ public class CommonProxy implements IGuiHandler {
     public void init(FMLInitializationEvent event) {
         GameRegistry.registerWorldGenerator(new WorldGenEnderTrees(), 10);
         GameRegistry.registerWorldGenerator(new WorldGenEnderPlants(), 5);
+        GameRegistry.registerWorldGenerator(new WorldGenEnderOres(), 5);
     }
 
     public void postInit(FMLPostInitializationEvent event) {

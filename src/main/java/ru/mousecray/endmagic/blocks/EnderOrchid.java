@@ -58,7 +58,7 @@ public class EnderOrchid extends EMBlockBush implements IShearable {
     }
 
 	@Override
-	protected boolean canSustainBush(IBlockState state) {
+	public boolean canSustainBush(IBlockState state) {
 		return EMUtils.isSoil(state, true, false, EndSoilType.GRASS);
 	}
 }
