@@ -1,13 +1,17 @@
 package ru.mousecray.endmagic.proxy;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
+
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-import codechicken.lib.packet.PacketCustom;
 import com.google.common.collect.ImmutableList;
+
+import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -32,7 +36,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
-
 import ru.mousecray.endmagic.api.embook.components.ImageComponent;
 import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
@@ -55,10 +58,6 @@ import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.RecipeHelper;
 import ru.mousecray.endmagic.util.registry.IEMModel;
-
-import java.util.*;
-
-import static com.google.common.collect.ImmutableList.toImmutableList;
 
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
@@ -120,9 +119,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 recipesForItems(EMItems.diamondTools())
         );
         
-        ItemStack rawE = new ItemStack(EMItems.rawEnderite);
-        ItemStack blockE = new ItemStack(EMBlocks.enderite);
-        BookApi.addStandartChapter("items", "enderite", new RecipeComponent(ImmutableList.of(rawE, blockE), ImmutableList.of(RecipeHelper.findRecipeGrid(rawE), RecipeHelper.findRecipeGrid(blockE)), I18n.format("book.chapter.text.enderite_recipes")));
+        BookApi.addStandartChapter("items", "enderite", new RecipeComponent(new ItemStack(EMBlocks.enderite)));
         
         BookApi.addStandartChapter("blocks", "enderite_ore", new SmeltingRecipeComponent(new ItemStack(EMItems.rawEnderite)));
         BookApi.addStandartChapter("blocks", "blast_furnace", new RecipeComponent(new ItemStack(EMBlocks.blockBlastFurnace)));
