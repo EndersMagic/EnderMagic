@@ -23,6 +23,7 @@ public class WorldGenMinableEnd extends WorldGenerator {
 	}
 
 	public WorldGenMinableEnd(IBlockState state, int blockCount, Predicate<IBlockState> acceptedStates) {
+		super();
 		this.oreBlock = state;
 		this.numberOfBlocks = blockCount;
 		this.predicate = acceptedStates;
@@ -71,7 +72,7 @@ public class WorldGenMinableEnd extends WorldGenerator {
 									IBlockState state = world.getBlockState(blockpos);
 									if (state.getBlock().isReplaceableOreGen(state, world, blockpos, this.predicate)) {
 										if (onSetOreBlock(world, blockpos, rand)) {
-											world.setBlockState(blockpos, this.oreBlock, 18);
+											setBlockAndNotifyAdequately(world, blockpos, this.oreBlock);
 										}
 									}
 								}

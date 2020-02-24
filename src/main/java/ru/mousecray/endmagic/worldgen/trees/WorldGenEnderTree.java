@@ -2,7 +2,6 @@ package ru.mousecray.endmagic.worldgen.trees;
 
 import com.google.common.collect.ImmutableSet;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;

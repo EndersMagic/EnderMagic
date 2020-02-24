@@ -43,7 +43,7 @@ public class WorldGenDragonTree extends WorldGenEnderTree {
 
                 int lvl = 2 + random.nextInt(3);
                 for (int i = 0; i < lvl; i++)
-                    world.setBlockState(pos.offset(direction, i), enderLog.withProperty(LOG_AXIS, value), 18);
+                	setBlockAndNotifyAdequately(world, pos.offset(direction, i), enderLog.withProperty(LOG_AXIS, value));
 
                 generateLeavesAround(world, pos.offset(direction), lvl);
                 return true;

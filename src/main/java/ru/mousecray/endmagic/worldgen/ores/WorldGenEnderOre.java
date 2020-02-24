@@ -30,7 +30,7 @@ public class WorldGenEnderOre extends WorldGenMinableEnd {
 		if (isNotAirSurround(world, pos, rand)) {
 			BlockPos up = world.getTopSolidOrLiquidBlock(pos);
 			if (EMBlocks.enderOrchid.canSustainBush(world.getBlockState(up.down())) && world.isAirBlock(up) && rand.nextInt(3) != 0)
-				world.setBlockState(up, EMBlocks.enderOrchid.getDefaultState());
+				setBlockAndNotifyAdequately(world, up, EMBlocks.enderOrchid.getDefaultState());
 			return true;
 		}
 		else return false;
