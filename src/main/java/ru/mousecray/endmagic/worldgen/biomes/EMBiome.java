@@ -1,9 +1,14 @@
 package ru.mousecray.endmagic.worldgen.biomes;
 
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import net.minecraftforge.common.BiomeManager.BiomeType;
 
-public interface EMBiome {
-	public BiomeType getBiomeType();
-	public Type getForgeTypeForBiome();
+public abstract class EMBiome extends Biome {
+
+	public EMBiome(BiomeProperties properties) {
+		super(properties);
+		
+	}
+	
+	
 }

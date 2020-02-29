@@ -130,13 +130,12 @@ public class CommonProxy implements IGuiHandler {
     }
     
     private void registerBiome(Biome biome, String name) {
-    	if (biome instanceof EMBiome) {
+    	if (biome instanceof EMBiome &&) {
         	registerBiome(biome, NameAndTabUtils.getName(name));
             biome.setRegistryName(name);
             biomesToRegister.add(biome);
             BiomeDictionary.addTypes(biome, ((EMBiome)biome).getForgeTypeForBiome());
     	}
-    	else throw new RuntimeException("Biome" + name + "is't compatible with" + EM.ID);
     }
 
     @SubscribeEvent
