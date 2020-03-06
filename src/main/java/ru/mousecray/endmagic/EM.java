@@ -18,7 +18,7 @@ import ru.mousecray.endmagic.proxy.CommonProxy;
 import ru.mousecray.endmagic.util.EMCreativeTab;
 import ru.mousecray.endmagic.util.EMEntityDSI;
 
-@Mod(modid = EM.ID, name = EM.NAME, version = EM.VERSION, dependencies = "after:jhocon")
+@Mod(modid = EM.ID, name = EM.NAME, dependencies = "after:jhocon")
 public class EM {
     public static final String ID = "endmagic";
     public static final String VERSION = "@version@";
