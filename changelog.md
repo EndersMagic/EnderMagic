@@ -17,7 +17,7 @@ Added:
 * More localisation
 * Craft recipes
 
-Change:
+Changed:
 * Ingame wiki book
 * Added many articles to book
 * Fix crops crash
