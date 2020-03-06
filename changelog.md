@@ -1,4 +1,4 @@
-Changelog beta-1 e5bee80
+Changelog 1.4b | beta-1
 
 Added:
 * Configuration
