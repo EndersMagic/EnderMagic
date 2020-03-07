@@ -8,16 +8,15 @@ import net.minecraft.world.World;
 import ru.mousecray.endmagic.items.ItemTextured;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class TexturedModel extends BakedModelDelegate {
-    private static HashMap<Map<String, Integer>, TexturedFinalisedModel> memoization = new HashMap<>();
+    private static HashMap<ItemTextured, TexturedFinalisedModel> memoization = new HashMap<>();
 
     private static IBakedModel model(IBakedModel originalModel, ItemStack stack, World ___, EntityLivingBase ____) {
         Item item = stack.getItem();
         if (item instanceof ItemTextured) {
-            Map<String, Integer> key = ((ItemTextured) item).textures();
-            return memoization.computeIfAbsent(key, (__) -> new TexturedFinalisedModel(originalModel, key));
+            ItemTextured item1 = (ItemTextured) item;
+            return memoization.computeIfAbsent(item1, (__) -> new TexturedFinalisedModel(originalModel, item1));
         } else
             return originalModel;
     }

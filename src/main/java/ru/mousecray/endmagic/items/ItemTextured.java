@@ -4,6 +4,8 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -16,6 +18,10 @@ import ru.mousecray.endmagic.util.registry.IEMModel;
 public interface ItemTextured extends IEMModel {
 
     Map<String, Integer> textures();
+
+    default org.apache.commons.lang3.tuple.Pair<? extends IBakedModel, javax.vecmath.Matrix4f> handlePerspective(IBakedModel model, ItemCameraTransforms.TransformType cameraTransformType) {
+        return net.minecraftforge.client.ForgeHooksClient.handlePerspective(model, cameraTransformType);
+    }
 
     @Override
     default void registerModels(IModelRegistration modelRegistration) {
