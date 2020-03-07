@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.client.render.tileentity;
 
 import net.minecraft.client.renderer.tileentity.TileEntityEndPortalRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntityEndPortal;
 import net.minecraft.util.EnumFacing;
@@ -19,6 +20,10 @@ public class TileEntityPortalRenderer extends TileEntitySpecialRenderer<TilePort
             return true;
         }
     };
+    
+    public TileEntityPortalRenderer() {
+    	vanilaRender.setRendererDispatcher(TileEntityRendererDispatcher.instance);
+	}
 
     @Override
 	public void render(TilePortal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
