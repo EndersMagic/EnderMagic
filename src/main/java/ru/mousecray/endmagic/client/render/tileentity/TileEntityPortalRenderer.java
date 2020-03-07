@@ -1,6 +1,6 @@
 package ru.mousecray.endmagic.client.render.tileentity;
 
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.tileentity.TileEntityEndPortalRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntityEndPortal;
 import net.minecraft.util.EnumFacing;
@@ -11,7 +11,7 @@ import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 @SideOnly(Side.CLIENT)
 public class TileEntityPortalRenderer extends TileEntitySpecialRenderer<TilePortal> {
 
-    private TileEntitySpecialRenderer<TileEntityEndPortal> vanilaRender = (TileEntitySpecialRenderer<TileEntityEndPortal>) TileEntityRendererDispatcher.instance.renderers.get(TileEntityEndPortal.class);
+    private TileEntityEndPortalRenderer vanilaRender = new TileEntityEndPortalRenderer();
 
     private TileEntityEndPortal teEndPortal = new TileEntityEndPortal() {
         @Override
