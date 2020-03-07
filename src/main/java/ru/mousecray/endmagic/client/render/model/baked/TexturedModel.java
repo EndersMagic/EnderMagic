@@ -1,11 +1,13 @@
 package ru.mousecray.endmagic.client.render.model.baked;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.items.ItemTextured;
+import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +19,7 @@ public class TexturedModel extends BakedModelDelegate {
         Item item = stack.getItem();
         if (item instanceof ItemTextured) {
             Map<String, Integer> key = ((ItemTextured) item).textures();
-            return memoization.computeIfAbsent(key, (__) -> new TexturedFinalisedModel(originalModel, key));
+            return memoization.computeIfAbsent(key, (__) -> new TexturedFinalisedModel(originalModel, key, Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(NameAndTabUtils.getName(item.getClass()))));
         } else
             return originalModel;
     }

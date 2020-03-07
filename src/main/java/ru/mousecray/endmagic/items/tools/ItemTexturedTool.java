@@ -10,7 +10,6 @@ public interface ItemTexturedTool extends ItemTextured {
     @Override
 	default Map<String, Integer> textures() {
         return ImmutableMap.of(
-                stick(), 0xffffffff,
                 EM.ID + ":items/tools/colorless_" + toolType(), color());
     }
 

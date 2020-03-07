@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -168,19 +169,26 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         }
     }
 
-    private Set<ResourceLocation> forRegister = new HashSet<>();
+    private Set<ResourceLocation> forRegister1 = new HashSet<>();
+    private Set<TextureAtlasSprite> forRegister2 = new HashSet<>();
 
     private Map<ModelResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
     private Map<ResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverridesR = new HashMap<>();
 
     @Override
     public void registerTexture(ResourceLocation resourceLocation) {
-        forRegister.add(resourceLocation);
+        forRegister1.add(resourceLocation);
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public void stitcherEventPre(TextureStitchEvent.Pre event) {
-        forRegister.forEach(event.getMap()::registerSprite);
+        forRegister1.forEach(event.getMap()::registerSprite);
+        forRegister2.forEach(event.getMap()::setTextureEntry);
+    }
+
+    @Override
+    public void registerAtlasSprite(TextureAtlasSprite textureAtlasSprite) {
+        forRegister2.add(textureAtlasSprite);
     }
 
     @SubscribeEvent
