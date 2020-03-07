@@ -17,8 +17,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
+import net.minecraft.client.renderer.entity.RenderEnderman;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -40,6 +42,7 @@ import ru.mousecray.endmagic.api.embook.components.ImageComponent;
 import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
+import ru.mousecray.endmagic.client.render.entity.LayerEndermanPumpkin;
 import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
 import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
@@ -80,6 +83,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         super.init(event);
         ClientRegistry.bindTileEntitySpecialRenderer(TilePortal.class, new TileEntityPortalRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TilePhantomAvoidingBlockBase.class, new TilePhantomAvoidingBlockRenderer());
+        ((RenderEnderman) Minecraft.getMinecraft().getRenderManager().<EntityEnderman>getEntityClassRenderObject(EntityEnderman.class)).addLayer(new LayerEndermanPumpkin());
     }
 
     @GameRegistry.ObjectHolder(EM.ID + ":dragon_steel_pickaxe")
@@ -118,9 +122,9 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 new TextComponent("book.chapter.text.carbonic_materials.3"),
                 recipesForItems(EMItems.diamondTools())
         );
-        
+
         BookApi.addStandartChapter("items", "enderite", new RecipeComponent(new ItemStack(EMBlocks.enderite)));
-        
+
         BookApi.addStandartChapter("blocks", "enderite_ore", new SmeltingRecipeComponent(new ItemStack(EMItems.rawEnderite)));
         BookApi.addStandartChapter("blocks", "blast_furnace", new RecipeComponent(new ItemStack(EMBlocks.blockBlastFurnace)));
         BookApi.addStandartChapter("blocks", "static_teleport", new RecipeComponent(new ItemStack(EMBlocks.blockMasterStaticPortal)));
@@ -149,8 +153,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 items.stream().map(r -> RecipeHelper.findRecipeGrid(new ItemStack(r))).collect(toImmutableList()), "");
     }
 
-    @SuppressWarnings("unused")
-	private <A> ImmutableList<A> list(A... e) {
+    private <A> ImmutableList<A> list(A... e) {
         return ImmutableList.copyOf(e);
     }
 
