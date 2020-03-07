@@ -8,15 +8,15 @@ public class EMEntities {
 	public static EntityEntry emEnderPearl = EntityEntryBuilder
 			.create()
 			.entity(EntityEMEnderPearl.class)
-			.name("PurpleEnderPearl")
-			.id("purple_ender_pearl", 0)
+			.name("EMEnderPearl")
+			.id("em_ender_pearl", 0)
 			.tracker(64, 20, true)
 			.build();
 	public static EntityEntry enderArrow = EntityEntryBuilder
 			.create()
 			.entity(EntityEnderArrow.class)
-			.name("EnderPearl")
-			.id("ender_pearl", 2)
+			.name("EnderArrow")
+			.id("ender_arrow", 2)
 			.tracker(64, 20, true)
 			.build();
 	public static EntityEntry entityCurseBush = EntityEntryBuilder
