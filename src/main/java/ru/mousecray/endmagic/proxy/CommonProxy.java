@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -89,12 +90,16 @@ public class CommonProxy implements IGuiHandler {
             @Nullable
             @Override
             public NBTBase writeNBT(Capability<EndermanHeadBlockCapability> capability, EndermanHeadBlockCapability instance, EnumFacing side) {
-                return null;
+                NBTTagCompound r = new NBTTagCompound();
+                r.setString("block", instance.block.getBlock().getRegistryName().toString());
+                return r;
             }
 
             @Override
             public void readNBT(Capability<EndermanHeadBlockCapability> capability, EndermanHeadBlockCapability instance, EnumFacing side, NBTBase nbt) {
-
+                if (nbt instanceof NBTTagCompound) {
+                    instance.block = Block.getBlockFromName(((NBTTagCompound) nbt).getString("block")).getDefaultState();
+                }
             }
         }, EndermanHeadBlockCapability::new);
     }
