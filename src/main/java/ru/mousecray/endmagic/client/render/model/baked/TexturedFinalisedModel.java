@@ -82,6 +82,6 @@ public class TexturedFinalisedModel extends BakedModelDelegate {
 
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-        return item.handlePerspective(this, cameraTransformType);
+        return Pair.of(this, item.handlePerspective(this, cameraTransformType));
     }
 }
