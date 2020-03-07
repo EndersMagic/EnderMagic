@@ -2,6 +2,8 @@ package ru.mousecray.endmagic.client.render.tileentity;
 
 import com.google.common.primitives.Ints;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -23,6 +25,7 @@ import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import java.util.List;
 
+import static net.minecraft.block.BlockLog.LOG_AXIS;
 import static org.lwjgl.opengl.GL11.*;
 
 @SideOnly(Side.CLIENT)
@@ -36,10 +39,24 @@ public class TilePhantomAvoidingBlockRenderer extends TileEntitySpecialRenderer<
     public void render(TilePhantomAvoidingBlockBase te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         glPushMatrix();
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0F, 240F);
-        glTranslated(x, y - 12f / 16, z);
-        glScaled(4, 4, 4);
 
-        Block block = te.getWorld().getBlockState(te.getPos()).getBlock();
+        IBlockState blockState = te.getWorld().getBlockState(te.getPos());
+        Block block = blockState.getBlock();
+        if(blockState.getPropertyKeys().contains(LOG_AXIS)){
+            BlockLog.EnumAxis axis = blockState.getValue(LOG_AXIS);
+            if(axis==BlockLog.EnumAxis.X){
+                glTranslated(x + 28f / 16, y, z);
+                glScaled(4, 4, 4);
+                GlStateManager.rotate(90,0,0,1);
+            }else if(axis==BlockLog.EnumAxis.Z){
+                glTranslated(x, y + 1, z - 12f / 16);
+                glScaled(4, 4, 4);
+                GlStateManager.rotate(90,1,0,0);
+            }else if(axis==BlockLog.EnumAxis.Y){
+                glTranslated(x, y - 12f / 16, z);
+                glScaled(4, 4, 4);
+            }
+        }
         double alpha1 = (double) (TilePhantomAvoidingBlockBase.maxAvoidTicks - (te.avoidTicks + partialTicks * te.increment)) / TilePhantomAvoidingBlockBase.maxAvoidTicks;
         //System.out.println(alpha1);
         renderBlockWithColor(new ItemStack(block, 1, EnderBlockTypes.EnderTreeType.PHANTOM.ordinal()), alpha1);
