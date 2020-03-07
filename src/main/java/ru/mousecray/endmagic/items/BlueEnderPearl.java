@@ -13,7 +13,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-import ru.mousecray.endmagic.entity.EntityBluePearl;
+import ru.mousecray.endmagic.entity.EntityEMEnderPearl;
 import ru.mousecray.endmagic.util.EntityImpact;
 
 public class BlueEnderPearl extends Item implements EntityImpact,ItemOneWhiteEMTextured {
@@ -47,7 +47,7 @@ public class BlueEnderPearl extends Item implements EntityImpact,ItemOneWhiteEMT
         player.getCooldownTracker().setCooldown(this, 20);
 
         if (!world.isRemote) {
-            EntityBluePearl pearl = new EntityBluePearl(world, player, itemstack);
+            EntityEMEnderPearl pearl = new EntityEMEnderPearl(world, player, itemstack);
             pearl.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
             world.spawnEntity(pearl);
         }
