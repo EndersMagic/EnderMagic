@@ -5,18 +5,11 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import ru.mousecray.endmagic.entity.*;
 
 public class EMEntities {
-	public static EntityEntry purpleEnderPearl = EntityEntryBuilder
+	public static EntityEntry emEnderPearl = EntityEntryBuilder
 			.create()
-			.entity(EntityPurplePearl.class)
+			.entity(EntityEMEnderPearl.class)
 			.name("PurpleEnderPearl")
 			.id("purple_ender_pearl", 0)
-			.tracker(64, 20, true)
-			.build();
-	public static EntityEntry blueEnderPearl = EntityEntryBuilder
-			.create()
-			.entity(EntityBluePearl.class)
-			.name("BlueEnderPearl")
-			.id("blue_ender_pearl", 1)
 			.tracker(64, 20, true)
 			.build();
 	public static EntityEntry enderArrow = EntityEntryBuilder
