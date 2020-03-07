@@ -83,7 +83,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         super.init(event);
         ClientRegistry.bindTileEntitySpecialRenderer(TilePortal.class, new TileEntityPortalRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TilePhantomAvoidingBlockBase.class, new TilePhantomAvoidingBlockRenderer());
-        ((RenderEnderman) Minecraft.getMinecraft().getRenderManager().<EntityEnderman>getEntityClassRenderObject(EntityEnderman.class)).addLayer(new LayerEndermanPumpkin());
+        RenderEnderman entityClassRenderObject = (RenderEnderman) Minecraft.getMinecraft().getRenderManager().<EntityEnderman>getEntityClassRenderObject(EntityEnderman.class);
+        entityClassRenderObject.addLayer(new LayerEndermanPumpkin(entityClassRenderObject));
     }
 
     @GameRegistry.ObjectHolder(EM.ID + ":dragon_steel_pickaxe")
