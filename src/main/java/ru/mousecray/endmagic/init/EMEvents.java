@@ -9,7 +9,9 @@ import net.minecraft.client.gui.GuiListWorldSelection;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiWorldSelection;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow.PickupStatus;
 import net.minecraft.init.Blocks;
@@ -39,6 +41,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
+import ru.mousecray.endmagic.capability.entity.EndermanHeadBlockCapabilityProvider;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -67,6 +70,12 @@ public class EMEvents {
     @SubscribeEvent
     public static void onCapaAttachToWorld(AttachCapabilitiesEvent<World> event) {
         event.addCapability(PhantomAvoidingGroupCapabilityProvider.name, new PhantomAvoidingGroupCapabilityProvider());
+    }
+
+    @SubscribeEvent
+    public static void onCapaAttachToEntity(AttachCapabilitiesEvent<Entity> event) {
+        if (event.getObject() instanceof EntityEnderman)
+            event.addCapability(EndermanHeadBlockCapabilityProvider.name, new EndermanHeadBlockCapabilityProvider());
     }
 
     @SubscribeEvent

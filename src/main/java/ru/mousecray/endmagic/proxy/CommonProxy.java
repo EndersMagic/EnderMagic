@@ -26,6 +26,7 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
+import ru.mousecray.endmagic.capability.entity.EndermanHeadBlockCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.init.*;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
@@ -83,6 +84,19 @@ public class CommonProxy implements IGuiHandler {
 
             }
         }, PhantomAvoidingGroupCapability::new);
+
+        CapabilityManager.INSTANCE.register(EndermanHeadBlockCapability.class, new Capability.IStorage<EndermanHeadBlockCapability>() {
+            @Nullable
+            @Override
+            public NBTBase writeNBT(Capability<EndermanHeadBlockCapability> capability, EndermanHeadBlockCapability instance, EnumFacing side) {
+                return null;
+            }
+
+            @Override
+            public void readNBT(Capability<EndermanHeadBlockCapability> capability, EndermanHeadBlockCapability instance, EnumFacing side, NBTBase nbt) {
+
+            }
+        }, EndermanHeadBlockCapability::new);
     }
 
     private void registerBlock(Block block) {
