@@ -37,6 +37,8 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
@@ -190,7 +192,7 @@ public class EMEvents {
         packet.sendToDimension(toDimension);
     }
 
-    //@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void onWorldTickClient(TickEvent.ClientTickEvent event) {
         if (Minecraft.getMinecraft().world != null)
@@ -216,6 +218,7 @@ public class EMEvents {
             }
     }
 
+    @SideOnly(Side.CLIENT)
     //    @SubscribeEvent
     public static void loadLastWorld(GuiOpenEvent event) {
         Minecraft mc = Minecraft.getMinecraft();

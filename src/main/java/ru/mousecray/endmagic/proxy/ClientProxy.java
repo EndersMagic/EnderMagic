@@ -1,17 +1,7 @@
 package ru.mousecray.endmagic.proxy;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-
-import com.google.common.collect.ImmutableList;
-
 import codechicken.lib.packet.PacketCustom;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -19,9 +9,12 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -33,7 +26,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.components.ImageComponent;
@@ -52,6 +44,8 @@ import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.EntityPurplePearl;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
+import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
+import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
 import ru.mousecray.endmagic.items.ItemTextured;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
@@ -59,8 +53,14 @@ import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.RecipeHelper;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.function.Function;
+
+import static com.google.common.collect.ImmutableList.toImmutableList;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
+
     public ClientProxy() {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
     }
@@ -81,12 +81,6 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         ClientRegistry.bindTileEntitySpecialRenderer(TilePortal.class, new TileEntityPortalRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TilePhantomAvoidingBlockBase.class, new TilePhantomAvoidingBlockRenderer());
     }
-
-    @GameRegistry.ObjectHolder(EM.ID + ":dragon_steel_pickaxe")
-    public static Item steelPickaxe;
-
-    @GameRegistry.ObjectHolder(EM.ID + ":immortal_diamond_hoe")
-    public static Item diamondPickaxe;
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
@@ -118,9 +112,9 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 new TextComponent("book.chapter.text.carbonic_materials.3"),
                 recipesForItems(EMItems.diamondTools())
         );
-        
+
         BookApi.addStandartChapter("items", "enderite", new RecipeComponent(new ItemStack(EMBlocks.enderite)));
-        
+
         BookApi.addStandartChapter("blocks", "enderite_ore", new SmeltingRecipeComponent(new ItemStack(EMItems.rawEnderite)));
         BookApi.addStandartChapter("blocks", "blast_furnace", new RecipeComponent(new ItemStack(EMBlocks.blockBlastFurnace)));
         BookApi.addStandartChapter("blocks", "static_teleport", new RecipeComponent(new ItemStack(EMBlocks.blockMasterStaticPortal)));
@@ -149,8 +143,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 items.stream().map(r -> RecipeHelper.findRecipeGrid(new ItemStack(r))).collect(toImmutableList()), "");
     }
 
-    @SuppressWarnings("unused")
-	private <A> ImmutableList<A> list(A... e) {
+    private <A> ImmutableList<A> list(A... e) {
         return ImmutableList.copyOf(e);
     }
 
@@ -229,5 +222,14 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     @Override
     public void setStateMapper(Block block, IStateMapper stateMapper) {
         ModelLoader.setCustomStateMapper(block, stateMapper);
+    }
+
+    @Nullable
+    @Override
+    public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+        if (id == blastFurnaceGui)
+            return new GuiBlastFurnace(new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z))));
+
+        return null;
     }
 }

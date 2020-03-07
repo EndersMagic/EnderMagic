@@ -85,6 +85,7 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
         return false;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return !Minecraft.getMinecraft().gameSettings.fancyGraphics;

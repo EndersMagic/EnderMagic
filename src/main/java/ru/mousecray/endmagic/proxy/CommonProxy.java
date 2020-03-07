@@ -157,9 +157,6 @@ public class CommonProxy implements IGuiHandler {
     @Nullable
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-        if (id == blastFurnaceGui)
-            return new GuiBlastFurnace(new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z))));
-
         return null;
     }
 }
