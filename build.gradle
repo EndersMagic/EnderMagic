@@ -40,8 +40,6 @@ cutter {
     builds {
 
         release {
-            
-            jarAdditionName="non release"
 
             targetSides = [releaseSide]
 
