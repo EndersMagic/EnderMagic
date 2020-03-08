@@ -8,7 +8,6 @@ import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -41,18 +40,14 @@ public class EntityEMEnderPearl extends EntityThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-		new EntityEMEnderPearl(world, null);
-
-		if (result.entityHit != null) {
-			result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), 2F);
-			if (result.entityHit instanceof EntityLivingBase) {
-				if (item instanceof EMEnderPearl) {
-					if (result.entityHit.isRiding()) { result.entityHit.dismountRidingEntity(); }
-					((EMEnderPearl) item).onImpact((EntityLivingBase) result.entityHit, thrower, this);
-				}
-				setDead();
-				world.setEntityState(this, (byte) 3);
+		if (result.entityHit != null && result.entityHit instanceof EntityLivingBase) {
+//			result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), 2F);
+			if (item instanceof EMEnderPearl) {
+				if (result.entityHit.isRiding()) { result.entityHit.dismountRidingEntity(); }
+				((EMEnderPearl) item).onImpact((EntityLivingBase) result.entityHit, thrower, this);
 			}
+			setDead();
+			world.setEntityState(this, (byte) 3);
 		}
 
 		for (int i = 0; i < 32; ++i)
