@@ -32,7 +32,7 @@ public abstract class EMEnderPearl extends Item implements ItemOneWhiteEMTexture
         player.getCooldownTracker().setCooldown(this, 20);
 
         if (!world.isRemote) {
-            EntityEMEnderPearl pearl = new EntityEMEnderPearl(world, player, null);
+            EntityEMEnderPearl pearl = new EntityEMEnderPearl(world, player, this);
             pearl.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
             world.spawnEntity(pearl);
         }
