@@ -41,6 +41,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
+import ru.mousecray.endmagic.api.GradleTarget;
+import ru.mousecray.endmagic.api.Target;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -55,6 +57,8 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 
+import static ru.mousecray.endmagic.api.Target.Debug;
+import static ru.mousecray.endmagic.api.Target.Release;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
@@ -218,8 +222,9 @@ public class EMEvents {
             }
     }
 
+    @GradleTarget(Debug)
     @SideOnly(Side.CLIENT)
-    //    @SubscribeEvent
+    @SubscribeEvent
     public static void loadLastWorld(GuiOpenEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         if (event.getGui() instanceof GuiMainMenu) {
