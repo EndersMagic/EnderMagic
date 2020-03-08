@@ -1,7 +1,19 @@
 package ru.mousecray.endmagic.proxy;
 
-import codechicken.lib.packet.PacketCustom;
+import static com.google.common.collect.ImmutableList.toImmutableList;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableList;
+
+import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -38,10 +50,9 @@ import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TilePhantomAvoidingBlockRenderer;
-import ru.mousecray.endmagic.entity.EntityBluePearl;
 import ru.mousecray.endmagic.entity.EntityCurseBush;
+import ru.mousecray.endmagic.entity.EntityEMEnderPearl;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
-import ru.mousecray.endmagic.entity.EntityPurplePearl;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
@@ -53,12 +64,6 @@ import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.RecipeHelper;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.function.Function;
-
-import static com.google.common.collect.ImmutableList.toImmutableList;
-
 public class ClientProxy extends CommonProxy implements IModelRegistration {
 
     public ClientProxy() {
@@ -69,8 +74,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
         PacketCustom.assignHandler(EM.ID, new ClientPacketHandler());
-        RenderingRegistry.registerEntityRenderingHandler(EntityPurplePearl.class, manager -> new RenderSnowball(manager, EMItems.purpleEnderPearl, Minecraft.getMinecraft().getRenderItem()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityBluePearl.class, manager -> new RenderSnowball(manager, EMItems.blueEnderPearl, Minecraft.getMinecraft().getRenderItem()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEMEnderPearl.class, manager -> new RenderSnowball(manager, EMItems.purpleEnderPearl, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderArrow.class, manager -> new RenderEnderArrow(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityCurseBush.class, manager -> new RenderEntityCurseBush(manager));
     }
