@@ -234,35 +234,67 @@ public class EMEvents {
     }
 
     //TODO: onUseBonemeal
-    @SubscribeEvent
-    public static void onUseBonemeal(BonemealEvent event) {
-//    	World world  = event.getWorld();
-//    	BlockPos pos = event.getPos();
-//    	Random rand = event.getEntityPlayer().getRNG();
-//    	if(event.getBlock().getBlock() instanceof IEndSoil) {
-//    		IEndSoil soil = (IEndSoil)event.getBlock().getBlock();
-//    		if(soil.canUseBonemeal()) {
-//	    		List<BlockPos> existPos = EMUtils.isSoil(world, pos.add(-1, 0, -1), pos.add(1, 0, 1), false, true, EndSoilType.DIRT, EndSoilType.GRASS);
-//	    		for(BlockPos pos2 : existPos) {
-//	    			IEndSoil soil2 = (IEndSoil)world.getBlockState(pos2).getBlock();
-//	    			IBlockState state = soil2.getBonemealCrops(rand, event.getEntityPlayer(), world.getBlockState(pos2));
-//	    			if (state.getBlock() != Blocks.AIR && world.isAirBlock(pos2.up())) world.setBlockState(pos2.up(), state);
-//	        		ItemDye.spawnBonemealParticles(world, pos, 5);
-//	    		}
-//	    		event.setResult(Result.ALLOW);
-//    		}
-//    	}
-//    	else if (event.getBlock().getBlock() == Blocks.END_STONE) {
-//    		for (int x = -1; x < 2; ++x) {
-//    			for (int z = -1; z < 2; ++z) {
-//        			if (world.isAirBlock(pos.add(x, 1, z)) && world.getBlockState(pos.add(x, 0, z)).getBlock() == Blocks.END_STONE && event.getEntityPlayer().getRNG().nextInt(500) > 498) {
-//        				world.setBlockState(pos.add(x, 1, z), EMBlocks.enderTallgrass.getDefaultState());
-//        	    		ItemDye.spawnBonemealParticles(world, pos, 5);
-//        			}
-//    			}
-//    		}
-//    		event.setResult(Result.ALLOW);
-//    	}
+@SubscribeEvent
+    public static void onUseBonemeal(BonemealEvent event)
+    {
+        World world  = event.getWorld();
+        BlockPos pos = event.getPos();
+        Random rand = event.getEntityPlayer().getRNG();
+        if(event.getBlock().getBlock() instanceof IEndSoil)
+        {
+            IEndSoil soil = (IEndSoil)event.getBlock().getBlock();
+            if(soil.canUseBonemeal())
+            {
+                for (int x = -2; x < 2; ++x)
+                {
+                    for (int z = -2; z < 2; ++z)
+                    {
+                        BlockPos pos2 = pos.add(x, 0, z);
+                        if(EMUtils.isSoil(world.getBlockState(pos2), true, true, EndSoilType.DIRT, EndSoilType.GRASS))
+                        {
+                            int chance = rand.nextInt(1000) + 1;
+                            Block block2 =  world.getBlockState(pos2).getBlock();
+                            IBlockState settable = Blocks.AIR.getDefaultState();
+                            if (block2.getDefaultState() == blockEnderGrass.getDefaultState())
+                            {
+                                if (chance > 870) settable = EMBlocks.enderTallgrass.getDefaultState();
+                                else if (chance > 820) settable = EMBlocks.enderOrchid.getDefaultState();
+                            }
+                            else if(block2.getDefaultState() == blockEnderStone.getDefaultState())
+                            {
+                                if (chance > 995) settable = EMBlocks.enderTallgrass.getDefaultState();
+                                else if (chance > 900) settable = EMBlocks.blockCurseBush.getDefaultState();
+                            }
+                            //else if (block2.getDefaultState() == EnderBlockTypes.EnderGroundType.FROZEN)
+                            //{
+                                //TODO: Frozen plants
+                            //}
+                            if (settable.getBlock() != Blocks.AIR && world.isAirBlock(pos2.up())) {
+                                world.setBlockState(pos2.up(), settable);
+                                ItemDye.spawnBonemealParticles(world, pos2, 5);
+                            }
+                        }
+                    }
+                }
+                event.setResult(Event.Result.ALLOW);
+            }
+        }
+        else if (event.getBlock().getBlock() == Blocks.END_STONE)
+        {
+            for (int x = -2; x < 2; ++x)
+            {
+                for (int z = -2; z < 2; ++z)
+                {
+                    if (world.isAirBlock(pos.add(x, 1, z)) && world.getBlockState(pos.add(x, 0, z)).getBlock() == Blocks.END_STONE && event.getEntityPlayer().getRNG().nextInt(10) > 8)
+                    {
+                        world.setBlockState(pos.add(x, 1, z), EMBlocks.enderTallgrass.getDefaultState());
+                        ItemDye.spawnBonemealParticles(world, pos, 5);
+                    }
+                }
+            }
+            event.setResult(Event.Result.ALLOW);
+        }
+    }  }
     }
 
     @SubscribeEvent
