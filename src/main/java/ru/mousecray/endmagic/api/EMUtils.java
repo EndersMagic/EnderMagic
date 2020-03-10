@@ -5,8 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
@@ -17,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.api.blocks.IEndSoil;
+import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
 
 public class EMUtils {
@@ -51,25 +54,23 @@ public class EMUtils {
 		}
 	}
 
-	public static boolean isSoil(IBlockState state, boolean vanillaEnd, boolean bonemeal, EndSoilType... types) {
-		Block block = state.getBlock();
-		boolean isSoil = false;
-		if (block instanceof IEndSoil) {
-			if (types.length > 0) {
-				IEndSoil type = ((IEndSoil) block);
-				for (int i = 0; i < types.length; ++i) {
-					EndSoilType type2 = type.getSoilType();
-					isSoil = type.getSoilType() == types[i];
-					if (bonemeal) isSoil = isSoil && type.canUseBonemeal();
-					if(isSoil) break;
-				}
-			}
-			else isSoil = false;
-		}
-		if (vanillaEnd) isSoil = isSoil || block == Blocks.END_STONE;
+    public static boolean isSoil(IBlockState state, boolean onlyVanillaBlock, boolean needSupportBonemeal, EndSoilType... filterTypes) {
+        Block block = state.getBlock();
+        ImmutableSet<EndSoilType> endSoilTypes = ImmutableSet.copyOf(filterTypes);
+        return block == Blocks.END_STONE ||
+                (!onlyVanillaBlock && block instanceof IEndSoil &&
+                        (!needSupportBonemeal || ((IEndSoil) block).canUseBonemeal()) &&
+                        (filterTypes.length==0 || endSoilTypes.contains(((IEndSoil) block).getSoilType())));
+    }
 
-		return isSoil;
-	}
+    public static IBlockState getBonemealCrops(IBlockState block2, Random rand, EntityPlayer entityPlayer, IBlockState block21) {
+        if (block2.getBlock() == Blocks.END_STONE)
+            return EMBlocks.enderTallgrass.getDefaultState();
+        else if (isSoil(block2, false, true))
+            return ((IEndSoil) block2.getBlock()).getBonemealCrops(rand, entityPlayer, block21);
+        else
+            return Blocks.AIR.getDefaultState();
+    }
 
 	public static boolean isEnderArrow(ItemStack stack) {
 		return stack.getItem() == EMItems.enderArrow;
