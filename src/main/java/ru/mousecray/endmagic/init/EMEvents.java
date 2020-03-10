@@ -17,6 +17,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
@@ -35,12 +36,15 @@ import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
+import ru.mousecray.endmagic.api.blocks.EndSoilType;
+import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -55,8 +59,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 
-import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
-import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
+import static ru.mousecray.endmagic.init.EMBlocks.*;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_PHANROM_AVOIDINCAPABILITY;
 import static ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
@@ -294,8 +297,8 @@ public class EMEvents {
             }
             event.setResult(Event.Result.ALLOW);
         }
-    }  }
-    }
+     }
+    
 
     @SubscribeEvent
     public static void onPressureExplosionCoal(ExplosionEvent.Start event) {
