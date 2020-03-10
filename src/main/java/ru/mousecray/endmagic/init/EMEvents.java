@@ -237,44 +237,32 @@ public class EMEvents {
     }
 
     //TODO: onUseBonemeal
-@SubscribeEvent
+    @SubscribeEvent
     public static void onUseBonemeal(BonemealEvent event)
     {
         World world  = event.getWorld();
         BlockPos pos = event.getPos();
         Random rand = event.getEntityPlayer().getRNG();
-        if(event.getBlock().getBlock() instanceof IEndSoil)
+        if(event.getBlock().getBlock() instanceof IEndSoil) //If it is Soil
         {
             IEndSoil soil = (IEndSoil)event.getBlock().getBlock();
-            if(soil.canUseBonemeal())
+            if(soil.canUseBonemeal()) //if we can use bone meal
             {
-                for (int x = -2; x < 2; ++x)
+                for (int x = -2; x < 2; ++x) //process neighboring blocks
                 {
-                    for (int z = -2; z < 2; ++z)
+                    for (int z = -2; z < 2; ++z)//process neighboring blocks
                     {
                         BlockPos pos2 = pos.add(x, 0, z);
                         if(EMUtils.isSoil(world.getBlockState(pos2), true, true, EndSoilType.DIRT, EndSoilType.GRASS))
                         {
-                            int chance = rand.nextInt(1000) + 1;
+                            int chance = rand.nextInt(1000) + 1; //create random
                             Block block2 =  world.getBlockState(pos2).getBlock();
-                            IBlockState settable = Blocks.AIR.getDefaultState();
-                            if (block2.getDefaultState() == blockEnderGrass.getDefaultState())
-                            {
-                                if (chance > 870) settable = EMBlocks.enderTallgrass.getDefaultState();
-                                else if (chance > 820) settable = EMBlocks.enderOrchid.getDefaultState();
-                            }
-                            else if(block2.getDefaultState() == blockEnderStone.getDefaultState())
-                            {
-                                if (chance > 995) settable = EMBlocks.enderTallgrass.getDefaultState();
-                                else if (chance > 900) settable = EMBlocks.blockCurseBush.getDefaultState();
-                            }
-                            //else if (block2.getDefaultState() == EnderBlockTypes.EnderGroundType.FROZEN)
-                            //{
-                                //TODO: Frozen plants
-                            //}
-                            if (settable.getBlock() != Blocks.AIR && world.isAirBlock(pos2.up())) {
-                                world.setBlockState(pos2.up(), settable);
-                                ItemDye.spawnBonemealParticles(world, pos2, 5);
+                            if (block2 instanceof IEndSoil) {
+                                if (world.isAirBlock(pos2.up())) {
+                                    if (block2 instanceof IEndSoil)
+                                    world.setBlockState(pos2.up(), soil.getBonemealCrops(rand, event.getEntityPlayer(), block2.getDefaultState()));
+                                    ItemDye.spawnBonemealParticles(world, pos2, 5);
+                                }
                             }
                         }
                     }
@@ -297,8 +285,8 @@ public class EMEvents {
             }
             event.setResult(Event.Result.ALLOW);
         }
-     }
-    
+    }
+
 
     @SubscribeEvent
     public static void onPressureExplosionCoal(ExplosionEvent.Start event) {
