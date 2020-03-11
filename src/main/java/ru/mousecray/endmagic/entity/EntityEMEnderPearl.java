@@ -1,6 +1,6 @@
 package ru.mousecray.endmagic.entity;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,9 +9,11 @@ import net.minecraft.entity.monster.EntityEndermite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -19,25 +21,38 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.items.EMEnderPearl;
 
 public class EntityEMEnderPearl extends EntityThrowable {
 
-	protected ItemStack itemStack = ItemStack.EMPTY;
+	private static final DataParameter<ItemStack> itemStack = EntityDataManager
+			.<ItemStack>createKey(EntityEMEnderPearl.class, DataSerializers.ITEM_STACK);
 
 	public EntityEMEnderPearl(World world) {
 		super(world);
 	}
 
-	public EntityEMEnderPearl(World world, @Nonnull EntityLivingBase thrower, @Nonnull Item item) {
+	public EntityEMEnderPearl(World world, EntityLivingBase thrower, ItemStack itemStack) {
 		super(world, thrower);
-		this.itemStack = new ItemStack(item);
+		setItemStack(itemStack);
 	}
 
-	public EntityEMEnderPearl(World world, double x, double y, double z, @Nonnull Item item) {
+	public EntityEMEnderPearl(World world, double x, double y, double z, ItemStack itemStack) {
 		super(world, x, y, z);
-		this.itemStack = new ItemStack(item);
+		if (!itemStack.isEmpty()) { setItemStack(itemStack); }
+	}
+
+	public void setItemStack(ItemStack stack) {
+		getDataManager().set(itemStack, stack);
+		getDataManager().setDirty(itemStack);
+	}
+
+	@Override
+	protected void entityInit() {
+		this.getDataManager().register(itemStack, ItemStack.EMPTY);
 	}
 
 	@Override
@@ -51,35 +66,34 @@ public class EntityEMEnderPearl extends EntityThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-        if (result.entityHit == thrower) return;
+		if (result.entityHit == thrower) return;
 		if (result.typeOfHit != Type.MISS) {
 			if (!world.isRemote) {
 				if (result.entityHit instanceof EntityLivingBase) {
 					EntityLivingBase resultEntity = (EntityLivingBase) result.entityHit;
 					// result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this,
 					// getThrower()), 2F);
-					if (itemStack.getItem() instanceof EMEnderPearl) {
-						EMEnderPearl item = (EMEnderPearl) this.itemStack.getItem();
-						EntityLivingBase facticalThrower = getThrower();
-						if (facticalThrower instanceof EntityPlayerMP) {
-							EntityPlayerMP entityplayermp = (EntityPlayerMP) facticalThrower;
+					ItemStack stack = getItemStack();
+					EMEnderPearl item = (EMEnderPearl) stack.getItem();
+					EntityLivingBase facticalThrower = getThrower();
+					if (facticalThrower instanceof EntityPlayerMP) {
+						EntityPlayerMP entityplayermp = (EntityPlayerMP) facticalThrower;
 
-							if (entityplayermp.connection.getNetworkManager().isChannelOpen()
-									&& entityplayermp.world == world && !entityplayermp.isPlayerSleeping()) {
-								EnderTeleportEvent event = new EnderTeleportEvent(entityplayermp, posX, posY, posZ, 0F);
-								if (!MinecraftForge.EVENT_BUS.post(event)) {
-									spawnEndermite(result.entityHit, true);
-									item.onImpact((EntityLivingBase) result.entityHit, facticalThrower, this);
-								}
+						if (entityplayermp.connection.getNetworkManager().isChannelOpen()
+								&& entityplayermp.world == world && !entityplayermp.isPlayerSleeping()) {
+							EnderTeleportEvent event = new EnderTeleportEvent(entityplayermp, posX, posY, posZ, 0F);
+							if (!MinecraftForge.EVENT_BUS.post(event)) {
+								spawnEndermite(result.entityHit, true);
+								item.onImpact((EntityLivingBase) result.entityHit, facticalThrower, this);
 							}
 						}
-						else {
-							spawnEndermite(result.entityHit, false);
-							item.onImpact((EntityLivingBase) result.entityHit, facticalThrower, this);
-						}
+					}
+					else {
+						spawnEndermite(result.entityHit, false);
+						item.onImpact((EntityLivingBase) result.entityHit, facticalThrower, this);
 					}
 				}
-				
+
 				if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
 					for (int i = -2; i < 2; i++) {
 						for (int j = -2; j < 2; j++) {
@@ -99,9 +113,9 @@ public class EntityEMEnderPearl extends EntityThrowable {
 						}
 					}
 					BlockPos blockpos = result.getBlockPos();
-					for (int i = 0; i < 32; ++i)
-						this.world.spawnParticle(EnumParticleTypes.PORTAL, blockpos.getX(), blockpos.getY() + rand.nextDouble() * 2.0D,
-								blockpos.getZ(), rand.nextGaussian(), 0.0D, rand.nextGaussian());
+					for (int i = 0; i < 32; ++i) this.world.spawnParticle(EnumParticleTypes.PORTAL, blockpos.getX(),
+							blockpos.getY() + rand.nextDouble() * 2.0D, blockpos.getZ(), rand.nextGaussian(), 0.0D,
+							rand.nextGaussian());
 				}
 			}
 		}
@@ -120,16 +134,32 @@ public class EntityEMEnderPearl extends EntityThrowable {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-		itemStack.writeToNBT(compound);
-	}
-
-	public ItemStack getCurrentItem() { return itemStack; }
-
-	@Override
 	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
-		itemStack = new ItemStack(compound);
+		ItemStack itemstack = new ItemStack(compound.getCompoundTag("ItemStack"));
+
+		if (itemstack.isEmpty()) setDead();
+		else setItemStack(itemstack);
+	}
+
+	@Override
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+		ItemStack itemstack = getItemStack();
+
+		if (!itemstack.isEmpty()) { compound.setTag("ItemStack", itemstack.writeToNBT(new NBTTagCompound())); }
+	}
+
+	public ItemStack getItemStack() {
+		ItemStack itemstack = (ItemStack) this.getDataManager().get(itemStack);
+		if (!(itemstack.getItem() instanceof EMEnderPearl)) return new ItemStack(EMItems.purpleEnderPearl);
+		else return itemstack;
+	}
+
+	@Override
+	@Nullable
+	public Entity changeDimension(int dimension, ITeleporter teleporter) {
+		if (thrower.dimension != dimension) thrower = null;
+		return super.changeDimension(dimension, teleporter);
 	}
 }
