@@ -15,6 +15,6 @@ public class RenderEMEnderPearl<T extends EntityEMEnderPearl> extends RenderSnow
 	
     @Override
 	public ItemStack getStackToRender(T entity) {
-        return new ItemStack(entity.getCurrentItem());
+        return entity.getCurrentItem();
     }
 }

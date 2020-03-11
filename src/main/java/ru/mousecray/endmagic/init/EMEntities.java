@@ -16,14 +16,14 @@ public class EMEntities {
 			.create()
 			.entity(EntityEnderArrow.class)
 			.name("EnderArrow")
-			.id("ender_arrow", 2)
+			.id("ender_arrow", 1)
 			.tracker(64, 20, true)
 			.build();
 	public static EntityEntry entityCurseBush = EntityEntryBuilder
 			.create()
 			.entity(EntityCurseBush.class)
 			.name("CurseBush")
-			.id("curse_bush", 3)
+			.id("curse_bush", 2)
 			.tracker(32, 1, true)
 			.build();
 }
