@@ -54,7 +54,7 @@ item.ender_seeds.name=Purple Pearl Seeds
 item.purple_ender_pearl.name=Purple Pearl
 item.blue_ender_pearl.name=Blue Pearl
 item.ender_arrow.name=Ender Arrow
-item.em_book.name=Libro Finem Magica
+item.em_book.name=Libro Ender Magica
 item.ender_apple.name=Ender Apple
 item.ender_compass.name=Ender Compass
 item.item_portal_binder.name=Teleportation Binder
@@ -141,7 +141,7 @@ item.phantom_diamond_hoe.name=Phantom Diamond Hoe
 
 itemGroup.em_cretive_tab=Ender's Magic
 tooltip.ender_seeds=Only Grows on End Stone
-book.main_page_title=Libro Finem Magica
+book.main_page_title=Libro Ender Magica
 
 book.category.items=Items
 book.category.blocks=Blocks
@@ -153,7 +153,7 @@ book.category.mechanics=Mechanics
 book.chapter.name.ender_apple=Ender Apple
 book.chapter.text.ender_apple=This strange fruit enhances the effects of potions and magic. Some Dust Traders say that you can become a beautiful nymph by eating many of them, but some scholars argue that the Dust Trader word for "beautiful nymph" is an improper translation of "purple hag."
 
-book.chapter.name.book_of_the_end=Libro Finem Magica - A Guidebook to the End
+book.chapter.name.book_of_the_end=Libro Ender Magica - A Guidebook to the End
 book.chapter.text.book_of_the_end=Myserious laws govern the universe, beyond those which mortals can comprehend. She knows this. She knows all. The knowledge contained in this book is not dangerous, but its use can result in great harm. Learn the lessons obtained from this tome, but do not seek to discover from whence this book has come. Such knowledge is forbidden, and not meant for the fragile minds that will try to understand it.
 
 book.chapter.name.ender_arrow=Ender Arrow
@@ -169,7 +169,7 @@ book.chapter.name.portal_coordinator=Teleportation Binder
 book.chapter.text.portal_coordinator=A dash of Enderite, an Eye of Ender, and some Glowstone is all you need. For a Dark Teleporter, sneak and right click on the base, then right click on another base to link them. For a Static Teleporter, sneak and right click on the base, then right click on the Bone Block to set the one-way destination.
 
 book.chapter.name.ender_compass=Ender Compass
-book.chapter.text.ender_compass=An economical solution to constantly tossing out Eyes of Ender to find an End Fortress.
+book.chapter.text.ender_compass=A tool used to more easily locate End Fotresses without having to throw out your Eyes of Ender.
 
 book.chapter.name.carbonic_materials=Crystal Compression
 book.chapter.text.carbonic_materials.1=Each type of charcoal from the end can make a specific kind of compressed diamond
