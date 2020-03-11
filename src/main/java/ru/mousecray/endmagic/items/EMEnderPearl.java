@@ -1,5 +1,7 @@
 package ru.mousecray.endmagic.items;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -20,7 +22,7 @@ public abstract class EMEnderPearl extends Item implements ItemOneWhiteEMTexture
 		setMaxStackSize(16);
 	}
 	
-	public abstract void onImpact(EntityLivingBase result, EntityLivingBase thrower, EntityThrowable trowable);
+	public abstract void onImpact(EntityLivingBase result, @Nullable EntityLivingBase thrower, EntityThrowable trowable);
 	
 	@Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
