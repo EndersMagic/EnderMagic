@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.monster.EntityEndermite;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.Item;
@@ -40,7 +41,10 @@ public class EntityEMEnderPearl extends EntityThrowable {
 
 	@Override
 	public void onUpdate() {
-		super.onUpdate();
+        EntityLivingBase entitylivingbase = this.getThrower();
+
+        if (entitylivingbase != null && entitylivingbase instanceof EntityPlayer && !entitylivingbase.isEntityAlive()) setDead();
+        else super.onUpdate();
 	}
 
 	@Override
