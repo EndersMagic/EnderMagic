@@ -121,7 +121,10 @@ public class EntityEMEnderPearl extends EntityThrowable {
 		super.writeEntityToNBT(compound);
 		compound.setString("item", item.getRegistryName().toString());
 	}
-
+	
+	public Item getCurrentItem() {
+		return item;
+	}
 	@Override
 	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
