@@ -19,7 +19,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
-import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -44,6 +43,7 @@ import ru.mousecray.endmagic.api.embook.components.ImageComponent;
 import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
+import ru.mousecray.endmagic.client.render.entity.RenderEMEnderPearl;
 import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
 import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
@@ -74,7 +74,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
         PacketCustom.assignHandler(EM.ID, new ClientPacketHandler());
-        RenderingRegistry.registerEntityRenderingHandler(EntityEMEnderPearl.class, manager -> new RenderSnowball(manager, EMItems.purpleEnderPearl, Minecraft.getMinecraft().getRenderItem()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEMEnderPearl.class, manager -> new RenderEMEnderPearl(manager, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderArrow.class, manager -> new RenderEnderArrow(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityCurseBush.class, manager -> new RenderEntityCurseBush(manager));
     }
