@@ -57,13 +57,13 @@ import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
+import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
+import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 
-import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
-import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 import static ru.mousecray.endmagic.init.EMBlocks.*;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_PHANROM_AVOIDINCAPABILITY;
