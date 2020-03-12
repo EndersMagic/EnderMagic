@@ -9,6 +9,7 @@ buildscript {
     repositories {
         jcenter()
         maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url "https://jitpack.io" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
@@ -16,6 +17,7 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'scala'
 
 jar {
     manifest {
@@ -34,6 +36,9 @@ archivesBaseName = "endmagic"
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
+}
+tasks.withType(ScalaCompile) {
+    sourceCompatibility = targetCompatibility = '1.7'
 }
 
 minecraft {

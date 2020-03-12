@@ -36,6 +36,7 @@ import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
 import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
+import ru.mousecray.endmagic.client.render.model.baked.rune.RuneModelWrapper;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TilePhantomAvoidingBlockRenderer;
 import ru.mousecray.endmagic.entity.EntityBluePearl;
@@ -195,6 +196,10 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 
             if (bakedModelOverridesR.containsKey(key)) {
                 e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
+            }
+
+            if (!resource.getVariant().equals("inventory")) {
+                e.getModelRegistry().putObject(resource, new RuneModelWrapper(e.getModelRegistry().getObject(resource)));
             }
         }
     }

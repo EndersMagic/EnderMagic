@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -41,6 +42,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
+import ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -69,6 +71,11 @@ public class EMEvents {
     @SubscribeEvent
     public static void onCapaAttachToWorld(AttachCapabilitiesEvent<World> event) {
         event.addCapability(PhantomAvoidingGroupCapabilityProvider.name, new PhantomAvoidingGroupCapabilityProvider());
+    }
+
+    @SubscribeEvent
+    public static void onCapaAttachToChunk(AttachCapabilitiesEvent<Chunk> event) {
+        event.addCapability(RuneStateCapabilityProvider.name, new RuneStateCapabilityProvider());
     }
 
     @SubscribeEvent

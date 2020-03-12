@@ -8,16 +8,7 @@ import java.util.stream.Stream;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
-import ru.mousecray.endmagic.items.BlueEnderPearl;
-import ru.mousecray.endmagic.items.EMBook;
-import ru.mousecray.endmagic.items.EMSeeds;
-import ru.mousecray.endmagic.items.EnderApple;
-import ru.mousecray.endmagic.items.EnderArrow;
-import ru.mousecray.endmagic.items.EnderCompass;
-import ru.mousecray.endmagic.items.ItemNamed;
-import ru.mousecray.endmagic.items.ItemPortalBinder;
-import ru.mousecray.endmagic.items.PurpleEnderPearl;
-import ru.mousecray.endmagic.items.Test;
+import ru.mousecray.endmagic.items.*;
 import ru.mousecray.endmagic.items.materials.EnderCoal;
 import ru.mousecray.endmagic.items.materials.EnderDiamond;
 import ru.mousecray.endmagic.items.materials.EnderSteel;
@@ -33,6 +24,7 @@ import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public class EMItems {
     public static final Item enderCompass = new EnderCompass();
+    public static final TestInscriber testInscriber = new TestInscriber();
     public static final ItemPortalBinder itemPortalBinder = new ItemPortalBinder();
 
     //public static final ItemTextured simpletexturemodel = ItemTextured.companion.simpletexturemodelItem; //may be unused
