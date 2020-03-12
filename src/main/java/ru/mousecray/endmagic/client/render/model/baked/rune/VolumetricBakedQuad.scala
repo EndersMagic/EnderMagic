@@ -38,12 +38,15 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
               .slice(
                 elongateQuadData.x.toFloat / 16,
                 elongateQuadData.y1.toFloat / 16,
+
+                (elongateQuadData.x + 1).toFloat / 16,
+                elongateQuadData.y1.toFloat / 16,
+
+                (elongateQuadData.x + 1).toFloat / 16,
+                (elongateQuadData.y2 + 1).toFloat / 16,
+
                 elongateQuadData.x.toFloat / 16,
-                (elongateQuadData.y2 + 1).toFloat / 16,
-                (elongateQuadData.x + 1).toFloat / 16,
-                (elongateQuadData.y2 + 1).toFloat / 16,
-                (elongateQuadData.x + 1).toFloat / 16,
-                elongateQuadData.y1.toFloat / 16
+                (elongateQuadData.y2 + 1).toFloat / 16
               ).toBakedQuad
           }
 
