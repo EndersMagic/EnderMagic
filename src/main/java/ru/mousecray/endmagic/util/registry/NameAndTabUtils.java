@@ -16,8 +16,11 @@ public class NameAndTabUtils {
     }
 
     public static String getName(Class c) {
-        String r = c.getSimpleName()
-        		.chars()
+    	return toId(c.getSimpleName());
+    }
+    
+    public static String toId(String r) {
+        	r = r.chars()
         		.flatMap(i -> {
         			Character a = (char) i;
                     if (Character.isUpperCase(i)) {

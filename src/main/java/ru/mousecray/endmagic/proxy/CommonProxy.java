@@ -138,7 +138,7 @@ public class CommonProxy implements IGuiHandler {
     @SubscribeEvent
     public void registerEntities(RegistryEvent.Register<EntityEntry> e) {
 //        entityToRegister.forEach(e.getRegistry()::register);
-    	entityToRegister
+        entityToRegister
     }
 
     public void init(FMLInitializationEvent event) {
@@ -165,10 +165,5 @@ public class CommonProxy implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         return null;
-    }
-    
-    private static enum EnumEntityRegistryType {
-    	DEFAULT,
-    	WITH_SPAWN;
     }
 }
