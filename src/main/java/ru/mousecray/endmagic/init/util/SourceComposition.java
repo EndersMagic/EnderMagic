@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.init;
+package ru.mousecray.endmagic.init.util;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;

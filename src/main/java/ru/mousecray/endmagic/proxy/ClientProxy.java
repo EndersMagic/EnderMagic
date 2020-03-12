@@ -19,8 +19,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
+import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -74,7 +76,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
         PacketCustom.assignHandler(EM.ID, new ClientPacketHandler());
-        RenderingRegistry.registerEntityRenderingHandler(EntityEMEnderPearl.class, manager -> new RenderEMEnderPearl(manager, Minecraft.getMinecraft().getRenderItem()));
+        //TODO: Extract to stream
+        RenderingRegistry.registerEntityRenderingHandler(EntityEMEnderPearl.class, manager -> new RenderEMEnderPearl(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderArrow.class, manager -> new RenderEnderArrow(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityCurseBush.class, manager -> new RenderEntityCurseBush(manager));
     }

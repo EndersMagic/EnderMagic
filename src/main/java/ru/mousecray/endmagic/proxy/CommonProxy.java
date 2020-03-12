@@ -1,5 +1,11 @@
 package ru.mousecray.endmagic.proxy;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -27,7 +33,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
-import ru.mousecray.endmagic.init.*;
+import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.init.EMEntities;
+import ru.mousecray.endmagic.init.EMItems;
+import ru.mousecray.endmagic.init.EMRecipes;
+import ru.mousecray.endmagic.init.util.ClassFieldSource;
+import ru.mousecray.endmagic.init.util.ListSource;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
@@ -37,16 +48,12 @@ import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
 
-import javax.annotation.Nullable;
-import java.util.LinkedList;
-import java.util.List;
-
 public class CommonProxy implements IGuiHandler {
 
     protected List<Item> itemsToRegister = new LinkedList<>();
     protected List<Class<? extends TileEntity>> tilesToRegister = new LinkedList<>();
     protected List<Block> blocksToRegister = new LinkedList<>();
-    protected List<EntityEntry> entityToRegister = new LinkedList<>();
+    protected HashMap<EnumEntityRegistryType, EntityEntry> entityToRegister = new HashMap();
 
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
@@ -130,7 +137,8 @@ public class CommonProxy implements IGuiHandler {
 
     @SubscribeEvent
     public void registerEntities(RegistryEvent.Register<EntityEntry> e) {
-        entityToRegister.forEach(e.getRegistry()::register);
+//        entityToRegister.forEach(e.getRegistry()::register);
+    	entityToRegister
     }
 
     public void init(FMLInitializationEvent event) {
@@ -157,5 +165,10 @@ public class CommonProxy implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         return null;
+    }
+    
+    private static enum EnumEntityRegistryType {
+    	DEFAULT,
+    	WITH_SPAWN;
     }
 }

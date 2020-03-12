@@ -1,8 +1,11 @@
 package ru.mousecray.endmagic.client.render.entity;
 
-import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,8 +15,8 @@ import ru.mousecray.endmagic.entity.EntityEMEnderPearl;
 @SideOnly(Side.CLIENT)
 public class RenderEMEnderPearl<T extends EntityEMEnderPearl> extends RenderSnowball<T> {
 
-	public RenderEMEnderPearl(RenderManager renderManager, RenderItem itemRenderer) {
-		super(renderManager, Items.AIR, itemRenderer);
+	public RenderEMEnderPearl(RenderManager renderManager) {
+		super(renderManager, Items.AIR, Minecraft.getMinecraft().getRenderItem());
 	}
 	
     @Override

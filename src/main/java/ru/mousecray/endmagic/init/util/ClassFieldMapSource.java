@@ -1,26 +1,27 @@
-package ru.mousecray.endmagic.init;
+package ru.mousecray.endmagic.init.util;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ClassFieldSource<A> implements IRegistrySource<A> {
+public class ClassFieldMapSource<Key, Value> implements IRegistrySource<Value> {
     public final Class sourceClass;
     private final boolean traceErrors;
 
-    public ClassFieldSource(Class sourceClass, boolean traceErrors) {
+    public ClassFieldMapSource(Class sourceClass, boolean traceErrors) {
         this.sourceClass = sourceClass;
         this.traceErrors = traceErrors;
     }
 
-    public ClassFieldSource(Class sourceClass) {
+    public ClassFieldMapSource(Class sourceClass) {
         this(sourceClass, false);
     }
 
-    @Override
-    public List<A> elemes() {
+	@Override
+	public HashMap<Key, Value> elemes() {
         return Arrays.stream(sourceClass.getFields())
                 .filter(field -> Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers()))
                 .flatMap(field -> {
@@ -29,12 +30,12 @@ public class ClassFieldSource<A> implements IRegistrySource<A> {
                         return Stream.of(elem);
                     } catch (IllegalArgumentException | IllegalAccessException | ClassCastException e) {
                         if (traceErrors) {
-                            System.out.println("Problem with filed: "+field.getName());
+                            System.out.println("Problem with fieled: "+field.getName());
                             e.printStackTrace();
                         }
                         return Stream.empty();
                     }
                 })
                 .collect(Collectors.toList());
-    }
+	}
 }
