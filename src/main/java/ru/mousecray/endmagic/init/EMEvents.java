@@ -14,14 +14,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow.PickupStatus;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -30,17 +33,21 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
+import ru.mousecray.endmagic.api.blocks.EndSoilType;
+import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -57,11 +64,13 @@ import java.util.Random;
 
 import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
+import static ru.mousecray.endmagic.init.EMBlocks.*;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_PHANROM_AVOIDINCAPABILITY;
 import static ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMax;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMin;
+
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
@@ -233,36 +242,44 @@ public class EMEvents {
         }
     }
 
-    //TODO: onUseBonemeal
-    @SubscribeEvent
-    public static void onUseBonemeal(BonemealEvent event) {
-//    	World world  = event.getWorld();
-//    	BlockPos pos = event.getPos();
-//    	Random rand = event.getEntityPlayer().getRNG();
-//    	if(event.getBlock().getBlock() instanceof IEndSoil) {
-//    		IEndSoil soil = (IEndSoil)event.getBlock().getBlock();
-//    		if(soil.canUseBonemeal()) {
-//	    		List<BlockPos> existPos = EMUtils.isSoil(world, pos.add(-1, 0, -1), pos.add(1, 0, 1), false, true, EndSoilType.DIRT, EndSoilType.GRASS);
-//	    		for(BlockPos pos2 : existPos) {
-//	    			IEndSoil soil2 = (IEndSoil)world.getBlockState(pos2).getBlock();
-//	    			IBlockState state = soil2.getBonemealCrops(rand, event.getEntityPlayer(), world.getBlockState(pos2));
-//	    			if (state.getBlock() != Blocks.AIR && world.isAirBlock(pos2.up())) world.setBlockState(pos2.up(), state);
-//	        		ItemDye.spawnBonemealParticles(world, pos, 5);
-//	    		}
-//	    		event.setResult(Result.ALLOW);
-//    		}
-//    	}
-//    	else if (event.getBlock().getBlock() == Blocks.END_STONE) {
-//    		for (int x = -1; x < 2; ++x) {
-//    			for (int z = -1; z < 2; ++z) {
-//        			if (world.isAirBlock(pos.add(x, 1, z)) && world.getBlockState(pos.add(x, 0, z)).getBlock() == Blocks.END_STONE && event.getEntityPlayer().getRNG().nextInt(500) > 498) {
-//        				world.setBlockState(pos.add(x, 1, z), EMBlocks.enderTallgrass.getDefaultState());
-//        	    		ItemDye.spawnBonemealParticles(world, pos, 5);
-//        			}
-//    			}
-//    		}
-//    		event.setResult(Result.ALLOW);
-//    	}
+ @SubscribeEvent
+    public static void onUseBonemeal(BonemealEvent event)
+    {
+        if(!event.getWorld().isRemote &&(event.getBlock().getBlock() instanceof IEndSoil || event.getBlock().getBlock() == Blocks.END_STONE))
+        {
+            World world = event.getWorld();
+            BlockPos pos = event.getPos();
+            boolean b = false;
+            for (int x = -2; x <= 2; x++)
+            {
+                for (int z = -2; z <= 2; z++)
+                {
+                    BlockPos pos2 = pos.add(x, 0, z);
+                    if( world.isAirBlock(pos2.up()))
+                    {
+                        if (world.getBlockState(pos2).getBlock() == Blocks.END_STONE)
+                        {
+                            if (event.getEntityPlayer().getRNG().nextInt(10) > 7)
+                            {
+                                world.setBlockState(pos2.up(), enderTallgrass.getDefaultState());
+                                ItemDye.spawnBonemealParticles(world, pos2, 5);
+                                b = true;
+                            }
+                        }
+                        else if (world.getBlockState(pos2).getBlock() instanceof IEndSoil)
+                        {
+                            IEndSoil soil = (IEndSoil) world.getBlockState(pos2).getBlock();
+                            IBlockState settable = soil.getBonemealCrops(event.getEntityPlayer().getRNG(), event.getEntityPlayer(), world.getBlockState(pos2));
+                            world.setBlockState(pos2.up(), settable);
+                            ItemDye.spawnBonemealParticles(world, pos2, 5);
+                            b = true;
+                        }
+                    }
+                }
+            }
+            if(b)
+            event.setResult(Event.Result.ALLOW);
+        }
     }
 
     @SubscribeEvent
