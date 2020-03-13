@@ -39,17 +39,11 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
 
                 richQuad
                   .updated(atlas = textureAtlasSprite)
-                  .slice(
+                  .sliceRect(
                     elongateQuadData.x.toFloat / 16,
                     elongateQuadData.y1.toFloat / 16,
 
                     (elongateQuadData.x + 1).toFloat / 16,
-                    elongateQuadData.y1.toFloat / 16,
-
-                    (elongateQuadData.x + 1).toFloat / 16,
-                    (elongateQuadData.y2 + 1).toFloat / 16,
-
-                    elongateQuadData.x.toFloat / 16,
                     (elongateQuadData.y2 + 1).toFloat / 16
                   ).toBakedQuad
               }
@@ -58,11 +52,9 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 Seq(
                   richQuad
                     .updated(atlas = atlasSpriteRune)
-                    .slice(
+                    .sliceRect(
                       x.toFloat / 16, y.toFloat / 16,
-                      (x + 1).toFloat / 16, y.toFloat / 16,
-                      (x + 1).toFloat / 16, (y + 1).toFloat / 16,
-                      x.toFloat / 16, (y + 1).toFloat / 16
+                      (x + 1).toFloat / 16, (y + 1).toFloat / 16
                     ).toBakedQuad
                 )
               }
