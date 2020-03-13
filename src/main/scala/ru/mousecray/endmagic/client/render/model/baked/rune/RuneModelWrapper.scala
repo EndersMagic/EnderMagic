@@ -2,7 +2,7 @@ package ru.mousecray.endmagic.client.render.model.baked.rune
 
 import java.util
 
-import hohserg.endothermic.immutable.UnpackedQuad
+import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.{BakedQuad, IBakedModel}
 import net.minecraft.util.EnumFacing

@@ -1,4 +1,4 @@
-package hohserg.endothermic
+package ru.mousecray.endmagic.util.render.endothermic
 
 import scala.language.higherKinds
 

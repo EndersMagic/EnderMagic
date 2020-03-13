@@ -1,6 +1,6 @@
-package hohserg.endothermic.mod
+package ru.mousecray.endmagic.util.render.endothermic.mod
 
-import hohserg.endothermic.immutable.UnpackedQuad
+import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
 import net.minecraft.block.BlockContainer
 import net.minecraft.block.material.Material
 import net.minecraft.block.state.IBlockState

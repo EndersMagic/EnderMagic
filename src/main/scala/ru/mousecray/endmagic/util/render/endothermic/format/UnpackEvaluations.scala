@@ -1,7 +1,7 @@
-package hohserg.endothermic.format
+package ru.mousecray.endmagic.util.render.endothermic.format
 
-import hohserg.endothermic.format.AttributeRepresentation.Vertex
-import hohserg.endothermic.format.EvaluationPool.memoize
+import ru.mousecray.endmagic.util.render.endothermic.format.AttributeRepresentation.Vertex
+import ru.mousecray.endmagic.util.render.endothermic.format.EvaluationPool.memoize
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.vertex.{DefaultVertexFormats, VertexFormat, VertexFormatElement}
 

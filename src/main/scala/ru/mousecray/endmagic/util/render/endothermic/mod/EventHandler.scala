@@ -1,6 +1,6 @@
-package hohserg.endothermic.mod
+package ru.mousecray.endmagic.util.render.endothermic.mod
 
-import hohserg.endothermic.mod.TestingStand.TileTestingStand
+import ru.mousecray.endmagic.util.render.endothermic.mod.TestingStand.TileTestingStand
 import net.minecraft.block.Block
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.{Item, ItemBlock}

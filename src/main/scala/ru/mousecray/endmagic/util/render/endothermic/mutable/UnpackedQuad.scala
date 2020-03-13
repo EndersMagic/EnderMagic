@@ -1,7 +1,7 @@
-package hohserg.endothermic.mutable
+package ru.mousecray.endmagic.util.render.endothermic.mutable
 
-import hohserg.endothermic.BaseUnpackedQuad
-import hohserg.endothermic.BaseUnpackedQuad._
+import ru.mousecray.endmagic.util.render.endothermic.BaseUnpackedQuad
+import ru.mousecray.endmagic.util.render.endothermic.BaseUnpackedQuad._
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.util.EnumFacing

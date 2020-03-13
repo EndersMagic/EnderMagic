@@ -1,6 +1,6 @@
-package hohserg.endothermic.immutable
+package ru.mousecray.endmagic.util.render.endothermic.immutable
 
-import hohserg.endothermic.BaseUnpackedQuad
+import ru.mousecray.endmagic.util.render.endothermic.BaseUnpackedQuad
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.util.EnumFacing

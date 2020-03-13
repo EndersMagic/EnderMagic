@@ -1,4 +1,4 @@
-package hohserg.endothermic.format
+package ru.mousecray.endmagic.util.render.endothermic.format
 
 import java.util.function
 

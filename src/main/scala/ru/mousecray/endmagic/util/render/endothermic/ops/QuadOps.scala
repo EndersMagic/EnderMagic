@@ -1,6 +1,6 @@
-package hohserg.endothermic.ops
+package ru.mousecray.endmagic.util.render.endothermic.ops
 
-import hohserg.endothermic.BaseUnpackedQuad
+import ru.mousecray.endmagic.util.render.endothermic.BaseUnpackedQuad
 
 import scala.math._
 

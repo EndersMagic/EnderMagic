@@ -1,4 +1,4 @@
-package hohserg.endothermic.mod
+package ru.mousecray.endmagic.util.render.endothermic.mod
 
 import net.minecraft.client.renderer.texture.TextureMap
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer

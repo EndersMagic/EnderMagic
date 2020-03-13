@@ -1,17 +1,20 @@
 package ru.mousecray.endmagic.capability.chunk;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.EnumMap;
 import java.util.Map;
 
 public class RuneState {
+    private final Map<EnumFacing, Rune> runesOnSides = new EnumMap<>(EnumFacing.class);
+    private final BlockPos pos;
 
-    public Map<EnumFacing, Rune> runesOnSides;
+    public RuneState(BlockPos pos) {
+        this.pos = pos;
+    }
 
-    public RuneState() {
-        runesOnSides = new EnumMap<>(EnumFacing.class);
-        for (EnumFacing facing : EnumFacing.values())
-            runesOnSides.put(facing, new Rune());
+    public Rune getRuneAtSide(EnumFacing facing) {
+        return runesOnSides.computeIfAbsent(facing, __ -> new Rune(pos));
     }
 }

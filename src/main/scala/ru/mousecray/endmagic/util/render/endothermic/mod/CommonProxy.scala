@@ -1,4 +1,4 @@
-package hohserg.endothermic.mod
+package ru.mousecray.endmagic.util.render.endothermic.mod
 
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.world.World

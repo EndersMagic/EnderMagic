@@ -1,9 +1,9 @@
-package hohserg.endothermic
+package ru.mousecray.endmagic.util.render.endothermic
 
-import hohserg.endothermic.BaseUnpackedQuad._
-import hohserg.endothermic.format.AttributeRepresentation._
-import hohserg.endothermic.format.UnpackEvaluations
-import hohserg.endothermic.ops.QuadOps
+import ru.mousecray.endmagic.util.render.endothermic.BaseUnpackedQuad._
+import ru.mousecray.endmagic.util.render.endothermic.format.AttributeRepresentation._
+import ru.mousecray.endmagic.util.render.endothermic.format.UnpackEvaluations
+import ru.mousecray.endmagic.util.render.endothermic.ops.QuadOps
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.vertex.{DefaultVertexFormats, VertexFormat, VertexFormatElement}
 

@@ -27,7 +27,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 import ru.mousecray.endmagic.capability.chunk.RuneChunkCapability;
-import ru.mousecray.endmagic.capability.chunk.RuneState;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.init.*;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
@@ -155,6 +154,9 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
+    }
+
+    public void refreshChunk(BlockPos pos) {
     }
 
     public static int blastFurnaceGui = 0;

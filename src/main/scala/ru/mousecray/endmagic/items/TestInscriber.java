@@ -21,7 +21,7 @@ public class TestInscriber extends Item {
 
             Vec2i coord = PlanarGeometry.projectTo2d(new Vec3i((int) (hitX * 16), (int) (hitY * 16), (int) (hitZ * 16)), facing);
             RuneChunkCapability capability = world.getChunkFromBlockCoords(pos).getCapability(RuneStateCapabilityProvider.runeStateCapability, null);
-            capability.getRuneState(pos).runesOnSides.get(facing).add(coord, new RunePart());
+            capability.createRuneStateAt(pos).getRuneAtSide(facing).add(coord, new RunePart());
 
         return EnumActionResult.SUCCESS;
     }
