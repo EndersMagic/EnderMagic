@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.capability.chunk;
 
 import net.minecraft.util.math.BlockPos;
+import ru.mousecray.endmagic.EM;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,12 +17,7 @@ public class RuneChunkCapability {
     }
 
     public RuneState createRuneStateAt(BlockPos pos) {
-        if(states.containsKey(pos))
-            return states.get(pos);
-        else {
-            RuneState value = new RuneState(pos);
-            states.put(pos, value);
-            return value;
+        return states.computeIfAbsent(pos,RuneState::new);
         }
     }
 }
