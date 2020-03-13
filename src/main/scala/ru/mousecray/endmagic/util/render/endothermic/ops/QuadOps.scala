@@ -48,15 +48,15 @@ trait QuadOps {
     )
   }
 
-  def slice(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Self = {
   def sliceRect(x1: Float, y1: Float, x3: Float, y3: Float): Self =
     slice(x1, y1, x3, y1, x3, y3, x3, y1)
 
 
+  def slice(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Self = {
     //Thx frobeniusfg for help with this
     def calcAttribute(x: Float, y: Float, v1: Float, v2: Float, v3: Float, v4: Float): Float = {
       val a = x * y
-      a *v1 - a *v2 + a *v3 - a *v4 - v1 *x - v1 *y + v1 + v2 *x + v4 *y
+      a * v1 - a * v2 + a * v3 - a * v4 - v1 * x - v1 * y + v1 + v2 * x + v4 * y
     }
 
     reconstruct(
