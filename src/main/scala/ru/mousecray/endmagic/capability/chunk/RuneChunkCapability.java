@@ -18,6 +18,12 @@ public class RuneChunkCapability {
 
     public RuneState createRuneStateAt(BlockPos pos) {
         return states.computeIfAbsent(pos,RuneState::new);
+    }
+
+    public void removeRuneStateAt(BlockPos pos) {
+        if (states.containsKey(pos)) {
+            states.remove(pos);
+            EM.proxy.refreshChunk(pos);
         }
     }
 }
