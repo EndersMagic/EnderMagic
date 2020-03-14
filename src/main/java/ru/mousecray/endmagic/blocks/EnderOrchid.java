@@ -1,7 +1,5 @@
 package ru.mousecray.endmagic.blocks;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -18,25 +16,27 @@ import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EMBlockBush;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 
+import java.util.Random;
+
 public class EnderOrchid extends EMBlockBush implements IShearable {
 
-	public EnderOrchid() {
+    public EnderOrchid() {
         super(Material.VINE);
         setHardness(0.0F);
         setResistance(0.0F);
         setSoundType(SoundType.PLANT);
-	}
-	
+    }
+
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return EnderTallgrass.END_GRASS_AABB;
     }
-    
+
     @Override
     public boolean isReplaceable(IBlockAccess world, BlockPos pos) {
         return true;
     }
-    
+
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return Items.AIR;
@@ -47,18 +47,19 @@ public class EnderOrchid extends EMBlockBush implements IShearable {
         return Block.EnumOffsetType.XZ;
     }
 
-    @Override 
-    public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos) { 
-    	return true; 
+    @Override
+    public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos) {
+        return true;
     }
-    
+
     @Override
     public NonNullList onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
         return NonNullList.withSize(1, new ItemStack(this));
     }
 
-	@Override
-	public boolean canSustainBush(IBlockState state) {
-		return EMUtils.isSoil(state, true, false, EndSoilType.GRASS);
-	}
+    @Override
+    public boolean canSustainBush(IBlockState state) {
+        //TODO: add custom end grass and remove STONE from this
+        return EMUtils.isSoil(state, EndSoilType.STONE, EndSoilType.GRASS);
+    }
 }

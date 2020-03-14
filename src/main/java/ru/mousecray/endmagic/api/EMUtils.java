@@ -66,11 +66,15 @@ public class EMUtils {
                         (filterTypes.length == 0 || endSoilTypes.contains(((IEndSoil) block).getSoilType())));
     }
 
-    public static IBlockState getBonemealCrops(IBlockState block2, Random rand, EntityPlayer entityPlayer, IBlockState block21) {
-        if (block2.getBlock() == Blocks.END_STONE)
+    public static IBlockState getBonemealCrops(IBlockState state, Random rand, EntityPlayer entityPlayer) {
+        return getBonemealCropsFromType(state, rand, entityPlayer);
+    }
+
+    public static IBlockState getBonemealCropsFromType(IBlockState state, Random rand, EntityPlayer entityPlayer, EndSoilType... filterTypes) {
+        if (state.getBlock() == Blocks.END_STONE)
             return EMBlocks.enderTallgrass.getDefaultState();
-        else if (isSoil(block2, true))
-            return ((IEndSoil) block2.getBlock()).getBonemealCrops(rand, entityPlayer, block21);
+        else if (isSoil(state, true, filterTypes))
+            return ((IEndSoil) state.getBlock()).getBonemealCrops(rand, entityPlayer, state);
         else
             return Blocks.AIR.getDefaultState();
     }

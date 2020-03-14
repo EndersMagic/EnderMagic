@@ -1,10 +1,5 @@
 package ru.mousecray.endmagic.util;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
@@ -25,16 +20,21 @@ import ru.mousecray.endmagic.worldgen.trees.WorldGenEnderTree;
 import ru.mousecray.endmagic.worldgen.trees.WorldGenNaturalTree;
 import ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree;
 
+import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+
 public class EnderBlockTypes {
 
     public static enum EnderTreeType implements IStringSerializable, EMSapling.SaplingThings, BlockTypeBase {
         DRAGON("dragon", MapColor.PURPLE, WorldGenDragonTree.class) {
             @Override
-			public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+            public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
                 return Arrays.stream(EnumFacing.HORIZONTALS)
                         .map(pos::offset)
                         .map(worldIn::getBlockState)
-                        .anyMatch(state -> EMUtils.isSoil(state, true, false, EndSoilType.DIRT, EndSoilType.GRASS));
+                        //TODO: add custom end grass and remove STONE from this
+                        .anyMatch(state -> EMUtils.isSoil(state, EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS));
             }
         },
         NATURAL("natural", MapColor.BROWN, WorldGenNaturalTree.class),
@@ -58,12 +58,12 @@ public class EnderBlockTypes {
             }
 
             @Override
-			public boolean isFullCube() {
+            public boolean isFullCube() {
                 return false;
             }
 
             @Override
-			public boolean isOpaqueCube() {
+            public boolean isOpaqueCube() {
                 return false;
             }
         };
@@ -78,20 +78,18 @@ public class EnderBlockTypes {
             this.mapColor = mapColor;
             this.generatorClass = generatorClass;
         }
-        
+
         private WorldGenEnderTree generator() {
-            if (generator == null) {
-                try {
-                    generator = generatorClass.getDeclaredConstructor(boolean.class).newInstance(true);
-                } catch (InstantiationException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-                    e.printStackTrace();
-                }
+            if (generator == null) try {
+                generator = generatorClass.getDeclaredConstructor(boolean.class).newInstance(true);
+            } catch (InstantiationException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+                e.printStackTrace();
             }
             return generator;
         }
-        
-        public WorldGenEnderTree getGenerator() { 
-        	return generator(); 
+
+        public WorldGenEnderTree getGenerator() {
+            return generator();
         }
 
         public MapColor getMapColor() {
