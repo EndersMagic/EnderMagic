@@ -1321,10 +1321,10 @@ object BaseUnpackedQuad {
   val nz_3 = (DefaultVertexFormats.NORMAL_3B, 2, _3)
   val nz_4 = (DefaultVertexFormats.NORMAL_3B, 2, _4)
 
-  val p_1 = (DefaultVertexFormats.PADDING_1B, 3, _1)
-  val p_2 = (DefaultVertexFormats.PADDING_1B, 3, _2)
-  val p_3 = (DefaultVertexFormats.PADDING_1B, 3, _3)
-  val p_4 = (DefaultVertexFormats.PADDING_1B, 3, _4)
+  val p_1 = (DefaultVertexFormats.PADDING_1B, 0, _1)
+  val p_2 = (DefaultVertexFormats.PADDING_1B, 0, _2)
+  val p_3 = (DefaultVertexFormats.PADDING_1B, 0, _3)
+  val p_4 = (DefaultVertexFormats.PADDING_1B, 0, _4)
 
 
 }
