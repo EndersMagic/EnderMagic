@@ -5,12 +5,16 @@ import java.util.function
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.pipeline.{BlockInfoLense, IVertexConsumer, VertexLighterFlat}
-import net.minecraftforge.fluids.FluidRegistry
+import ru.mousecray.endmagic.EM
 import ru.mousecray.endmagic.capability.chunk.{Rune, RunePart, RuneState, RuneStateCapabilityProvider}
 import ru.mousecray.endmagic.client.render.model.baked.rune.VolumetricBakedQuad._
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA
+import ru.mousecray.endmagic.util.render.endothermic.BaseUnpackedQuad
 import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
+import ru.mousecray.endmagic.util.render.endothermic.utils._
 
 import scala.collection.JavaConverters._
 import scala.language.implicitConversions
@@ -44,19 +48,96 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 elongateQuadData.x.toFloat / 16,
                 elongateQuadData.y1.toFloat / 16,
 
-                (elongateQuadData.x + 1).toFloat / 16,
-                (elongateQuadData.y2 + 1).toFloat / 16
+                elongateQuadData.x.toFloat / 16 + standard_pixel,
+                elongateQuadData.y2.toFloat / 16 + standard_pixel
               ).toBakedQuad
           }
 
           def makeRuneQuad(x: Int, y: Int, entry: RunePart): Seq[BakedQuad] = {
+            val center1 = richQuad
+              .sliceRect(
+                x.toFloat / 16, y.toFloat / 16,
+                x.toFloat / 16 + standard_pixel, y.toFloat / 16 + standard_pixel
+              )
+            println(center1.format)
+            println(center1.evaluations.get(BaseUnpackedQuad.p_1))
+            println(center1.evaluations.exists(_._1._1 == DefaultVertexFormats.PADDING_1B))
+            val centerTop = center1
+              .updated(atlas = atlasSpriteRune)
+              .reconstruct(
+                v1_a = 0,
+                v2_a = 0,
+                v3_a = 0,
+                v4_a = 0
+              )
+            val centerBottom = center1.translate(0, -standard_pixel, 0)
             Seq(
+              //centerTop.toBakedQuad,
+              centerBottom.toBakedQuad,
+
               richQuad
-                .updated(atlas = atlasSpriteRune)
                 .sliceRect(
-                  x.toFloat / 16, y.toFloat / 16,
-                  (x + 1).toFloat / 16, (y + 1).toFloat / 16
-                )
+                  x.toFloat / 16 - standard_pixel, y.toFloat / 16,
+                  x.toFloat / 16, y.toFloat / 16 + standard_pixel
+                ).reconstruct(
+                v1_x = centerBottom.v1_x,
+                v4_x = centerBottom.v4_x,
+
+                v1_y = centerBottom.v1_y,
+                v4_y = centerBottom.v4_y,
+
+                v1_z = centerBottom.v1_z,
+                v4_z = centerBottom.v4_z
+              ).reverse
+                .toBakedQuad,
+
+              richQuad
+                .sliceRect(
+                  x.toFloat / 16 + standard_pixel, y.toFloat / 16,
+                  x.toFloat / 16 + standard_pixel * 2, y.toFloat / 16 + standard_pixel
+                ).reconstruct(
+                v2_x = centerBottom.v2_x,
+                v3_x = centerBottom.v3_x,
+
+                v2_y = centerBottom.v2_y,
+                v3_y = centerBottom.v3_y,
+
+                v2_z = centerBottom.v2_z,
+                v3_z = centerBottom.v3_z
+              ).reverse
+                .toBakedQuad,
+
+              richQuad
+                .sliceRect(
+                  x.toFloat / 16, y.toFloat / 16 + standard_pixel,
+                  x.toFloat / 16 + standard_pixel, y.toFloat / 16 + standard_pixel * 2
+                ).reconstruct(
+                v3_x = centerBottom.v3_x,
+                v4_x = centerBottom.v4_x,
+
+                v3_y = centerBottom.v3_y,
+                v4_y = centerBottom.v4_y,
+
+                v3_z = centerBottom.v3_z,
+                v4_z = centerBottom.v4_z
+              ).reverse
+                .toBakedQuad,
+
+              richQuad
+                .sliceRect(
+                  x.toFloat / 16, y.toFloat / 16 - standard_pixel,
+                  x.toFloat / 16+ standard_pixel, y.toFloat / 16
+                ).reconstruct(
+                v1_x = centerBottom.v1_x,
+                v2_x = centerBottom.v2_x,
+
+                v1_y = centerBottom.v1_y,
+                v2_y = centerBottom.v2_y,
+
+                v1_z = centerBottom.v1_z,
+                v2_z = centerBottom.v2_z
+
+              ).reverse
                 .toBakedQuad
             )
           }
@@ -96,7 +177,7 @@ object VolumetricBakedQuad {
 
 
   val atlasSpriteRune: TextureAtlasSprite = Minecraft.getMinecraft.getTextureMapBlocks
-    .getAtlasSprite(FluidRegistry.WATER.getStill().toString)
+    .getAtlasSprite(new ResourceLocation(EM.ID, "blocks/rune").toString)
 
   val random = new Random()
 
