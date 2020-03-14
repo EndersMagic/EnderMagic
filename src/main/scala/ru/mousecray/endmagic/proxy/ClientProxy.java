@@ -64,6 +64,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 
     public ClientProxy() {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
+        registerTexture(new ResourceLocation(EM.ID,"blocks/rune"));
     }
 
     @Override
