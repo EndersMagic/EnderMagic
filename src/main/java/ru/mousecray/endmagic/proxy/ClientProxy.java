@@ -1,28 +1,13 @@
 package ru.mousecray.endmagic.proxy;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-
-import javax.annotation.Nullable;
-
-import com.google.common.collect.ImmutableList;
-
 import codechicken.lib.packet.PacketCustom;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
-import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -46,15 +31,11 @@ import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
 import ru.mousecray.endmagic.client.render.entity.RenderEMEnderPearl;
-import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
-import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TilePhantomAvoidingBlockRenderer;
-import ru.mousecray.endmagic.entity.EntityCurseBush;
 import ru.mousecray.endmagic.entity.EntityEMEnderPearl;
-import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
@@ -65,6 +46,16 @@ import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.RecipeHelper;
 import ru.mousecray.endmagic.util.registry.IEMModel;
+
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+
+import static com.google.common.collect.ImmutableList.toImmutableList;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
 
@@ -77,9 +68,9 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         super.preInit(event);
         PacketCustom.assignHandler(EM.ID, new ClientPacketHandler());
         //TODO: Extract to stream
-        RenderingRegistry.registerEntityRenderingHandler(EntityEMEnderPearl.class, manager -> new RenderEMEnderPearl(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEnderArrow.class, manager -> new RenderEnderArrow(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityCurseBush.class, manager -> new RenderEntityCurseBush(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEMEnderPearl.class, RenderEMEnderPearl::new);
+//        RenderingRegistry.registerEntityRenderingHandler(EntityEnderArrow.class, manager -> new RenderEnderArrow(manager));
+//        RenderingRegistry.registerEntityRenderingHandler(EntityCurseBush.class, manager -> new RenderEntityCurseBush(manager));
     }
 
     @Override

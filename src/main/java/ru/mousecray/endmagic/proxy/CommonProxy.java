@@ -1,11 +1,5 @@
 package ru.mousecray.endmagic.proxy;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -48,12 +42,16 @@ import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
 
+import javax.annotation.Nullable;
+import java.util.LinkedList;
+import java.util.List;
+
 public class CommonProxy implements IGuiHandler {
 
     protected List<Item> itemsToRegister = new LinkedList<>();
     protected List<Class<? extends TileEntity>> tilesToRegister = new LinkedList<>();
     protected List<Block> blocksToRegister = new LinkedList<>();
-    protected HashMap<EnumEntityRegistryType, EntityEntry> entityToRegister = new HashMap();
+    protected List<EntityEntry> entityToRegister = new LinkedList<>();
 
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
@@ -137,8 +135,7 @@ public class CommonProxy implements IGuiHandler {
 
     @SubscribeEvent
     public void registerEntities(RegistryEvent.Register<EntityEntry> e) {
-//        entityToRegister.forEach(e.getRegistry()::register);
-        entityToRegister
+        entityToRegister.forEach(e.getRegistry()::register);
     }
 
     public void init(FMLInitializationEvent event) {
