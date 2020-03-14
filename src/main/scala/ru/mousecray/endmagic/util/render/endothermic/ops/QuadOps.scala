@@ -48,6 +48,15 @@ trait QuadOps {
     )
   }
 
+  def reverse: Self = {
+    reconstruct(
+      v4_x, v4_y, v4_z, v4_r, v4_g, v4_b, v4_a, v4_u, v4_v, v4_lu, v4_lv, v4_nx, v4_ny, v4_nz, v4_p,
+      v3_x, v3_y, v3_z, v3_r, v3_g, v3_b, v3_a, v3_u, v3_v, v3_lu, v3_lv, v3_nx, v3_ny, v3_nz, v3_p,
+      v2_x, v2_y, v2_z, v2_r, v2_g, v2_b, v2_a, v2_u, v2_v, v2_lu, v2_lv, v2_nx, v2_ny, v2_nz, v2_p,
+      v1_x, v1_y, v1_z, v1_r, v1_g, v1_b, v1_a, v1_u, v1_v, v1_lu, v1_lv, v1_nx, v1_ny, v1_nz, v1_p
+    )
+  }
+
   def sliceRect(x1: Float, y1: Float, x2: Float, y2: Float): Self =
     slice(
       x1, y1,
