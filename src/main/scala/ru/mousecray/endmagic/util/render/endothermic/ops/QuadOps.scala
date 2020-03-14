@@ -56,7 +56,13 @@ trait QuadOps {
       x1, y2)
 
 
-  def slice(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Self = {
+  def slice(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Self =
+    slice1(cyclicNormalize(x1), cyclicNormalize(y1), cyclicNormalize(x2), cyclicNormalize(y2), cyclicNormalize(x3), cyclicNormalize(y3), cyclicNormalize(x4), cyclicNormalize(y4))
+
+
+  def cyclicNormalize(v: Float): Float = if (v < 0) 1 + (v % 1) else if (v > 1) v % 1 else v
+
+  private def slice1(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Self = {
     //Thx frobeniusfg for help with this
     def calcAttribute(x: Float, y: Float, v1: Float, v2: Float, v3: Float, v4: Float): Float = {
       val a = x * y
