@@ -11,6 +11,7 @@ import net.minecraftforge.client.model.pipeline.{BlockInfoLense, IVertexConsumer
 import ru.mousecray.endmagic.EM
 import ru.mousecray.endmagic.capability.chunk.{Rune, RunePart, RuneState, RuneStateCapabilityProvider}
 import ru.mousecray.endmagic.client.render.model.baked.rune.VolumetricBakedQuad._
+import ru.mousecray.endmagic.util.Vec2i
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA
 import ru.mousecray.endmagic.util.render.endothermic.BaseUnpackedQuad
 import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
@@ -72,10 +73,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
               )
             val centerBottom = center1.translate(0, -standard_pixel, 0)
             Seq(
-              //centerTop.toBakedQuad,
-              centerBottom.toBakedQuad,
-
-              richQuad
+              new Vec2i(x - 1, y) -> richQuad
                 .sliceRect(
                   x.toFloat / 16 - standard_pixel, y.toFloat / 16,
                   x.toFloat / 16, y.toFloat / 16 + standard_pixel
@@ -90,8 +88,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 v4_z = centerBottom.v4_z
               ).reverse
                 .toBakedQuad,
-
-              richQuad
+              new Vec2i(x + 1, y) -> richQuad
                 .sliceRect(
                   x.toFloat / 16 + standard_pixel, y.toFloat / 16,
                   x.toFloat / 16 + standard_pixel * 2, y.toFloat / 16 + standard_pixel
@@ -106,8 +103,23 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 v3_z = centerBottom.v3_z
               ).reverse
                 .toBakedQuad,
+              new Vec2i(x, y - 1) -> richQuad
+                .sliceRect(
+                  x.toFloat / 16, y.toFloat / 16 - standard_pixel,
+                  x.toFloat / 16 + standard_pixel, y.toFloat / 16
+                ).reconstruct(
+                v1_x = centerBottom.v1_x,
+                v2_x = centerBottom.v2_x,
 
-              richQuad
+                v1_y = centerBottom.v1_y,
+                v2_y = centerBottom.v2_y,
+
+                v1_z = centerBottom.v1_z,
+                v2_z = centerBottom.v2_z
+
+              ).reverse
+                .toBakedQuad,
+              new Vec2i(x, y + 1) -> richQuad
                 .sliceRect(
                   x.toFloat / 16, y.toFloat / 16 + standard_pixel,
                   x.toFloat / 16 + standard_pixel, y.toFloat / 16 + standard_pixel * 2
@@ -121,25 +133,12 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 v3_z = centerBottom.v3_z,
                 v4_z = centerBottom.v4_z
               ).reverse
-                .toBakedQuad,
-
-              richQuad
-                .sliceRect(
-                  x.toFloat / 16, y.toFloat / 16 - standard_pixel,
-                  x.toFloat / 16+ standard_pixel, y.toFloat / 16
-                ).reconstruct(
-                v1_x = centerBottom.v1_x,
-                v2_x = centerBottom.v2_x,
-
-                v1_y = centerBottom.v1_y,
-                v2_y = centerBottom.v2_y,
-
-                v1_z = centerBottom.v1_z,
-                v2_z = centerBottom.v2_z
-
-              ).reverse
                 .toBakedQuad
-            )
+            ).filter(i => !rune.parts.containsKey(i._1)).map(_._2) ++
+              Seq(
+                //centerTop.toBakedQuad,
+                centerBottom.toBakedQuad
+              )
           }
 
           val rune_parts = rune.parts.asScala
