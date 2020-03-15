@@ -1,5 +1,9 @@
 package ru.mousecray.endmagic.init.util;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
@@ -22,14 +26,14 @@ public class ClassFieldSource<A> implements IRegistrySource<A> {
     @Override
     public List<A> elemes() {
         return Arrays.stream(sourceClass.getFields())
-                .filter(field -> Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers()))
+                .filter(field -> Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers()) && field.getAnnotationsByType(SkipRegistry.class).length == 0)
                 .flatMap(field -> {
                     try {
                         A elem = (A) field.get(null);
                         return Stream.of(elem);
                     } catch (IllegalArgumentException | IllegalAccessException | ClassCastException e) {
                         if (traceErrors) {
-                            System.out.println("Problem with field: "+ field.getName());
+                            System.out.println("Problem with field: " + field.getName());
                             e.printStackTrace();
                         }
                         return Stream.empty();
@@ -37,4 +41,8 @@ public class ClassFieldSource<A> implements IRegistrySource<A> {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD, ElementType.METHOD})
+    public @interface SkipRegistry {}
 }

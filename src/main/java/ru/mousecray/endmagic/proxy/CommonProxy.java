@@ -23,6 +23,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
@@ -48,6 +49,7 @@ import java.util.List;
 
 public class CommonProxy implements IGuiHandler {
 
+    public static int blastFurnaceGui = 0;
     protected List<Item> itemsToRegister = new LinkedList<>();
     protected List<Class<? extends TileEntity>> tilesToRegister = new LinkedList<>();
     protected List<Block> blocksToRegister = new LinkedList<>();
@@ -109,7 +111,6 @@ public class CommonProxy implements IGuiHandler {
         tilesToRegister.add(tile);
     }
 
-
     private void registerItem(Item item, String name) {
         item.setRegistryName(name);
         item.setUnlocalizedName(name);
@@ -129,6 +130,18 @@ public class CommonProxy implements IGuiHandler {
     }
 
     @SubscribeEvent
+    public void registerMis(RegistryEvent.MissingMappings<Block> e) {
+        ForgeRegistries.BLOCKS.register(EMBlocks.END_STONE);
+        ForgeRegistries.ITEMS.register(Item.getItemFromBlock(EMBlocks.END_STONE));
+//        ForgeRegistries.BLOCKS.getSlaveMap(GameData.BLOCKS, BiMap.class).replace();
+//        ForgeRegistry r = RegistryManager.ACTIVE.getRegistry(GameData.BLOCKS);
+//        r.remove(Blocks.END_STONE.getRegistryName());
+//        r.register(new IForgeRegistryEntry.Impl<Block>().setRegistryName(EMBlocks.END_STONE.getRegistryName());
+//        r.remove(entry.getRegistryName());
+//        r.register(new IForgeRegistryEntry.Impl<Block>());
+    }
+
+    @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> e) {
         itemsToRegister.forEach(e.getRegistry()::register);
     }
@@ -145,9 +158,8 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
-    }
 
-    public static int blastFurnaceGui = 0;
+    }
 
     @Nullable
     @Override

@@ -13,13 +13,18 @@ import ru.mousecray.endmagic.blocks.trees.EMLeaves;
 import ru.mousecray.endmagic.blocks.trees.EMLog;
 import ru.mousecray.endmagic.blocks.trees.EMPlanks;
 import ru.mousecray.endmagic.blocks.trees.EMSapling;
+import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
+import ru.mousecray.endmagic.init.util.ClassFieldSource;
 import ru.mousecray.endmagic.util.EnderBlockTypes.EnderGroundType;
 import ru.mousecray.endmagic.util.EnderBlockTypes.EnderTreeType;
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
 
-	public static final EnderCrops enderCrops = new EnderCrops();
+    @ClassFieldSource.SkipRegistry
+    public static final BlockVanillaEndstone END_STONE = new BlockVanillaEndstone();
+
+    public static final EnderCrops enderCrops = new EnderCrops();
     public static final EnderTallgrass enderTallgrass = new EnderTallgrass();
     public static final EnderOrchid enderOrchid = new EnderOrchid();
 
@@ -49,7 +54,7 @@ public final class EMBlocks {
 
     public static final BlockEnderGrass<EnderGroundType> blockEnderGrass = new BlockEnderGrass<>(EnderGroundType.class, type -> type.getMapColor(), type -> type.getSound());
     public static final BlockEnderStone<EnderGroundType> blockEnderStone = new BlockEnderStone<>(EnderGroundType.class, type -> type.getMapColor());
-    
+
     public static final ChrysofillumVine chrysVine = new ChrysofillumVine();
     public static final ChrysofillumFlower chrysFlower = new ChrysofillumFlower();
     public static final ChrysofillumFruit chrysFruit = new ChrysofillumFruit();

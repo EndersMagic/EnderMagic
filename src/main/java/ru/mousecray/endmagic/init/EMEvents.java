@@ -236,7 +236,7 @@ public class EMEvents {
     }
 
     //TODO: onUseBonemeal
-    @SubscribeEvent
+//    @SubscribeEvent
     public static void onUseBonemeal(BonemealEvent event) {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
@@ -251,10 +251,10 @@ public class EMEvents {
                     {
                         BlockPos pos2 = pos.add(x, 0, z);
                         //TODO: add custom end grass and remove STONE from this
-                        EMUtils.getBonemealCropsFromType(world.getBlockState(pos2), rand, event.getEntityPlayer(), EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS)
-                        if () {
+                        EMUtils.getBonemealCropsFromType(world.getBlockState(pos2), rand, event.getEntityPlayer(), EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS);
+                        if (true) {
                             int chance = rand.nextInt(1000) + 1; //create random
-                            IBlockState plant = EMUtils.getBonemealCrops(world.getBlockState())
+//                            IBlockState plant = EMUtils.getBonemealCrops(world.getBlockState())
                             Block block2 = world.getBlockState(pos2).getBlock();
                             if (block2 instanceof IEndSoil) if (world.isAirBlock(pos2.up())) {
                                 if (block2 instanceof IEndSoil)
