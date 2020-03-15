@@ -130,18 +130,6 @@ public class CommonProxy implements IGuiHandler {
     }
 
     @SubscribeEvent
-    public void registerMis(RegistryEvent.MissingMappings<Block> e) {
-        ForgeRegistries.BLOCKS.register(EMBlocks.END_STONE);
-        ForgeRegistries.ITEMS.register(Item.getItemFromBlock(EMBlocks.END_STONE));
-//        ForgeRegistries.BLOCKS.getSlaveMap(GameData.BLOCKS, BiMap.class).replace();
-//        ForgeRegistry r = RegistryManager.ACTIVE.getRegistry(GameData.BLOCKS);
-//        r.remove(Blocks.END_STONE.getRegistryName());
-//        r.register(new IForgeRegistryEntry.Impl<Block>().setRegistryName(EMBlocks.END_STONE.getRegistryName());
-//        r.remove(entry.getRegistryName());
-//        r.register(new IForgeRegistryEntry.Impl<Block>());
-    }
-
-    @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> e) {
         itemsToRegister.forEach(e.getRegistry()::register);
     }
@@ -158,7 +146,8 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
-
+        ForgeRegistries.BLOCKS.register(EMBlocks.END_STONE);
+        ForgeRegistries.ITEMS.register(Item.getItemFromBlock(EMBlocks.END_STONE));
     }
 
     @Nullable
