@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.client.render.model.baked.rune
+package ru.mousecray.endmagic.client.render.rune
 
 import java.util.function
 
@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.pipeline.{BlockInfoLense, IVertexConsumer, VertexLighterFlat}
 import ru.mousecray.endmagic.EM
 import ru.mousecray.endmagic.capability.chunk.{Rune, RunePart, RuneState, RuneStateCapabilityProvider}
-import ru.mousecray.endmagic.client.render.model.baked.rune.VolumetricBakedQuad._
+import ru.mousecray.endmagic.client.render.rune.VolumetricBakedQuad._
 import ru.mousecray.endmagic.util.Vec2i
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA
 import ru.mousecray.endmagic.util.render.endothermic.BaseUnpackedQuad

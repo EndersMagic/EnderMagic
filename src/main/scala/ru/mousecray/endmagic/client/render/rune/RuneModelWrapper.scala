@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.client.render.model.baked.rune
+package ru.mousecray.endmagic.client.render.rune
 
 import java.util
 
