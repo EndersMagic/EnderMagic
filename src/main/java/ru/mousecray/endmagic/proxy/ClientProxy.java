@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -84,6 +85,10 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
 
+        //Register new vanilla EndStone model
+        setModel(Blocks.END_STONE, 0, new ModelResourceLocation(new ResourceLocation("minecraft", "end_stone"), "normal"));
+
+        //formatter:off
         //Add default book chapters
         BookApi.addStandartChapter("items", "ender_apple");
         BookApi.addStandartChapter("items", "book_of_the_end");
@@ -133,6 +138,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         BookApi.addStandartChapter("mechanics", "teleport_construction",
                 new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_1.png"), I18n.format("tile.block_master_static_portal.name")),
                 new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_2.png"), I18n.format("tile.block_master_dark_portal.name")));
+        //formatter:on
     }
 
     private RecipeComponent recipesForItems(List<Item> items) {
@@ -147,23 +153,15 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 
     @SubscribeEvent
     public void registerModels(ModelRegistryEvent e) {
-        for (Block block : blocksToRegister) {
-            if (block instanceof IEMModel) {
-                ((IEMModel) block).registerModels(this);
-            } else {
-                ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
-                        new ModelResourceLocation(block.getRegistryName(), "inventory"));
-            }
-        }
+        for (Block block : blocksToRegister)
+            if (block instanceof IEMModel) ((IEMModel) block).registerModels(this);
+            else ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
+                    new ModelResourceLocation(block.getRegistryName(), "inventory"));
 
-        for (Item item : itemsToRegister) {
-            if (item instanceof IEMModel) {
-                ((IEMModel) item).registerModels(this);
-            } else {
-                ModelLoader.setCustomModelResourceLocation(item, 0,
-                        new ModelResourceLocation(item.getRegistryName(), "inventory"));
-            }
-        }
+        for (Item item : itemsToRegister)
+            if (item instanceof IEMModel) ((IEMModel) item).registerModels(this);
+            else ModelLoader.setCustomModelResourceLocation(item, 0,
+                    new ModelResourceLocation(item.getRegistryName(), "inventory"));
     }
 
     private Set<ResourceLocation> forRegister = new HashSet<>();
@@ -191,9 +189,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
             ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
 
-            if (bakedModelOverridesR.containsKey(key)) {
-                e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
-            }
+            if (bakedModelOverridesR.containsKey(key)) e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
         }
     }
 

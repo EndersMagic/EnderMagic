@@ -22,7 +22,7 @@ public class ClassFieldSource<A> implements IRegistrySource<A> {
     @Override
     public List<A> elemes() {
         return Arrays.stream(sourceClass.getFields())
-                .filter(field -> Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers()) && field.getAnnotationsByType(SkipRegistry.class).length == 0)
+                .filter(field -> Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers()))
                 .flatMap(field -> {
                     try {
                         A elem = (A) field.get(null);

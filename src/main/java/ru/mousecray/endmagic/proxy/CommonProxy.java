@@ -19,14 +19,15 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
+import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMEntities;
@@ -54,6 +55,7 @@ public class CommonProxy implements IGuiHandler {
     protected List<Class<? extends TileEntity>> tilesToRegister = new LinkedList<>();
     protected List<Block> blocksToRegister = new LinkedList<>();
     protected List<EntityEntry> entityToRegister = new LinkedList<>();
+
 
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
@@ -129,6 +131,11 @@ public class CommonProxy implements IGuiHandler {
         tilesToRegister.forEach(tile -> GameRegistry.registerTileEntity(tile, new ResourceLocation(EM.ID, tile.getSimpleName())));
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void lazyRegisterBlocks(RegistryEvent.Register<Block> e) {
+        e.getRegistry().register(new BlockVanillaEndstone());
+    }
+
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> e) {
         itemsToRegister.forEach(e.getRegistry()::register);
@@ -145,10 +152,7 @@ public class CommonProxy implements IGuiHandler {
         GameRegistry.registerWorldGenerator(new WorldGenEnderOres(), 5);
     }
 
-    public void postInit(FMLPostInitializationEvent event) {
-        ForgeRegistries.BLOCKS.register(EMBlocks.END_STONE);
-        ForgeRegistries.ITEMS.register(Item.getItemFromBlock(EMBlocks.END_STONE));
-    }
+    public void postInit(FMLPostInitializationEvent event) { }
 
     @Nullable
     @Override
