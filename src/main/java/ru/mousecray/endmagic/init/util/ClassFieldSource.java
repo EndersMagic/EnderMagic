@@ -1,9 +1,5 @@
 package ru.mousecray.endmagic.init.util;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
@@ -41,8 +37,4 @@ public class ClassFieldSource<A> implements IRegistrySource<A> {
                 })
                 .collect(Collectors.toList());
     }
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.FIELD, ElementType.METHOD})
-    public @interface SkipRegistry {}
 }

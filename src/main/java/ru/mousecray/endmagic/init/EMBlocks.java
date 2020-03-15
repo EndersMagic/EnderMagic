@@ -14,14 +14,14 @@ import ru.mousecray.endmagic.blocks.trees.EMLog;
 import ru.mousecray.endmagic.blocks.trees.EMPlanks;
 import ru.mousecray.endmagic.blocks.trees.EMSapling;
 import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
-import ru.mousecray.endmagic.init.util.ClassFieldSource;
+import ru.mousecray.endmagic.init.util.SkipRegistry;
 import ru.mousecray.endmagic.util.EnderBlockTypes.EnderGroundType;
 import ru.mousecray.endmagic.util.EnderBlockTypes.EnderTreeType;
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
 
-    @ClassFieldSource.SkipRegistry
+    @SkipRegistry
     public static final BlockVanillaEndstone END_STONE = new BlockVanillaEndstone();
 
     public static final EnderCrops enderCrops = new EnderCrops();
