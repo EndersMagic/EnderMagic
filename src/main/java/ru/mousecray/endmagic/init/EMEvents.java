@@ -43,8 +43,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
-import ru.mousecray.endmagic.api.blocks.EndSoilType;
-import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -235,36 +233,26 @@ public class EMEvents {
         }
     }
 
-    //TODO: onUseBonemeal
-//    @SubscribeEvent
+    @SubscribeEvent
     public static void onUseBonemeal(BonemealEvent event) {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         Random rand = event.getEntityPlayer().getRNG();
-        if (event.getBlock().getBlock() instanceof IEndSoil) //If it is Soil
-        {
-            IEndSoil soil = (IEndSoil) event.getBlock().getBlock();
-            if (soil.canUseBonemeal()) //if we can use bone meal
-            {
-                for (int x = -2; x < 2; ++x) //process neighboring blocks
-                    for (int z = -2; z < 2; ++z)//process neighboring blocks
-                    {
-                        BlockPos pos2 = pos.add(x, 0, z);
-                        //TODO: add custom end grass and remove STONE from this
-                        EMUtils.getBonemealCropsFromType(world.getBlockState(pos2), rand, event.getEntityPlayer(), EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS);
-                        if (true) {
-                            int chance = rand.nextInt(1000) + 1; //create random
-//                            IBlockState plant = EMUtils.getBonemealCrops(world.getBlockState())
-                            Block block2 = world.getBlockState(pos2).getBlock();
-                            if (block2 instanceof IEndSoil) if (world.isAirBlock(pos2.up())) {
-                                if (block2 instanceof IEndSoil)
-                                    world.setBlockState(pos2.up(), soil.getBonemealCrops(rand, event.getEntityPlayer(), block2.getDefaultState()));
-                                ItemDye.spawnBonemealParticles(world, pos2, 5);
-                            }
-                        }
+        if (EMUtils.isSoil(world.getBlockState(pos), true)) {
+            for (int x = -2; x < 2; ++x) //process neighboring blocks
+                for (int z = -2; z < 2; ++z) //process neighboring blocks
+                {
+                    int chance = rand.nextInt(10); //create random
+                    if (chance != 0) continue; //skip block if chance
+
+                    BlockPos soilPos = pos.add(x, 0, z);
+                    IBlockState plant = EMUtils.getBonemealCrops(world.getBlockState(soilPos), rand, event.getEntityPlayer());
+                    if (!Blocks.AIR.getDefaultState().equals(plant) && world.isAirBlock(soilPos.up())) {
+                        world.setBlockState(soilPos.up(), plant);
+                        ItemDye.spawnBonemealParticles(world, soilPos, 5);
                     }
-                event.setResult(Event.Result.ALLOW);
-            }
+                }
+            event.setResult(Event.Result.ALLOW);
         }
     }
 
