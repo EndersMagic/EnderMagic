@@ -32,11 +32,15 @@ import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
 import ru.mousecray.endmagic.client.render.entity.RenderEMEnderPearl;
+import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
+import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TilePhantomAvoidingBlockRenderer;
+import ru.mousecray.endmagic.entity.EntityCurseBush;
 import ru.mousecray.endmagic.entity.EntityEMEnderPearl;
+import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
@@ -60,6 +64,10 @@ import static com.google.common.collect.ImmutableList.toImmutableList;
 
 public class ClientProxy extends CommonProxy implements IModelRegistration {
 
+    private Set<ResourceLocation> forRegister = new HashSet<>();
+    private Map<ModelResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
+    private Map<ResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverridesR = new HashMap<>();
+
     public ClientProxy() {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
     }
@@ -70,8 +78,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         PacketCustom.assignHandler(EM.ID, new ClientPacketHandler());
         //TODO: Extract to stream
         RenderingRegistry.registerEntityRenderingHandler(EntityEMEnderPearl.class, RenderEMEnderPearl::new);
-//        RenderingRegistry.registerEntityRenderingHandler(EntityEnderArrow.class, manager -> new RenderEnderArrow(manager));
-//        RenderingRegistry.registerEntityRenderingHandler(EntityCurseBush.class, manager -> new RenderEntityCurseBush(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEnderArrow.class, RenderEnderArrow::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityCurseBush.class, RenderEntityCurseBush::new);
     }
 
     @Override
@@ -124,7 +132,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         BookApi.addStandartChapter("blocks", "dark_teleport", new RecipeComponent(new ItemStack(EMBlocks.blockMasterDarkPortal)));
         BookApi.addStandartChapter("blocks", "portal_marker", new RecipeComponent(new ItemStack(EMBlocks.blockTopMark)));
 
-        BookApi.addStandartChapter("plants", "ender_grass", new ImageComponent(new ResourceLocation(EM.ID, "textures/book/ender_grass.png"), I18n.format("")));
+        BookApi.addStandartChapter("plants", "ender_grass",
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/ender_grass.png"), I18n.format("")));
         BookApi.addStandartChapter("plants", "purple_pearl_sprout",
                 new ImageComponent(new ResourceLocation(EM.ID, "textures/book/purple_pearl_sprout.png"), ""));
         BookApi.addStandartChapter("plants", "curse_bush");
@@ -136,8 +145,10 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 new ImageComponent(new ResourceLocation(EM.ID, "textures/book/compression_system_3.png"), "")
         );
         BookApi.addStandartChapter("mechanics", "teleport_construction",
-                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_1.png"), I18n.format("tile.block_master_static_portal.name")),
-                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_2.png"), I18n.format("tile.block_master_dark_portal.name")));
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_1.png"),
+                        I18n.format("tile.block_master_static_portal.name")),
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_2.png"),
+                        I18n.format("tile.block_master_dark_portal.name")));
         //formatter:on
     }
 
@@ -164,11 +175,6 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                     new ModelResourceLocation(item.getRegistryName(), "inventory"));
     }
 
-    private Set<ResourceLocation> forRegister = new HashSet<>();
-
-    private Map<ModelResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
-    private Map<ResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverridesR = new HashMap<>();
-
     @Override
     public void registerTexture(ResourceLocation resourceLocation) {
         forRegister.add(resourceLocation);
@@ -189,7 +195,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
             ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
 
-            if (bakedModelOverridesR.containsKey(key)) e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
+            if (bakedModelOverridesR.containsKey(key))
+                e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
         }
     }
 

@@ -38,36 +38,31 @@ public class EntityEMEnderPearl extends EntityThrowable {
 
     public EntityEMEnderPearl(World world, EntityLivingBase thrower, ItemStack itemStack) {
         super(world, thrower);
-        this.perlThrower = thrower;
+        perlThrower = thrower;
         setItemStack(itemStack);
     }
 
     public EntityEMEnderPearl(World world, double x, double y, double z, ItemStack itemStack) {
         super(world, x, y, z);
-        if (!itemStack.isEmpty()) { setItemStack(itemStack); }
-    }
-
-    public void setItemStack(ItemStack stack) {
-        getDataManager().set(itemStack, stack.copy());
-        getDataManager().setDirty(itemStack);
+        setItemStack(itemStack);
     }
 
     @Override
     protected void entityInit() {
-        this.getDataManager().register(itemStack, ItemStack.EMPTY);
+        getDataManager().register(itemStack, ItemStack.EMPTY);
     }
 
     @Override
     public void onUpdate() {
         EntityLivingBase entitylivingbase = getThrower();
 
-        if (entitylivingbase instanceof EntityPlayer && !entitylivingbase.isEntityAlive()) this.setDead();
+        if (entitylivingbase instanceof EntityPlayer && !entitylivingbase.isEntityAlive()) setDead();
         else super.onUpdate();
     }
 
     @Override
     protected void onImpact(RayTraceResult result) {
-        if (result.entityHit == this.perlThrower) return;
+        if (result.entityHit == perlThrower) return;
 
         if (!world.isRemote) {
             if (result.entityHit instanceof EntityLivingBase) {
@@ -80,7 +75,8 @@ public class EntityEMEnderPearl extends EntityThrowable {
 
                     if (entityplayermp.connection.getNetworkManager().isChannelOpen() && entityplayermp.world == world
                             && !entityplayermp.isPlayerSleeping()) {
-                        EnderTeleportEvent event = new EnderTeleportEvent(resultEntity, factionalThrower.posX, factionalThrower.posY, factionalThrower.posZ, 0F);
+                        EnderTeleportEvent event = new EnderTeleportEvent(resultEntity, factionalThrower.posX, factionalThrower.posY,
+                                factionalThrower.posZ, 0F);
                         if (!MinecraftForge.EVENT_BUS.post(event)) {
                             spawnEndermite(result.entityHit, true);
                             item.onImpact((EntityLivingBase) result.entityHit, factionalThrower, this);
@@ -93,10 +89,10 @@ public class EntityEMEnderPearl extends EntityThrowable {
             }
 
             if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
-                for (int i = -2; i < 2; ++i) {
+                for (int i = -2; i < 2; ++i)
                     for (int j = -2; j < 2; ++j) {
                         BlockPos blockpos = result.getBlockPos().add(i, 0, j);
-                        TileEntity tileentity = this.world.getTileEntity(blockpos);
+                        TileEntity tileentity = world.getTileEntity(blockpos);
                         if (tileentity == null) {
                             EntityFallingBlock entity = new EntityFallingBlock(world, blockpos.getX(), blockpos.getY(),
                                     blockpos.getZ(), world.getBlockState(blockpos));
@@ -109,20 +105,19 @@ public class EntityEMEnderPearl extends EntityThrowable {
                             world.spawnEntity(entity);
                         }
                     }
-                }
                 BlockPos blockpos = result.getBlockPos();
                 for (int i = 0; i < 32; ++i)
-                    this.world.spawnParticle(EnumParticleTypes.PORTAL, blockpos.getX(),
+                    world.spawnParticle(EnumParticleTypes.PORTAL, blockpos.getX(),
                             blockpos.getY() + rand.nextDouble() * 2.0D, blockpos.getZ(), rand.nextGaussian(), 0.0D,
                             rand.nextGaussian());
             }
+            world.setEntityState(this, (byte) 3);
+            setDead();
         }
-        world.setEntityState(this, (byte) 3);
-        setDead();
     }
 
     protected void spawnEndermite(Entity entityHit, boolean spawnedByPlayer) {
-        if (this.rand.nextFloat() < 0.05F && world.getGameRules().getBoolean("doMobSpawning")) {
+        if (rand.nextFloat() < 0.05F && world.getGameRules().getBoolean("doMobSpawning")) {
             EntityEndermite entityendermite = new EntityEndermite(world);
             entityendermite.setSpawnedByPlayer(spawnedByPlayer);
             entityendermite.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw,
@@ -145,13 +140,18 @@ public class EntityEMEnderPearl extends EntityThrowable {
         super.writeEntityToNBT(compound);
         ItemStack itemstack = getItemStack();
 
-        if (!itemstack.isEmpty()) { compound.setTag("ItemStack", itemstack.writeToNBT(new NBTTagCompound())); }
+        if (!itemstack.isEmpty()) compound.setTag("ItemStack", itemstack.writeToNBT(new NBTTagCompound()));
     }
 
     public ItemStack getItemStack() {
-        ItemStack itemstack = this.getDataManager().get(itemStack);
+        ItemStack itemstack = getDataManager().get(itemStack);
         if (!(itemstack.getItem() instanceof EMEnderPearl)) return new ItemStack(EMItems.purpleEnderPearl);
         else return itemstack;
+    }
+
+    public void setItemStack(ItemStack stack) {
+        getDataManager().set(itemStack, stack.copy());
+        getDataManager().setDirty(itemStack);
     }
 
     @Override
