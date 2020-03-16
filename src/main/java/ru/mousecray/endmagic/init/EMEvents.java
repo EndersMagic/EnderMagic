@@ -43,6 +43,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
+import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -54,6 +55,7 @@ import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -157,12 +159,14 @@ public class EMEvents {
     }
 
     private static void teleportTree(World world, PhantomAvoidingGroup group, PhantomAvoidingGroupCapability capability) {
-        Optional<TilePhantomAvoidingBlockBase> anyTile = group.blocks.stream().map(world::getTileEntity).filter(t -> t instanceof TilePhantomAvoidingBlockBase).map(
+        Optional<TilePhantomAvoidingBlockBase> anyTile = group.blocks.stream().map(world::getTileEntity).filter(
+                t -> t instanceof TilePhantomAvoidingBlockBase).map(
                 t -> (TilePhantomAvoidingBlockBase) t).findAny();
         anyTile.ifPresent(t -> {
             BlockPos saplingPos = t.getPos().subtract(t.offsetFromSapling);
             BlockPos newSaplingPos;
-            do newSaplingPos = world.getTopSolidOrLiquidBlock(saplingPos.add(world.rand.nextInt(2 * teleportRadius) - teleportRadius, 0, world.rand.nextInt(2 * teleportRadius) - teleportRadius));
+            do newSaplingPos = world.getTopSolidOrLiquidBlock(saplingPos.add(world.rand.nextInt(2 * teleportRadius) - teleportRadius, 0,
+                    world.rand.nextInt(2 * teleportRadius) - teleportRadius));
             while (newSaplingPos.getY() == -1);
             System.out.println(world.getBlockState(newSaplingPos).getBlock());
 
@@ -225,7 +229,8 @@ public class EMEvents {
         Minecraft mc = Minecraft.getMinecraft();
         if (event.getGui() instanceof GuiMainMenu) mc.displayGuiScreen(new GuiWorldSelection((GuiMainMenu) event.getGui()));
         else if (event.getGui() instanceof GuiWorldSelection) {
-            GuiListWorldSelection guiListWorldSelection = new GuiListWorldSelection((GuiWorldSelection) event.getGui(), mc, 100, 100, 32, 100 - 64, 36);
+            GuiListWorldSelection guiListWorldSelection = new GuiListWorldSelection((GuiWorldSelection) event.getGui(), mc, 100, 100, 32, 100 - 64,
+                    36);
             try {
                 guiListWorldSelection.getListEntry(0).joinWorld();
             } catch (Exception ignore) {
@@ -237,21 +242,16 @@ public class EMEvents {
     public static void onUseBonemeal(BonemealEvent event) {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
-        Random rand = event.getEntityPlayer().getRNG();
         if (EMUtils.isSoil(world.getBlockState(pos), true)) {
-            for (int x = -2; x < 2; ++x) //process neighboring blocks
-                for (int z = -2; z < 2; ++z) //process neighboring blocks
-                {
-                    int chance = rand.nextInt(10); //create random
-                    if (chance != 0) continue; //skip block if chance
-
-                    BlockPos soilPos = pos.add(x, 0, z);
-                    IBlockState plant = EMUtils.getBonemealCrops(world.getBlockState(soilPos), rand, event.getEntityPlayer());
-                    if (!Blocks.AIR.getDefaultState().equals(plant) && world.isAirBlock(soilPos.up())) {
-                        world.setBlockState(soilPos.up(), plant);
-                        ItemDye.spawnBonemealParticles(world, soilPos, 5);
-                    }
+            List<BlockPos> availablePoses = EMUtils.getSoilInArea(world, pos.add(-2, 0, -2), pos.add(2, 0, 2));
+            availablePoses.forEach(availablePos -> {
+                IBlockState state = world.getBlockState(availablePos);
+                IEndSoil soil = (IEndSoil) state.getBlock();
+                if (soil.canUseBonemeal()) {
+                    soil.growPlant(world, availablePos, state, event.getEntityPlayer().getRNG());
+                    if (world.isRemote) ItemDye.spawnBonemealParticles(world, availablePos, 5);
                 }
+            });
             event.setResult(Event.Result.ALLOW);
         }
     }
@@ -349,7 +349,8 @@ public class EMEvents {
                     world.spawnEntity(entityarrow);
                 }
 
-                world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F,
+                world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS,
+                        1.0F,
                         1.0F / (new Random().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
                 if (!flag1 && !player.capabilities.isCreativeMode) {

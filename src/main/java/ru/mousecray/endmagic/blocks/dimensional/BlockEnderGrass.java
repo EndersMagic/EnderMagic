@@ -6,7 +6,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.IStringSerializable;
@@ -19,7 +18,6 @@ import ru.mousecray.endmagic.blocks.VariativeBlock;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.EnderBlockTypes.EnderGroundType;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.function.Function;
@@ -65,22 +63,19 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
         return new BlockStateContainer(this);
     }
 
-    @Nonnull
     @Override
-    public IBlockState getBonemealCrops(Random rand, EntityPlayer player, IBlockState soil) {
-        int chance = rand.nextInt(1000) + 1;
-        IBlockState state = Blocks.AIR.getDefaultState();
-        GrassType type = soil.getValue(blockType);
-        if (type == EnderGroundType.LIVE) {
-            if (chance > 850) state = EMBlocks.enderTallgrass.getDefaultState();
-            else if (chance > 600) state = EMBlocks.enderOrchid.getDefaultState();
-        } else if (type == EnderGroundType.DEAD) {
-            if (chance > 995) state = EMBlocks.enderTallgrass.getDefaultState();
-            else if (chance > 980) state = EMBlocks.blockCurseBush.getDefaultState();
-        } else if (type == EnderGroundType.FROZEN) {
+    public void growPlant(World world, BlockPos soilPos, IBlockState soilState, Random rand) {
+        GrassType type = soilState.getValue(blockType);
+        int chance = rand.nextInt(100);
+        BlockPos plantPos = soilPos.up();
+        if (world.isAirBlock(plantPos)) {
+            IBlockState plantState = Blocks.AIR.getDefaultState();
+            if (chance > 60) plantState = EMBlocks.enderTallgrass.getDefaultState();
+            if (type == EnderGroundType.LIVE && chance > 80) plantState = EMBlocks.enderOrchid.getDefaultState();
+            else if (type == EnderGroundType.DEAD && chance > 95) plantState = EMBlocks.blockCurseBush.getDefaultState();
             //TODO: Frozen plants
-        } else return IEndSoil.super.getBonemealCrops(rand, player, soil);
-        return state;
+            if (!world.isRemote) world.setBlockState(plantPos, plantState);
+        }
     }
 
     @Override

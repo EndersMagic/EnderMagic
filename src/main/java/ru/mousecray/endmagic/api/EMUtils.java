@@ -1,10 +1,8 @@
 package ru.mousecray.endmagic.api;
 
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.block.Block;
+import com.google.common.collect.Streams;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -16,10 +14,12 @@ import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.init.EMItems;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class EMUtils {
 
@@ -57,20 +57,25 @@ public class EMUtils {
         return isSoil(state, false, filterTypes);
     }
 
-    public static boolean isSoil(IBlockState state, boolean needSupportBonemeal, EndSoilType... filterTypes) {
-        Block block = state.getBlock();
-        if (block instanceof IEndSoil) {
+    public static boolean isSoil(@Nonnull IBlockState state, boolean needSupportBonemeal, EndSoilType... filterTypes) {
+        if (state.getBlock() instanceof IEndSoil) {
+            IEndSoil soil = (IEndSoil) state.getBlock();
+            boolean bonemealFlag = !needSupportBonemeal || soil.canUseBonemeal();
+            if (bonemealFlag && filterTypes.length == 0) return true;
             ImmutableSet<EndSoilType> endSoilTypes = ImmutableSet.copyOf(filterTypes);
-            return (!needSupportBonemeal || ((IEndSoil) block).canUseBonemeal()) && (filterTypes.length == 0 || endSoilTypes.contains(((IEndSoil) block).getSoilType()));
+            return bonemealFlag && endSoilTypes.contains(soil.getSoilType());
         } else return false;
     }
 
-    public static IBlockState getBonemealCrops(IBlockState state, Random rand, EntityPlayer entityPlayer) {
-        if (state.getBlock() instanceof IEndSoil) {
-            IEndSoil soil = (IEndSoil) state.getBlock();
-            if (soil.canUseBonemeal()) return soil.getBonemealCrops(rand, entityPlayer, state);
-        }
-        return Blocks.AIR.getDefaultState();
+    public static List<BlockPos> getSoilInArea(World world, BlockPos start, BlockPos end, EndSoilType... types) {
+        return getSoilInArea(world, start, end, false, types);
+    }
+
+    public static List<BlockPos> getSoilInArea(World world, BlockPos start, BlockPos end, boolean needSupportBonemeal, EndSoilType... filterTypes) {
+        return Streams
+                .stream(BlockPos.getAllInBox(start, end))
+                .filter(pos -> isSoil(world.getBlockState(pos), needSupportBonemeal, filterTypes))
+                .collect(Collectors.toList());
     }
 
     public static boolean isEnderArrow(ItemStack stack) {
