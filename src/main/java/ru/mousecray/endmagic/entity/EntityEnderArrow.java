@@ -18,18 +18,22 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
 import ru.mousecray.endmagic.init.EMItems;
+import ru.mousecray.endmagic.util.registry.EMEntity;
 
+@EMEntity(renderClass = RenderEnderArrow.class)
 public class EntityEnderArrow extends EntityArrow {
-	
+
     private Block inTile;
     private int knockbackStrength;
+
     public EntityEnderArrow(World world) {
         super(world);
         setDamage(1D);
-        this.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
+        pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
 
-        this.setSize(0.5F, 0.5F);
+        setSize(0.5F, 0.5F);
     }
 
     public EntityEnderArrow(World world, double x, double y, double z) {
@@ -38,58 +42,58 @@ public class EntityEnderArrow extends EntityArrow {
     }
 
     public EntityEnderArrow(World world, EntityLivingBase shooter) {
-        this(world, shooter.posX, shooter.posY + (double)shooter.getEyeHeight() - 0.10000000149011612D, shooter.posZ);
+        this(world, shooter.posX, shooter.posY + (double) shooter.getEyeHeight() - 0.10000000149011612D, shooter.posZ);
         shootingEntity = shooter;
 
-        if (shooter instanceof EntityPlayer) {
-            pickupStatus = EntityArrow.PickupStatus.ALLOWED;
-        }
+        if (shooter instanceof EntityPlayer) pickupStatus = PickupStatus.ALLOWED;
     }
-    
+
     @Override
     protected void onHit(RayTraceResult raytraceResult) {
         Entity entity = raytraceResult.entityHit;
 
         if (entity != null) {
             float f = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
-            int i = MathHelper.ceil((double)f * getDamage());
+            int i = MathHelper.ceil((double) f * getDamage());
 
             if (getIsCritical()) i += rand.nextInt(i / 2 + 2);
-            
+
             DamageSource damagesource;
 
             if (shootingEntity == null) damagesource = EM.causeArrowDamage(this, this);
             else damagesource = EM.causeArrowDamage(this, this);
-            
+
             if (isBurning()) entity.setFire(5);
 
-            if (entity.attackEntityFrom(damagesource, (float)i)) {
+            if (entity.attackEntityFrom(damagesource, (float) i)) {
                 if (entity instanceof EntityLivingBase) {
-                    EntityLivingBase entitylivingbase = (EntityLivingBase)entity;
+                    EntityLivingBase entitylivingbase = (EntityLivingBase) entity;
 
                     if (!world.isRemote) entitylivingbase.setArrowCountInEntity(entitylivingbase.getArrowCountInEntity() + 1);
 
                     if (knockbackStrength > 0) {
                         float f1 = MathHelper.sqrt(motionX * motionX + motionZ * motionZ);
 
-                        if (f1 > 0.0F) entitylivingbase.addVelocity(motionX * (double)knockbackStrength * 0.6000000238418579D / (double)f1, 0.1D, motionZ * (double)knockbackStrength * 0.6000000238418579D / (double)f1);
+                        if (f1 > 0.0F) entitylivingbase.addVelocity(motionX * (double) knockbackStrength * 0.6000000238418579D / (double) f1, 0.1D,
+                                motionZ * (double) knockbackStrength * 0.6000000238418579D / (double) f1);
                     }
 
                     if (shootingEntity instanceof EntityLivingBase) {
                         EnchantmentHelper.applyThornEnchantments(entitylivingbase, shootingEntity);
-                        EnchantmentHelper.applyArthropodEnchantments((EntityLivingBase)shootingEntity, entitylivingbase);
+                        EnchantmentHelper.applyArthropodEnchantments((EntityLivingBase) shootingEntity, entitylivingbase);
                     }
 
                     arrowHit(entitylivingbase);
 
-                    if (shootingEntity != null && entitylivingbase != shootingEntity && entitylivingbase instanceof EntityPlayer && shootingEntity instanceof EntityPlayerMP) ((EntityPlayerMP)shootingEntity).connection.sendPacket(new SPacketChangeGameState(6, 0.0F));
+                    if (shootingEntity != null && entitylivingbase != shootingEntity && entitylivingbase instanceof EntityPlayer &&
+                            shootingEntity instanceof EntityPlayerMP)
+                        ((EntityPlayerMP) shootingEntity).connection.sendPacket(new SPacketChangeGameState(6, 0.0F));
                 }
 
-                this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
+                playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
 
                 setDead();
-            }
-            else {
+            } else {
                 motionX *= -0.10000000149011612D;
                 motionY *= -0.10000000149011612D;
                 motionZ *= -0.10000000149011612D;
@@ -100,8 +104,7 @@ public class EntityEnderArrow extends EntityArrow {
                     setDead();
                 }
             }
-        }
-        else {
+        } else {
             BlockPos blockpos = raytraceResult.getBlockPos();
             blockpos.getX();
             blockpos.getY();
@@ -109,13 +112,13 @@ public class EntityEnderArrow extends EntityArrow {
             IBlockState iblockstate = world.getBlockState(blockpos);
             inTile = iblockstate.getBlock();
             inTile.getMetaFromState(iblockstate);
-            motionX = (double)((float)(raytraceResult.hitVec.x - posX));
-            motionY = (double)((float)(raytraceResult.hitVec.y - posY));
-            motionZ = (double)((float)(raytraceResult.hitVec.z - posZ));
+            motionX = (double) ((float) (raytraceResult.hitVec.x - posX));
+            motionY = (double) ((float) (raytraceResult.hitVec.y - posY));
+            motionZ = (double) ((float) (raytraceResult.hitVec.z - posZ));
             float f2 = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
-            posX -= motionX / (double)f2 * 0.05000000074505806D;
-            posY -= motionY / (double)f2 * 0.05000000074505806D;
-            posZ -= motionZ / (double)f2 * 0.05000000074505806D;
+            posX -= motionX / (double) f2 * 0.05000000074505806D;
+            posY -= motionY / (double) f2 * 0.05000000074505806D;
+            posZ -= motionZ / (double) f2 * 0.05000000074505806D;
             playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (rand.nextFloat() * 0.2F + 0.9F));
             inGround = true;
             arrowShake = 7;
@@ -127,6 +130,6 @@ public class EntityEnderArrow extends EntityArrow {
 
     @Override
     protected ItemStack getArrowStack() {
-		return new ItemStack(EMItems.enderArrow);
-	}
+        return new ItemStack(EMItems.enderArrow);
+    }
 }

@@ -6,7 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -19,6 +22,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -31,16 +35,10 @@ import ru.mousecray.endmagic.api.embook.components.ImageComponent;
 import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
-import ru.mousecray.endmagic.client.render.entity.RenderEMEnderPearl;
-import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
-import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TilePhantomAvoidingBlockRenderer;
-import ru.mousecray.endmagic.entity.EntityCurseBush;
-import ru.mousecray.endmagic.entity.EntityEMEnderPearl;
-import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
@@ -50,9 +48,11 @@ import ru.mousecray.endmagic.network.ClientPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.RecipeHelper;
+import ru.mousecray.endmagic.util.registry.EMEntity;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -76,10 +76,21 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
         PacketCustom.assignHandler(EM.ID, new ClientPacketHandler());
-        //TODO: Extract to stream
-        RenderingRegistry.registerEntityRenderingHandler(EntityEMEnderPearl.class, RenderEMEnderPearl::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityEnderArrow.class, RenderEnderArrow::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityCurseBush.class, RenderEntityCurseBush::new);
+        //Registration renders for entity with annotation
+        entityToRegister.forEach(entityEntry -> {
+            if (entityEntry.getEntityClass().isAnnotationPresent(EMEntity.class)) {
+                IRenderFactory factory = manager -> {
+                    EMEntity annotation = entityEntry.getEntityClass().getAnnotation(EMEntity.class);
+                    try {
+                        return annotation.renderClass().getConstructor(RenderManager.class).newInstance(manager);
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                };
+                RenderingRegistry.registerEntityRenderingHandler(entityEntry.getEntityClass(), (Render<? extends Entity>) factory);
+            }
+        });
     }
 
     @Override

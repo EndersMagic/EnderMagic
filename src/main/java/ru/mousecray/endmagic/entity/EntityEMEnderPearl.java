@@ -20,12 +20,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+import ru.mousecray.endmagic.client.render.entity.RenderEMEnderPearl;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.items.EMEnderPearl;
+import ru.mousecray.endmagic.util.registry.EMEntity;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+@EMEntity(renderClass = RenderEMEnderPearl.class)
 public class EntityEMEnderPearl extends EntityThrowable {
 
     private static final DataParameter<ItemStack> itemStack = EntityDataManager
