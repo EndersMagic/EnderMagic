@@ -61,7 +61,8 @@ public class EMUtils {
         if (state.getBlock() instanceof IEndSoil) {
             IEndSoil soil = (IEndSoil) state.getBlock();
             boolean bonemealFlag = !needSupportBonemeal || soil.canUseBonemeal();
-            if (bonemealFlag && filterTypes.length == 0) return true;
+            if (!bonemealFlag) return false;
+            else if (filterTypes.length == 0) return true;
             ImmutableSet<EndSoilType> endSoilTypes = ImmutableSet.copyOf(filterTypes);
             return bonemealFlag && endSoilTypes.contains(soil.getSoilType());
         } else return false;
