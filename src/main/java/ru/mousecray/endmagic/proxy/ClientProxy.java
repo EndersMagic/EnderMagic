@@ -1,28 +1,16 @@
 package ru.mousecray.endmagic.proxy;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-
-import javax.annotation.Nullable;
-
-import com.google.common.collect.ImmutableList;
-
 import codechicken.lib.packet.PacketCustom;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
-import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -33,6 +21,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -45,16 +34,10 @@ import ru.mousecray.endmagic.api.embook.components.ImageComponent;
 import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
-import ru.mousecray.endmagic.client.render.entity.RenderEMEnderPearl;
-import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
-import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TilePhantomAvoidingBlockRenderer;
-import ru.mousecray.endmagic.entity.EntityCurseBush;
-import ru.mousecray.endmagic.entity.EntityEMEnderPearl;
-import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
@@ -64,22 +47,51 @@ import ru.mousecray.endmagic.network.ClientPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.RecipeHelper;
+import ru.mousecray.endmagic.util.registry.EMEntity;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 
+import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+
+import static com.google.common.collect.ImmutableList.toImmutableList;
+
 public class ClientProxy extends CommonProxy implements IModelRegistration {
+
+    private Set<ResourceLocation> forRegister = new HashSet<>();
+    private Map<ModelResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
+    private Map<ResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverridesR = new HashMap<>();
 
     public ClientProxy() {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
         PacketCustom.assignHandler(EM.ID, new ClientPacketHandler());
-        //TODO: Extract to stream
-        RenderingRegistry.registerEntityRenderingHandler(EntityEMEnderPearl.class, manager -> new RenderEMEnderPearl(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEnderArrow.class, manager -> new RenderEnderArrow(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityCurseBush.class, manager -> new RenderEntityCurseBush(manager));
+        //Registration renders for entity with annotation
+        entityToRegister.forEach(entityEntry -> {
+            if (entityEntry.getEntityClass().isAnnotationPresent(EMEntity.class)) {
+                IRenderFactory factory = manager -> {
+                    Render render = null;
+                    EMEntity annotation = entityEntry.getEntityClass().getAnnotation(EMEntity.class);
+                    try {
+                        render = annotation.renderClass().getConstructor(RenderManager.class).newInstance(manager);
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+                    return render;
+                };
+                RenderingRegistry.registerEntityRenderingHandler(entityEntry.getEntityClass(), factory);
+            }
+        });
     }
 
     @Override
@@ -93,6 +105,10 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
 
+        //Register new vanilla EndStone model
+        setModel(Blocks.END_STONE, 0, new ModelResourceLocation(new ResourceLocation("minecraft", "end_stone"), "normal"));
+
+        //formatter:off
         //Add default book chapters
         BookApi.addStandartChapter("items", "ender_apple");
         BookApi.addStandartChapter("items", "book_of_the_end");
@@ -128,7 +144,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         BookApi.addStandartChapter("blocks", "dark_teleport", new RecipeComponent(new ItemStack(EMBlocks.blockMasterDarkPortal)));
         BookApi.addStandartChapter("blocks", "portal_marker", new RecipeComponent(new ItemStack(EMBlocks.blockTopMark)));
 
-        BookApi.addStandartChapter("plants", "ender_grass", new ImageComponent(new ResourceLocation(EM.ID, "textures/book/ender_grass.png"), I18n.format("")));
+        BookApi.addStandartChapter("plants", "ender_grass",
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/ender_grass.png"), I18n.format("")));
         BookApi.addStandartChapter("plants", "purple_pearl_sprout",
                 new ImageComponent(new ResourceLocation(EM.ID, "textures/book/purple_pearl_sprout.png"), ""));
         BookApi.addStandartChapter("plants", "curse_bush");
@@ -140,8 +157,11 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 new ImageComponent(new ResourceLocation(EM.ID, "textures/book/compression_system_3.png"), "")
         );
         BookApi.addStandartChapter("mechanics", "teleport_construction",
-                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_1.png"), I18n.format("tile.block_master_static_portal.name")),
-                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_2.png"), I18n.format("tile.block_master_dark_portal.name")));
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_1.png"),
+                        I18n.format("tile.block_master_static_portal.name")),
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_2.png"),
+                        I18n.format("tile.block_master_dark_portal.name")));
+        //formatter:on
     }
 
     private RecipeComponent recipesForItems(List<Item> items) {
@@ -156,29 +176,16 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 
     @SubscribeEvent
     public void registerModels(ModelRegistryEvent e) {
-        for (Block block : blocksToRegister) {
-            if (block instanceof IEMModel) {
-                ((IEMModel) block).registerModels(this);
-            } else {
-                ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
-                        new ModelResourceLocation(block.getRegistryName(), "inventory"));
-            }
-        }
+        for (Block block : blocksToRegister)
+            if (block instanceof IEMModel) ((IEMModel) block).registerModels(this);
+            else ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
+                    new ModelResourceLocation(block.getRegistryName(), "inventory"));
 
-        for (Item item : itemsToRegister) {
-            if (item instanceof IEMModel) {
-                ((IEMModel) item).registerModels(this);
-            } else {
-                ModelLoader.setCustomModelResourceLocation(item, 0,
-                        new ModelResourceLocation(item.getRegistryName(), "inventory"));
-            }
-        }
+        for (Item item : itemsToRegister)
+            if (item instanceof IEMModel) ((IEMModel) item).registerModels(this);
+            else ModelLoader.setCustomModelResourceLocation(item, 0,
+                    new ModelResourceLocation(item.getRegistryName(), "inventory"));
     }
-
-    private Set<ResourceLocation> forRegister = new HashSet<>();
-
-    private Map<ModelResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverrides = new HashMap<>();
-    private Map<ResourceLocation, Function<IBakedModel, IBakedModel>> bakedModelOverridesR = new HashMap<>();
 
     @Override
     public void registerTexture(ResourceLocation resourceLocation) {
@@ -200,9 +207,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
             ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
 
-            if (bakedModelOverridesR.containsKey(key)) {
+            if (bakedModelOverridesR.containsKey(key))
                 e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
-            }
         }
     }
 

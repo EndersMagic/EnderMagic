@@ -1,12 +1,5 @@
 package ru.mousecray.endmagic.blocks.trees;
 
-import static net.minecraft.block.BlockSapling.SAPLING_AABB;
-
-import java.util.Random;
-import java.util.function.Function;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
@@ -33,97 +26,104 @@ import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 import ru.mousecray.endmagic.worldgen.trees.WorldGenEnderTree;
 
+import javax.annotation.Nullable;
+import java.util.Random;
+import java.util.function.Function;
+
+import static net.minecraft.block.BlockSapling.SAPLING_AABB;
+
 public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & EMSapling.SaplingThings & BlockTypeBase> extends VariativeBlock<TreeType> implements IGrowable {
 
-	private Function<TreeType, WorldGenEnderTree> genFunc;
+    private Function<TreeType, WorldGenEnderTree> genFunc;
 
-	public EMSapling(Class<TreeType> type, Function<TreeType, MapColor> mapFunc, Function<TreeType, WorldGenEnderTree> genFunc) {
-		super(type, Material.PLANTS, "sapling", mapFunc);
-		this.genFunc = genFunc;
-		setResistance(0.0F);
-		setHardness(0.0F);
-		setSoundType(SoundType.PLANT);
-		setTickRandomly(true);
-	}
+    public EMSapling(Class<TreeType> type, Function<TreeType, MapColor> mapFunc, Function<TreeType, WorldGenEnderTree> genFunc) {
+        super(type, Material.PLANTS, "sapling", mapFunc);
+        this.genFunc = genFunc;
+        setResistance(0.0F);
+        setHardness(0.0F);
+        setSoundType(SoundType.PLANT);
+        setTickRandomly(true);
+    }
 
-	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		return true;
-	}
+    @Override
+    public boolean canPlaceBlockAt(World world, BlockPos pos) {
+        return true;
+    }
 
-	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if (!world.getBlockState(pos).getValue(blockType).canPlaceBlockAt(world, pos)) {
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			dropBlockAsItem(world, pos, state, 4);
-		}
-	}
+    @Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (!world.getBlockState(pos).getValue(blockType).canPlaceBlockAt(world, pos)) {
+            world.setBlockState(pos, Blocks.AIR.getDefaultState());
+            dropBlockAsItem(world, pos, state, 4);
+        }
+    }
 
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
-		TreeType blockType1 = byIndex.apply(stack.getItemDamage());
-		world.setBlockState(pos, state.withProperty(blockType, blockType1));
-		if (!blockType1.canPlaceBlockAt(world, pos)) world.setBlockState(pos, Blocks.AIR.getDefaultState());
-	}
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer,
+                                ItemStack stack) {
+        TreeType blockType1 = byIndex.apply(stack.getItemDamage());
+        world.setBlockState(pos, state.withProperty(blockType, blockType1));
+        if (!blockType1.canPlaceBlockAt(world, pos)) world.setBlockState(pos, Blocks.AIR.getDefaultState());
+    }
 
-	@Override
-	public boolean canGrow(World world, BlockPos pos, IBlockState state, boolean isClient) {
-		return true;
-	}
+    @Override
+    public boolean canGrow(World world, BlockPos pos, IBlockState state, boolean isClient) {
+        return true;
+    }
 
-	@Override
-	public boolean canUseBonemeal(World world, Random rand, BlockPos pos, IBlockState state) {
-		return true;
-	}
+    @Override
+    public boolean canUseBonemeal(World world, Random rand, BlockPos pos, IBlockState state) {
+        return true;
+    }
 
-	@Override
-	public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
-		state.getValue(blockType).grow(world, rand, pos, state, genFunc.apply(state.getValue(blockType)));
-	}
+    @Override
+    public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
+        state.getValue(blockType).grow(world, rand, pos, state, genFunc.apply(state.getValue(blockType)));
+    }
 
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return SAPLING_AABB;
-	}
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return SAPLING_AABB;
+    }
 
-	@Override
-	@Nullable
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-		return NULL_AABB;
-	}
+    @Override
+    @Nullable
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+        return NULL_AABB;
+    }
 
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
 
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() { return BlockRenderLayer.CUTOUT; }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() { return BlockRenderLayer.CUTOUT; }
 
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return BlockFaceShape.UNDEFINED;
-	}
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
+    }
 
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this);
-	}
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this);
+    }
 
-	public interface SaplingThings {
-		default boolean canPlaceBlockAt(World world, BlockPos pos) {
-			return EMUtils.isSoil(world.getBlockState(pos.down()), true, false, EndSoilType.DIRT, EndSoilType.GRASS);
-		}
+    public interface SaplingThings {
+        default boolean canPlaceBlockAt(World world, BlockPos pos) {
+            //TODO: add custom end grass and remove STONE from this
+            return EMUtils.isSoil(world.getBlockState(pos.down()), EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS);
+        }
 
-		default void grow(World world, Random rand, BlockPos pos, IBlockState state, @Nullable WorldGenEnderTree generator) {
-			if (generator != null) generator.generate(world, rand, pos);
-		}
-	}
+        default void grow(World world, Random rand, BlockPos pos, IBlockState state, @Nullable WorldGenEnderTree generator) {
+            if (generator != null) generator.generate(world, rand, pos);
+        }
+    }
 }
