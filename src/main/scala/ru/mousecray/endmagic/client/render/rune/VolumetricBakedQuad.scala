@@ -49,8 +49,8 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 elongateQuadData.x.toFloat / 16,
                 elongateQuadData.y1.toFloat / 16,
 
-                (elongateQuadData.x+1).toFloat / 16,
-                (elongateQuadData.y2+1).toFloat / 16
+                (elongateQuadData.x + 1).toFloat / 16,
+                (elongateQuadData.y2 + 1).toFloat / 16
               ).toBakedQuad
           }
 
@@ -58,7 +58,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
             val center1 = richQuad
               .sliceRect(
                 x.toFloat / 16, y.toFloat / 16,
-                (x+1).toFloat / 16, (y+1).toFloat / 16
+                (x + 1).toFloat / 16, (y + 1).toFloat / 16
               )
             println(center1.format)
             println(center1.evaluations.get(BaseUnpackedQuad.p_1))
@@ -76,8 +76,8 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
             val borts = Seq(
               new Vec2i(x - 1, y) -> richQuad
                 .sliceRect(
-                  (x-1).toFloat / 16, y.toFloat / 16,
-                  x.toFloat / 16, (y+1).toFloat / 16
+                  (x - 1).toFloat / 16, y.toFloat / 16,
+                  x.toFloat / 16, (y + 1).toFloat / 16
                 ).reconstruct(
                 v1_x = centerBottom.v1_x,
                 v4_x = centerBottom.v4_x,
@@ -91,8 +91,8 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 .toBakedQuad,
               new Vec2i(x + 1, y) -> richQuad
                 .sliceRect(
-                  (x+1).toFloat / 16, y.toFloat / 16,
-                  (x+2).toFloat / 16, (y+1).toFloat / 16
+                  (x + 1).toFloat / 16, y.toFloat / 16,
+                  (x + 2).toFloat / 16, (y + 1).toFloat / 16
                 ).reconstruct(
                 v2_x = centerBottom.v2_x,
                 v3_x = centerBottom.v3_x,
@@ -106,8 +106,8 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 .toBakedQuad,
               new Vec2i(x, y - 1) -> richQuad
                 .sliceRect(
-                  x.toFloat / 16, (y-1).toFloat / 16,
-                  (x+1).toFloat / 16 , y.toFloat / 16
+                  x.toFloat / 16, (y - 1).toFloat / 16,
+                  (x + 1).toFloat / 16, y.toFloat / 16
                 ).reconstruct(
                 v1_x = centerBottom.v1_x,
                 v2_x = centerBottom.v2_x,
@@ -122,8 +122,8 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 .toBakedQuad,
               new Vec2i(x, y + 1) -> richQuad
                 .sliceRect(
-                  x.toFloat / 16, (y+1).toFloat / 16,
-                  (x+1).toFloat / 16, (y+2).toFloat / 16
+                  x.toFloat / 16, (y + 1).toFloat / 16,
+                  (x + 1).toFloat / 16, (y + 2).toFloat / 16
                 ).reconstruct(
                 v3_x = centerBottom.v3_x,
                 v4_x = centerBottom.v4_x,
@@ -138,15 +138,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
             ).filter(i => !rune.parts.containsKey(i._1)).map(_._2)
 
 
-            val result = borts ++ Seq(
-              //centerTop.toBakedQuad,
-              centerBottom.toBakedQuad
-            )
-            result
-            Seq(
-              //centerTop.toBakedQuad,
-              centerBottom.toBakedQuad
-            )
+            borts :+ centerBottom.toBakedQuad
           }
 
           val rune_parts = rune.parts.asScala
