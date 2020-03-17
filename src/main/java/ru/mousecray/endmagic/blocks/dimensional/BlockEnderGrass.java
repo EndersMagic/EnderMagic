@@ -64,7 +64,7 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
     }
 
     @Override
-    public void growPlant(World world, BlockPos soilPos, IBlockState soilState, Random rand) {
+    public boolean growPlant(World world, BlockPos soilPos, IBlockState soilState, Random rand) {
         GrassType type = soilState.getValue(blockType);
         int chance = rand.nextInt(100);
         BlockPos plantPos = soilPos.up();
@@ -74,8 +74,12 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
             if (type == EnderGroundType.LIVE && chance > 80) plantState = EMBlocks.enderOrchid.getDefaultState();
             else if (type == EnderGroundType.DEAD && chance > 95) plantState = EMBlocks.blockCurseBush.getDefaultState();
             //TODO: Frozen plants
-            if (!world.isRemote) world.setBlockState(plantPos, plantState);
+            if (plantState.getBlock() != Blocks.AIR) {
+                if (!world.isRemote) world.setBlockState(plantPos, plantState);
+                return true;
+            }
         }
+        return false;
     }
 
     @Override

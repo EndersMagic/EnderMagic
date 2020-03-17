@@ -26,11 +26,16 @@ public interface IEndSoil {
     boolean canUseBonemeal();
 
     /**
-     * Call to WorldServer for set plant with chance.
+     * Call if plant ready to grow.
+     *
+     * @return true if the plant has grown
      */
-    default void growPlant(World world, BlockPos soilPos, IBlockState soilState, Random rand) {
+    default boolean growPlant(World world, BlockPos soilPos, IBlockState soilState, Random rand) {
         BlockPos plantPos = soilPos.up();
-        if (!world.isRemote && world.isAirBlock(plantPos) && rand.nextInt(10) > 7)
-            world.setBlockState(plantPos, EMBlocks.enderTallgrass.getDefaultState());
+        if (world.isAirBlock(plantPos) && rand.nextInt(10) > 7) {
+            if (!world.isRemote) world.setBlockState(plantPos, EMBlocks.enderTallgrass.getDefaultState());
+            return true;
+        }
+        return false;
     }
 }

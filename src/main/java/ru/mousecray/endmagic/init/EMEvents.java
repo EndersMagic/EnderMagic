@@ -55,7 +55,6 @@ import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -243,13 +242,11 @@ public class EMEvents {
         World world = event.getWorld();
         BlockPos pos = event.getPos();
         if (EMUtils.isSoil(world.getBlockState(pos), true)) {
-            List<BlockPos> availablePoses = EMUtils.getSoilInArea(world, pos.add(-2, 0, -2), pos.add(2, 0, 2));
-            availablePoses.forEach(availablePos -> {
-                IBlockState state = world.getBlockState(availablePos);
-                IEndSoil soil = (IEndSoil) state.getBlock();
-                if (soil.canUseBonemeal()) {
-                    soil.growPlant(world, availablePos, state, event.getEntityPlayer().getRNG());
-                    if (world.isRemote) ItemDye.spawnBonemealParticles(world, availablePos, 5);
+            WorldGenUtils.generateInArea(pos.add(-2, 0, -2), pos.add(2, 0, 2), acceptedPos -> {
+                IBlockState state = world.getBlockState(acceptedPos);
+                if (EMUtils.isSoil(state, true)) {
+                    boolean ifHasGrown = ((IEndSoil) state.getBlock()).growPlant(world, acceptedPos, state, event.getEntityPlayer().getRNG());
+                    if (ifHasGrown && world.isRemote) ItemDye.spawnBonemealParticles(world, acceptedPos.up(), 5);
                 }
             });
             event.setResult(Event.Result.ALLOW);
