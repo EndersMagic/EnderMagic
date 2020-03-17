@@ -65,18 +65,26 @@ trait QuadOps {
       x1, y2)
 
 
-  def slice(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Self =
-    slice1(cyclicNormalize(x1), cyclicNormalize(y1), cyclicNormalize(x2), cyclicNormalize(y2), cyclicNormalize(x3), cyclicNormalize(y3), cyclicNormalize(x4), cyclicNormalize(y4))
+
+  def cyclicNormalize2(v: Double): Double =
+    if (v < 0) 1 + (v-v.toInt)
+    else if (v > 1) v-v.toInt
+    else v
+
+  def cyclicNormalize(v: Double): Double =
+    if (v < 0) 1 + v
+    else v
 
 
-  def cyclicNormalize(v: Float): Float = if (v < 0) 1 + (v % 1) else if (v > 1) v % 1 else v
+  def slice(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double, x4: Double, y4: Double): Self =
+    slice1(cyclicNormalize2(x1), cyclicNormalize2(y1), cyclicNormalize2(x2), cyclicNormalize2(y2), cyclicNormalize2(x3), cyclicNormalize2(y3), cyclicNormalize2(x4), cyclicNormalize2(y4))
 
-  private def slice1(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Self = {
+  private def slice1(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double, x4: Double, y4: Double): Self = {
     //Thx frobeniusfg for help with this
-    def calcAttribute(x: Float, y: Float, v1: Float, v2: Float, v3: Float, v4: Float): Float = {
+    def calcAttribute(x: Double, y: Double, v1: Double, v2: Double, v3: Double, v4: Double): Float = {
       val a = x * y
       a * v1 - a * v2 + a * v3 - a * v4 - v1 * x - v1 * y + v1 + v2 * x + v4 * y
-    }
+    }.toFloat
 
     reconstruct(
       v1_x = calcAttribute(x1, y1,
