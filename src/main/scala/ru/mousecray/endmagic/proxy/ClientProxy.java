@@ -36,7 +36,7 @@ import ru.mousecray.endmagic.client.render.entity.RenderEnderArrow;
 import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
-import ru.mousecray.endmagic.client.render.model.baked.rune.RuneModelWrapper;
+import ru.mousecray.endmagic.client.render.rune.RuneModelWrapper;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TilePhantomAvoidingBlockRenderer;
 import ru.mousecray.endmagic.entity.EntityBluePearl;
