@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.init;
+package ru.mousecray.endmagic.init.util;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -29,7 +29,7 @@ public class ClassFieldSource<A> implements IRegistrySource<A> {
                         return Stream.of(elem);
                     } catch (IllegalArgumentException | IllegalAccessException | ClassCastException e) {
                         if (traceErrors) {
-                            System.out.println("Problem with filed: "+field.getName());
+                            System.out.println("Problem with field: " + field.getName());
                             e.printStackTrace();
                         }
                         return Stream.empty();
