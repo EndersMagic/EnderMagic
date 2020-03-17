@@ -57,7 +57,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
@@ -72,6 +71,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
@@ -79,7 +79,6 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         //Registration renders for entity with annotation
         entityToRegister.forEach(entityEntry -> {
             if (entityEntry.getEntityClass().isAnnotationPresent(EMEntity.class)) {
-                AtomicBoolean isRenderPresent = new AtomicBoolean(false);
                 IRenderFactory factory = manager -> {
                     Render render = null;
                     EMEntity annotation = entityEntry.getEntityClass().getAnnotation(EMEntity.class);
@@ -88,10 +87,9 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                         e.printStackTrace();
                     }
-                    isRenderPresent.set(render != null);
                     return render;
                 };
-                if (isRenderPresent.get()) RenderingRegistry.registerEntityRenderingHandler(entityEntry.getEntityClass(), factory);
+                RenderingRegistry.registerEntityRenderingHandler(entityEntry.getEntityClass(), factory);
             }
         });
     }
