@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.blocks;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -28,8 +29,11 @@ import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.util.registry.IEMModel;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Random;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class EnderTallgrass extends EMBlockBush implements IShearable, IEMModel {
 
     static final AxisAlignedBB END_GRASS_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D,
@@ -80,7 +84,7 @@ public class EnderTallgrass extends EMBlockBush implements IShearable, IEMModel 
     }
 
     @Override
-    public NonNullList onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+    public NonNullList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
         return NonNullList.withSize(1, new ItemStack(this));
     }
 

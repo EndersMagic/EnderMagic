@@ -16,6 +16,7 @@ import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EMBlockBush;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class EnderOrchid extends EMBlockBush implements IShearable {
@@ -52,8 +53,9 @@ public class EnderOrchid extends EMBlockBush implements IShearable {
         return true;
     }
 
+    @Nonnull
     @Override
-    public NonNullList onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+    public NonNullList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
         return NonNullList.withSize(1, new ItemStack(this));
     }
 
