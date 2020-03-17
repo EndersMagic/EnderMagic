@@ -33,7 +33,7 @@ import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.registry.EMEntity;
 
-//TODO: Correct write\read to nbt
+//TODO: Correct write/read to nbt
 @EMEntity(renderClass = RenderEntityCurseBush.class)
 public class EntityCurseBush extends EntityMob {
 

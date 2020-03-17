@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,6 +57,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
@@ -70,8 +72,6 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
     }
 
-    @SuppressWarnings("unchecked")
-    //TODO: Fix this
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
@@ -79,16 +79,19 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         //Registration renders for entity with annotation
         entityToRegister.forEach(entityEntry -> {
             if (entityEntry.getEntityClass().isAnnotationPresent(EMEntity.class)) {
+                AtomicBoolean isRenderPresent = new AtomicBoolean(false);
                 IRenderFactory factory = manager -> {
+                    Render render = null;
                     EMEntity annotation = entityEntry.getEntityClass().getAnnotation(EMEntity.class);
                     try {
-                        return annotation.renderClass().getConstructor(RenderManager.class).newInstance(manager);
+                        render = annotation.renderClass().getConstructor(RenderManager.class).newInstance(manager);
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                         e.printStackTrace();
                     }
-                    return null;
+                    isRenderPresent.set(render != null);
+                    return render;
                 };
-                RenderingRegistry.registerEntityRenderingHandler(entityEntry.getEntityClass(), factory);
+                if (isRenderPresent.get()) RenderingRegistry.registerEntityRenderingHandler(entityEntry.getEntityClass(), factory);
             }
         });
     }
