@@ -27,45 +27,51 @@ import ru.mousecray.endmagic.util.registry.IEMModel;
 
 public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvider {
 
-    private static final AxisAlignedBB[] ENDER_AABB = new AxisAlignedBB[] {new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.1875D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.3125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.4375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5625D, 1.0D)};
+    private static final AxisAlignedBB[] ENDER_AABB = new AxisAlignedBB[]{new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(
+            0.0D, 0.0D, 0.0D, 1.0D, 0.1875D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D,
+            0.3125D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.375D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.4375D,
+            1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5625D, 1.0D)};
 
     public EnderCrops() {
-    	super();
-    	this.setDefaultState(this.blockState.getBaseState().withProperty(this.getAgeProperty(), Integer.valueOf(0)));
-		setLightLevel(0.3F);
-		setResistance(0.0F);
-		setSoundType(SoundType.PLANT);
+        super();
+        setDefaultState(blockState.getBaseState().withProperty(getAgeProperty(), 0));
+        setLightLevel(0.3F);
+        setResistance(0.0F);
+        setSoundType(SoundType.PLANT);
     }
-    
-	@Override
-	public CreativeTabs creativeTab() {
-		return null;
-	}
-    
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerModels(IModelRegistration modelRegistration) {
-		modelRegistration.addBakedModelOverride(this.getRegistryName(), base -> new BakedModelFullbright(base,
-				EM.ID + ":blocks/ender_crops0",
-				EM.ID + ":blocks/ender_crops1",
-				EM.ID + ":blocks/ender_crops2",
-				EM.ID + ":blocks/ender_crops3",
-				EM.ID + ":blocks/ender_crops4",
-				EM.ID + ":blocks/ender_crops5",
-				EM.ID + ":blocks/ender_crops6",
-				EM.ID + ":blocks/ender_crops7"));	
-	}
-    
+
+    @Override
+    public CreativeTabs creativeTab() {
+        return null;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerModels(IModelRegistration modelRegistration) {
+        modelRegistration.addBakedModelOverride(getRegistryName(), base -> new BakedModelFullbright(base,
+                EM.ID + ":blocks/ender_crops0",
+                EM.ID + ":blocks/ender_crops1",
+                EM.ID + ":blocks/ender_crops2",
+                EM.ID + ":blocks/ender_crops3",
+                EM.ID + ":blocks/ender_crops4",
+                EM.ID + ":blocks/ender_crops5",
+                EM.ID + ":blocks/ender_crops6",
+                EM.ID + ":blocks/ender_crops7"));
+    }
+
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) && EMUtils.isSoil(world.getBlockState(pos.down()), true, false, EndSoilType.GRASS);
+        //TODO: add custom end grass and remove STONE from this
+        return world.getBlockState(pos).getBlock().isReplaceable(world, pos) &&
+                EMUtils.isSoil(world.getBlockState(pos.down()), EndSoilType.STONE, EndSoilType.GRASS);
     }
 
     @Override
     public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-    	return EMUtils.isSoil(world.getBlockState(pos.down()), true, false, EndSoilType.GRASS);
+        //TODO: add custom end grass and remove STONE from this
+        return EMUtils.isSoil(world.getBlockState(pos.down()), EndSoilType.STONE, EndSoilType.GRASS);
     }
-    
+
     @Override
     protected Item getSeed() {
         return EMItems.enderSeeds;
@@ -78,18 +84,18 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return ENDER_AABB[((Integer)state.getValue(this.getAgeProperty())).intValue()];
+        return ENDER_AABB[state.getValue(getAgeProperty())];
     }
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         super.getDrops(drops, world, pos, state, fortune);
-        if (this.isMaxAge(state) && RANDOM.nextInt(30) < 15)
+        if (isMaxAge(state) && RANDOM.nextInt(30) < 15)
             drops.add(new ItemStack(Items.DYE, 1, 4));
     }
-    
+
     @Override
     public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
-    	return EnderPlantType.end_crop;
+        return EnderPlantType.end_crop;
     }
 }

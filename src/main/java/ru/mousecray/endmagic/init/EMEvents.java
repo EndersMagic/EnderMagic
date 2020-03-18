@@ -17,6 +17,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
@@ -37,6 +38,7 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.GuiOldSaveLoadConfirm;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -44,6 +46,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.GradleTarget;
+import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -70,6 +73,14 @@ import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequi
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
 
+    private static final int teleportRadius = 40;
+    private static ImmutableMap<Block, Item> coal2diamond = ImmutableMap.of(
+            EMBlocks.dragonCoal, EMItems.dragonDiamond,
+            EMBlocks.immortalCoal, EMItems.naturalDiamond,
+            EMBlocks.naturalCoal, EMItems.phantomDiamond,
+            EMBlocks.phantomCoal, EMItems.immortalDiamond
+    );
+
     @SubscribeEvent
     public static void onCapaAttachToWorld(AttachCapabilitiesEvent<World> event) {
         event.addCapability(PhantomAvoidingGroupCapabilityProvider.name, new PhantomAvoidingGroupCapabilityProvider());
@@ -80,7 +91,8 @@ public class EMEvents {
         World world = event.getEntityPlayer().world;
         BlockPos pos = event.getPos();
         IBlockState blockState = world.getBlockState(pos);
-        if (/*!event.getEntityPlayer().world.isRemote && */(blockState.getBlock() == enderLog || blockState.getBlock() == enderLeaves) && blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
+        if (/*!event.getEntityPlayer().world.isRemote && */(blockState.getBlock() == enderLog || blockState.getBlock() == enderLeaves) &&
+                blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
             PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
             if (capability != null) {
                 PhantomAvoidingGroup tree = capability.groupAtPos.get(event.getPos());
@@ -105,9 +117,7 @@ public class EMEvents {
             BlockPos saplingPos = pos.subtract(((TilePhantomAvoidingBlockBase) tileEntity).offsetFromSapling);
             WorldGenUtils.generateInArea(saplingPos.add(areaRequirementsMin), saplingPos.add(areaRequirementsMax), p -> {
                 TileEntity tileEntity1 = world.getTileEntity(p);
-                if (tileEntity1 instanceof TilePhantomAvoidingBlockBase) {
-                    tree.blocks.add(p.toImmutable());
-                }
+                if (tileEntity1 instanceof TilePhantomAvoidingBlockBase) tree.blocks.add(p.toImmutable());
             });
         }
     }
@@ -124,24 +134,21 @@ public class EMEvents {
             capability.forRemove.clear();
             capability.forAdded.clear();
 
-            for (PhantomAvoidingGroup group : capability.allGroups) {
+            for (PhantomAvoidingGroup group : capability.allGroups)
                 if (group.avoidingStarted) {
 
-                    if (group.increment > 0) {
-                        if (group.avoidTicks >= maxAvoidTicks) {
-                            if (!world.isRemote)
-                                teleportTree(world, group, capability);
-                            capability.forRemove.add(group);
-                            group.avoidingStarted = false;
-                        } else
-                            group.avoidTicks += group.increment;
-                    } else if (group.increment < 0) {
-                        if (group.avoidTicks <= 0) {
-                            capability.forRemove.add(group);
-                            group.avoidingStarted = false;
-                        } else
-                            group.avoidTicks += group.increment;
-                    }
+                    if (group.increment > 0) if (group.avoidTicks >= maxAvoidTicks) {
+                        if (!world.isRemote)
+                            teleportTree(world, group, capability);
+                        capability.forRemove.add(group);
+                        group.avoidingStarted = false;
+                    } else
+                        group.avoidTicks += group.increment;
+                    else if (group.increment < 0) if (group.avoidTicks <= 0) {
+                        capability.forRemove.add(group);
+                        group.avoidingStarted = false;
+                    } else
+                        group.avoidTicks += group.increment;
                     for (BlockPos pos : group.blocks) {
                         TileEntity tileEntity = world.getTileEntity(pos);
                         if (tileEntity instanceof TilePhantomAvoidingBlockBase) {
@@ -151,20 +158,19 @@ public class EMEvents {
                         }
                     }
                 }
-            }
         }
     }
 
-    private static final int teleportRadius = 40;
-
     private static void teleportTree(World world, PhantomAvoidingGroup group, PhantomAvoidingGroupCapability capability) {
-        Optional<TilePhantomAvoidingBlockBase> anyTile = group.blocks.stream().map(world::getTileEntity).filter(t -> t instanceof TilePhantomAvoidingBlockBase).map(t -> (TilePhantomAvoidingBlockBase) t).findAny();
+        Optional<TilePhantomAvoidingBlockBase> anyTile = group.blocks.stream().map(world::getTileEntity).filter(
+                t -> t instanceof TilePhantomAvoidingBlockBase).map(
+                t -> (TilePhantomAvoidingBlockBase) t).findAny();
         anyTile.ifPresent(t -> {
             BlockPos saplingPos = t.getPos().subtract(t.offsetFromSapling);
             BlockPos newSaplingPos;
-            do {
-                newSaplingPos = world.getTopSolidOrLiquidBlock(saplingPos.add(world.rand.nextInt(2 * teleportRadius) - teleportRadius, 0, world.rand.nextInt(2 * teleportRadius) - teleportRadius));
-            } while (newSaplingPos.getY() == -1);
+            do newSaplingPos = world.getTopSolidOrLiquidBlock(saplingPos.add(world.rand.nextInt(2 * teleportRadius) - teleportRadius, 0,
+                    world.rand.nextInt(2 * teleportRadius) - teleportRadius));
+            while (newSaplingPos.getY() == -1);
             System.out.println(world.getBlockState(newSaplingPos).getBlock());
 
             BlockPos teleportOffset = newSaplingPos.subtract(saplingPos);
@@ -211,15 +217,13 @@ public class EMEvents {
     @SubscribeEvent
     public static void onPlayerEnter(EntityJoinWorldEvent event) {
         if (!event.getWorld().isRemote)
-            if (event.getEntity() instanceof EntityPlayer) {
-                Optional.ofNullable(((WorldServer) event.getWorld()).getChunkProvider()
-                        .getNearestStructurePos(event.getWorld(), "Stronghold", new BlockPos(event.getEntity()), false))
-                        .map(pos ->
-                                UPDATE_COMPAS_TARGET.packet()
-                                        .writeInt(0)
-                                        .writePos(pos))
-                        .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
-            }
+            if (event.getEntity() instanceof EntityPlayer) Optional.ofNullable(((WorldServer) event.getWorld()).getChunkProvider()
+                    .getNearestStructurePos(event.getWorld(), "Stronghold", new BlockPos(event.getEntity()), false))
+                    .map(pos ->
+                            UPDATE_COMPAS_TARGET.packet()
+                                    .writeInt(0)
+                                    .writePos(pos))
+                    .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
     }
 
     private static boolean alreadyEnteredInWorldAutomaticaly = false;
@@ -247,36 +251,20 @@ public class EMEvents {
         }
     }
 
-    //TODO: onUseBonemeal
     @SubscribeEvent
     public static void onUseBonemeal(BonemealEvent event) {
-//    	World world  = event.getWorld();
-//    	BlockPos pos = event.getPos();
-//    	Random rand = event.getEntityPlayer().getRNG();
-//    	if(event.getBlock().getBlock() instanceof IEndSoil) {
-//    		IEndSoil soil = (IEndSoil)event.getBlock().getBlock();
-//    		if(soil.canUseBonemeal()) {
-//	    		List<BlockPos> existPos = EMUtils.isSoil(world, pos.add(-1, 0, -1), pos.add(1, 0, 1), false, true, EndSoilType.DIRT, EndSoilType.GRASS);
-//	    		for(BlockPos pos2 : existPos) {
-//	    			IEndSoil soil2 = (IEndSoil)world.getBlockState(pos2).getBlock();
-//	    			IBlockState state = soil2.getBonemealCrops(rand, event.getEntityPlayer(), world.getBlockState(pos2));
-//	    			if (state.getBlock() != Blocks.AIR && world.isAirBlock(pos2.up())) world.setBlockState(pos2.up(), state);
-//	        		ItemDye.spawnBonemealParticles(world, pos, 5);
-//	    		}
-//	    		event.setResult(Result.ALLOW);
-//    		}
-//    	}
-//    	else if (event.getBlock().getBlock() == Blocks.END_STONE) {
-//    		for (int x = -1; x < 2; ++x) {
-//    			for (int z = -1; z < 2; ++z) {
-//        			if (world.isAirBlock(pos.add(x, 1, z)) && world.getBlockState(pos.add(x, 0, z)).getBlock() == Blocks.END_STONE && event.getEntityPlayer().getRNG().nextInt(500) > 498) {
-//        				world.setBlockState(pos.add(x, 1, z), EMBlocks.enderTallgrass.getDefaultState());
-//        	    		ItemDye.spawnBonemealParticles(world, pos, 5);
-//        			}
-//    			}
-//    		}
-//    		event.setResult(Result.ALLOW);
-//    	}
+        World world = event.getWorld();
+        BlockPos pos = event.getPos();
+        if (EMUtils.isSoil(world.getBlockState(pos), true)) {
+            WorldGenUtils.generateInArea(pos.add(-2, 0, -2), pos.add(2, 0, 2), acceptedPos -> {
+                IBlockState state = world.getBlockState(acceptedPos);
+                if (EMUtils.isSoil(state, true)) {
+                    boolean ifHasGrown = ((IEndSoil) state.getBlock()).growPlant(world, acceptedPos, state, event.getEntityPlayer().getRNG());
+                    if (ifHasGrown && world.isRemote) ItemDye.spawnBonemealParticles(world, acceptedPos.up(), 5);
+                }
+            });
+            event.setResult(Event.Result.ALLOW);
+        }
     }
 
     @SubscribeEvent
@@ -291,13 +279,6 @@ public class EMEvents {
                 })
                 .ifPresent(world::spawnEntity);
     }
-
-    private static ImmutableMap<Block, Item> coal2diamond = ImmutableMap.of(
-            EMBlocks.dragonCoal, EMItems.dragonDiamond,
-            EMBlocks.immortalCoal, EMItems.naturalDiamond,
-            EMBlocks.naturalCoal, EMItems.phantomDiamond,
-            EMBlocks.phantomCoal, EMItems.immortalDiamond
-    );
 
     private static Optional<EntityItem> getDiamond(World world, BlockPos i) {
         return Optional.ofNullable(coal2diamond.get(world.getBlockState(i).getBlock()))
@@ -379,14 +360,14 @@ public class EMEvents {
                     world.spawnEntity(entityarrow);
                 }
 
-                world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+                world.playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS,
+                        1.0F,
+                        1.0F / (new Random().nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
                 if (!flag1 && !player.capabilities.isCreativeMode) {
                     stack.shrink(1);
 
-                    if (stack.isEmpty()) {
-                        player.inventory.deleteStack(stack);
-                    }
+                    if (stack.isEmpty()) player.inventory.deleteStack(stack);
                 }
 
                 player.addStat(StatList.getObjectUseStats(stack.getItem()));
