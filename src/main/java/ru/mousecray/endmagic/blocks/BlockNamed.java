@@ -3,9 +3,9 @@ package ru.mousecray.endmagic.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import ru.mousecray.endmagic.util.registry.NameProvider;
+import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
-public class BlockNamed extends Block implements NameProvider {
+public class BlockNamed extends Block implements IExtendedProperties {
     private String name;
 
     public BlockNamed(String name) {
@@ -19,7 +19,7 @@ public class BlockNamed extends Block implements NameProvider {
     }
 
     @Override
-    public String name() {
+    public String getCustomName() {
         return name;
     }
 }

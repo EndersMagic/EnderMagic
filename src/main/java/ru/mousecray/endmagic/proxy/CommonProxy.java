@@ -39,6 +39,7 @@ import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EMItemBlock;
+import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
@@ -106,7 +107,11 @@ public class CommonProxy implements IGuiHandler {
 
         blocksToRegister.add(block);
         if (block instanceof VariativeBlock) registerItem(new EMItemBlock(block), block.getRegistryName().toString());
-        else registerItem(new ItemBlock(block), block.getRegistryName().toString());
+        else if (block instanceof ITechnicalBlock) {
+            ITechnicalBlock techBlock = (ITechnicalBlock) block;
+            if (techBlock.hasItemBlock()) registerItem(techBlock.getCustomItemBlock(block), block.getRegistryName().toString());
+        } else
+            registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 
     private void registerTile(Class<? extends TileEntity> tile) {

@@ -48,7 +48,7 @@ import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.RecipeHelper;
 import ru.mousecray.endmagic.util.registry.EMEntity;
-import ru.mousecray.endmagic.util.registry.IEMModel;
+import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
@@ -177,12 +177,12 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     @SubscribeEvent
     public void registerModels(ModelRegistryEvent e) {
         for (Block block : blocksToRegister)
-            if (block instanceof IEMModel) ((IEMModel) block).registerModels(this);
+            if (block instanceof IExtendedProperties) ((IExtendedProperties) block).registerModels(this);
             else ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
                     new ModelResourceLocation(block.getRegistryName(), "inventory"));
 
         for (Item item : itemsToRegister)
-            if (item instanceof IEMModel) ((IEMModel) item).registerModels(this);
+            if (item instanceof IExtendedProperties) ((IExtendedProperties) item).registerModels(this);
             else ModelLoader.setCustomModelResourceLocation(item, 0,
                     new ModelResourceLocation(item.getRegistryName(), "inventory"));
     }

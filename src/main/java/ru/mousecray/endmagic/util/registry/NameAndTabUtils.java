@@ -9,10 +9,12 @@ import java.util.stream.IntStream;
 
 public class NameAndTabUtils {
     public static String getName(Object c) {
-        if (c instanceof NameProvider)
-            return ((NameProvider) c).name();
-        else
-            return getName(c.getClass());
+        String result = getName(c.getClass());
+        if (c instanceof IExtendedProperties) {
+            IExtendedProperties obj = (IExtendedProperties) c;
+            if (obj.getCustomName() != null) result = obj.getCustomName();
+        }
+        return result;
     }
 
     public static String getName(Class c) {
@@ -26,6 +28,7 @@ public class NameAndTabUtils {
     public static String toId(String r) {
         r = r.chars()
                 .flatMap(i -> {
+                    //TODO: Is used?!
                     Character a = (char) i;
                     if (Character.isUpperCase(i)) return IntStream.of('_', Character.toLowerCase(i));
                     else
@@ -43,9 +46,12 @@ public class NameAndTabUtils {
     //getCreativeTab
     @Nullable
     public static CreativeTabs getCTab(Object c) {
-        if (c instanceof CreativeTabProvider)
-            return ((CreativeTabProvider) c).creativeTab();
-        else
-            return EM.EM_CREATIVE;
+        CreativeTabs tab = EM.EM_CREATIVE;
+        if (c instanceof IExtendedProperties) {
+            IExtendedProperties obj = (IExtendedProperties) c;
+            if (obj.hasCustomCreativeTab()) tab = obj.getCustomCreativeTab();
+        }
+
+        return tab;
     }
 }

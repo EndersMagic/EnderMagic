@@ -3,11 +3,13 @@ package ru.mousecray.endmagic.items;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.item.Item;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.util.registry.NameProvider;
 
 import java.util.Map;
 
-public class ItemNamed extends Item implements ItemTextured, NameProvider {
+public class ItemNamed extends Item implements ItemTextured {
+
+    private final Map<String, Integer> textures;
+    private String name;
 
     public ItemNamed(String name) {
         this.name = name;
@@ -19,16 +21,13 @@ public class ItemNamed extends Item implements ItemTextured, NameProvider {
         this.textures = textures;
     }
 
-    private String name;
-    private final Map<String, Integer> textures;
-
     @Override
-    public String name() {
+    public String getCustomName() {
         return name;
     }
 
     @Override
-	public Map<String, Integer> textures() {
+    public Map<String, Integer> textures() {
         return textures;
     }
 }

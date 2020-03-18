@@ -9,17 +9,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.ModelEnderCompass;
-import ru.mousecray.endmagic.util.registry.IEMModel;
+import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public class EnderCompass extends Item implements IEMModel {
-    @Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return false;
-    }
-
+public class EnderCompass extends Item implements IExtendedProperties {
     public static int getCompassKey(ItemStack stack) {
         return Optional.ofNullable(stack.getTagCompound()).map(i -> i.getInteger("compassKey")).orElse(0);
     }
@@ -32,6 +27,11 @@ public class EnderCompass extends Item implements IEMModel {
             stack.getTagCompound().setInteger("compassKey", UUID.randomUUID().hashCode());
             stack.getTagCompound().setInteger("entityKey", entityIn.hashCode());
         }
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
     }
 
     @Override

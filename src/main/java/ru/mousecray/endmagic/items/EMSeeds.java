@@ -19,13 +19,12 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
-import ru.mousecray.endmagic.util.registry.NameProvider;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class EMSeeds extends Item implements IPlantable, NameProvider, ItemOneWhiteEMTextured {
+public class EMSeeds extends Item implements IPlantable, ItemOneWhiteEMTextured {
 
     private final Supplier<Block> crops;
     private final EndSoilType[] soilBlockID;
@@ -41,7 +40,7 @@ public class EMSeeds extends Item implements IPlantable, NameProvider, ItemOneWh
     }
 
     @Override
-    public String name() {
+    public String getCustomName() {
         return name;
     }
 

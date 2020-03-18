@@ -21,20 +21,19 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
-import ru.mousecray.endmagic.util.registry.IEMModel;
+import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
-import ru.mousecray.endmagic.util.registry.NameProvider;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.function.Function;
 
-public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable & BlockTypeBase> extends Block implements NameProvider, IEMModel {
+public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable & BlockTypeBase> extends Block implements IExtendedProperties {
 
     public final IProperty<BlockType> blockType;
-    protected Function<Integer, BlockType> byIndex;
     private final Class<BlockType> type;
+    protected Function<Integer, BlockType> byIndex;
     private String suffix;
     private int metaCount;
     private Function<BlockType, MapColor> mapFunc;
@@ -75,7 +74,7 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     }
 
     @Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+    public EnumBlockRenderType getRenderType(IBlockState state) {
         return state.getValue(blockType).getRenderType(state);
     }
 
@@ -85,7 +84,7 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     }
 
     @Override
-	public boolean hasTileEntity(IBlockState state) {
+    public boolean hasTileEntity(IBlockState state) {
         return state.getValue(blockType).hasTileEntity(state);
     }
 
@@ -130,7 +129,7 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     protected abstract BlockStateContainer createBlockState();
 
     @Override
-    public String name() {
+    public String getCustomName() {
         String rawName = NameAndTabUtils.getName(type);
         return suffix != null ? rawName.substring(0, rawName.lastIndexOf('_') + 1) + suffix : rawName.substring(0, rawName.lastIndexOf('_'));
     }

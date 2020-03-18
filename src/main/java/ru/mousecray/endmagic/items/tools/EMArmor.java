@@ -7,11 +7,10 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.items.ItemTextured;
-import ru.mousecray.endmagic.util.registry.NameProvider;
 
 import java.util.Map;
 
-public class EMArmor extends ItemArmor implements NameProvider, ItemTextured {
+public class EMArmor extends ItemArmor implements ItemTextured {
 
     private final String name;
     private final Item reparItem;
@@ -25,7 +24,7 @@ public class EMArmor extends ItemArmor implements NameProvider, ItemTextured {
     }
 
     @Override
-    public String name() {
+    public String getCustomName() {
         return name;
     }
 
