@@ -234,7 +234,6 @@ public class EMEvents {
     @SubscribeEvent
     public static void loadLastWorld(GuiOpenEvent event) {
         if (!alreadyEnteredInWorldAutomaticaly) {
-            alreadyEnteredInWorldAutomaticaly = true;
             Minecraft mc = Minecraft.getMinecraft();
             if (event.getGui() instanceof GuiMainMenu) {
                 mainMenu = (GuiMainMenu) event.getGui();
@@ -242,6 +241,7 @@ public class EMEvents {
             } else if (event.getGui() instanceof GuiWorldSelection) {
                 GuiListWorldSelection guiListWorldSelection = new GuiListWorldSelection((GuiWorldSelection) event.getGui(), mc, 100, 100, 32, 100 - 64, 36);
                 try {
+                    alreadyEnteredInWorldAutomaticaly = true;
                     guiListWorldSelection.getListEntry(0).joinWorld();
                 } catch (Exception ignore) {
                 }
