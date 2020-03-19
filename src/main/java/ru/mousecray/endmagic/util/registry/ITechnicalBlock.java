@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 public interface ITechnicalBlock extends IExtendedProperties {
 
     default ItemBlock getCustomItemBlock(Block block) {
-        return new ItemBlock(block);
+        return null;
     }
 
     @Nullable
