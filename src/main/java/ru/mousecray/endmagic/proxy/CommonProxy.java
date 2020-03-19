@@ -26,7 +26,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.blocks.VariativeBlock;
 import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.init.EMBlocks;
@@ -38,7 +37,6 @@ import ru.mousecray.endmagic.init.util.ListSource;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
-import ru.mousecray.endmagic.util.EMItemBlock;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
@@ -106,11 +104,8 @@ public class CommonProxy implements IGuiHandler {
         }
 
         blocksToRegister.add(block);
-        if (block instanceof VariativeBlock) registerItem(new EMItemBlock(block), block.getRegistryName().toString());
-        else if (block instanceof ITechnicalBlock)
-            registerItem(((ITechnicalBlock) block).getCustomItemBlock(block), block.getRegistryName().toString());
-        else
-            registerItem(new ItemBlock(block), block.getRegistryName().toString());
+        if (block instanceof ITechnicalBlock) registerItem(((ITechnicalBlock) block).getCustomItemBlock(block), block.getRegistryName().toString());
+        else registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 
     private void registerTile(Class<? extends TileEntity> tile) {
