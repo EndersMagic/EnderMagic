@@ -12,7 +12,7 @@ import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 @SideOnly(Side.CLIENT)
 public class TileEntityPortalRenderer extends TileEntitySpecialRenderer<TilePortal> {
 
-    private TileEntityEndPortalRenderer vanilaRender = (TileEntityEndPortalRenderer) TileEntityRendererDispatcher.instance.renderers.get(TileEntityEndPortal.class);
+    private TileEntityEndPortalRenderer vanilaRender = new TileEntityEndPortalRenderer();
 
     private TileEntityEndPortal teEndPortal = new TileEntityEndPortal() {
         @Override
@@ -20,9 +20,15 @@ public class TileEntityPortalRenderer extends TileEntitySpecialRenderer<TilePort
             return true;
         }
     };
+    
+    public TileEntityPortalRenderer() {
+    	vanilaRender.setRendererDispatcher(TileEntityRendererDispatcher.instance);
+	}
 
     @Override
 	public void render(TilePortal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         vanilaRender.render(teEndPortal, x, y, z, partialTicks, destroyStage, alpha);
     }
+
+
 }

@@ -1,10 +1,5 @@
 package ru.mousecray.endmagic.items;
 
-import java.util.List;
-import java.util.function.Supplier;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -24,27 +19,28 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
-import ru.mousecray.endmagic.util.registry.NameProvider;
 
-public class EMSeeds extends Item implements IPlantable, NameProvider, ItemOneWhiteEMTextured {
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.function.Supplier;
+
+public class EMSeeds extends Item implements IPlantable, ItemOneWhiteEMTextured {
 
     private final Supplier<Block> crops;
     private final EndSoilType[] soilBlockID;
     @Nullable
     private final String textTooltip;
     private final String name;
-	private boolean isEndStone;
 
-    public EMSeeds(Supplier<Block> crops, String name, @Nullable String text, boolean isEndStone, EndSoilType... soil) {
+    public EMSeeds(Supplier<Block> crops, String name, @Nullable String text, EndSoilType... soil) {
         this.crops = crops;
         this.name = name;
-        this.soilBlockID = soil;
-        this.textTooltip = text;
-        this.isEndStone = isEndStone;
+        soilBlockID = soil;
+        textTooltip = text;
     }
 
     @Override
-    public String name() {
+    public String getCustomName() {
         return name;
     }
 
@@ -52,20 +48,17 @@ public class EMSeeds extends Item implements IPlantable, NameProvider, ItemOneWh
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack itemstack = player.getHeldItem(hand);
         IBlockState state = world.getBlockState(pos);
-        
-        if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, itemstack) && world.isAirBlock(pos.up())) {
-            
-            if(EMUtils.isSoil(state, isEndStone, false, soilBlockID)) {
-            	if(!world.isRemote) world.setBlockState(pos.up(), getPlant(world, pos));
 
-	            if (player instanceof EntityPlayerMP) CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos.up(), itemstack);
-	
-	            itemstack.shrink(1);
-	            return EnumActionResult.SUCCESS;
-            }
-            else return EnumActionResult.FAIL;
-            
-        } else return EnumActionResult.FAIL;
+        if (facing == EnumFacing.UP && player.canPlayerEdit(pos.offset(facing), facing, itemstack) && world.isAirBlock(pos.up()))
+            if (EMUtils.isSoil(state, soilBlockID)) {
+                if (!world.isRemote) world.setBlockState(pos.up(), getPlant(world, pos));
+
+                if (player instanceof EntityPlayerMP) CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos.up(), itemstack);
+
+                itemstack.shrink(1);
+                return EnumActionResult.SUCCESS;
+            } else return EnumActionResult.FAIL;
+        else return EnumActionResult.FAIL;
     }
 
     @Override

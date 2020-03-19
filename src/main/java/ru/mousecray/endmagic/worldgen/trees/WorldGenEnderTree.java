@@ -15,17 +15,20 @@ public abstract class WorldGenEnderTree extends WorldGenAbstractTree {
     private final Vec3i areaRequirementsMin;
     private final Vec3i areaRequirementsMax;
 
-    public WorldGenEnderTree(boolean notify, Vec3i areaRequirementsMin, Vec3i areaRequirementsMax) {
+    WorldGenEnderTree(boolean notify, Vec3i areaRequirementsMin, Vec3i areaRequirementsMax) {
         super(notify);
         this.areaRequirementsMin = areaRequirementsMin;
         this.areaRequirementsMax = areaRequirementsMax;
     }
 
-    public boolean canGenerateThereAvaiable(World worldIn, BlockPos position) {
-        return canGenerateThere(worldIn, position) && WorldGenUtils.areaAvailable(worldIn, position.add(areaRequirementsMin), position.add(areaRequirementsMax), ImmutableSet.of(Blocks.AIR, EMBlocks.enderSapling));
+    boolean canGenerateThereAvaiable(World worldIn, BlockPos position) {
+        return canGenerateThere(worldIn, position) &&
+                WorldGenUtils.areaAvailable(worldIn, position.add(areaRequirementsMin), position.add(areaRequirementsMax),
+                        ImmutableSet.of(Blocks.AIR, EMBlocks.enderSapling));
     }
-    
-    public boolean canGenerateThere(World worldIn, BlockPos position) {
-        return EMUtils.isSoil(worldIn.getBlockState(position.down()), true, false, EndSoilType.GRASS, EndSoilType.DIRT);
+
+    private boolean canGenerateThere(World worldIn, BlockPos position) {
+        //TODO: add custom end grass and remove STONE from this
+        return EMUtils.isSoil(worldIn.getBlockState(position.down()), EndSoilType.STONE, EndSoilType.GRASS, EndSoilType.DIRT);
     }
 }

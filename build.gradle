@@ -9,17 +9,61 @@ buildscript {
     repositories {
         jcenter()
         maven { url = "http://files.minecraftforge.net/maven" }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
     dependencies {
+        classpath 'tech.justagod:cutter:2.0.1-SNAPSHOT'
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
+
+apply plugin: 'java'
+
+jar {
+    manifest {
+        attributes 'FMLAT': 'EM_at.cfg'
+    }
+}
+
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'cutter'
+cutter {
+    annotation = "ru.mousecray.endmagic.api.GradleTarget"
+
+    def releaseSide = side 'Release'
+
+    def debugSide = side 'Debug'
+
+    builds {
+
+        release {
+
+            targetSides = [releaseSide]
+
+            primalSides = [releaseSide, debugSide]
+
+        }
+
+        debug {
+
+            targetSides = [debugSide]
+
+            primalSides = [debugSide, releaseSide]
+
+        }
+
+    }
+
+}
+
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "1.3b"
-group = "com.mousecray.endmagic" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = "1.4.2b"
+group = "ru.mousecray.endmagic" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "endmagic"
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -30,8 +74,8 @@ compileJava {
 minecraft {
     version = "1.12.2-14.23.5.2768"
     runDir = "run"
-    
-	replaceIn "EM.java"
+
+    replaceIn "EM.java"
     replace "@version@", project.version
     // the mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   snapshot are built nightly.
@@ -48,7 +92,7 @@ dependencies {
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
     //compile "some.group:artifact:version"
-      
+
     // real examples
     //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
     //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
@@ -67,6 +111,10 @@ dependencies {
 
 }
 
+sourceSets {
+    main { output.resourcesDir = output.classesDir }
+}
+
 processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
@@ -75,11 +123,11 @@ processResources {
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
+
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
-        
+
     // copy everything else except the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'

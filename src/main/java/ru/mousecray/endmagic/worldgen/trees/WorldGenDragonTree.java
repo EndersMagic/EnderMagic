@@ -20,6 +20,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
 public class WorldGenDragonTree extends WorldGenEnderTree {
     public WorldGenDragonTree(boolean notify) {
@@ -43,7 +44,7 @@ public class WorldGenDragonTree extends WorldGenEnderTree {
 
                 int lvl = 2 + random.nextInt(3);
                 for (int i = 0; i < lvl; i++)
-                    world.setBlockState(pos.offset(direction, i), enderLog.withProperty(LOG_AXIS, value), 18);
+                	setBlockAndNotifyAdequately(world, pos.offset(direction, i), enderLog.withProperty(LOG_AXIS, value));
 
                 generateLeavesAround(world, pos.offset(direction), lvl);
                 return true;
@@ -53,12 +54,12 @@ public class WorldGenDragonTree extends WorldGenEnderTree {
     }
 
     private void generateLeavesAround(World world, BlockPos pos, int lvl) {
-        spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3);
-        spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3);
-        spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3);
+        spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3, doBlockNotify);
+        spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3, doBlockNotify);
+        spreadOut(world, pos, enderLeaves, AIR, lvl, 0.3, doBlockNotify);
     }
 
-    public static boolean[][][] spreadOut(World world, BlockPos centerPos, IBlockState block, Block air, int lvl, double chance) {
+    public static boolean[][][] spreadOut(World world, BlockPos centerPos, IBlockState block, Block air, int lvl, double chance, boolean doBlockNotify) {
         HashSet<BlockPos> alreadyChecked = new HashSet<>();
         List<Pair<BlockPos, IBlockState>> setLeaves = new ArrayList<>();
 
@@ -92,7 +93,7 @@ public class WorldGenDragonTree extends WorldGenEnderTree {
                     }
                 }
         );
-        setLeaves.forEach(i -> world.setBlockState(i.getLeft(), i.getRight(), 18));
+        setLeaves.forEach(i -> WorldGenUtils.setBlockAndNotifyAdequately(doBlockNotify, world, i.getLeft(), i.getRight()));
         return marks;
     }
 

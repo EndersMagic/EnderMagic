@@ -1,21 +1,29 @@
 package ru.mousecray.endmagic.items;
 
-import java.util.Map;
-
 import com.google.common.collect.ImmutableMap;
-
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
-import ru.mousecray.endmagic.util.registry.IEMModel;
+import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
-public interface ItemTextured extends IEMModel {
+import java.util.Map;
+
+public interface ItemTextured extends IExtendedProperties {
 
     Map<String, Integer> textures();
+
+    @SideOnly(Side.CLIENT)
+    default javax.vecmath.Matrix4f handlePerspective(IBakedModel model, ItemCameraTransforms.TransformType cameraTransformType) {
+        return net.minecraftforge.client.ForgeHooksClient.handlePerspective(model, cameraTransformType).getRight();
+    }
 
     @Override
     default void registerModels(IModelRegistration modelRegistration) {
@@ -28,12 +36,12 @@ public interface ItemTextured extends IEMModel {
         //may be unused
         public static ItemTextured simpletexturemodelItem = new ItemTextured() {
             @Override
-			public Map<String, Integer> textures() {
+            public Map<String, Integer> textures() {
                 return ImmutableMap.of("none", 0xffffff);
             }
 
             @SuppressWarnings("unused")
-			public CreativeTabs creativeTab() {
+            public CreativeTabs creativeTab() {
                 return null;
             }
         };

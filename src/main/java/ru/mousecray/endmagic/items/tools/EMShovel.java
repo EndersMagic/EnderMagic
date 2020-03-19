@@ -1,9 +1,8 @@
 package ru.mousecray.endmagic.items.tools;
 
 import net.minecraft.item.ItemSpade;
-import ru.mousecray.endmagic.util.registry.NameProvider;
 
-public class EMShovel extends ItemSpade implements NameProvider, ItemTexturedTool {
+public class EMShovel extends ItemSpade implements ItemTexturedTool {
 
     private final String name;
     private final int color;
@@ -15,7 +14,7 @@ public class EMShovel extends ItemSpade implements NameProvider, ItemTexturedToo
     }
 
     @Override
-    public String name() {
+    public String getCustomName() {
         return name;
     }
 

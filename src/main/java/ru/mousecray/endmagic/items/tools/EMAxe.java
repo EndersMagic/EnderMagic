@@ -1,9 +1,8 @@
 package ru.mousecray.endmagic.items.tools;
 
 import net.minecraft.item.ItemAxe;
-import ru.mousecray.endmagic.util.registry.NameProvider;
 
-public class EMAxe extends ItemAxe implements NameProvider, ItemTexturedTool {
+public class EMAxe extends ItemAxe implements ItemTexturedTool {
 
     private final String name;
     private final int color;
@@ -15,7 +14,7 @@ public class EMAxe extends ItemAxe implements NameProvider, ItemTexturedTool {
     }
 
     @Override
-    public String name() {
+    public String getCustomName() {
         return name;
     }
 

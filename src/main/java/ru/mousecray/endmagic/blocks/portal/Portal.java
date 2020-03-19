@@ -1,13 +1,10 @@
 package ru.mousecray.endmagic.blocks.portal;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -24,11 +21,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.blocks.BlockWithTile;
 import ru.mousecray.endmagic.teleport.TeleportUtils;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
-import ru.mousecray.endmagic.util.registry.CreativeTabProvider;
-import ru.mousecray.endmagic.util.registry.IEMModel;
+import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 
-public class BlockPortal extends BlockWithTile<TilePortal> implements CreativeTabProvider, IEMModel {
-    public BlockPortal() {
+import java.util.Random;
+
+public class Portal extends BlockWithTile<TilePortal> implements ITechnicalBlock {
+    public Portal() {
         super(Material.PORTAL);
     }
 
@@ -37,31 +35,26 @@ public class BlockPortal extends BlockWithTile<TilePortal> implements CreativeTa
         if (!world.isRemote)
             TeleportUtils.teleportToBlockLocation(entity, tile(world, pos).distination);
     }
-    
+
     @Override
     public boolean hasTileEntity(IBlockState state) {
-    	return true;
+        return true;
     }
-    
+
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-    	return new TilePortal();
+        return new TilePortal();
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.TRANSLUCENT;
     }
-    
+
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
-    	return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
-    }
-    
-    @Override
-    public CreativeTabs creativeTab() {
-    	return null;
+        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
     @Override

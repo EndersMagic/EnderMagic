@@ -1,22 +1,29 @@
 package ru.mousecray.endmagic.worldgen.trees;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.function.Consumer;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.tuple.Pair;
+import net.minecraftforge.common.ForgeModContainer;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.Vec2i;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
-
-import java.util.*;
-import java.util.function.Consumer;
 
 public class WorldGenPhantomTree extends WorldGenEnderTree {
 
@@ -63,7 +70,7 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
 
     @SuppressWarnings("unused")
 	private void setWithOffset(World world, BlockPos position, Vec3i offset, IBlockState state) {
-        world.setBlockState(position.add(offset), state);
+        setBlockAndNotifyAdequately(world, position.add(offset), state);
         ((TilePhantomAvoidingBlockBase) world.getTileEntity(position)).offsetFromSapling = offset;
     }
 
@@ -134,11 +141,11 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
             return false;
     }
 
-    private void aireLeaves(World worldIn, Random rand, BlockPos position, BlockPos[] airPositions, double chance) {
+    private void aireLeaves(World world, Random rand, BlockPos position, BlockPos[] airPositions, double chance) {
         boolean prevAired = false;
         for (BlockPos pos : airPositions)
             if (!prevAired && rand.nextFloat() > chance) {
-                worldIn.setBlockState(position.add(pos), air);
+                setBlockAndNotifyAdequately(world, position.add(pos), air);
                 prevAired = true;
             } else
                 prevAired = false;
@@ -222,7 +229,7 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
         }
 
         public boolean setBlockState(BlockPos pos, IBlockState state) {
-            boolean r = world.setBlockState(pos, state);
+            boolean r = world.setBlockState(pos, state, doBlockNotify ? 3 : ForgeModContainer.fixVanillaCascading ? 2| 16 : 2);
             if (r && (state == phantomLog || state == phantomLeaves))
                 ((TilePhantomAvoidingBlockBase) world.getTileEntity(pos)).offsetFromSapling = pos.subtract(saplingPosition);
             return r;

@@ -91,14 +91,6 @@ public class WorldGenNaturalTree extends WorldGenEnderTree {
 			int[][] mainBranch = EMUtils.rotateForY(branches.get(9), new int[] { 0, 0, 0 }, rot3);
 			BlockPos[] lastPos1, lastPos2, lastPos3;
 			for (int h = 0; h < logHeight; ++h) { world.setBlockState(position.up(h), enderLog); }
-			world.setBlockState(position.add(-1, 0, 0), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
-			world.setBlockState(position.add(1, 0, 0), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
-			world.setBlockState(position.add(0, 0, 1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
-			world.setBlockState(position.add(0, 0, -1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Y));
-			if (world.rand.nextBoolean())
-				world.setBlockState(position.add(-1, 0, 1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Z));
-			if (world.rand.nextBoolean())
-				world.setBlockState(position.add(1, 0, -1), enderLog.withProperty(BlockLog.LOG_AXIS, EnumAxis.Z));
 
 			lastPos1 = generateBranch(world, branch1, logHeight / 3, position, defaultAxis);
 			lastPos2 = generateBranch(world, branch2, logHeight / 3 * 2, position, defaultAxis);
@@ -109,18 +101,18 @@ public class WorldGenNaturalTree extends WorldGenEnderTree {
 			generateLeaves(world, leaves.get(world.rand.nextInt(3)), lastPos3[0]);
 
 			if (lastPos1.length > 1) {
-				world.setBlockState(lastPos1[1].down(), EMBlocks.chrysVine.getDefaultState());
-				world.setBlockState(lastPos1[1].down(2), EMBlocks.chrysFlower.getDefaultState());
+				setBlockAndNotifyAdequately(world, lastPos1[1].down(), EMBlocks.chrysVine.getDefaultState());
+				setBlockAndNotifyAdequately(world, lastPos1[1].down(2), EMBlocks.chrysFlower.getDefaultState());
 			}
 			if (lastPos2.length > 1) {
-				world.setBlockState(lastPos2[1].down(), EMBlocks.chrysVine.getDefaultState());
-				world.setBlockState(lastPos2[1].down(2), EMBlocks.chrysVine.getDefaultState());
-				world.setBlockState(lastPos2[1].down(3), EMBlocks.chrysFruit.getDefaultState());
+				setBlockAndNotifyAdequately(world, lastPos2[1].down(), EMBlocks.chrysVine.getDefaultState());
+				setBlockAndNotifyAdequately(world, lastPos2[1].down(2), EMBlocks.chrysVine.getDefaultState());
+				setBlockAndNotifyAdequately(world, lastPos2[1].down(3), EMBlocks.chrysFruit.getDefaultState());
 			}
 			if (lastPos3.length > 1) {
-				world.setBlockState(lastPos3[1].down(), EMBlocks.chrysVine.getDefaultState());
-				world.setBlockState(lastPos3[1].down(2), EMBlocks.chrysVine.getDefaultState());
-				world.setBlockState(lastPos3[1].down(3), EMBlocks.chrysFlower.getDefaultState());
+				setBlockAndNotifyAdequately(world, lastPos3[1].down(), EMBlocks.chrysVine.getDefaultState());
+				setBlockAndNotifyAdequately(world, lastPos3[1].down(2), EMBlocks.chrysVine.getDefaultState());
+				setBlockAndNotifyAdequately(world, lastPos3[1].down(3), EMBlocks.chrysFlower.getDefaultState());
 			}
 			return true;
 		}
@@ -133,7 +125,7 @@ public class WorldGenNaturalTree extends WorldGenEnderTree {
 		for (int c = 0; c < branch.length; ++c) {
 			int[] currBranch = branch[c];
 			BlockPos currPos = pos0.up(logHeight).add(currBranch[0], currBranch[1], currBranch[2]);
-			world.setBlockState(currPos, enderLog.withProperty(BlockLog.LOG_AXIS, axis));
+			setBlockAndNotifyAdequately(world, currPos, enderLog.withProperty(BlockLog.LOG_AXIS, axis));
 			if (c == branch.length - 1) lastPos = currPos;
 			else if (c == branch.length / 2) middlePos = currPos;
 		}
@@ -144,7 +136,7 @@ public class WorldGenNaturalTree extends WorldGenEnderTree {
 		for (int l = 0; l < leaves.length; ++l) {
 			int[] currLeaves = leaves[l];
 			BlockPos currPos = lastPos.add(currLeaves[0], currLeaves[1], currLeaves[2]);
-			if (world.getBlockState(currPos).getMaterial() != Material.WOOD) world.setBlockState(currPos, enderLeaves);
+			if (world.getBlockState(currPos).getMaterial() != Material.WOOD) setBlockAndNotifyAdequately(world, currPos, enderLeaves);
 		}
 	}
 }

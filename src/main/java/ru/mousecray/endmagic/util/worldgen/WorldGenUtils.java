@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.util.worldgen;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -47,5 +48,13 @@ public class WorldGenUtils {
 
     public static boolean areaAvailable(World worldIn, BlockPos start, BlockPos end) {
         return areaAvailable(worldIn, start, end, ImmutableSet.of(Blocks.AIR));
+    }
+    
+    public static void setBlockAndNotifyAdequately(boolean notify, World world, BlockPos pos, IBlockState state) {
+        if (notify) world.setBlockState(pos, state, 3);
+        else {
+            int flag = net.minecraftforge.common.ForgeModContainer.fixVanillaCascading ? 2| 16 : 2; //Forge: With bit 5 unset, it will notify neighbors and load adjacent chunks.
+            world.setBlockState(pos, state, flag);
+        }
     }
 }
