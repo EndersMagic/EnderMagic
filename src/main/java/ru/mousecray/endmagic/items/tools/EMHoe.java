@@ -1,9 +1,8 @@
 package ru.mousecray.endmagic.items.tools;
 
 import net.minecraft.item.ItemHoe;
-import ru.mousecray.endmagic.util.registry.NameProvider;
 
-public class EMHoe extends ItemHoe implements NameProvider, ItemTexturedTool {
+public class EMHoe extends ItemHoe implements ItemTexturedTool {
 
     private final String name;
     private final int color;
@@ -15,7 +14,7 @@ public class EMHoe extends ItemHoe implements NameProvider, ItemTexturedTool {
     }
 
     @Override
-    public String name() {
+    public String getCustomName() {
         return name;
     }
 

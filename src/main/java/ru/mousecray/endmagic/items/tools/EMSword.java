@@ -2,9 +2,8 @@ package ru.mousecray.endmagic.items.tools;
 
 import net.minecraft.item.ItemSword;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.util.registry.NameProvider;
 
-public class EMSword extends ItemSword implements NameProvider, ItemTexturedTool {
+public class EMSword extends ItemSword implements ItemTexturedTool {
 
     private final String name;
     private final int color;
@@ -16,7 +15,7 @@ public class EMSword extends ItemSword implements NameProvider, ItemTexturedTool
     }
 
     @Override
-    public String name() {
+    public String getCustomName() {
         return name;
     }
 

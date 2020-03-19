@@ -3,7 +3,6 @@ package ru.mousecray.endmagic.blocks;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,10 +21,9 @@ import ru.mousecray.endmagic.api.blocks.EnderPlantType;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.util.registry.CreativeTabProvider;
-import ru.mousecray.endmagic.util.registry.IEMModel;
+import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 
-public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvider {
+public class EnderCrops extends BlockCrops implements ITechnicalBlock {
 
     private static final AxisAlignedBB[] ENDER_AABB = new AxisAlignedBB[]{new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D), new AxisAlignedBB(
             0.0D, 0.0D, 0.0D, 1.0D, 0.1875D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D), new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D,
@@ -38,11 +36,6 @@ public class EnderCrops extends BlockCrops implements IEMModel, CreativeTabProvi
         setLightLevel(0.3F);
         setResistance(0.0F);
         setSoundType(SoundType.PLANT);
-    }
-
-    @Override
-    public CreativeTabs creativeTab() {
-        return null;
     }
 
     @Override

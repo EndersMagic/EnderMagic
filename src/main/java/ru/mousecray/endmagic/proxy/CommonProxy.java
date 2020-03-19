@@ -26,7 +26,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.blocks.VariativeBlock;
 import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.init.EMBlocks;
@@ -38,7 +37,7 @@ import ru.mousecray.endmagic.init.util.ListSource;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
-import ru.mousecray.endmagic.util.EMItemBlock;
+import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
@@ -94,7 +93,7 @@ public class CommonProxy implements IGuiHandler {
     }
 
     private void registerBlock(Block block) {
-        String name = NameAndTabUtils.getName(block);
+        String name = NameAndTabUtils.getNameForRegistry(block);
         block.setRegistryName(name);
         block.setUnlocalizedName(name);
         block.setCreativeTab(NameAndTabUtils.getCTab(block));
@@ -105,7 +104,10 @@ public class CommonProxy implements IGuiHandler {
         }
 
         blocksToRegister.add(block);
-        if (block instanceof VariativeBlock) registerItem(new EMItemBlock(block), block.getRegistryName().toString());
+        if (block instanceof ITechnicalBlock) {
+            ItemBlock itemBlock = ((ITechnicalBlock) block).getCustomItemBlock(block);
+            if (itemBlock != null) registerItem(itemBlock, block.getRegistryName().toString());
+        }
         else registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 
@@ -122,7 +124,7 @@ public class CommonProxy implements IGuiHandler {
     }
 
     private void registerItem(Item item) {
-        registerItem(item, NameAndTabUtils.getName(item));
+        registerItem(item, NameAndTabUtils.getNameForRegistry(item));
     }
 
     @SubscribeEvent
