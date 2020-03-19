@@ -5,9 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiListWorldSelection;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiWorldSelection;
+import net.minecraft.client.gui.*;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,6 +33,8 @@ import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.GuiOldSaveLoadConfirm;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -43,6 +43,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
+import ru.mousecray.endmagic.api.GradleTarget;
 import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
@@ -58,6 +59,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 
+import static ru.mousecray.endmagic.api.Target.Debug;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
@@ -222,17 +224,29 @@ public class EMEvents {
                     .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
     }
 
+    private static boolean alreadyEnteredInWorldAutomaticaly = false;
+    private static GuiMainMenu mainMenu;
+
+    @GradleTarget(Debug)
     @SideOnly(Side.CLIENT)
-    //    @SubscribeEvent
+    @SubscribeEvent
     public static void loadLastWorld(GuiOpenEvent event) {
-        Minecraft mc = Minecraft.getMinecraft();
-        if (event.getGui() instanceof GuiMainMenu) mc.displayGuiScreen(new GuiWorldSelection((GuiMainMenu) event.getGui()));
-        else if (event.getGui() instanceof GuiWorldSelection) {
-            GuiListWorldSelection guiListWorldSelection = new GuiListWorldSelection((GuiWorldSelection) event.getGui(), mc, 100, 100, 32, 100 - 64,
-                    36);
-            try {
-                guiListWorldSelection.getListEntry(0).joinWorld();
-            } catch (Exception ignore) {
+        System.out.println(event.getGui());
+        if (!alreadyEnteredInWorldAutomaticaly) {
+            Minecraft mc = Minecraft.getMinecraft();
+            if (event.getGui() instanceof GuiMainMenu) {
+                mainMenu = (GuiMainMenu) event.getGui();
+                mc.displayGuiScreen(new GuiWorldSelection((GuiMainMenu) event.getGui()));
+            } else if (event.getGui() instanceof GuiWorldSelection) {
+                GuiListWorldSelection guiListWorldSelection = new GuiListWorldSelection((GuiWorldSelection) event.getGui(), mc, 100, 100, 32, 100 - 64, 36);
+                try {
+                    guiListWorldSelection.getListEntry(0).joinWorld();
+                } catch (Exception ignore) {
+                }
+            } else if (event.getGui() instanceof GuiOldSaveLoadConfirm) {
+                FMLClientHandler.instance().showGuiScreen(mainMenu);
+            }else if(event.getGui() instanceof GuiIngameMenu){
+                alreadyEnteredInWorldAutomaticaly = true;
             }
         }
     }
