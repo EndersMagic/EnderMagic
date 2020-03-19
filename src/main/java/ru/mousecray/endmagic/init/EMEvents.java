@@ -5,9 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiListWorldSelection;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiWorldSelection;
+import net.minecraft.client.gui.*;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -233,6 +231,7 @@ public class EMEvents {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void loadLastWorld(GuiOpenEvent event) {
+        System.out.println(event.getGui());
         if (!alreadyEnteredInWorldAutomaticaly) {
             Minecraft mc = Minecraft.getMinecraft();
             if (event.getGui() instanceof GuiMainMenu) {
@@ -241,12 +240,13 @@ public class EMEvents {
             } else if (event.getGui() instanceof GuiWorldSelection) {
                 GuiListWorldSelection guiListWorldSelection = new GuiListWorldSelection((GuiWorldSelection) event.getGui(), mc, 100, 100, 32, 100 - 64, 36);
                 try {
-                    alreadyEnteredInWorldAutomaticaly = true;
                     guiListWorldSelection.getListEntry(0).joinWorld();
                 } catch (Exception ignore) {
                 }
             } else if (event.getGui() instanceof GuiOldSaveLoadConfirm) {
                 FMLClientHandler.instance().showGuiScreen(mainMenu);
+            }else if(event.getGui() instanceof GuiIngameMenu){
+                alreadyEnteredInWorldAutomaticaly = true;
             }
         }
     }
