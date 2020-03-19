@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "normal": {
+      "model": "iron_block"
+    },
+    "inventory": {
+      "model": "iron_block"
+    }
+  }
+}
