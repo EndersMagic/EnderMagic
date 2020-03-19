@@ -39,11 +39,6 @@ public class EnderCrops extends BlockCrops implements ITechnicalBlock {
     }
 
     @Override
-    public boolean hasCustomCreativeTab() {
-        return true;
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void registerModels(IModelRegistration modelRegistration) {
         modelRegistration.addBakedModelOverride(getRegistryName(), base -> new BakedModelFullbright(base,

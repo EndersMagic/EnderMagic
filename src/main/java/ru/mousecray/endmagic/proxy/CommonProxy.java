@@ -95,7 +95,7 @@ public class CommonProxy implements IGuiHandler {
     }
 
     private void registerBlock(Block block) {
-        String name = NameAndTabUtils.getName(block);
+        String name = NameAndTabUtils.getNameForRegistry(block);
         block.setRegistryName(name);
         block.setUnlocalizedName(name);
         block.setCreativeTab(NameAndTabUtils.getCTab(block));
@@ -127,7 +127,7 @@ public class CommonProxy implements IGuiHandler {
     }
 
     private void registerItem(Item item) {
-        registerItem(item, NameAndTabUtils.getName(item));
+        registerItem(item, NameAndTabUtils.getNameForRegistry(item));
     }
 
     @SubscribeEvent

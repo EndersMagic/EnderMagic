@@ -8,13 +8,17 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public class NameAndTabUtils {
-    public static String getName(Object c) {
-        String result = getName(c.getClass());
+    public static String getNameForRegistry(Object c) {
         if (c instanceof IExtendedProperties) {
-            IExtendedProperties obj = (IExtendedProperties) c;
-            if (obj.getCustomName() != null) result = obj.getCustomName();
+            IExtendedProperties iExtendedProperties = (IExtendedProperties) c;
+            String res = iExtendedProperties.getCustomName();
+            return res != null ? res : getName(c);
         }
-        return result;
+        else return getName(c);
+    }
+
+    public static String getName(Object c) {
+        return getName(c.getClass());
     }
 
     public static String getName(Class c) {
@@ -46,12 +50,7 @@ public class NameAndTabUtils {
     //getCreativeTab
     @Nullable
     public static CreativeTabs getCTab(Object c) {
-        CreativeTabs tab = EM.EM_CREATIVE;
-        if (c instanceof IExtendedProperties) {
-            IExtendedProperties obj = (IExtendedProperties) c;
-            if (obj.hasCustomCreativeTab()) tab = obj.getCustomCreativeTab();
-        }
-
-        return tab;
+        if (c instanceof IExtendedProperties) return ((IExtendedProperties) c).getCustomCreativeTab();
+        else return EM.EM_CREATIVE;
     }
 }

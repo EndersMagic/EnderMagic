@@ -16,11 +16,6 @@ public interface ITechnicalBlock extends IExtendedProperties {
         return new ItemBlock(block);
     }
 
-    @Override
-    default boolean hasCustomCreativeTab() {
-        return true;
-    }
-
     @Nullable
     @Override
     default CreativeTabs getCustomCreativeTab() {

@@ -3,6 +3,7 @@ package ru.mousecray.endmagic.util.registry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 
 import javax.annotation.Nullable;
@@ -13,15 +14,11 @@ public interface IExtendedProperties {
 
     @Nullable
     default String getCustomName() {
-        return null;
-    }
-
-    default boolean hasCustomCreativeTab() {
-        return false;
+        return NameAndTabUtils.getName(this);
     }
 
     @Nullable
     default CreativeTabs getCustomCreativeTab() {
-        return null;
+        return EM.EM_CREATIVE;
     }
 }
