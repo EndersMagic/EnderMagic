@@ -34,6 +34,7 @@ import ru.mousecray.endmagic.api.embook.components.ImageComponent;
 import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
+import ru.mousecray.endmagic.client.gui.GuiTypes;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
@@ -240,9 +241,11 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
     @Nullable
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-        if (id == blastFurnaceGui)
-            return new GuiBlastFurnace(new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z))));
-
-        return null;
+        switch (GuiTypes.values()[id]) {
+            case blastFurnaceGui:
+                return new GuiBlastFurnace(new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z))));
+            default:
+                return null;
+        }
     }
 }

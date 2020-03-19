@@ -28,6 +28,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
+import ru.mousecray.endmagic.client.gui.GuiTypes;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMEntities;
 import ru.mousecray.endmagic.init.EMItems;
@@ -48,8 +49,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CommonProxy implements IGuiHandler {
-
-    public static int blastFurnaceGui = 0;
     protected List<Item> itemsToRegister = new LinkedList<>();
     protected List<Class<? extends TileEntity>> tilesToRegister = new LinkedList<>();
     protected List<Block> blocksToRegister = new LinkedList<>();
@@ -107,8 +106,7 @@ public class CommonProxy implements IGuiHandler {
         if (block instanceof ITechnicalBlock) {
             ItemBlock itemBlock = ((ITechnicalBlock) block).getCustomItemBlock(block);
             if (itemBlock != null) registerItem(itemBlock, block.getRegistryName().toString());
-        }
-        else registerItem(new ItemBlock(block), block.getRegistryName().toString());
+        } else registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 
     private void registerTile(Class<? extends TileEntity> tile) {
@@ -154,15 +152,18 @@ public class CommonProxy implements IGuiHandler {
         GameRegistry.registerWorldGenerator(new WorldGenEnderOres(), 5);
     }
 
-    public void postInit(FMLPostInitializationEvent event) { }
+    public void postInit(FMLPostInitializationEvent event) {
+    }
 
     @Nullable
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-        if (id == blastFurnaceGui)
-            return new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z)));
-
-        return null;
+        switch (GuiTypes.values()[id]) {
+            case blastFurnaceGui:
+                return new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z)));
+            default:
+                return null;
+        }
     }
 
     @Nullable
