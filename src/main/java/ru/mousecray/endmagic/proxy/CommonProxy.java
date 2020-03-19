@@ -107,10 +107,9 @@ public class CommonProxy implements IGuiHandler {
 
         blocksToRegister.add(block);
         if (block instanceof VariativeBlock) registerItem(new EMItemBlock(block), block.getRegistryName().toString());
-        else if (block instanceof ITechnicalBlock) {
-            ITechnicalBlock techBlock = (ITechnicalBlock) block;
-            if (techBlock.hasItemBlock()) registerItem(techBlock.getCustomItemBlock(block), block.getRegistryName().toString());
-        } else
+        else if (block instanceof ITechnicalBlock)
+            registerItem(((ITechnicalBlock) block).getCustomItemBlock(block), block.getRegistryName().toString());
+        else
             registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 

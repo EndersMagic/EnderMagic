@@ -8,10 +8,6 @@ import javax.annotation.Nullable;
 
 public interface ITechnicalBlock extends IExtendedProperties {
 
-    default boolean hasItemBlock() {
-        return false;
-    }
-
     default ItemBlock getCustomItemBlock(Block block) {
         return new ItemBlock(block);
     }
