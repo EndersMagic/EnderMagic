@@ -384,6 +384,7 @@ class UnpackedQuad(
     _v4_p = v
   }
 
+  override private[endothermic] def quadAtlas = atlas
 }
 
 object UnpackedQuad {

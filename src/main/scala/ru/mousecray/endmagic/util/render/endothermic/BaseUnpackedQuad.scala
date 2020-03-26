@@ -5,6 +5,7 @@ import ru.mousecray.endmagic.util.render.endothermic.format.AttributeRepresentat
 import ru.mousecray.endmagic.util.render.endothermic.format.UnpackEvaluations
 import ru.mousecray.endmagic.util.render.endothermic.ops.QuadOps
 import net.minecraft.client.renderer.block.model.BakedQuad
+import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.renderer.vertex.{DefaultVertexFormats, VertexFormat, VertexFormatElement}
 
 trait BaseUnpackedQuad extends QuadOps {
@@ -13,6 +14,7 @@ trait BaseUnpackedQuad extends QuadOps {
   def toBakedQuad: BakedQuad
 
   private[endothermic] def quad: BakedQuad
+  private[endothermic] def quadAtlas: TextureAtlasSprite
 
   def format: VertexFormat = quad.getFormat
 

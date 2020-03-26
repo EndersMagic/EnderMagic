@@ -57,6 +57,146 @@ trait QuadOps {
     )
   }
 
+  /*
+  Only for standard minecraft quads
+   */
+  def trivialSlice(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double, x4: Double, y4: Double): Self = {
+    reconstruct(
+      v1_x = calcAttribute(x1, y1,
+        v1_x, v2_x, v3_x, v4_x),
+      v1_y = calcAttribute(x1, y1,
+        v1_y, v2_y, v3_y, v4_y),
+      v1_z = calcAttribute(x1, y1,
+        v1_z, v2_z, v3_z, v4_z),
+      v1_r = calcAttribute(x1, y1,
+        v1_r, v2_r, v3_r, v4_r),
+      v1_g = calcAttribute(x1, y1,
+        v1_g, v2_g, v3_g, v4_g),
+      v1_b = calcAttribute(x1, y1,
+        v1_b, v2_b, v3_b, v4_b),
+      v1_a = calcAttribute(x1, y1,
+        v1_a, v2_a, v3_a, v4_a),
+      v1_u = calcU(x1, y1,
+        v1_u, v2_u, v3_u, v4_u),
+      v1_v = calcV(x1, y1,
+        v1_v, v2_v, v3_v, v4_v),
+      v1_lu = calcAttribute(x1, y1,
+        v1_lu, v2_lu, v3_lu, v4_lu),
+      v1_lv = calcAttribute(x1, y1,
+        v1_lv, v2_lv, v3_lv, v4_lv),
+      v1_nx = calcAttribute(x1, y1,
+        v1_nx, v2_nx, v3_nx, v4_nx),
+      v1_ny = calcAttribute(x1, y1,
+        v1_ny, v2_ny, v3_ny, v4_ny),
+      v1_nz = calcAttribute(x1, y1,
+        v1_nz, v2_nz, v3_nz, v4_nz),
+      v1_p = calcAttribute(x1, y1,
+        v1_p, v2_p, v3_p, v4_p),
+
+      v2_x = calcAttribute(x2, y2,
+        v1_x, v2_x, v3_x, v4_x),
+      v2_y = calcAttribute(x2, y2,
+        v1_y, v2_y, v3_y, v4_y),
+      v2_z = calcAttribute(x2, y2,
+        v1_z, v2_z, v3_z, v4_z),
+      v2_r = calcAttribute(x2, y2,
+        v1_r, v2_r, v3_r, v4_r),
+      v2_g = calcAttribute(x2, y2,
+        v1_g, v2_g, v3_g, v4_g),
+      v2_b = calcAttribute(x2, y2,
+        v1_b, v2_b, v3_b, v4_b),
+      v2_a = calcAttribute(x2, y2,
+        v1_a, v2_a, v3_a, v4_a),
+      v2_u = calcU(x2, y2,
+        v1_u, v2_u, v3_u, v4_u),
+      v2_v = calcV(x2, y2,
+        v1_v, v2_v, v3_v, v4_v),
+      v2_lu = calcAttribute(x2, y2,
+        v1_lu, v2_lu, v3_lu, v4_lu),
+      v2_lv = calcAttribute(x2, y2,
+        v1_lv, v2_lv, v3_lv, v4_lv),
+      v2_nx = calcAttribute(x2, y2,
+        v1_nx, v2_nx, v3_nx, v4_nx),
+      v2_ny = calcAttribute(x2, y2,
+        v1_ny, v2_ny, v3_ny, v4_ny),
+      v2_nz = calcAttribute(x2, y2,
+        v1_nz, v2_nz, v3_nz, v4_nz),
+      v2_p = calcAttribute(x2, y2,
+        v1_p, v2_p, v3_p, v4_p),
+
+      v3_x = calcAttribute(x3, y3,
+        v1_x, v2_x, v3_x, v4_x),
+      v3_y = calcAttribute(x3, y3,
+        v1_y, v2_y, v3_y, v4_y),
+      v3_z = calcAttribute(x3, y3,
+        v1_z, v2_z, v3_z, v4_z),
+      v3_r = calcAttribute(x3, y3,
+        v1_r, v2_r, v3_r, v4_r),
+      v3_g = calcAttribute(x3, y3,
+        v1_g, v2_g, v3_g, v4_g),
+      v3_b = calcAttribute(x3, y3,
+        v1_b, v2_b, v3_b, v4_b),
+      v3_a = calcAttribute(x3, y3,
+        v1_a, v2_a, v3_a, v4_a),
+      v3_u = calcU(x3, y3,
+        v1_u, v2_u, v3_u, v4_u),
+      v3_v = calcV(x3, y3,
+        v1_v, v2_v, v3_v, v4_v),
+      v3_lu = calcAttribute(x3, y3,
+        v1_lu, v2_lu, v3_lu, v4_lu),
+      v3_lv = calcAttribute(x3, y3,
+        v1_lv, v2_lv, v3_lv, v4_lv),
+      v3_nx = calcAttribute(x3, y3,
+        v1_nx, v2_nx, v3_nx, v4_nx),
+      v3_ny = calcAttribute(x3, y3,
+        v1_ny, v2_ny, v3_ny, v4_ny),
+      v3_nz = calcAttribute(x3, y3,
+        v1_nz, v2_nz, v3_nz, v4_nz),
+      v3_p = calcAttribute(x3, y3,
+        v1_p, v2_p, v3_p, v4_p),
+
+      v4_x = calcAttribute(x4, y4,
+        v1_x, v2_x, v3_x, v4_x),
+      v4_y = calcAttribute(x4, y4,
+        v1_y, v2_y, v3_y, v4_y),
+      v4_z = calcAttribute(x4, y4,
+        v1_z, v2_z, v3_z, v4_z),
+      v4_r = calcAttribute(x4, y4,
+        v1_r, v2_r, v3_r, v4_r),
+      v4_g = calcAttribute(x4, y4,
+        v1_g, v2_g, v3_g, v4_g),
+      v4_b = calcAttribute(x4, y4,
+        v1_b, v2_b, v3_b, v4_b),
+      v4_a = calcAttribute(x4, y4,
+        v1_a, v2_a, v3_a, v4_a),
+      v4_u = calcU(x4, y4,
+        v1_u, v2_u, v3_u, v4_u),
+      v4_v = calcV(x4, y4,
+        v1_v, v2_v, v3_v, v4_v),
+      v4_lu = calcAttribute(x4, y4,
+        v1_lu, v2_lu, v3_lu, v4_lu),
+      v4_lv = calcAttribute(x4, y4,
+        v1_lv, v2_lv, v3_lv, v4_lv),
+      v4_nx = calcAttribute(x4, y4,
+        v1_nx, v2_nx, v3_nx, v4_nx),
+      v4_ny = calcAttribute(x4, y4,
+        v1_ny, v2_ny, v3_ny, v4_ny),
+      v4_nz = calcAttribute(x4, y4,
+        v1_nz, v2_nz, v3_nz, v4_nz),
+      v4_p = calcAttribute(x4, y4,
+        v1_p, v2_p, v3_p, v4_p)
+
+
+    )
+  }
+
+  def trivialSliceRect(x1: Float, y1: Float, x2: Float, y2: Float): Self =
+    trivialSlice(
+      x1, y1,
+      x2, y1,
+      x2, y2,
+      x1, y2)
+
   def sliceRect(x1: Float, y1: Float, x2: Float, y2: Float): Self =
     slice(
       x1, y1,
@@ -65,26 +205,19 @@ trait QuadOps {
       x1, y2)
 
 
-
   def cyclicNormalize2(v: Double): Double =
-    if (v < 0) 1 + (v-v.toInt)
-    else if (v > 1) v-v.toInt
-    else v
-
-  def cyclicNormalize(v: Double): Double =
-    if (v < 0) 1 + v
+    if (v < 0) 1 + (v - v.toInt)
+    else if (v > 1) v - v.toInt
     else v
 
 
+  /*
+  Universal slice
+   */
   def slice(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double, x4: Double, y4: Double): Self =
     slice1(cyclicNormalize2(x1), cyclicNormalize2(y1), cyclicNormalize2(x2), cyclicNormalize2(y2), cyclicNormalize2(x3), cyclicNormalize2(y3), cyclicNormalize2(x4), cyclicNormalize2(y4))
 
   private def slice1(x1: Double, y1: Double, x2: Double, y2: Double, x3: Double, y3: Double, x4: Double, y4: Double): Self = {
-    //Thx frobeniusfg for help with this
-    def calcAttribute(x: Double, y: Double, v1: Double, v2: Double, v3: Double, v4: Double): Float = {
-      val a = x * y
-      a * v1 - a * v2 + a * v3 - a * v4 - v1 * x - v1 * y + v1 + v2 * x + v4 * y
-    }.toFloat
 
     reconstruct(
       v1_x = calcAttribute(x1, y1,
@@ -213,5 +346,21 @@ trait QuadOps {
 
 
     )
+  }
+
+  //Thx frobeniusfg for help with this
+  private def calcAttribute(x: Double, y: Double, v1: Double, v2: Double, v3: Double, v4: Double): Float = {
+    val a = x * y
+    a * v1 - a * v2 + a * v3 - a * v4 - v1 * x - v1 * y + v1 + v2 * x + v4 * y
+  }.toFloat
+
+  private def calcU(x: Double, y: Double, u1: Float, u2: Float, u3: Float, u4: Float): Float = {
+    val fl = y.toFloat * (quadAtlas.getMaxU - quadAtlas.getMinU) + quadAtlas.getMinU
+    fl
+  }
+
+  private def calcV(x: Double, y: Double, v1: Float, v2: Float, v3: Float, v4: Float): Float = {
+    val fl = x.toFloat * (quadAtlas.getMaxV - quadAtlas.getMinV) + quadAtlas.getMinV
+    fl
   }
 }

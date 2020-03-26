@@ -14,6 +14,8 @@ class UnpackedQuad(
                     private var _applyDiffuseLighting: Boolean
                   ) extends BaseUnpackedQuad with Cloneable {
 
+  override private[endothermic] def quadAtlas = atlas
+
   def face: EnumFacing = _face
 
   def atlas: TextureAtlasSprite = _atlas
