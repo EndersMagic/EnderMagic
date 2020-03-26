@@ -60,9 +60,6 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 x.toFloat / 16, y.toFloat / 16,
                 (x + 1).toFloat / 16, (y + 1).toFloat / 16
               )
-            println(center1.format)
-            println(center1.evaluations.get(BaseUnpackedQuad.p_1))
-            println(center1.evaluations.exists(_._1._1 == DefaultVertexFormats.PADDING_1B))
             val centerTop = center1
               .updated(atlas = atlasSpriteRune)
               .reconstruct(
