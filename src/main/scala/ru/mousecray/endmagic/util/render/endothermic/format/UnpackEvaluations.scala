@@ -65,12 +65,11 @@ object UnpackEvaluations {
        */
 
       val unpack = {
-        val element = vfe
         val v = vertex.index
         val formatFrom = format
-        val vertexStart = v * formatFrom.getNextOffset + formatFrom.getOffset(formatFrom.getElements.indexOf(element))
-        val count = element.getElementCount
-        val elementType = element.getType
+        val vertexStart = v * formatFrom.getNextOffset + formatFrom.getOffset(formatFrom.getElements.indexOf(vfe))
+        val count = vfe.getElementCount
+        val elementType = vfe.getType
         val size = elementType.getSize
         val mask = (256 << (8 * (size - 1))) - 1
         val pos = vertexStart + size * i
