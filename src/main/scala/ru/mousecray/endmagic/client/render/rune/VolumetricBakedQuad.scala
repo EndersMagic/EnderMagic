@@ -5,7 +5,6 @@ import java.util.function
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.pipeline.{BlockInfoLense, IVertexConsumer, VertexLighterFlat}
 import ru.mousecray.endmagic.EM
@@ -13,11 +12,11 @@ import ru.mousecray.endmagic.capability.chunk.{Rune, RunePart, RuneState, RuneSt
 import ru.mousecray.endmagic.client.render.rune.VolumetricBakedQuad._
 import ru.mousecray.endmagic.util.Vec2i
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA
-import ru.mousecray.endmagic.util.render.endothermic.BaseUnpackedQuad
 import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
 import ru.mousecray.endmagic.util.render.endothermic.utils._
 
 import scala.collection.JavaConverters._
+import scala.collection.mutable
 import scala.language.implicitConversions
 import scala.util.Random
 
@@ -138,19 +137,20 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
             borts :+ centerBottom.toBakedQuad
           }
 
-          val rune_parts = rune.parts.asScala
 
-          val data = (for {
-            x <- 0 to 15
-          } yield {
-            val line = ElongateQuadData(x, 0, 15)
-            //todo: optimise by replace filtering by multiple lines
+          val rune_parts: mutable.Map[Vec2i, RunePart] = rune.parts.asScala
 
-            val runePoints = rune_parts.filter(_._1.x == x).map(_._1.y).toSeq.sorted
-            runePoints.foldLeft(line :: Nil) { case (last :: other, p) =>
-              last.splitSecond(p) :: last.splitFirst(p) :: other
-            } filter (i => i.y1 <= i.y2)
-          }).flatten
+          val data =
+            ((0 to 15).map(_ -> Map()).toMap ++ rune_parts.groupBy(_._1.x)).flatMap {
+              case (x, parts) if parts.nonEmpty =>
+                val line = ElongateQuadData(x, 0, 15)
+                val runePoints = parts.map(_._1.y).toSeq.sorted
+                runePoints.foldLeft(line :: Nil) { case (last :: other, p) =>
+                  last.splitSecond(p) :: last.splitFirst(p) :: other
+                } filter (i => i.y1 <= i.y2)
+              case (x, _) =>
+                Seq(ElongateQuadData(x, 0, 15))
+            }.toSeq
 
           val back = data.map(toQuad(quad.getSprite))
           val runeQuads = rune_parts.flatMap(i => makeRuneQuad(i._1.x, i._1.y, i._2))
