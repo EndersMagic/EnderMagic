@@ -45,7 +45,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
 
             richQuad
               .updated(atlas = textureAtlasSprite)
-              .sliceRect(
+              .trivialSliceRect(
                 elongateQuadData.x.toFloat / 16,
                 elongateQuadData.y1.toFloat / 16,
 
@@ -56,7 +56,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
 
           def makeRuneQuad(x: Int, y: Int, entry: RunePart): Seq[BakedQuad] = {
             val center1 = richQuad
-              .sliceRect(
+              .trivialSliceRect(
                 x.toFloat / 16, y.toFloat / 16,
                 (x + 1).toFloat / 16, (y + 1).toFloat / 16
               )
@@ -75,7 +75,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
 
             val borts = Seq(
               new Vec2i(x - 1, y) -> richQuad
-                .sliceRect(
+                .trivialSliceRect(
                   (x - 1).toFloat / 16, y.toFloat / 16,
                   x.toFloat / 16, (y + 1).toFloat / 16
                 ).reconstruct(
@@ -90,7 +90,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
               ).reverse
                 .toBakedQuad,
               new Vec2i(x + 1, y) -> richQuad
-                .sliceRect(
+                .trivialSliceRect(
                   (x + 1).toFloat / 16, y.toFloat / 16,
                   (x + 2).toFloat / 16, (y + 1).toFloat / 16
                 ).reconstruct(
@@ -105,7 +105,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
               ).reverse
                 .toBakedQuad,
               new Vec2i(x, y - 1) -> richQuad
-                .sliceRect(
+                .trivialSliceRect(
                   x.toFloat / 16, (y - 1).toFloat / 16,
                   (x + 1).toFloat / 16, y.toFloat / 16
                 ).reconstruct(
@@ -121,7 +121,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
               ).reverse
                 .toBakedQuad,
               new Vec2i(x, y + 1) -> richQuad
-                .sliceRect(
+                .trivialSliceRect(
                   x.toFloat / 16, (y + 1).toFloat / 16,
                   (x + 1).toFloat / 16, (y + 2).toFloat / 16
                 ).reconstruct(
