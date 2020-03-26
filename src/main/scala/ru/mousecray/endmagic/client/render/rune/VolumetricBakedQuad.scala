@@ -68,7 +68,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 v3_a = 128,
                 v4_a = 128
               )
-            val centerBottom = center1.translate(0, -standard_pixel, 0)
+            val centerBottom = center1.translate(standard_pixel * (-face.getDirectionVec.getX), standard_pixel * (-face.getDirectionVec.getY), standard_pixel * (-face.getDirectionVec.getZ))
 
             val borts = Seq(
               new Vec2i(x - 1, y) -> richQuad
