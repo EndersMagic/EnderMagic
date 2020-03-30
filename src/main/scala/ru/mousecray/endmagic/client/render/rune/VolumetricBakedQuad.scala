@@ -84,6 +84,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 v1_z = centerBottom.v1_z,
                 v4_z = centerBottom.v4_z
               ).reverse
+                .recalculateNormals
                 .toBakedQuad,
               new Vec2i(x + 1, y) -> richQuad
                 .trivialSliceRect(
@@ -99,6 +100,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 v2_z = centerBottom.v2_z,
                 v3_z = centerBottom.v3_z
               ).reverse
+                .recalculateNormals
                 .toBakedQuad,
               new Vec2i(x, y - 1) -> richQuad
                 .trivialSliceRect(
@@ -115,6 +117,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 v2_z = centerBottom.v2_z
 
               ).reverse
+                .recalculateNormals
                 .toBakedQuad,
               new Vec2i(x, y + 1) -> richQuad
                 .trivialSliceRect(
@@ -130,6 +133,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
                 v3_z = centerBottom.v3_z,
                 v4_z = centerBottom.v4_z
               ).reverse
+                .recalculateNormals
                 .toBakedQuad
             ).filter(i => !rune.parts.containsKey(i._1)).map(_._2)
 
