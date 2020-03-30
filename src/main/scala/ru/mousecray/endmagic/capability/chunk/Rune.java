@@ -25,7 +25,6 @@ public class Rune {
     public void add(Vec2i coord, RunePart runePart) {
         if (!parts.containsKey(coord)) {
             parts.put(coord, runePart);
-            EM.proxy.refreshChunk(pos);
             runeEffect = RuneEffectRegistry.findEffect(parts);
 
             long currentTimeMillis = System.currentTimeMillis();
@@ -36,6 +35,8 @@ public class Rune {
                 long fullCreatingTime = currentTimeMillis - lastTime;
                 averageCreatingTime = fullCreatingTime / parts.size();
             }
+            
+            EM.proxy.refreshChunk(pos);
         }
     }
 }
