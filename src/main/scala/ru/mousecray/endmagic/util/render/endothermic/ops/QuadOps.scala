@@ -62,8 +62,8 @@ trait QuadOps {
     val (bx, by, bz) = (v2_x - v1_x, v2_y - v1_y, v2_z - v1_z)
 
     val (tnx, tny, tnz) = (ay * bz - az * by, az * bx - ax * bz, ax * by - ay * bx)
-    val len = sqrt(tnx * tnx + tny * tny + tnz * tnz).toFloat
-    val (nx, ny, nz) = (tnx / len, tny / len, tnz / len)
+    val norm = (1.0 / sqrt(tnx * tnx + tny * tny + tnz * tnz)).toFloat
+    val (nx, ny, nz) = (tnx * norm, tny * norm, tnz * norm)
     reconstruct(
       v1_nx = nx, v1_ny = ny, v1_nz = nz,
       v2_nx = nx, v2_ny = ny, v2_nz = nz,
