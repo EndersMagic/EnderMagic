@@ -58,8 +58,8 @@ trait QuadOps {
   }
 
   def recalculateNormals: Self = {
-    val (ax, ay, az) = (v4_a - v1_x, v4_y - v1_y, v4_z - v1_z)
-    val (bx, by, bz) = (v2_a - v1_x, v2_y - v1_y, v2_z - v1_z)
+    val (ax, ay, az) = (v4_x - v1_x, v4_y - v1_y, v4_z - v1_z)
+    val (bx, by, bz) = (v2_x - v1_x, v2_y - v1_y, v2_z - v1_z)
 
     val (tnx, tny, tnz) = (ay * bz - az * by, az * bx - ax * bz, ax * by - ay * bx)
     val len = sqrt(tnx * tnx + tny * tny + tnz * tnz).toFloat
