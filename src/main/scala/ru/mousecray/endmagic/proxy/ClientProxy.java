@@ -19,6 +19,7 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -37,6 +38,7 @@ import ru.mousecray.endmagic.client.render.entity.RenderEntityCurseBush;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.client.render.rune.RuneModelWrapper;
+import ru.mousecray.endmagic.client.render.rune.RuneTopLayerRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TilePhantomAvoidingBlockRenderer;
 import ru.mousecray.endmagic.entity.EntityBluePearl;
@@ -64,7 +66,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 
     public ClientProxy() {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
-        registerTexture(new ResourceLocation(EM.ID,"blocks/rune"));
+        registerTexture(new ResourceLocation(EM.ID, "blocks/rune"));
     }
 
     @Override
@@ -75,6 +77,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         RenderingRegistry.registerEntityRenderingHandler(EntityBluePearl.class, manager -> new RenderSnowball(manager, EMItems.blueEnderPearl, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityEnderArrow.class, manager -> new RenderEnderArrow(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityCurseBush.class, manager -> new RenderEntityCurseBush(manager));
+
+        MinecraftForge.EVENT_BUS.register(new RuneTopLayerRenderer());
     }
 
     @Override

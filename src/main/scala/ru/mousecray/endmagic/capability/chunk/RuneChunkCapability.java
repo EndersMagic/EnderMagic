@@ -10,7 +10,7 @@ import java.util.Optional;
 public class RuneChunkCapability {
 
     //todo: optimise by positions limit: may encode to long key
-    private Map<BlockPos, RuneState> states = new HashMap<>();
+    public Map<BlockPos, RuneState> states = new HashMap<>();
 
     public Optional<RuneState> getRuneState(BlockPos pos) {
         return Optional.ofNullable(states.get(pos));
