@@ -5,19 +5,19 @@ import java.util.function
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap
 import net.minecraft.client.Minecraft
 import net.minecraft.client.multiplayer.ChunkProviderClient
-import net.minecraft.client.renderer.Tessellator
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
+import net.minecraft.client.renderer.{GlStateManager, Tessellator}
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.{EnumFacing, ResourceLocation}
 import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
-import org.lwjgl.opengl.GL11
-import org.lwjgl.opengl.GL11.GL_QUADS
 import ru.mousecray.endmagic.EM
 import ru.mousecray.endmagic.capability.chunk.{RunePart, RuneState, RuneStateCapabilityProvider}
+import ru.mousecray.endmagic.client.render.rune.VolumetricBakedQuad.atlasSpriteRune
 import ru.mousecray.endmagic.util.Vec2i
+import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
 
 import scala.language.implicitConversions
 
@@ -28,12 +28,14 @@ class RuneTopLayerRenderer {
     field
   }
 
+  private val mc: Minecraft = Minecraft.getMinecraft
+
   private def getLoadedChunks =
-    chunkMapping.get(Minecraft.getMinecraft.world.getChunkProvider).asInstanceOf[Long2ObjectMap[Chunk]].values().iterator()
+    chunkMapping.get(mc.world.getChunkProvider).asInstanceOf[Long2ObjectMap[Chunk]].values().iterator()
 
   @SubscribeEvent
   def onWorldRender(e: RenderWorldLastEvent): Unit = {
-    val p = Minecraft.getMinecraft.player
+    val p = mc.player
     import net.minecraft.client.renderer.GlStateManager
     val doubleX = p.lastTickPosX + (p.posX - p.lastTickPosX) * e.getPartialTicks
     val doubleY = p.lastTickPosY + (p.posY - p.lastTickPosY) * e.getPartialTicks
@@ -41,16 +43,21 @@ class RuneTopLayerRenderer {
 
     GlStateManager.pushMatrix()
     GlStateManager.translate(-doubleX, -doubleY, -doubleZ)
+    GlStateManager.alphaFunc(516, 0F)
+    GlStateManager.enableBlend()
+
     getLoadedChunks.forEachRemaining { c: Chunk =>
       c.getCapability(RuneStateCapabilityProvider.runeStateCapability, null).states
         .forEach(renderRuneTopLayer _)
     }
-    GL11.glPopMatrix()
+
+    GlStateManager.disableBlend()
+    GlStateManager.popMatrix()
   }
 
   @SubscribeEvent
   def onClientTick(e: TickEvent.ClientTickEvent): Unit = {
-      currentFrame = if (currentFrame >= frameCount) 0 else currentFrame + 1
+    currentFrame = if (currentFrame >= frameCount) 0 else currentFrame + 1
   }
 
   val resourceLocation = new ResourceLocation(EM.ID, "textures/blocks/rune.png")
@@ -58,36 +65,47 @@ class RuneTopLayerRenderer {
   private val frameCount = 8
 
   def renderRuneTopLayer(pos: BlockPos, runeState: RuneState): Unit = {
-    GL11.glPushMatrix()
-    GL11.glTranslated(pos.getX, pos.getY + 1, pos.getZ)
-    GL11.glColor4d(1, 0, 0, 1)
+    GlStateManager.pushMatrix()
+    GlStateManager.translate(pos.getX, pos.getY, pos.getZ)
 
-    Minecraft.getMinecraft.getTextureManager.bindTexture(resourceLocation)
+    val blockState = mc.world.getBlockState(pos)
+    val model = mc.getBlockRendererDispatcher.getModelForState(blockState)
 
-    val tessellator = Tessellator.getInstance()
-    val buffer = tessellator.getBuffer
-
-    buffer.begin(GL_QUADS, DefaultVertexFormats.POSITION_TEX)
-
-    val v = currentFrame.toFloat / frameCount
-
-    buffer.pos(0, 0, 0).tex(0, v).endVertex()
-    buffer.pos(1, 0, 0).tex(0, v + 1f / frameCount).endVertex()
-    buffer.pos(1, 1, 0).tex(1, v + 1f / frameCount).endVertex()
-    buffer.pos(0, 1, 0).tex(1, v).endVertex()
-
-
-    tessellator.draw()
+    val tessellator = Tessellator.getInstance
+    val bufferbuilder = tessellator.getBuffer
+    bufferbuilder.begin(7, DefaultVertexFormats.ITEM)
 
     EnumFacing.values().foreach { ef =>
       runeState.getRuneAtSide(ef).parts.forEach { (coord: Vec2i, part: RunePart) =>
+        val (x, y) = (coord.x, coord.y)
+
+        val quad = model.getQuads(blockState, ef, 0).get(0)
+
+        val richQuad = UnpackedQuad(quad)
+        val center1 = richQuad
+          .trivialSliceRect(
+            x.toFloat / 16, y.toFloat / 16,
+            (x + 1).toFloat / 16, (y + 1).toFloat / 16
+          )
+        val centerTop = center1
+          .updated(atlas = atlasSpriteRune)
+          .reconstruct(
+            v1_a = 128,
+            v2_a = 128,
+            v3_a = 128,
+            v4_a = 128
+          )
+
+        net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, centerTop.toBakedQuad, 0xffffffff)
 
 
       }
 
     }
 
-    GL11.glPopMatrix()
+    tessellator.draw()
+
+    GlStateManager.popMatrix()
 
   }
 
