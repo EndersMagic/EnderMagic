@@ -3,8 +3,7 @@ package ru.mousecray.endmagic.rune;
 import ru.mousecray.endmagic.capability.chunk.RuneEffect;
 import ru.mousecray.endmagic.capability.chunk.RunePart;
 import ru.mousecray.endmagic.util.Vec2i;
-
-import java.util.Map;
+import scala.collection.immutable.Map;
 
 import static ru.mousecray.endmagic.capability.chunk.RuneEffect.EmptyEffect;
 

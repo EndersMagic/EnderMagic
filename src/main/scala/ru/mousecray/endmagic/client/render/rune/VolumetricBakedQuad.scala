@@ -1,22 +1,18 @@
 package ru.mousecray.endmagic.client.render.rune
 
-import java.util.function
-
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.pipeline.{BlockInfoLense, IVertexConsumer, VertexLighterFlat}
 import ru.mousecray.endmagic.EM
-import ru.mousecray.endmagic.capability.chunk.{Rune, RunePart, RuneState, RuneStateCapabilityProvider}
+import ru.mousecray.endmagic.capability.chunk.{RunePart, RuneStateCapabilityProvider}
 import ru.mousecray.endmagic.client.render.rune.VolumetricBakedQuad._
 import ru.mousecray.endmagic.util.Vec2i
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA
 import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
 import ru.mousecray.endmagic.util.render.endothermic.utils._
 
-import scala.collection.JavaConverters._
-import scala.collection.mutable
 import scala.language.implicitConversions
 import scala.util.Random
 
@@ -33,10 +29,10 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
         val side = quad.getFace
         val capability = Minecraft.getMinecraft.world.getChunkFromBlockCoords(pos).getCapability(RuneStateCapabilityProvider.runeStateCapability, null)
 
-        capability.getRuneState(pos)
-          .map[Rune]((runeState: RuneState) => runeState.getRuneAtSide(quad.getFace))
-          .filter((rune: Rune) => rune.parts.size() > 0)
-          .map[Seq[BakedQuad]]((rune: Rune) => {
+        Option(capability.getRuneState(pos)
+          .getRuneAtSide(quad.getFace))
+          .filter(rune => rune.parts.size > 0)
+          .map[Seq[BakedQuad]](rune => {
 
           val richQuad = UnpackedQuad(quad)
 
@@ -135,14 +131,14 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
               ).reverse
                 .recalculateNormals
                 .toBakedQuad
-            ).filter(i => !rune.parts.containsKey(i._1)).map(_._2)
+            ).filter(i => !rune.parts.contains(i._1)).map(_._2)
 
 
             borts :+ centerBottom.toBakedQuad
           }
 
 
-          val rune_parts: mutable.Map[Vec2i, RunePart] = rune.parts.asScala
+          val rune_parts: Map[Vec2i, RunePart] = rune.parts
 
           val data =
             ((0 to 15).map(_ -> Map()).toMap ++ rune_parts.groupBy(_._1.x)).flatMap {
@@ -160,7 +156,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
           val runeQuads = rune_parts.flatMap(i => makeRuneQuad(i._1.x, i._1.y, i._2))
           val result = back ++ runeQuads
           result
-        }).orElse(Seq(quad)).foreach(_.pipe(consumer))
+        }).getOrElse(Seq(quad)).foreach(_.pipe(consumer))
       case _ =>
         quad.pipe(consumer)
     }
@@ -183,12 +179,5 @@ object VolumetricBakedQuad {
 
   def nextColor() = new RGBA(random.nextFloat(), random.nextFloat(), random.nextFloat())
 
-  implicit def function2Java[A, B](f: A => B): function.Function[A, B] = new function.Function[A, B] {
-    override def apply(t: A): B = f(t)
-  }
-
-  implicit def predicate2Java[A](f: A => Boolean): function.Predicate[A] = new function.Predicate[A] {
-    override def test(t: A): Boolean = f(t)
-  }
 
 }

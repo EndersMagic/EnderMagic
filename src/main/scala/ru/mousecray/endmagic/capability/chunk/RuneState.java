@@ -1,20 +1,36 @@
 package ru.mousecray.endmagic.capability.chunk;
 
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class RuneState {
-    private final Map<EnumFacing, Rune> runesOnSides = new EnumMap<>(EnumFacing.class);
-    private final BlockPos pos;
+    public static RuneState empty = new RuneState(
+            Stream.generate(Rune::empty)
+                    .limit(EnumFacing.values().length)
+                    .toArray(Rune[]::new)
+    );
 
-    public RuneState(BlockPos pos) {
-        this.pos = pos;
+    private final Rune[] runesOnSides;
+
+    private RuneState(Rune[] runesOnSides) {
+        this.runesOnSides = runesOnSides;
+        assert (runesOnSides.length == EnumFacing.values().length);
     }
 
     public Rune getRuneAtSide(EnumFacing facing) {
-        return runesOnSides.computeIfAbsent(facing, __ -> new Rune(pos));
+        return facing == null ? Rune.empty() : runesOnSides[facing.ordinal()];
+    }
+
+    public RuneState withRune(EnumFacing facing, Rune rune) {
+        Rune[] newRunesOnSides = runesOnSides.clone();
+        newRunesOnSides[facing.ordinal()] = rune;
+        return new RuneState(newRunesOnSides);
+    }
+
+    public RuneState withRune(EnumFacing facing, Function<Rune, Rune> runeMapping) {
+        return withRune(facing, runeMapping.apply(getRuneAtSide(facing)));
     }
 }

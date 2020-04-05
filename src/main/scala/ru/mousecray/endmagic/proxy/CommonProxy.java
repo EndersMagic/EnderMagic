@@ -26,7 +26,9 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
-import ru.mousecray.endmagic.capability.chunk.RuneChunkCapability;
+import ru.mousecray.endmagic.capability.chunk.CommonRuneChunkCapability;
+import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
+import ru.mousecray.endmagic.capability.chunk.RuneStorage;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.init.*;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
@@ -84,18 +86,7 @@ public class CommonProxy implements IGuiHandler {
             }
         }, PhantomAvoidingGroupCapability::new);
 
-        CapabilityManager.INSTANCE.register(RuneChunkCapability.class, new Capability.IStorage<RuneChunkCapability>() {
-            @Nullable
-            @Override
-            public NBTBase writeNBT(Capability<RuneChunkCapability> capability, RuneChunkCapability instance, EnumFacing side) {
-                return null;
-            }
-
-            @Override
-            public void readNBT(Capability<RuneChunkCapability> capability, RuneChunkCapability instance, EnumFacing side, NBTBase nbt) {
-
-            }
-        }, RuneChunkCapability::new);
+        CapabilityManager.INSTANCE.register(IRuneChunkCapability.class, new RuneStorage(), CommonRuneChunkCapability::new);
     }
 
     private void registerBlock(Block block) {

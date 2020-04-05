@@ -1,7 +1,5 @@
 package ru.mousecray.endmagic.client.render.rune
 
-import java.util.function
-
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap
 import net.minecraft.client.Minecraft
 import net.minecraft.client.multiplayer.ChunkProviderClient
@@ -16,6 +14,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent
 import ru.mousecray.endmagic.EM
 import ru.mousecray.endmagic.capability.chunk.{RunePart, RuneState, RuneStateCapabilityProvider}
 import ru.mousecray.endmagic.client.render.rune.VolumetricBakedQuad.atlasSpriteRune
+import ru.mousecray.endmagic.util.Java2Scala._
 import ru.mousecray.endmagic.util.Vec2i
 import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
 
@@ -46,9 +45,10 @@ class RuneTopLayerRenderer {
     GlStateManager.alphaFunc(516, 0F)
     GlStateManager.enableBlend()
 
-    getLoadedChunks.forEachRemaining { c: Chunk =>
-      c.getCapability(RuneStateCapabilityProvider.runeStateCapability, null).states
-        .forEach(renderRuneTopLayer _)
+    getLoadedChunks.forEachRemaining {
+      c: Chunk =>
+        c.getCapability(RuneStateCapabilityProvider.runeStateCapability, null).existingRunes()
+          .forEach(renderRuneTopLayer _)
     }
 
     GlStateManager.disableBlend()
@@ -76,7 +76,7 @@ class RuneTopLayerRenderer {
     bufferbuilder.begin(7, DefaultVertexFormats.ITEM)
 
     EnumFacing.values().foreach { ef =>
-      runeState.getRuneAtSide(ef).parts.forEach { (coord: Vec2i, part: RunePart) =>
+      runeState.getRuneAtSide(ef).parts.foreach{ case (coord: Vec2i, part: RunePart) =>
         val (x, y) = (coord.x, coord.y)
 
         val quad = model.getQuads(blockState, ef, 0).get(0)
@@ -107,15 +107,6 @@ class RuneTopLayerRenderer {
 
     GlStateManager.popMatrix()
 
-  }
-
-
-  implicit def consumer2Java[A](f: A => Unit): function.Consumer[A] = new function.Consumer[A] {
-    override def accept(t: A): Unit = f(t)
-  }
-
-  implicit def biConsumer2Java[A, B](f: (A, B) => Unit): function.BiConsumer[A, B] = new function.BiConsumer[A, B] {
-    override def accept(t: A, u: B): Unit = f(t, u)
   }
 
 }
