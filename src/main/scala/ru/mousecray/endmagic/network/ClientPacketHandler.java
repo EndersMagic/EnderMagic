@@ -48,7 +48,7 @@ public class ClientPacketHandler implements ICustomPacketHandler.IClientPacketHa
             case SYNC_RUNE_CAPABILITY:
                 Chunk chunk = minecraft.world.getChunkFromChunkCoords(packetCustom.readInt(), packetCustom.readInt());
                 IRuneChunkCapability capability = RuneIndex.getCapability(chunk);
-                runeStateCapability.readNBT(capability, null, packetCustom.readNBTTagCompound());
+                runeStateCapability.readNBT(capability, EnumFacing.UP, packetCustom.readNBTTagCompound());
                 EM.proxy.refreshChunk(capability.existingRunes().keySet().iterator().next());
                 break;
             default:
