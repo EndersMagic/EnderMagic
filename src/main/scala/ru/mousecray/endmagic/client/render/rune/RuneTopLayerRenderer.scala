@@ -68,6 +68,7 @@ class RuneTopLayerRenderer {
   def renderRuneTopLayer(pos: BlockPos, runeState: RuneState): Unit = {
     GlStateManager.pushMatrix()
     GlStateManager.translate(pos.getX, pos.getY, pos.getZ)
+    GlStateManager.color(1,1,1,0.5f)
 
     val blockState = mc.world.getBlockState(pos)
     val model = mc.getBlockRendererDispatcher.getModelForState(blockState)
