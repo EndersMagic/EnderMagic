@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
@@ -49,7 +50,7 @@ public class ClientPacketHandler implements ICustomPacketHandler.IClientPacketHa
                 Chunk chunk = minecraft.world.getChunkFromChunkCoords(packetCustom.readInt(), packetCustom.readInt());
                 IRuneChunkCapability capability = RuneIndex.getCapability(chunk);
                 runeStateCapability.readNBT(capability, EnumFacing.UP, packetCustom.readNBTTagCompound());
-                EM.proxy.refreshChunk(capability.existingRunes().keySet().iterator().next());
+                EM.proxy.refreshChunk(capability.existingRunes().isEmpty()?new BlockPos(chunk.x<<4,0,chunk.z<<4):capability.existingRunes().keySet().iterator().next());
                 break;
             default:
                 break;
