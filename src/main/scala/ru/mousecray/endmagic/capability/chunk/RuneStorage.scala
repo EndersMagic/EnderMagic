@@ -17,14 +17,15 @@ class RuneStorage extends Capability.IStorage[IRuneChunkCapability] {
       instance.existingRunes.forEach((pos: BlockPos, runeState: RuneState) => instanceNBT.setTag(pos2string(pos), runeStateToNBT(runeState)))
       instanceNBT
     } else
-      null
+      new NBTTagCompound
 
   override def readNBT(capability: Capability[IRuneChunkCapability], instance: IRuneChunkCapability, side: EnumFacing, nbt: NBTBase): Unit =
-    if (nbt != null) {
-      val instanceNBT = nbt.asInstanceOf[NBTTagCompound]
-      instanceNBT.getKeySet.forEach { key: String =>
-        instance.setRuneState(string2pos(key), nbtToRuneState(instanceNBT.getCompoundTag(key)))
-      }
+    nbt match {
+      case instanceNBT: NBTTagCompound if !instanceNBT.hasNoTags=>
+        instanceNBT.getKeySet.forEach { key: String =>
+          instance.setRuneState(string2pos(key), nbtToRuneState(instanceNBT.getCompoundTag(key)))
+        }
+      case _ =>
     }
 
 
