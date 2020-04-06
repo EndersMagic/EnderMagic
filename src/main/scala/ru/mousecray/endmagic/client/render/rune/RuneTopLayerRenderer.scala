@@ -19,6 +19,7 @@ import ru.mousecray.endmagic.util.Java2Scala._
 import ru.mousecray.endmagic.util.Vec2i
 import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
 
+import scala.collection.JavaConverters._
 import scala.language.implicitConversions
 
 class RuneTopLayerRenderer {
@@ -49,7 +50,9 @@ class RuneTopLayerRenderer {
     getLoadedChunks.forEachRemaining {
       c: Chunk =>
         RuneIndex.getCapability(c).existingRunes()
-          .forEach(renderRuneTopLayer _)
+          .asScala
+          .filterKeys(!mc.world.isAirBlock(_))
+          .foreach(renderRuneTopLayer)
     }
 
     GlStateManager.disableBlend()
@@ -65,49 +68,50 @@ class RuneTopLayerRenderer {
   private var currentFrame = 0
   private val frameCount = 8
 
-  def renderRuneTopLayer(pos: BlockPos, runeState: RuneState): Unit = {
-    GlStateManager.pushMatrix()
-    GlStateManager.translate(pos.getX, pos.getY, pos.getZ)
-    GlStateManager.color(1,1,1,0.5f)
+  val renderRuneTopLayer: ((BlockPos, RuneState)) => Unit = {
+    case (pos, runeState) =>
+      GlStateManager.pushMatrix()
+      GlStateManager.translate(pos.getX, pos.getY, pos.getZ)
+      GlStateManager.color(1, 1, 1, 0.5f)
 
-    val blockState = mc.world.getBlockState(pos)
-    val model = mc.getBlockRendererDispatcher.getModelForState(blockState)
+      val blockState = mc.world.getBlockState(pos)
+      val model = mc.getBlockRendererDispatcher.getModelForState(blockState)
 
-    val tessellator = Tessellator.getInstance
-    val bufferbuilder = tessellator.getBuffer
-    bufferbuilder.begin(7, DefaultVertexFormats.ITEM)
+      val tessellator = Tessellator.getInstance
+      val bufferbuilder = tessellator.getBuffer
+      bufferbuilder.begin(7, DefaultVertexFormats.ITEM)
 
-    EnumFacing.values().foreach { ef =>
-      runeState.getRuneAtSide(ef).parts.foreach { case (coord: Vec2i, part: RunePart) =>
-        val (x, y) = (coord.x, coord.y)
+      EnumFacing.values().foreach { ef =>
+        runeState.getRuneAtSide(ef).parts.foreach { case (coord: Vec2i, part: RunePart) =>
+          val (x, y) = (coord.x, coord.y)
 
-        val quad = model.getQuads(blockState, ef, 0).get(0)
+          val quad = model.getQuads(blockState, ef, 0).get(0)
 
-        val richQuad = UnpackedQuad(quad)
-        val center1 = richQuad
-          .trivialSliceRect(
-            x.toFloat / 16, y.toFloat / 16,
-            (x + 1).toFloat / 16, (y + 1).toFloat / 16
-          )
-        val centerTop = center1
-          .updated(atlas = atlasSpriteRune)
-          .reconstruct(
-            v1_a = 128,
-            v2_a = 128,
-            v3_a = 128,
-            v4_a = 128
-          )
+          val richQuad = UnpackedQuad(quad)
+          val center1 = richQuad
+            .trivialSliceRect(
+              x.toFloat / 16, y.toFloat / 16,
+              (x + 1).toFloat / 16, (y + 1).toFloat / 16
+            )
+          val centerTop = center1
+            .updated(atlas = atlasSpriteRune)
+            .reconstruct(
+              v1_a = 128,
+              v2_a = 128,
+              v3_a = 128,
+              v4_a = 128
+            )
 
-        net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, centerTop.toBakedQuad, 0xffffffff)
+          net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, centerTop.toBakedQuad, 0xffffffff)
 
+
+        }
 
       }
 
-    }
+      tessellator.draw()
 
-    tessellator.draw()
-
-    GlStateManager.popMatrix()
+      GlStateManager.popMatrix()
 
   }
 
