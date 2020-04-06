@@ -21,7 +21,6 @@ public class CommonRuneChunkCapability implements IRuneChunkCapability {
     }
 
     public void removeRuneState(BlockPos pos) {
-        if (states.containsKey(pos))
             states.remove(pos);
     }
 
