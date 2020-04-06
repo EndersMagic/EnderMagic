@@ -21,7 +21,8 @@ class RuneStorage extends Capability.IStorage[IRuneChunkCapability] {
 
   override def readNBT(capability: Capability[IRuneChunkCapability], instance: IRuneChunkCapability, side: EnumFacing, nbt: NBTBase): Unit =
     nbt match {
-      case instanceNBT: NBTTagCompound if !instanceNBT.hasNoTags=>
+      case instanceNBT: NBTTagCompound =>
+        instance.existingRunes().clear()
         instanceNBT.getKeySet.forEach { key: String =>
           instance.setRuneState(string2pos(key), nbtToRuneState(instanceNBT.getCompoundTag(key)))
         }
