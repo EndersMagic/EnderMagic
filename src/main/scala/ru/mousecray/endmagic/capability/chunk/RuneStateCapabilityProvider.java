@@ -16,7 +16,7 @@ import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class RuneStateCapabilityProvider implements ICapabilityProvider {
+public class RuneStateCapabilityProvider implements ICapabilityProvider, INBTSerializable<NBTTagCompound> {
 
     @CapabilityInject(IRuneChunkCapability.class)
     public static Capability<IRuneChunkCapability> runeStateCapability;
@@ -27,12 +27,23 @@ public class RuneStateCapabilityProvider implements ICapabilityProvider {
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == runeStateCapability;
+        return capability == runeStateCapability && facing == EnumFacing.UP;
     }
 
     @Nullable
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-        return capability == runeStateCapability ? runeStateCapability.cast(value) : null;
+        return capability == runeStateCapability && facing == EnumFacing.UP ? runeStateCapability.cast(value) : null;
+    }
+
+    @Override
+    public NBTTagCompound serializeNBT() {
+        return (NBTTagCompound) runeStateCapability.writeNBT(value, EnumFacing.UP);
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound nbt) {
+        runeStateCapability.readNBT(value, EnumFacing.UP, nbt);
+
     }
 }

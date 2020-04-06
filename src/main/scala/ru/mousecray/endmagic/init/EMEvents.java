@@ -54,6 +54,7 @@ import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.network.PacketTypes;
+import ru.mousecray.endmagic.rune.RuneIndex;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
@@ -77,7 +78,7 @@ public class EMEvents {
     @SubscribeEvent
     public static void onChunkWatch(ChunkWatchEvent event) {
         Chunk chunk = event.getChunkInstance();
-        IRuneChunkCapability capability = chunk.getCapability(runeStateCapability, null);
+        IRuneChunkCapability capability = RuneIndex.getCapability(chunk);
         NBTBase nbt = runeStateCapability.writeNBT(capability, null);
         if (nbt != null)
             PacketTypes.SYNC_RUNE_CAPABILITY.packet().writeInt(chunk.x).writeInt(chunk.z).writeNBTTagCompound((NBTTagCompound) nbt).sendToPlayer(event.getPlayer());

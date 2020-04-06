@@ -4,6 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.capability.chunk.*;
 import ru.mousecray.endmagic.network.PacketTypes;
@@ -46,8 +47,11 @@ public class RuneIndex {
                     .sendToDimension(world.provider.getDimension());
     }
 
-    private static IRuneChunkCapability getCapability(World world, BlockPos pos) {
-        return world.getChunkFromBlockCoords(pos)
-                .getCapability(runeStateCapability, null);
+    public static IRuneChunkCapability getCapability(World world, BlockPos pos) {
+        return getCapability(world.getChunkFromBlockCoords(pos));
+    }
+
+    public static IRuneChunkCapability getCapability(Chunk chunk) {
+        return chunk.getCapability(runeStateCapability, EnumFacing.UP);
     }
 }

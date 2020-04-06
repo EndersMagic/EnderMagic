@@ -6,8 +6,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.model.pipeline.{BlockInfoLense, IVertexConsumer, VertexLighterFlat}
 import ru.mousecray.endmagic.EM
-import ru.mousecray.endmagic.capability.chunk.{RunePart, RuneStateCapabilityProvider}
+import ru.mousecray.endmagic.capability.chunk.RunePart
 import ru.mousecray.endmagic.client.render.rune.VolumetricBakedQuad._
+import ru.mousecray.endmagic.rune.RuneIndex
 import ru.mousecray.endmagic.util.Vec2i
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA
 import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
@@ -27,7 +28,7 @@ class VolumetricBakedQuad(quad: BakedQuad) extends BakedQuad(
         val blockInfo = BlockInfoLense.get(consumer)
         val pos = blockInfo.getBlockPos
         val side = quad.getFace
-        val capability = Minecraft.getMinecraft.world.getChunkFromBlockCoords(pos).getCapability(RuneStateCapabilityProvider.runeStateCapability, null)
+        val capability = RuneIndex.getCapability(Minecraft.getMinecraft.world, pos)
 
         Option(capability.getRuneState(pos)
           .getRuneAtSide(quad.getFace))
