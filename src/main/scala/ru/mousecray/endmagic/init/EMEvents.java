@@ -36,6 +36,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -74,6 +75,11 @@ import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequi
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
+
+    @SubscribeEvent
+    public static void onRemoveRuneOnBlockBreak(BlockEvent.BreakEvent event) {
+        RuneIndex.removeRune(event.getWorld(), event.getPos());
+    }
 
     @SubscribeEvent
     public static void onChunkWatch(ChunkWatchEvent event) {
