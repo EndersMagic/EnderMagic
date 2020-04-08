@@ -24,8 +24,11 @@ public class RuneIndex {
     public static void removeRune(World world, BlockPos pos) {
         IRuneChunkCapability capability = getCapability(world, pos);
         capability.removeRuneState(pos);
-        world.getChunkFromBlockCoords(pos).markDirty();
-        sync(world, pos, capability);
+        EM.proxy.refreshChunk(world, pos);
+        if (!world.isRemote)
+            PacketTypes.SYNC_RUNE_CAPABILITY.packet()
+                    .writePos(pos)
+                    .sendToDimension(world.provider.getDimension());
 
     }
 
@@ -33,8 +36,14 @@ public class RuneIndex {
         IRuneChunkCapability capability = getCapability(world, pos);
         RuneState runeState = capability.getRuneState(pos);
         capability.setRuneState(pos, runeState.withRune(side, runeState.getRuneAtSide(side).add(coord, part, System.currentTimeMillis())));
-        world.getChunkFromBlockCoords(pos).markDirty();
-        sync(world, pos, capability);
+        EM.proxy.refreshChunk(world, pos);
+        if (!world.isRemote)
+            PacketTypes.ADDED_RUNE_PART.packet()
+                    .writePos(pos)
+                    .writeEnum(side)
+                    .writeInt(coord.x)
+                    .writeInt(coord.y)
+                    .sendToDimension(world.provider.getDimension());
 
     }
 
