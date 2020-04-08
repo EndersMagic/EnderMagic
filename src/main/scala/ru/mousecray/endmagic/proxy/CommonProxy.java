@@ -147,7 +147,8 @@ public class CommonProxy implements IGuiHandler {
     public void postInit(FMLPostInitializationEvent event) {
     }
 
-    public void refreshChunk(BlockPos pos) {
+    public void refreshChunk(World world, BlockPos pos) {
+        world.getChunkFromBlockCoords(pos).markDirty();
     }
 
     public static int blastFurnaceGui = 0;

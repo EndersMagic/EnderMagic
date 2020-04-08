@@ -234,7 +234,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         ModelLoader.setCustomStateMapper(block, stateMapper);
     }
 
-    public void refreshChunk(BlockPos pos) {
+    public void refreshChunk(World world, BlockPos pos) {
+        super.refreshChunk(world, pos);
         Minecraft mc = Minecraft.getMinecraft();
         mc.renderGlobal.notifyBlockUpdate(mc.world, pos, mc.world.getBlockState(pos), mc.world.getBlockState(pos), 2);
     }
