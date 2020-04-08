@@ -1,8 +1,10 @@
 package ru.mousecray.endmagic.capability.chunk;
 
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.util.EnumFacing;
 
 import java.util.Arrays;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -13,9 +15,9 @@ public class RuneState {
                     .toArray(Rune[]::new)
     );
 
-    private final Rune[] runesOnSides;
+    protected final Rune[] runesOnSides;
 
-    private RuneState(Rune[] runesOnSides) {
+    protected RuneState(Rune[] runesOnSides) {
         this.runesOnSides = runesOnSides;
         assert (runesOnSides.length == EnumFacing.values().length);
     }
