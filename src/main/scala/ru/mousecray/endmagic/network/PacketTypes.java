@@ -11,15 +11,9 @@ import static ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider
 public enum PacketTypes {
     UPDATE_COMPAS_TARGET,
     UPDATE_PHANROM_AVOIDINCAPABILITY,
-    SYNC_RUNE_CAPABILITY {
-        public PacketCustom prepare(int chunkX, int chunkZ, IRuneChunkCapability capability) {
-            return packet()
-                    .writeInt(chunkX)
-                    .writeInt(chunkZ)
-                    .writeNBTTagCompound((NBTTagCompound) runeStateCapability.writeNBT(capability, null));
-        }
-
-    };
+    SYNC_RUNE_CAPABILITY,
+    ADDED_RUNE_PART,
+    REMOVE_RUNE_STATE;
 
     public int id = ordinal() + 1;
 
