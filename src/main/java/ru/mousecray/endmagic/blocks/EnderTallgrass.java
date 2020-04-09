@@ -1,9 +1,6 @@
 package ru.mousecray.endmagic.blocks;
 
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -29,41 +26,48 @@ import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.util.registry.IEMModel;
+import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
-public class EnderTallgrass extends EMBlockBush implements IShearable, IEMModel {
-	
-    protected static final AxisAlignedBB END_GRASS_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D, 0.800000011920929D, 0.8999999761581421D);
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Random;
+
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class EnderTallgrass extends EMBlockBush implements IShearable, IExtendedProperties {
+
+    static final AxisAlignedBB END_GRASS_AABB = new AxisAlignedBB(0.09999999403953552D, 0.0D, 0.09999999403953552D, 0.8999999761581421D,
+            0.800000011920929D, 0.8999999761581421D);
 
     public EnderTallgrass() {
         super(Material.VINE);
         setHardness(0.0F);
         setResistance(0.0F);
         setSoundType(SoundType.PLANT);
-		setLightLevel(0.1F);
+        setLightLevel(0.1F);
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public void registerModels(IModelRegistration modelRegistration) {
-        modelRegistration.addBakedModelOverride(this.getRegistryName(), base -> new BakedModelFullbright(base, EM.ID + ":blocks/ender_tallgrass"));
+        modelRegistration.addBakedModelOverride(getRegistryName(), base -> new BakedModelFullbright(base, EM.ID + ":blocks/ender_tallgrass"));
     }
-    
+
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return END_GRASS_AABB;
     }
-    
+
     @Override
     public boolean isReplaceable(IBlockAccess world, BlockPos pos) {
         return true;
     }
-    
+
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return EMItems.enderSeeds;
     }
-    
+
     @Override
     public int quantityDroppedWithBonus(int fortune, Random random) {
         return 1 + random.nextInt(fortune * 2 + 1);
@@ -74,31 +78,32 @@ public class EnderTallgrass extends EMBlockBush implements IShearable, IEMModel 
         return Block.EnumOffsetType.XYZ;
     }
 
-    @Override 
-    public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos) { 
-    	return true; 
-    }
-    
     @Override
-    public NonNullList onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+    public boolean isShearable(ItemStack item, IBlockAccess world, BlockPos pos) {
+        return true;
+    }
+
+    @Override
+    public NonNullList<ItemStack> onSheared(ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
         return NonNullList.withSize(1, new ItemStack(this));
     }
-    
+
     @Override
     public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
         if (!world.isRemote && stack.getItem() == Items.SHEARS) player.addStat(StatList.getBlockStats(this));
         else super.harvestBlock(world, player, pos, state, te, stack);
     }
-    
+
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-    	if (RANDOM.nextInt(60) != 0) return;
+        if (RANDOM.nextInt(60) != 0) return;
         ItemStack seed = new ItemStack(EMItems.enderSeeds, fortune);
         if (!seed.isEmpty()) drops.add(seed);
     }
 
-	@Override
-	public boolean canSustainBush(IBlockState state) {
-		return EMUtils.isSoil(state, true, false, EndSoilType.GRASS, EndSoilType.DIRT);
-	}
+    @Override
+    public boolean canSustainBush(IBlockState state) {
+        //TODO: add custom end grass and remove STONE from this
+        return EMUtils.isSoil(state, EndSoilType.STONE, EndSoilType.GRASS, EndSoilType.DIRT);
+    }
 }

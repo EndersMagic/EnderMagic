@@ -11,27 +11,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.client.gui.GuiScreenEMBook;
-import ru.mousecray.endmagic.util.registry.NameProvider;
 
-public class EMBook extends Item implements NameProvider, ItemOneWhiteEMTextured {
+public class EMBook extends Item implements ItemOneWhiteEMTextured {
 
     public EMBook() {
         setMaxStackSize(1);
     }
 
-	@Override
-	public String name() {
-		return "em_book";
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		if(world.isRemote) {
-			Minecraft.getMinecraft().displayGuiScreen(GuiScreenEMBook.instance);
-		}
-		return new ActionResult<>(EnumActionResult.PASS, player.getHeldItem(hand));
-	}
+    @Override
+    public String getCustomName() {
+        return "em_book";
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        if (world.isRemote) Minecraft.getMinecraft().displayGuiScreen(GuiScreenEMBook.instance);
+        return new ActionResult<>(EnumActionResult.PASS, player.getHeldItem(hand));
+    }
 
     @Override
     public String texture() {

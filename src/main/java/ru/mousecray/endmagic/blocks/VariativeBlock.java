@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -20,21 +21,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
-import ru.mousecray.endmagic.util.registry.IEMModel;
+import ru.mousecray.endmagic.util.EMItemBlock;
+import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
-import ru.mousecray.endmagic.util.registry.NameProvider;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.function.Function;
 
-public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable & BlockTypeBase> extends Block implements NameProvider, IEMModel {
+public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable & BlockTypeBase> extends Block implements ITechnicalBlock {
 
     public final IProperty<BlockType> blockType;
-    protected Function<Integer, BlockType> byIndex;
     private final Class<BlockType> type;
+    protected Function<Integer, BlockType> byIndex;
     private String suffix;
     private int metaCount;
     private Function<BlockType, MapColor> mapFunc;
@@ -55,7 +58,7 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
 
         try {
             Method valuesField = type.getDeclaredMethod("values");
-            BlockType[] values = (BlockType[]) valuesField.invoke(null);
+            @SuppressWarnings("unchecked") BlockType[] values = (BlockType[]) valuesField.invoke(null);
             metaCount = values.length;
             byIndex = i -> values[i];
         } catch (IllegalAccessException | IllegalArgumentException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
@@ -70,12 +73,23 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         setDefaultState(blockState.getBaseState().withProperty(blockType, byIndex.apply(0)));
     }
 
+    @Override
+    public ItemBlock getCustomItemBlock(Block block) {
+        return new EMItemBlock(block);
+    }
+
+    @Nullable
+    @Override
+    public CreativeTabs getCustomCreativeTab() {
+        return EM.EM_CREATIVE;
+    }
+
     public VariativeBlock(Class<BlockType> type, Material material, Function<BlockType, MapColor> mapFunc) {
         this(type, material, null, mapFunc);
     }
 
     @Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
+    public EnumBlockRenderType getRenderType(IBlockState state) {
         return state.getValue(blockType).getRenderType(state);
     }
 
@@ -85,7 +99,7 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     }
 
     @Override
-	public boolean hasTileEntity(IBlockState state) {
+    public boolean hasTileEntity(IBlockState state) {
         return state.getValue(blockType).hasTileEntity(state);
     }
 
@@ -130,7 +144,7 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     protected abstract BlockStateContainer createBlockState();
 
     @Override
-    public String name() {
+    public String getCustomName() {
         String rawName = NameAndTabUtils.getName(type);
         return suffix != null ? rawName.substring(0, rawName.lastIndexOf('_') + 1) + suffix : rawName.substring(0, rawName.lastIndexOf('_'));
     }

@@ -17,17 +17,25 @@ import net.minecraft.world.World;
 import ru.mousecray.endmagic.entity.EntityCurseBush;
 import ru.mousecray.endmagic.init.EMBlocks;
 
+import javax.annotation.Nullable;
+
 public class RenderEntityCurseBush extends Render<EntityCurseBush> {
-	
+
     public RenderEntityCurseBush(RenderManager renderManager) {
         super(renderManager);
         shadowSize = 0.0F;
     }
-    
+
+    @Nullable
+    @Override
+    protected ResourceLocation getEntityTexture(EntityCurseBush entity) {
+        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+    }
+
     @Override
     public void doRender(EntityCurseBush entity, double x, double y, double z, float entityYaw, float partialTicks) {
         IBlockState iblockstate = EMBlocks.blockCurseBush.getDefaultState();
-    	World world = entity.getWorldObj();
+        World world = entity.getWorldObj();
         bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         GlStateManager.pushMatrix();
         GlStateManager.disableLighting();
@@ -36,14 +44,16 @@ public class RenderEntityCurseBush extends Render<EntityCurseBush> {
 
         if (renderOutlines) {
             GlStateManager.enableColorMaterial();
-            GlStateManager.enableOutlineMode(this.getTeamColor(entity));
+            GlStateManager.enableOutlineMode(getTeamColor(entity));
         }
 
         bufferbuilder.begin(7, DefaultVertexFormats.BLOCK);
         BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
-        GlStateManager.translate((float)(x - (double)blockpos.getX() - 0.5D), (float)(y - (double)blockpos.getY()), (float)(z - (double)blockpos.getZ() - 0.5D));
+        GlStateManager.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()),
+                (float) (z - (double) blockpos.getZ() - 0.5D));
         BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-        blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, bufferbuilder, false, MathHelper.getPositionRandom(entity.getOrigin()));
+        blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate,
+                blockpos, bufferbuilder, false, MathHelper.getPositionRandom(entity.getOrigin()));
         tessellator.draw();
 
         if (renderOutlines) {
@@ -54,10 +64,5 @@ public class RenderEntityCurseBush extends Render<EntityCurseBush> {
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
-    }
-
-    @Override
-    protected ResourceLocation getEntityTexture(EntityCurseBush entity) {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
     }
 }

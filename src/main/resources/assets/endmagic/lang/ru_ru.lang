@@ -6,10 +6,17 @@ tile.block_blast_furnace.name=Доменная печь
 tile.block_portal.name=Портал
 tile.block_top_mark.name=Блок верхней метки
 tile.block_curse_bush.name=Проклятый куст
+
 tile.dragon_coal_block.name=Блок драконьего угля
 tile.natural_coal_block.name=Блок природного угля
 tile.immortal_coal_block.name=Блок бессмертного угля
 tile.phantom_coal_block.name=Блок призрачного угля
+
+tile.dragon_steel_block.name=Блок драконьей стали
+tile.natural_steel_block.name=Блок природной стали
+tile.immortal_steel_block.name=Блок бессмертной стали
+tile.phantom_steel_block.name=Блок призрачной стали
+
 tile.enderite.name=Эндерит
 tile.ender_ore.name=Руда Края
 

@@ -1,9 +1,11 @@
 package ru.mousecray.endmagic.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
@@ -15,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.tileentity.TileBlastFurnace;
 
@@ -28,13 +31,17 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
         recipes.add(new BlastRecipe(coal, iron, steel));
     }
 
+    public void addRecipe(Block coal, Block iron, Block steel) {
+        addRecipe(Item.getItemFromBlock(coal), Item.getItemFromBlock(iron), Item.getItemFromBlock(steel));
+    }
+
     public Optional<Item> matchRecipe(Item coal, Item iron) {
         return Optional.ofNullable(indexed().get(Pair.of(coal, iron)));
     }
 
     private Map<Pair<Item, Item>, Item> indexed() {
         if (indexed == null) {
-            indexed = recipes
+            indexed = recipes()
                     .stream()
                     .map(r -> Pair.of(Pair.of(r.coal, r.iron), r.steel))
                     .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
@@ -44,7 +51,24 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
 
     private Map<Pair<Item, Item>, Item> indexed;
 
-    private List<BlastRecipe> recipes = new ArrayList<>();
+    private List<BlastRecipe> recipes;
+
+    private List<BlastRecipe> recipes() {
+        if (recipes == null) {
+            recipes = new ArrayList<>();
+            addRecipe(EMItems.dragonCoal, Items.IRON_INGOT, EMItems.dragonSteel);
+            addRecipe(EMItems.immortalCoal, Items.IRON_INGOT, EMItems.immortalSteel);
+            addRecipe(EMItems.naturalCoal, Items.IRON_INGOT, EMItems.naturalSteel);
+            addRecipe(EMItems.phantomCoal, Items.IRON_INGOT, EMItems.phantomSteel);
+
+            addRecipe(EMBlocks.dragonCoal, Blocks.IRON_BLOCK, EMBlocks.dragonSteel);
+            addRecipe(EMBlocks.immortalCoal, Blocks.IRON_BLOCK, EMBlocks.immortalSteel);
+            addRecipe(EMBlocks.naturalCoal, Blocks.IRON_BLOCK, EMBlocks.naturalSteel);
+            addRecipe(EMBlocks.phantomCoal, Blocks.IRON_BLOCK, EMBlocks.phantomSteel);
+        }
+        return recipes;
+    }
+
     private Set<Item> coal;
     private Set<Item> iron;
     private Set<Item> steel;
@@ -54,10 +78,6 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
         setResistance(8.0F);
         setHardness(4.0F);
         setSoundType(SoundType.STONE);
-        addRecipe(EMItems.dragonCoal, Items.IRON_INGOT, EMItems.dragonSteel);
-        addRecipe(EMItems.immortalCoal, Items.IRON_INGOT, EMItems.immortalSteel);
-        addRecipe(EMItems.naturalCoal, Items.IRON_INGOT, EMItems.naturalSteel);
-        addRecipe(EMItems.phantomCoal, Items.IRON_INGOT, EMItems.phantomSteel);
     }
 
     @Override
@@ -73,9 +93,9 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        if(!worldIn.isRemote){
+        if (!worldIn.isRemote) {
             TileBlastFurnace furnace = (TileBlastFurnace) worldIn.getTileEntity(pos);
-            InventoryHelper.dropInventoryItems(worldIn,pos,furnace.inv);
+            InventoryHelper.dropInventoryItems(worldIn, pos, furnace.inv);
         }
         super.breakBlock(worldIn, pos, state);
     }
@@ -87,7 +107,7 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
     }
 
     private Set<Item> getCollect(Function<BlastRecipe, Item> p) {
-        return recipes.stream().map(p).collect(Collectors.toSet());
+        return recipes().stream().map(p).collect(Collectors.toSet());
     }
 
     public Set<Item> coalSet() {

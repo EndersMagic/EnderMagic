@@ -19,6 +19,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -29,12 +30,19 @@ import ru.mousecray.endmagic.blocks.VariativeBlock;
 import ru.mousecray.endmagic.capability.chunk.CommonRuneChunkCapability;
 import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
 import ru.mousecray.endmagic.capability.chunk.RuneStorage;
+import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
-import ru.mousecray.endmagic.init.*;
+import ru.mousecray.endmagic.client.gui.GuiTypes;
+import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.init.EMEntities;
+import ru.mousecray.endmagic.init.EMItems;
+import ru.mousecray.endmagic.init.EMRecipes;
+import ru.mousecray.endmagic.init.util.ClassFieldSource;
+import ru.mousecray.endmagic.init.util.ListSource;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
-import ru.mousecray.endmagic.util.EMItemBlock;
+import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
@@ -45,11 +53,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CommonProxy implements IGuiHandler {
-
     protected List<Item> itemsToRegister = new LinkedList<>();
     protected List<Class<? extends TileEntity>> tilesToRegister = new LinkedList<>();
     protected List<Block> blocksToRegister = new LinkedList<>();
     protected List<EntityEntry> entityToRegister = new LinkedList<>();
+
 
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
@@ -90,7 +98,7 @@ public class CommonProxy implements IGuiHandler {
     }
 
     private void registerBlock(Block block) {
-        String name = NameAndTabUtils.getName(block);
+        String name = NameAndTabUtils.getNameForRegistry(block);
         block.setRegistryName(name);
         block.setUnlocalizedName(name);
         block.setCreativeTab(NameAndTabUtils.getCTab(block));
@@ -101,14 +109,15 @@ public class CommonProxy implements IGuiHandler {
         }
 
         blocksToRegister.add(block);
-        if (block instanceof VariativeBlock) registerItem(new EMItemBlock(block), block.getRegistryName().toString());
-        else registerItem(new ItemBlock(block), block.getRegistryName().toString());
+        if (block instanceof ITechnicalBlock) {
+            ItemBlock itemBlock = ((ITechnicalBlock) block).getCustomItemBlock(block);
+            if (itemBlock != null) registerItem(itemBlock, block.getRegistryName().toString());
+        } else registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }
 
     private void registerTile(Class<? extends TileEntity> tile) {
         tilesToRegister.add(tile);
     }
-
 
     private void registerItem(Item item, String name) {
         item.setRegistryName(name);
@@ -119,13 +128,18 @@ public class CommonProxy implements IGuiHandler {
     }
 
     private void registerItem(Item item) {
-        registerItem(item, NameAndTabUtils.getName(item));
+        registerItem(item, NameAndTabUtils.getNameForRegistry(item));
     }
 
     @SubscribeEvent
     public void registerBlocks(RegistryEvent.Register<Block> e) {
         blocksToRegister.forEach(e.getRegistry()::register);
         tilesToRegister.forEach(tile -> GameRegistry.registerTileEntity(tile, new ResourceLocation(EM.ID, tile.getSimpleName())));
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void lazyRegisterBlocks(RegistryEvent.Register<Block> e) {
+        e.getRegistry().register(new BlockVanillaEndstone());
     }
 
     @SubscribeEvent
@@ -156,10 +170,12 @@ public class CommonProxy implements IGuiHandler {
     @Nullable
     @Override
     public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-        if (id == blastFurnaceGui)
-            return new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z)));
-
-        return null;
+        switch (GuiTypes.values()[id]) {
+            case blastFurnaceGui:
+                return new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z)));
+            default:
+                return null;
+        }
     }
 
     @Nullable

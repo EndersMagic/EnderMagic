@@ -1,19 +1,25 @@
 package ru.mousecray.endmagic.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import ru.mousecray.endmagic.util.registry.NameProvider;
+import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
-public class BlockNamed extends Block implements NameProvider {
+public class BlockNamed extends Block implements IExtendedProperties {
+    private String name;
+
     public BlockNamed(String name) {
         super(Material.ROCK);
         this.name = name;
     }
 
-    private String name;
+    public BlockNamed(Material material, MapColor mapColor, String name) {
+        super(material, mapColor);
+        this.name = name;
+    }
 
     @Override
-    public String name() {
+    public String getCustomName() {
         return name;
     }
 }

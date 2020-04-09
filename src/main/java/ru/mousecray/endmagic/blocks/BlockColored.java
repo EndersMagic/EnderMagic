@@ -6,10 +6,10 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.ColoredModel;
-import ru.mousecray.endmagic.util.registry.IEMModel;
+import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
-public interface BlockColored extends IEMModel {
+public interface BlockColored extends IExtendedProperties {
 
     @Override
     default void registerModels(IModelRegistration modelRegistration) {

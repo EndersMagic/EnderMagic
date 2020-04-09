@@ -2,9 +2,8 @@ package ru.mousecray.endmagic.items.tools;
 
 import net.minecraft.item.ItemPickaxe;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.util.registry.NameProvider;
 
-public class EMPickaxe extends ItemPickaxe implements NameProvider, ItemTexturedTool {
+public class EMPickaxe extends ItemPickaxe implements ItemTexturedTool {
 
     private final String name;
     private final int color;
@@ -16,7 +15,7 @@ public class EMPickaxe extends ItemPickaxe implements NameProvider, ItemTextured
     }
 
     @Override
-    public String name() {
+    public String getCustomName() {
         return name;
     }
 
