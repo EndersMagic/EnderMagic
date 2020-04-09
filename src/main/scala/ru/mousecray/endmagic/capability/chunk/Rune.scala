@@ -1,10 +1,24 @@
 package ru.mousecray.endmagic.capability.chunk
 
 import ru.mousecray.endmagic.capability.chunk.RuneEffect.EmptyEffect
+import ru.mousecray.endmagic.capability.chunk.client._
 import ru.mousecray.endmagic.rune.RuneEffectRegistry
 import ru.mousecray.endmagic.util.Vec2i
 
-case class Rune(parts: Map[Vec2i, RunePart], runeEffect: RuneEffect = EmptyEffect, averageCreatingTime: Long = Long.MaxValue, startingTime: Long = -1) {
+case class Rune(parts: Map[Vec2i, RunePart], runeEffect: RuneEffect = EmptyEffect, averageCreatingTime: Long = Long.MaxValue, startingTime: Long = -1, quadsData: Set[QuadData] = Set()) {
+
+  def incrementQuadsData(quadsData: Set[QuadData], vec2i: Vec2i, part: RunePart, newParts: Map[Vec2i, RunePart]): Set[QuadData] = {
+    val (x, y) = (vec2i.x, vec2i.y)
+    val bottom = RuneBottomQuadData(x, y)
+    val (unnecessary, necessary) = Seq(
+      (new Vec2i(x - 1, y), LeftSideQuadData(x, y), RightSideQuadData(x - 1, y)),
+      (new Vec2i(x + 1, y), RightSideQuadData(x, y), LeftSideQuadData(x + 1, y)),
+      (new Vec2i(x, y - 1), DownSideQuadData(x, y), UpSideQuadData(x, y - 1)),
+      (new Vec2i(x, y + 1), UpSideQuadData(x, y), DownSideQuadData(x, y + 1))
+    ).partition(i => newParts.contains(i._1))
+    quadsData -- unnecessary.map(_._3) ++ necessary.map(_._2) + bottom
+  }
+
   def add(coord: Vec2i, runePart: RunePart, currentTimeMillis: Long): Rune = {
     if (parts.contains(coord))
       this
@@ -12,12 +26,12 @@ case class Rune(parts: Map[Vec2i, RunePart], runeEffect: RuneEffect = EmptyEffec
       val newParts = parts + (coord -> runePart)
       val newEffect = RuneEffectRegistry.findEffect(newParts)
 
-      if (parts.size == 1)
-        Rune(newParts, newEffect, Long.MaxValue, currentTimeMillis)
+      if (newParts.size == 1)
+        copy(newParts, newEffect, Long.MaxValue, currentTimeMillis, quadsData = incrementQuadsData(quadsData, coord, runePart, newParts))
       else if (runeEffect != EmptyEffect)
-        Rune(newParts, newEffect, (currentTimeMillis - startingTime) / parts.size)
+        copy(newParts, newEffect, (currentTimeMillis - startingTime) / parts.size, quadsData = incrementQuadsData(quadsData, coord, runePart, newParts))
       else
-        Rune(newParts, newEffect)
+        copy(newParts, newEffect, quadsData = incrementQuadsData(quadsData, coord, runePart, newParts))
     }
   }
 
