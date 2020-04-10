@@ -21,6 +21,7 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'scala'
 
 jar {
     manifest {
