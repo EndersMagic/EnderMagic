@@ -147,9 +147,9 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void init(FMLInitializationEvent event) {
-        GameRegistry.registerWorldGenerator(new WorldGenEnderTrees(), 10);
+        GameRegistry.registerWorldGenerator(new WorldGenEnderTrees(),  10);
         GameRegistry.registerWorldGenerator(new WorldGenEnderPlants(), 5);
-        GameRegistry.registerWorldGenerator(new WorldGenEnderOres(), 5);
+        GameRegistry.registerWorldGenerator(new WorldGenEnderOres(),   5);
     }
 
     public void postInit(FMLPostInitializationEvent event) {

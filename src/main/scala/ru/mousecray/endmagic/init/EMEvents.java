@@ -32,6 +32,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.GuiOldSaveLoadConfirm;
@@ -48,9 +49,11 @@ import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
+import ru.mousecray.endmagic.client.gui.GuiScreenTest;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
+import ru.mousecray.endmagic.items.Test;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
@@ -375,6 +378,14 @@ public class EMEvents {
         }
     }
 
+    @SubscribeEvent
+    public static  void onTestItem(PlayerInteractEvent.RightClickItem event)
+    {
+        if(event.getWorld().isRemote && event.getItemStack().getItem().getClass().isAssignableFrom(Test.class))
+        {
+            Minecraft.getMinecraft().displayGuiScreen(new GuiScreenTest());
+        }
+    }
     //TODO: Publishing standard ItemBow's method
     private static ItemStack findAmmo(EntityPlayer player) {
         if (EMUtils.isArrow(player.getHeldItem(EnumHand.OFF_HAND))) return player.getHeldItem(EnumHand.OFF_HAND);

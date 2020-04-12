@@ -107,7 +107,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         super.postInit(event);
 
         //Register new vanilla EndStone model
-        setModel(Blocks.END_STONE, 0, new ModelResourceLocation(new ResourceLocation("minecraft", "end_stone"), "normal"));
+         setModel(Blocks.END_STONE, 0, new ModelResourceLocation(new ResourceLocation("minecraft", "end_stone"), "normal"));
 
         //formatter:off
         //Add default book chapters
