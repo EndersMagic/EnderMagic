@@ -35,7 +35,8 @@ public class GroupIterator<A> implements ListIterator<List<A>> {
 
         if (accSize > max && list.hasPrevious()) {
             acc.remove(acc.size() - 1);
-            list.previous();
+            if (!acc.isEmpty())
+                list.previous();
         }
 
         return acc;
