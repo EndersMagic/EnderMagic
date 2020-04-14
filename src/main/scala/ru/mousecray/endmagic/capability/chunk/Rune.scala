@@ -9,7 +9,7 @@ case class Rune(parts: Map[Vec2i, RunePart], runeEffect: RuneEffect = EmptyEffec
 
   def incrementQuadsData(quadsData: Set[QuadData], vec2i: Vec2i, part: RunePart, newParts: Map[Vec2i, RunePart]): Set[QuadData] = {
     val (x, y) = (vec2i.x, vec2i.y)
-    val bottom = RuneBottomQuadData(x, y)
+    val bottom = BottomQuadData(x, y)
     val (unnecessary, necessary) = Seq(
       (new Vec2i(x - 1, y), LeftSideQuadData(x, y), RightSideQuadData(x - 1, y)),
       (new Vec2i(x + 1, y), RightSideQuadData(x, y), LeftSideQuadData(x + 1, y)),
