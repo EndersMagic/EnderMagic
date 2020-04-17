@@ -13,7 +13,7 @@ public class CommonRuneChunkCapability implements IRuneChunkCapability {
     public Map<BlockPos, RuneState> states = new HashMap<>();
 
     public RuneState getRuneState(BlockPos pos) {
-        return states.getOrDefault(pos, RuneState.empty);
+        return states.getOrDefault(pos, RuneState.empty());
     }
 
     public void setRuneState(BlockPos pos, RuneState state) {

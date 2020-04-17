@@ -34,7 +34,7 @@ class RuneTopLayerRenderer {
   private def getLoadedChunks =
     chunkMapping.get(mc.world.getChunkProvider).asInstanceOf[Long2ObjectMap[Chunk]].values().iterator()
 
-  @SubscribeEvent
+  //@SubscribeEvent
   def onWorldRender(e: RenderWorldLastEvent): Unit = {
     val p = mc.player
     import net.minecraft.client.renderer.GlStateManager

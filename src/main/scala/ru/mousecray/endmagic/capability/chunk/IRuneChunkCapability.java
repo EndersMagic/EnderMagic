@@ -11,7 +11,7 @@ public interface IRuneChunkCapability {
     void setRuneState(BlockPos pos, RuneState state);
 
     default void removeRuneState(BlockPos pos) {
-        setRuneState(pos, RuneState.empty);
+        setRuneState(pos, RuneState.empty());
     }
 
     Map<BlockPos, RuneState> existingRunes();
