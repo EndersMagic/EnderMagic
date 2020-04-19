@@ -30,8 +30,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 @SideOnly(Side.CLIENT)
 public class TilePhantomAvoidingBlockRenderer extends TileEntitySpecialRenderer<TilePhantomAvoidingBlockBase> {
-    @SuppressWarnings("unused")
-	private static BlockPos.MutableBlockPos tempPos = new BlockPos.MutableBlockPos();
+    private static BlockPos.MutableBlockPos tempPos = new BlockPos.MutableBlockPos();
 
     Minecraft mc = Minecraft.getMinecraft();
 
@@ -42,20 +41,23 @@ public class TilePhantomAvoidingBlockRenderer extends TileEntitySpecialRenderer<
 
         IBlockState blockState = te.getWorld().getBlockState(te.getPos());
         Block block = blockState.getBlock();
-        if(blockState.getPropertyKeys().contains(LOG_AXIS)){
+        if (blockState.getPropertyKeys().contains(LOG_AXIS)) {
             BlockLog.EnumAxis axis = blockState.getValue(LOG_AXIS);
-            if(axis==BlockLog.EnumAxis.X){
+            if (axis == BlockLog.EnumAxis.X) {
                 glTranslated(x + 28f / 16, y, z);
                 glScaled(4, 4, 4);
-                GlStateManager.rotate(90,0,0,1);
-            }else if(axis==BlockLog.EnumAxis.Z){
+                GlStateManager.rotate(90, 0, 0, 1);
+            } else if (axis == BlockLog.EnumAxis.Z) {
                 glTranslated(x, y + 1, z - 12f / 16);
                 glScaled(4, 4, 4);
-                GlStateManager.rotate(90,1,0,0);
-            }else if(axis==BlockLog.EnumAxis.Y){
+                GlStateManager.rotate(90, 1, 0, 0);
+            } else if (axis == BlockLog.EnumAxis.Y || axis == BlockLog.EnumAxis.NONE) {
                 glTranslated(x, y - 12f / 16, z);
                 glScaled(4, 4, 4);
             }
+        } else {
+            glTranslated(x, y - 12f / 16, z);
+            glScaled(4, 4, 4);
         }
         double alpha1 = (double) (TilePhantomAvoidingBlockBase.maxAvoidTicks - (te.avoidTicks + partialTicks * te.increment)) / TilePhantomAvoidingBlockBase.maxAvoidTicks;
         //System.out.println(alpha1);
