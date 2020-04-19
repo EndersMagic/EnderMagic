@@ -5,7 +5,13 @@ import ru.mousecray.endmagic.capability.chunk.client._
 import ru.mousecray.endmagic.rune.RuneEffectRegistry
 import ru.mousecray.endmagic.util.Vec2i
 
-case class Rune(parts: Map[Vec2i, RunePart], runeEffect: RuneEffect = EmptyEffect, averageCreatingTime: Long = Long.MaxValue, startingTime: Long = -1, quadsData: Set[QuadData] = Set()) {
+case class Rune(parts: Map[Vec2i, RunePart], runeEffect: RuneEffect = EmptyEffect, averageCreatingTime: Long = Long.MaxValue, startingTime: Long = -1,
+                topQuadData: TopQuadsMatrix = TopQuadsMatrix.SingleArea,
+                quadsData: Set[QuadData] = Set()
+               ) {
+
+  def incrementTopQuadsData(topQuadData: TopQuadsMatrix, vec2i: Vec2i, part: RunePart): TopQuadsMatrix =
+    topQuadData.replace(vec2i, topQuadData.get(vec2i).splitBy(vec2i))
 
   def incrementQuadsData(quadsData: Set[QuadData], vec2i: Vec2i, part: RunePart, newParts: Map[Vec2i, RunePart]): Set[QuadData] = {
     val (x, y) = (vec2i.x, vec2i.y)
@@ -27,11 +33,11 @@ case class Rune(parts: Map[Vec2i, RunePart], runeEffect: RuneEffect = EmptyEffec
       val newEffect = RuneEffectRegistry.findEffect(newParts)
 
       if (newParts.size == 1)
-        copy(newParts, newEffect, Long.MaxValue, currentTimeMillis, quadsData = incrementQuadsData(quadsData, coord, runePart, newParts))
+        copy(newParts, newEffect, Long.MaxValue, currentTimeMillis, topQuadData = incrementTopQuadsData(topQuadData, coord, runePart), quadsData = incrementQuadsData(quadsData, coord, runePart, newParts))
       else if (runeEffect != EmptyEffect)
-        copy(newParts, newEffect, (currentTimeMillis - startingTime) / parts.size, quadsData = incrementQuadsData(quadsData, coord, runePart, newParts))
+        copy(newParts, newEffect, (currentTimeMillis - startingTime) / parts.size, topQuadData = incrementTopQuadsData(topQuadData, coord, runePart), quadsData = incrementQuadsData(quadsData, coord, runePart, newParts))
       else
-        copy(newParts, newEffect, quadsData = incrementQuadsData(quadsData, coord, runePart, newParts))
+        copy(newParts, newEffect, topQuadData = incrementTopQuadsData(topQuadData, coord, runePart), quadsData = incrementQuadsData(quadsData, coord, runePart, newParts))
     }
   }
 

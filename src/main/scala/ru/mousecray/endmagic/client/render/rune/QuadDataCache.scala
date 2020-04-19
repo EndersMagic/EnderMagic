@@ -29,6 +29,8 @@ object QuadDataCache {
       val deepY = -standard_pixel * directionVec.getY
       val deepZ = -standard_pixel * directionVec.getZ
       data match {
+        case TopQuadData(x1, y1, x2, y2) =>
+          richQuad.trivialSliceRect(x1.toFloat / 16, y1.toFloat / 16, (x2 + 1).toFloat / 16, (y2 + 1).toFloat / 16).toBakedQuad
         case BottomQuadData(x, y) =>
           val center1 = richQuad
             .trivialSliceRect(

@@ -26,6 +26,7 @@ class RuneState private(protected val runesOnSides: Array[Rune]) {
   val visibleAtFace: ((QuadData, EnumFacing)) => EnumFacing = {
     case (_: BottomQuadData, runeSide) => runeSide
     case (_: ElongateQuadData, runeSide) => runeSide
+    case (_: TopQuadData, runeSide) => runeSide
     case (_: LeftSideQuadData, _) => null
     case (_: RightSideQuadData, _) => null
     case (_: DownSideQuadData, _) => null
@@ -37,7 +38,7 @@ class RuneState private(protected val runesOnSides: Array[Rune]) {
       EnumFacing.values()
         .map(side => side -> runesOnSides.apply(side.ordinal()))
         .flatMap { case (side, rune) =>
-          rune.quadsData.map(_ -> side)
+          rune.quadsData.map(_ -> side) ++ rune.topQuadData.iterate.map(_ -> side)
         }
         .toSet
         .groupBy(visibleAtFace)
