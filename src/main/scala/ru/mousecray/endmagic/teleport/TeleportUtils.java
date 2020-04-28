@@ -47,6 +47,12 @@ public class TeleportUtils {
             return entity;
         }
 
+        boolean prevInvulnerableDimensionChange=false;
+        if(entity instanceof EntityPlayer) {
+            prevInvulnerableDimensionChange=((EntityPlayerMP)entity).invulnerableDimensionChange;
+            ((EntityPlayerMP)entity).invulnerableDimensionChange = true;
+        }
+
         MinecraftServer server = entity.getServer();
         int sourceDim = entity.world.provider.getDimension();
 
@@ -64,6 +70,10 @@ public class TeleportUtils {
         passengerHelper.teleport(server, sourceDim, dimension, xCoord, yCoord, zCoord, yaw, pitch);
         passengerHelper.remountRiders();
         passengerHelper.updateClients();
+
+        if(entity instanceof EntityPlayer)
+            ((EntityPlayerMP)entity).invulnerableDimensionChange = prevInvulnerableDimensionChange;
+
 
         return rider.entity;
     }
