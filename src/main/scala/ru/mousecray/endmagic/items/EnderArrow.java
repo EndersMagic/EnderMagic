@@ -3,6 +3,7 @@ package ru.mousecray.endmagic.items;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,11 @@ public class EnderArrow extends ItemArrow implements ItemOneWhiteEMTextured {
 		return enchant <= 0 ? false : this.getClass() == EnderArrow.class;
 	}
 
+	@Override
+	public EntityArrow createArrow(World worldIn, ItemStack stack, EntityLivingBase shooter)
+	{
+		return new EntityEnderArrow(worldIn, shooter);
+	}
 
 	@Override
 	public String texture() {

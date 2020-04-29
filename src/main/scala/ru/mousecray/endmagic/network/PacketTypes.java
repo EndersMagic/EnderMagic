@@ -5,8 +5,8 @@ import ru.mousecray.endmagic.EM;
 
 public enum PacketTypes {
     UPDATE_COMPAS_TARGET,
-    UPDATE_PHANROM_AVOIDINCAPABILITY;
-
+    UPDATE_PHANROM_AVOIDINCAPABILITY,
+    CHANDE_DEMENSION;
     public int id = ordinal() + 1;
 
     public static PacketTypes valueOf(int id) {

@@ -23,7 +23,6 @@ public class Test extends Item {
 		{
 			if (playerIn.dimension == 0) playerIn.changeDimension(1);
 			else if (playerIn.dimension == 1) playerIn.changeDimension(0);
-
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
 	}

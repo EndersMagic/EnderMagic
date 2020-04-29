@@ -17,10 +17,11 @@ public class GuiScreenTest extends GuiScreen
     private static int bookFullWidth = 256;
     private static int bookFullHeight = 192;
     GuiButtonExt buttonTp;
+
     @Override
     public void initGui()
     {
-        buttonTp = new GuiButtonExt(0, width / 2, height / 2, "Teleprt to anower demension");
+        buttonTp = new GuiButtonExt(0, width / 2 - 100, height / 2, "Teleprt to anower demension");
         buttonList.add(buttonTp);
         super.initGui();
     }

@@ -22,8 +22,8 @@ public class ClientPacketHandler implements ICustomPacketHandler.IClientPacketHa
                 WorldClient world = Minecraft.getMinecraft().world;
                 if (packetCustom.readInt() == world.provider.getDimension()) {
                     PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
-                    if (capability != null) {
-
+                    if (capability != null)
+                    {
                         PhantomAvoidingGroup newGroup = new PhantomAvoidingGroup();
                         newGroup.avoidingStarted = packetCustom.readBoolean();
                         newGroup.avoidTicks = packetCustom.readInt();
