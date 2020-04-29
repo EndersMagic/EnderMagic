@@ -9,7 +9,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.EM;
 
-public class Test extends Item {
+public class Test extends Item
+{
 	
 	public Test() {
 		setMaxStackSize(1);

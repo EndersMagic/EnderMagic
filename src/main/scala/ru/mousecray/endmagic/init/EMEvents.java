@@ -321,10 +321,11 @@ public class EMEvents {
     @SubscribeEvent
     public static  void onTestItem(PlayerInteractEvent.RightClickItem event)
     {
+        /*
         if(event.getWorld().isRemote && event.getItemStack().getItem().getClass().isAssignableFrom(Test.class))
         {
             Minecraft.getMinecraft().displayGuiScreen(new GuiScreenTest());
-        }
+        }*/
     }
     //TODO: Publishing standard ItemBow's method
     private static ItemStack findAmmo(EntityPlayer player) {
