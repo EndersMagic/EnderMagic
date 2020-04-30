@@ -3,7 +3,6 @@ package ru.mousecray.endmagic.util.registry;
 import net.minecraft.creativetab.CreativeTabs;
 import ru.mousecray.endmagic.EM;
 
-import javax.annotation.Nullable;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
@@ -48,7 +47,6 @@ public class NameAndTabUtils {
     }
 
     //getCreativeTab
-    @Nullable
     public static CreativeTabs getCTab(Object c) {
         if (c instanceof IExtendedProperties) return ((IExtendedProperties) c).getCustomCreativeTab();
         else return EM.EM_CREATIVE;

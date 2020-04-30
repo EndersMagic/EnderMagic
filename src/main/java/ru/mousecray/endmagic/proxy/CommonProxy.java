@@ -14,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -31,6 +30,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
+import ru.mousecray.endmagic.init.EMBiomes;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMEntities;
 import ru.mousecray.endmagic.init.EMItems;
@@ -58,7 +58,7 @@ public class CommonProxy implements IGuiHandler {
     protected List<Class<? extends TileEntity>> tilesToRegister = new LinkedList<>();
     protected List<Block> blocksToRegister = new LinkedList<>();
     protected List<EntityEntry> entityToRegister = new LinkedList<>();
-	protected List<Biome> biomesToRegister = new LinkedList();
+	protected List<Biome> biomesToRegister = new LinkedList<>();
 
 
     public void preInit(FMLPreInitializationEvent event) {
@@ -140,11 +140,11 @@ public class CommonProxy implements IGuiHandler {
     }
     
     private void registerBiome(Biome biome, String name) {
-    	if (biome instanceof EMBiome &&) {
-        	registerBiome(biome, NameAndTabUtils.getName(name));
+    	if (biome instanceof EMBiome) {
+        	registerBiome(biome);
             biome.setRegistryName(name);
             biomesToRegister.add(biome);
-            BiomeDictionary.addTypes(biome, ((EMBiome)biome).getForgeTypeForBiome());
+            BiomeDictionary.addTypes(biome, ((EMBiome)biome).getForgeTypesForBiome().toArray(new BiomeDictionary.Type[0]));
     	}
     }
 
