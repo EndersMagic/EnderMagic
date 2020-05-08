@@ -15,6 +15,15 @@ class Rune {
   val recessQuadsMatrix: Array[Array[Recess]] = new Array[Array[Recess]](16).map(_ => new Array[Recess](16))
   val topQuadMatrix: Array[Array[TopQuadData]] = new Array[Array[TopQuadData]](16).map(_ => new Array[TopQuadData](16))
   val topQuadData = new mutable.HashSet[TopQuadData]()
+
+  {
+    val data = TopQuadData(0, 0, 15, 15)
+    topQuadData += data
+    for {
+      x <- 0 to 15
+      y <- 0 to 15
+    } topQuadMatrix(x)(y) = data
+  }
 }
 
 object Rune {

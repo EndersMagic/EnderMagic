@@ -34,7 +34,7 @@ class RuneState {
 
   def incrementTopQuadsData(rune: Rune, vec2i: Vec2i, part: RunePart): Unit = {
     val prevTopPiece = rune.topQuadMatrix(vec2i.x)(vec2i.y)
-    val newTopPieces: Set[TopQuadData] = prevTopPiece.splitBy(vec2i)
+    val newTopPieces = prevTopPiece.splitBy(vec2i)
     newTopPieces.foreach(piece =>
       for {
         x <- piece.x1 to piece.x2

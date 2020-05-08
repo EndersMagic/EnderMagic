@@ -5,21 +5,22 @@ import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.util.{EnumFacing, ResourceLocation}
-import net.minecraftforge.client.model.pipeline.{BlockInfoLense, IVertexConsumer, VertexLighterFlat}
+import net.minecraftforge.client.model.pipeline.IVertexConsumer
 import ru.mousecray.endmagic.EM
 import ru.mousecray.endmagic.client.render.rune.VolumetricBakedQuad._
-import ru.mousecray.endmagic.rune.RuneIndex
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA
 
 import scala.language.implicitConversions
 import scala.util.Random
 
 class VolumetricBakedQuad(face: EnumFacing, sides: Map[EnumFacing, BakedQuad]) extends BakedQuad(
-  Array(), 0, face, atlasSpriteRune, sides.headOption.exists(_._2.shouldApplyDiffuseLighting()), sides.headOption.map(_._2.getFormat).getOrElse(DefaultVertexFormats.BLOCK)
+  new Array(15 * 10), 0, face, atlasSpriteRune, sides.headOption.exists(_._2.shouldApplyDiffuseLighting()), sides.headOption.map(_._2.getFormat).getOrElse(DefaultVertexFormats.BLOCK)
 ) {
 
 
   override def pipe(consumer: IVertexConsumer): Unit = {
+    sides.get(face).foreach(_.pipe(consumer))
+    /*
     consumer match {
       case consumer: VertexLighterFlat =>
         val blockInfo = BlockInfoLense.get(consumer)
@@ -36,7 +37,7 @@ class VolumetricBakedQuad(face: EnumFacing, sides: Map[EnumFacing, BakedQuad]) e
           sides.get(face).foreach(_.pipe(consumer))
       case _ =>
         sides.get(face).foreach(_.pipe(consumer))
-    }
+    }*/
   }
 }
 

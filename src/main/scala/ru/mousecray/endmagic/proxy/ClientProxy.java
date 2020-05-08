@@ -153,7 +153,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         BookApi.addStandartChapter("blocks", "portal_marker", new RecipeComponent(new ItemStack(EMBlocks.blockTopMark)));
 
         BookApi.addStandartChapter("plants", "ender_grass",
-                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/ender_grass.png"), I18n.format("")));
+                new ImageComponent(new ResourceLocation(EM.ID, "textures/book/ender_grass.png"), ""));
         BookApi.addStandartChapter("plants", "purple_pearl_sprout",
                 new ImageComponent(new ResourceLocation(EM.ID, "textures/book/purple_pearl_sprout.png"), ""));
         BookApi.addStandartChapter("plants", "curse_bush");
