@@ -13,6 +13,7 @@ class RuneState {
   def getRuneAtSide(side: EnumFacing): Rune = runes(side)
 
   private val runes = new mutable.HashMap[EnumFacing, Rune]()
+  EnumFacing.values().foreach(runes += _ -> new Rune)
 
   def addRunePart(side: EnumFacing, coord: Vec2i, runePart: RunePart, currentTimeMillis: Long): Unit = {
     val rune = runes.getOrElseUpdate(side, new Rune)
@@ -89,19 +90,19 @@ class RuneState {
     case (_: UpSideQuadData, _) => null
   }
 
-  def foreachRuneQuadsData(side: EnumFacing, f: (QuadData,EnumFacing) => Unit): Unit = {
+  def foreachRuneQuadsData(side: EnumFacing, f: (QuadData, EnumFacing) => Unit): Unit = {
     if (side == null) {
       runes.foreach { case (sourceSide, rune) =>
         rune.parts.keys.foreach { c =>
           val recess = rune.recessQuadsMatrix(c.x)(c.y)
           if (recess.left != null)
-            f(recess.left,sourceSide)
+            f(recess.left, sourceSide)
           if (recess.right != null)
-            f(recess.right,sourceSide)
+            f(recess.right, sourceSide)
           if (recess.down != null)
-            f(recess.down,sourceSide)
+            f(recess.down, sourceSide)
           if (recess.up != null)
-            f(recess.up,sourceSide)
+            f(recess.up, sourceSide)
         }
       }
     } else
@@ -109,9 +110,9 @@ class RuneState {
         rune.parts.keys.foreach { c =>
           val recess = rune.recessQuadsMatrix(c.x)(c.y)
           if (recess.bottom != null)
-            f(recess.bottom,side)
+            f(recess.bottom, side)
         }
-        rune.topQuadData.foreach(f(_,side))
+        rune.topQuadData.foreach(f(_, side))
       }
   }
 
