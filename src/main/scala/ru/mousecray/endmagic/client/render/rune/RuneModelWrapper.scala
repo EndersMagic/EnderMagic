@@ -3,7 +3,7 @@ package ru.mousecray.endmagic.client.render.rune
 import java.util
 
 import net.minecraft.block.state.IBlockState
-import net.minecraft.client.renderer.block.model.{BakedQuad, IBakedModel}
+import net.minecraft.client.renderer.block.model.{BakedQuad, IBakedModel, ModelResourceLocation}
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.Vec3i
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelDelegate
@@ -11,7 +11,7 @@ import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
 
 import scala.collection.mutable
 
-class RuneModelWrapper(baseModel: IBakedModel) extends BakedModelDelegate(baseModel) {
+class RuneModelWrapper(baseModel: IBakedModel, resource: ModelResourceLocation) extends BakedModelDelegate(baseModel) {
 
   import collection.JavaConverters._
 
@@ -45,16 +45,20 @@ class RuneModelWrapper(baseModel: IBakedModel) extends BakedModelDelegate(baseMo
         .mapValues(findEdge)
 
 
-      val baseQuads = super.getQuads(state, side, rand).asScala
+      val baseQuadsJava = super.getQuads(state, side, rand)
+      val baseQuads = baseQuadsJava.asScala
 
-      ((if (baseQuads.nonEmpty) {
-        val edge = findEdge(baseQuads)
-        baseQuads.filter(_ != edge)
-      } else
-        baseQuads) :+ new VolumetricBakedQuad(side, allSideQuads))
-        .toList
-        .asJava
-        .asInstanceOf[util.List[BakedQuad]]
+      val value = allSideQuads.get(side).map(_ =>
+        ((if (baseQuads.nonEmpty) {
+          val edge = findEdge(baseQuads)
+          baseQuads.filter(_ != edge)
+        } else
+          baseQuads) :+ new VolumetricBakedQuad(side, allSideQuads))
+          .toList
+          .asJava
+          .asInstanceOf[util.List[BakedQuad]]
+      ).getOrElse(baseQuadsJava)
+      value
     })
   }
 

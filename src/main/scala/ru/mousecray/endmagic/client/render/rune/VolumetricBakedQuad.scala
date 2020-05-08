@@ -14,7 +14,7 @@ import scala.language.implicitConversions
 import scala.util.Random
 
 class VolumetricBakedQuad(face: EnumFacing, sides: Map[EnumFacing, BakedQuad]) extends BakedQuad(
-  new Array(15 * 10), 0, face, atlasSpriteRune, sides.headOption.exists(_._2.shouldApplyDiffuseLighting()), sides.headOption.map(_._2.getFormat).getOrElse(DefaultVertexFormats.BLOCK)
+  sides.get(face).map(_.getVertexData).getOrElse(new Array(0)), 0, face, atlasSpriteRune, sides.headOption.exists(_._2.shouldApplyDiffuseLighting()), sides.headOption.map(_._2.getFormat).getOrElse(DefaultVertexFormats.BLOCK)
 ) {
 
 
