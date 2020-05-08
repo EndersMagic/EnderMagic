@@ -77,7 +77,6 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         registerTexture(new ResourceLocation(EM.ID, "blocks/rune"));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
@@ -218,8 +217,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
             if (bakedModelOverridesR.containsKey(key))
                 e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
 
-            if (!resource.getVariant().equals("inventory")) {
-                e.getModelRegistry().putObject(resource, new RuneModelWrapper(e.getModelRegistry().getObject(resource)));
+            if (!resource.getVariant().contains("inventory")) {
+                e.getModelRegistry().putObject(resource, new RuneModelWrapper(e.getModelRegistry().getObject(resource), resource));
             }
         }
     }
