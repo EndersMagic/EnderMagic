@@ -8,6 +8,7 @@ import ru.mousecray.endmagic.util.Java2Scala._
 import ru.mousecray.endmagic.util.Vec2i
 
 import scala.collection.JavaConverters._
+import scala.collection.mutable
 
 class RuneStorage extends Capability.IStorage[IRuneChunkCapability] {
 
@@ -24,23 +25,30 @@ class RuneStorage extends Capability.IStorage[IRuneChunkCapability] {
       case instanceNBT: NBTTagCompound =>
         instance.existingRunes().clear()
         instanceNBT.getKeySet.forEach { key: String =>
-          instance.setRuneState(string2pos(key), nbtToRuneState(instanceNBT.getCompoundTag(key)))
+          val runeStateNbt = instanceNBT.getCompoundTag(key)
+          instance.removeRuneState(string2pos(key))
+          val state = instance.createRuneStateIfAbsent(string2pos(key))
+          runeStateNbt.getKeySet.asScala.foreach {
+            sideName =>
+              val side = EnumFacing.byName(sideName)
+              val runeNbt = runeStateNbt.getCompoundTag(sideName)
+              val rune = state.getRuneAtSide(side)
+              rune.averageCreatingTime = runeNbt.getLong("averageCreatingTime")
+              rune.startingTime = runeNbt.getLong("startingTime")
+              rune.runeEffect = nbtToRuneEffect(runeNbt.getTag("runeEffect"))
+              rune.parts.clear()
+              rune.parts ++= nbtToParts(runeNbt.getCompoundTag("parts"))
+          }
         }
       case _ =>
     }
 
 
-  def nbtToRuneState(compound: NBTTagCompound): RuneState = {
-    val set = compound.getKeySet.asScala.map(EnumFacing.byName)
-    set.foldLeft(RuneState.empty) { case (state, side) => state.withRune(side, nbtToRune(compound.getCompoundTag(side.getName))) }
+  def nbtToParts(compound: NBTTagCompound): mutable.HashMap[Vec2i, RunePart] = {
+    val r = new mutable.HashMap[Vec2i, RunePart]()
+    compound.getKeySet.asScala.foreach(key => r += string2vec2i(key) -> nbtToTunePart(compound.getTag(key)))
+    r
   }
-
-
-  def nbtToParts(compound: NBTTagCompound): Map[Vec2i, RunePart] =
-    compound.getKeySet.asScala.map(key => string2vec2i(key) -> nbtToTunePart(compound.getTag(key))).toMap
-
-
-  def nbtToRune(compound: NBTTagCompound): Rune = Rune(nbtToParts(compound.getCompoundTag("parts")), nbtToRuneEffect(compound.getTag("runeEffect")), compound.getLong("averageCreatingTime"), compound.getLong("startingTime"))
 
 
   def runeToNBT(rune: Rune): NBTBase = {

@@ -27,10 +27,13 @@ class VolumetricBakedQuad(face: EnumFacing, sides: Map[EnumFacing, BakedQuad]) e
         val side = face
         val capability = RuneIndex.getCapability(Minecraft.getMinecraft.world, pos)
 
-        val quadData = capability.getRuneState(pos).runeQuadsData
-        quadData.get(face)
-          .map(_.map { case (data, sourceSide) => QuadDataCache.getQuadFor(data, sides(sourceSide)) }.toSeq)
-          .getOrElse(sides.get(face).toSeq).foreach(_.pipe(consumer))
+        val maybeState = capability.getRuneState(pos)
+        if (maybeState.isPresent)
+          maybeState.get().foreachRuneQuadsData(face, { case (data, sourceSide) =>
+            QuadDataCache.getQuadFor(data, sides(sourceSide)).pipe(consumer)
+          })
+        else
+          sides.get(face).foreach(_.pipe(consumer))
       case _ =>
         sides.get(face).foreach(_.pipe(consumer))
     }

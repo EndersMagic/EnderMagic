@@ -12,13 +12,16 @@ import ru.mousecray.endmagic.util.Vec2i;
 
 import javax.annotation.Nonnull;
 
+import java.util.Optional;
+
 import static ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider.*;
 
 public class RuneIndex {
     public static Rune getRune(World world, BlockPos pos, @Nonnull EnumFacing side) {
         return getCapability(world, pos)
                 .getRuneState(pos)
-                .getRuneAtSide(side);
+                .map(rs -> rs.getRuneAtSide(side))
+                .orElse(null);
     }
 
     public static void removeRune(World world, BlockPos pos) {
@@ -34,8 +37,8 @@ public class RuneIndex {
 
     public static void addRunePart(World world, BlockPos pos, @Nonnull EnumFacing side, Vec2i coord, RunePart part) {
         IRuneChunkCapability capability = getCapability(world, pos);
-        RuneState runeState = capability.getRuneState(pos);
-        capability.setRuneState(pos, runeState.withRune(side, runeState.getRuneAtSide(side).add(coord, part, System.currentTimeMillis())));
+        RuneState runeState = capability.createRuneStateIfAbsent(pos);
+        runeState.addRunePart(side, coord, part, System.currentTimeMillis());
         EM.proxy.refreshChunk(world, pos);
         if (!world.isRemote)
             PacketTypes.ADDED_RUNE_PART.packet()

@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.capability.chunk;
 
 import net.minecraft.util.math.BlockPos;
 import ru.mousecray.endmagic.EM;
+import scala.Option;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,16 +13,16 @@ public class CommonRuneChunkCapability implements IRuneChunkCapability {
     //todo: optimise by positions limit: may encode to long key
     public Map<BlockPos, RuneState> states = new HashMap<>();
 
-    public RuneState getRuneState(BlockPos pos) {
-        return states.getOrDefault(pos, RuneState.empty());
+    public Optional<RuneState> getRuneState(BlockPos pos) {
+        return Optional.ofNullable(states.get(pos));
     }
 
-    public void setRuneState(BlockPos pos, RuneState state) {
-        states.put(pos, state);
+    public RuneState createRuneStateIfAbsent(BlockPos pos) {
+        return states.computeIfAbsent(pos, __ -> new RuneState());
     }
 
     public void removeRuneState(BlockPos pos) {
-            states.remove(pos);
+        states.remove(pos);
     }
 
     @Override

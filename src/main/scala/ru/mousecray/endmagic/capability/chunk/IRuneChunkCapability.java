@@ -1,18 +1,18 @@
 package ru.mousecray.endmagic.capability.chunk;
 
 import net.minecraft.util.math.BlockPos;
+import scala.Option;
 
 import java.util.Map;
+import java.util.Optional;
 
 public interface IRuneChunkCapability {
 
-    RuneState getRuneState(BlockPos pos);
+    Optional<RuneState> getRuneState(BlockPos pos);
 
-    void setRuneState(BlockPos pos, RuneState state);
+    RuneState createRuneStateIfAbsent(BlockPos pos);
 
-    default void removeRuneState(BlockPos pos) {
-        setRuneState(pos, RuneState.empty());
-    }
+    void removeRuneState(BlockPos pos);
 
     Map<BlockPos, RuneState> existingRunes();
 
