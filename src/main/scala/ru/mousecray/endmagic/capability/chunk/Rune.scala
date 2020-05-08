@@ -17,12 +17,16 @@ class Rune {
   val topQuadData = new mutable.HashSet[TopQuadData]()
 
   {
-    val data = TopQuadData(0, 0, 15, 15)
-    topQuadData += data
-    for {
-      x <- 0 to 15
-      y <- 0 to 15
-    } topQuadMatrix(x)(y) = data
+    val primalCount = 4
+    val primalPieceWidth = 16 / primalCount
+    for (i <- 0 until primalCount) {
+      val data = TopQuadData(i * primalPieceWidth, 0, i * primalPieceWidth + primalPieceWidth - 1, 15)
+      topQuadData += data
+      for {
+        x <- data.x1 to data.x2
+        y <- data.y1 to data.y2
+      } topQuadMatrix(x)(y) = data
+    }
   }
 }
 
