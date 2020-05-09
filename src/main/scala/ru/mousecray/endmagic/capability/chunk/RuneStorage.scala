@@ -4,6 +4,8 @@ import net.minecraft.nbt.{NBTBase, NBTTagByte, NBTTagCompound}
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.fml.common.FMLCommonHandler
+import net.minecraftforge.fml.relauncher.Side
 import ru.mousecray.endmagic.util.Java2Scala._
 import ru.mousecray.endmagic.util.Vec2i
 
@@ -33,7 +35,10 @@ class RuneStorage extends Capability.IStorage[IRuneChunkCapability] {
               val newRune = newState.getRuneAtSide(side)
               val nbtParts = runeNbt.getCompoundTag("parts")
               nbtParts.getKeySet.asScala.foreach(key =>
-                newState.addRunePart(side, string2vec2i(key), nbtToTunePart(nbtParts.getTag(key)), 0)
+                if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
+                  newState.addRunePart(side, string2vec2i(key), nbtToTunePart(nbtParts.getTag(key)), 0)
+                else
+                  newRune.parts += string2vec2i(key) -> nbtToTunePart(nbtParts.getTag(key))
               )
               newRune.averageCreatingTime = runeNbt.getLong("averageCreatingTime")
               newRune.startingTime = runeNbt.getLong("startingTime")
