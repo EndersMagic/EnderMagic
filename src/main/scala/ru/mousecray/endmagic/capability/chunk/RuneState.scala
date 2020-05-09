@@ -12,18 +12,19 @@ import scala.collection.JavaConverters._
 import scala.collection.mutable
 
 class RuneState {
+
   def getRuneAtSide(side: EnumFacing): Rune = runes(side)
 
   private val runes = new mutable.HashMap[EnumFacing, Rune]()
   EnumFacing.values().foreach(runes += _ -> new Rune)
 
   def addRunePart(side: EnumFacing, coord: Vec2i, runePart: RunePart, currentTimeMillis: Long): Unit = {
-    val rune = runes.getOrElseUpdate(side, new Rune)
+    val rune = runes(side)
     if (!rune.parts.contains(coord)) {
       rune.parts += (coord -> runePart)
       rune.runeEffect = RuneEffectRegistry.findEffect(rune.parts.asJava)
 
-      if(FMLCommonHandler.instance().getEffectiveSide==Side.CLIENT) {
+      if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT) {
         incrementTopQuadsData(rune, coord, runePart)
         incrementQuadsData(rune, coord, runePart)
       }
@@ -58,25 +59,25 @@ class RuneState {
 
     targetRecess.bottom = BottomQuadData(x, y)
 
-    val leftRecess = rune.recessQuadsMatrix(x - 1)(y)
+    val leftRecess = rune.recessQuadsMatrix(x - 1, y)
     if (leftRecess != null)
       leftRecess.right = null
     else
       targetRecess.left = LeftSideQuadData(x, y)
 
-    val rightRecess = rune.recessQuadsMatrix(x + 1)(y)
+    val rightRecess = rune.recessQuadsMatrix(x + 1, y)
     if (rightRecess != null)
       rightRecess.left = null
     else
       targetRecess.right = RightSideQuadData(x, y)
 
-    val downRecess = rune.recessQuadsMatrix(x)(y - 1)
+    val downRecess = rune.recessQuadsMatrix(x, y - 1)
     if (downRecess != null)
       downRecess.up = null
     else
       targetRecess.down = DownSideQuadData(x, y)
 
-    val upRecess = rune.recessQuadsMatrix(x)(y - 1)
+    val upRecess = rune.recessQuadsMatrix(x, y - 1)
     if (upRecess != null)
       upRecess.down = null
     else
@@ -87,7 +88,7 @@ class RuneState {
     if (side == null) {
       runes.foreach { case (sourceSide, rune) =>
         rune.parts.keys.foreach { c =>
-          val recess = rune.recessQuadsMatrix(c.x)(c.y)
+          val recess = rune.recessQuadsMatrix(c.x, c.y)
           if (recess.left != null)
             f(recess.left, sourceSide)
           if (recess.right != null)
@@ -101,7 +102,7 @@ class RuneState {
     } else
       runes.get(side).foreach { rune =>
         rune.parts.keys.foreach { c =>
-          val recess = rune.recessQuadsMatrix(c.x)(c.y)
+          val recess = rune.recessQuadsMatrix(c.x, c.y)
           if (recess.bottom != null)
             f(recess.bottom, side)
         }

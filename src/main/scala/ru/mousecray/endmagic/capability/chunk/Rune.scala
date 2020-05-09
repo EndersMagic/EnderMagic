@@ -14,7 +14,19 @@ class Rune {
   var runeEffect: RuneEffect = EmptyEffect
   var averageCreatingTime: Long = Long.MaxValue
   var startingTime: Long = -1
-  val recessQuadsMatrix: Array[Array[Recess]] = new Array[Array[Recess]](16).map(_ => new Array[Recess](16))
+  private val recessQuadsMatrix: Array[Array[Recess]] = new Array[Array[Recess]](16).map(_ => new Array[Recess](16))
+
+  def recessQuadsMatrix(x: Int, y: Int): Recess =
+    if (x <= 15 && x >= 0 && y <= 15 && y >= 0)
+      recessQuadsMatrix(x)(y)
+    else
+      null
+
+  def recessQuadsMatrix_=(x: Int, y: Int, v: Recess): Unit =
+    if (x <= 15 && x >= 0 && y <= 15 && y >= 0)
+      recessQuadsMatrix(x)(y) = v
+
+
   val topQuadMatrix: Array[Array[TopQuadData]] = new Array[Array[TopQuadData]](16).map(_ => new Array[TopQuadData](16))
   val topQuadData = new mutable.HashSet[TopQuadData]()
 
