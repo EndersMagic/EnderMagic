@@ -17,11 +17,10 @@ import java.util.Optional;
 import static ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider.*;
 
 public class RuneIndex {
-    public static Rune getRune(World world, BlockPos pos, @Nonnull EnumFacing side) {
+    public static Optional<Rune> getRune(World world, BlockPos pos, @Nonnull EnumFacing side) {
         return getCapability(world, pos)
                 .getRuneState(pos)
-                .map(rs -> rs.getRuneAtSide(side))
-                .orElse(null);
+                .map(rs -> rs.getRuneAtSide(side));
     }
 
     public static void removeRune(World world, BlockPos pos) {
@@ -29,7 +28,7 @@ public class RuneIndex {
         capability.removeRuneState(pos);
         EM.proxy.refreshChunk(world, pos);
         if (!world.isRemote)
-            PacketTypes.SYNC_RUNE_CAPABILITY.packet()
+            PacketTypes.REMOVE_RUNE_STATE.packet()
                     .writePos(pos)
                     .sendToDimension(world.provider.getDimension());
 
