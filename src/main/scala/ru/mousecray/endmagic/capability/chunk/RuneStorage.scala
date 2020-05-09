@@ -36,9 +36,9 @@ class RuneStorage extends Capability.IStorage[IRuneChunkCapability] {
               val nbtParts = runeNbt.getCompoundTag("parts")
               nbtParts.getKeySet.asScala.foreach(key =>
                 if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
-                  newState.addRunePart(side, string2vec2i(key), nbtToTunePart(nbtParts.getTag(key)), 0)
+                  newState.addRunePart(side, string2vec2i(key), nbtToTunePart(nbtParts.getByte(key)), 0)
                 else
-                  newRune.parts += string2vec2i(key) -> nbtToTunePart(nbtParts.getTag(key))
+                  newRune.parts += string2vec2i(key) -> nbtToTunePart(nbtParts.getByte(key))
               )
               newRune.averageCreatingTime = runeNbt.getLong("averageCreatingTime")
               newRune.startingTime = runeNbt.getLong("startingTime")
@@ -65,9 +65,9 @@ class RuneStorage extends Capability.IStorage[IRuneChunkCapability] {
 
   def nbtToRuneEffect(base: NBTBase): RuneEffect = RuneEffect.EmptyEffect
 
-  def runePartToNBT(part: RunePart): NBTBase = new NBTTagByte(0)
+  def runePartToNBT(part: RunePart): NBTBase = new NBTTagByte(part.color)
 
-  def nbtToTunePart(base: NBTBase): RunePart = new RunePart
+  def nbtToTunePart(color: Byte): RunePart = new RunePart(color)
 
   def runeStateToNBT(runeState: RuneState): NBTTagCompound =
     EnumFacing.values().foldLeft(new NBTTagCompound) {

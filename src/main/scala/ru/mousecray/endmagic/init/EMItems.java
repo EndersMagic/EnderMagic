@@ -14,6 +14,7 @@ import ru.mousecray.endmagic.items.tools.EMHoe;
 import ru.mousecray.endmagic.items.tools.EMPickaxe;
 import ru.mousecray.endmagic.items.tools.EMShovel;
 import ru.mousecray.endmagic.items.tools.EMSword;
+import ru.mousecray.endmagic.rune.RuneColor;
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.HSBA;
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
@@ -25,7 +26,8 @@ import java.util.stream.Stream;
 public class EMItems {
     public static final ItemNamed rawEnderite = new ItemNamed("raw_enderite");
     public static final Item enderCompass = new EnderCompass();
-    public static final TestInscriber testInscriber = new TestInscriber();
+    public static final TestInscriber testWhiteInscriber = new TestInscriber(RuneColor.white);
+    public static final TestInscriber testGreenInscriber = new TestInscriber(RuneColor.green);
     public static final ItemPortalBinder itemPortalBinder = new ItemPortalBinder();
     public static final Item purpleEnderPearl = new PurpleEnderPearl();
     public static final Item blueEnderPearl = new BlueEnderPearl();

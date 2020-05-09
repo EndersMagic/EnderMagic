@@ -58,7 +58,7 @@ public class ClientPacketHandler implements ICustomPacketHandler.IClientPacketHa
                 break;
             }
             case ADDED_RUNE_PART: {
-                RuneIndex.addRunePart(minecraft.world, packetCustom.readPos(), packetCustom.readEnumFacing(), new Vec2i(packetCustom.readInt(), packetCustom.readInt()), new RunePart());
+                RuneIndex.addRunePart(minecraft.world, packetCustom.readPos(), packetCustom.readEnumFacing(), new Vec2i(packetCustom.readInt(), packetCustom.readInt()), new RunePart(packetCustom.readByte()));
                 break;
             }
             case REMOVE_RUNE_STATE:{

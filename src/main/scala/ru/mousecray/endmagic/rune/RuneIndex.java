@@ -45,6 +45,7 @@ public class RuneIndex {
                     .writeEnum(side)
                     .writeInt(coord.x)
                     .writeInt(coord.y)
+                    .writeByte(part.color)
                     .sendToDimension(world.provider.getDimension());
 
     }

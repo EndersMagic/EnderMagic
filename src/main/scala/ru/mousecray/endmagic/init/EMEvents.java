@@ -264,7 +264,7 @@ public class EMEvents {
 
     @GradleTarget(Debug)
     @SideOnly(Side.CLIENT)
-    @SubscribeEvent
+    //@SubscribeEvent
     public static void loadLastWorld(GuiOpenEvent event) {
         if (!alreadyEnteredInWorldAutomaticaly) {
             Minecraft mc = Minecraft.getMinecraft();
