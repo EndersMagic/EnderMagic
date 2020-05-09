@@ -1,6 +1,8 @@
 package ru.mousecray.endmagic.capability.chunk
 
 import net.minecraft.util.EnumFacing
+import net.minecraftforge.fml.common.FMLCommonHandler
+import net.minecraftforge.fml.relauncher.Side
 import ru.mousecray.endmagic.capability.chunk.Rune.Recess
 import ru.mousecray.endmagic.capability.chunk.client._
 import ru.mousecray.endmagic.rune.RuneEffectRegistry
@@ -21,8 +23,10 @@ class RuneState {
       rune.parts += (coord -> runePart)
       rune.runeEffect = RuneEffectRegistry.findEffect(rune.parts.asJava)
 
-      incrementTopQuadsData(rune, coord, runePart)
-      incrementQuadsData(rune, coord, runePart)
+      if(FMLCommonHandler.instance().getEffectiveSide==Side.CLIENT) {
+        incrementTopQuadsData(rune, coord, runePart)
+        incrementQuadsData(rune, coord, runePart)
+      }
 
       if (rune.parts.size == 1)
         rune.startingTime = currentTimeMillis
