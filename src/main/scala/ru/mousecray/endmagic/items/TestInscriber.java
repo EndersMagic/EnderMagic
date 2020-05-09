@@ -13,8 +13,12 @@ import ru.mousecray.endmagic.rune.RuneColor;
 import ru.mousecray.endmagic.rune.RuneIndex;
 import ru.mousecray.endmagic.util.PlanarGeometry;
 import ru.mousecray.endmagic.util.Vec2i;
+import ru.mousecray.endmagic.util.registry.IExtendedProperties;
+import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 
-public class TestInscriber extends Item {
+import javax.annotation.Nullable;
+
+public class TestInscriber extends Item implements IExtendedProperties {
 
     public RuneColor runeColor;
 
@@ -31,5 +35,11 @@ public class TestInscriber extends Item {
         RuneIndex.addRunePart(world, pos, facing, coord, new RunePart(runeColor));
 
         return EnumActionResult.SUCCESS;
+    }
+
+    @Nullable
+    @Override
+    public String getCustomName() {
+        return NameAndTabUtils.getName(this) + "_"+runeColor.name();
     }
 }
