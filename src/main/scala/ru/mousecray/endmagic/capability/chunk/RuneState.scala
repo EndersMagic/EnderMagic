@@ -83,17 +83,6 @@ class RuneState {
       targetRecess.up = UpSideQuadData(x, y)
   }
 
-
-  val visibleAtFace: ((QuadData, EnumFacing)) => EnumFacing = {
-    case (_: BottomQuadData, runeSide) => runeSide
-    case (_: ElongateQuadData, runeSide) => runeSide
-    case (_: TopQuadData, runeSide) => runeSide
-    case (_: LeftSideQuadData, _) => null
-    case (_: RightSideQuadData, _) => null
-    case (_: DownSideQuadData, _) => null
-    case (_: UpSideQuadData, _) => null
-  }
-
   def foreachRuneQuadsData(side: EnumFacing, f: (QuadData, EnumFacing) => Unit): Unit = {
     if (side == null) {
       runes.foreach { case (sourceSide, rune) =>
