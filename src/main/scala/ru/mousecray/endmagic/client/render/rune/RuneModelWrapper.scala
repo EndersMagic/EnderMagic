@@ -48,7 +48,7 @@ class RuneModelWrapper(baseModel: IBakedModel, resource: ModelResourceLocation) 
       val baseQuadsJava = super.getQuads(state, side, rand)
       val baseQuads = baseQuadsJava.asScala
 
-      val value = allSideQuads.get(side).map(_ =>
+      if(allSideQuads.get(side).isDefined || side==null)
         ((if (baseQuads.nonEmpty) {
           val edge = findEdge(baseQuads)
           baseQuads.filter(_ != edge)
@@ -57,8 +57,8 @@ class RuneModelWrapper(baseModel: IBakedModel, resource: ModelResourceLocation) 
           .toList
           .asJava
           .asInstanceOf[util.List[BakedQuad]]
-      ).getOrElse(baseQuadsJava)
-      value
+      else
+        baseQuadsJava
     })
   }
 
