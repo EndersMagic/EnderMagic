@@ -45,7 +45,7 @@ class RuneState {
       for {
         x <- piece.x1 to piece.x2
         y <- piece.y1 to piece.y2
-      } rune.topQuadMatrix(x)(y)
+      } rune.topQuadMatrix(x)(y) = piece
     )
     rune.topQuadData -= prevTopPiece
     rune.topQuadData ++= newTopPieces
