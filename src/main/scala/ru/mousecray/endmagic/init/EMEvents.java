@@ -199,8 +199,9 @@ public class EMEvents {
         anyTile.ifPresent(t -> {
             BlockPos saplingPos = t.getPos().subtract(t.offsetFromSapling);
             BlockPos newSaplingPos;
-            do newSaplingPos = world.getTopSolidOrLiquidBlock(saplingPos.add(world.rand.nextInt(2 * teleportRadius) - teleportRadius, 0,
-                    world.rand.nextInt(2 * teleportRadius) - teleportRadius));
+            do
+                newSaplingPos = world.getTopSolidOrLiquidBlock(saplingPos.add(world.rand.nextInt(2 * teleportRadius) - teleportRadius, 0,
+                        world.rand.nextInt(2 * teleportRadius) - teleportRadius));
             while (newSaplingPos.getY() == -1);
             System.out.println(world.getBlockState(newSaplingPos).getBlock());
 
@@ -248,13 +249,14 @@ public class EMEvents {
     @SubscribeEvent
     public static void onPlayerEnter(EntityJoinWorldEvent event) {
         if (!event.getWorld().isRemote)
-            if (event.getEntity() instanceof EntityPlayer) Optional.ofNullable(((WorldServer) event.getWorld()).getChunkProvider()
-                    .getNearestStructurePos(event.getWorld(), "Stronghold", new BlockPos(event.getEntity()), false))
-                    .map(pos ->
-                            UPDATE_COMPAS_TARGET.packet()
-                                    .writeInt(0)
-                                    .writePos(pos))
-                    .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
+            if (event.getEntity() instanceof EntityPlayer)
+                Optional.ofNullable(((WorldServer) event.getWorld()).getChunkProvider()
+                        .getNearestStructurePos(event.getWorld(), "Stronghold", new BlockPos(event.getEntity()), false))
+                        .map(pos ->
+                                UPDATE_COMPAS_TARGET.packet()
+                                        .writeInt(0)
+                                        .writePos(pos))
+                        .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
     }
 
     private static boolean alreadyEnteredInWorldAutomaticaly = false;
@@ -278,7 +280,7 @@ public class EMEvents {
                 }
             } else if (event.getGui() instanceof GuiOldSaveLoadConfirm) {
                 FMLClientHandler.instance().showGuiScreen(mainMenu);
-            }else if(event.getGui() instanceof GuiIngameMenu){
+            } else if (event.getGui() instanceof GuiIngameMenu) {
                 alreadyEnteredInWorldAutomaticaly = true;
             }
         }
