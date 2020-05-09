@@ -55,7 +55,7 @@ class RuneState {
     val (x, y) = (vec2i.x, vec2i.y)
 
     val targetRecess = new Recess
-    rune.recessQuadsMatrix(x)(y) = targetRecess
+    rune.recessQuadsMatrixUpdate(x, y, targetRecess)
 
     targetRecess.bottom = BottomQuadData(x, y)
 

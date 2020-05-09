@@ -22,7 +22,7 @@ class Rune {
     else
       null
 
-  def recessQuadsMatrix_=(x: Int, y: Int, v: Recess): Unit =
+  def recessQuadsMatrixUpdate(x: Int, y: Int, v: Recess): Unit =
     if (x <= 15 && x >= 0 && y <= 15 && y >= 0)
       recessQuadsMatrix(x)(y) = v
 
