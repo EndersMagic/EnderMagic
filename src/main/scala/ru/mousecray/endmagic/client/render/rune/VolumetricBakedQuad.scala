@@ -24,7 +24,6 @@ class VolumetricBakedQuad(face: EnumFacing, sides: Map[EnumFacing, BakedQuad]) e
       case consumer: VertexLighterFlat =>
         val blockInfo = BlockInfoLense.get(consumer)
         val pos = blockInfo.getBlockPos
-        val side = face
         val capability = RuneIndex.getCapability(Minecraft.getMinecraft.world, pos)
 
         val maybeState = capability.getRuneState(pos)
