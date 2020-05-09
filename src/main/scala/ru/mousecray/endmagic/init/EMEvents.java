@@ -266,7 +266,6 @@ public class EMEvents {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void loadLastWorld(GuiOpenEvent event) {
-        System.out.println(event.getGui());
         if (!alreadyEnteredInWorldAutomaticaly) {
             Minecraft mc = Minecraft.getMinecraft();
             if (event.getGui() instanceof GuiMainMenu) {

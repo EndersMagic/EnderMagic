@@ -32,13 +32,13 @@ object QuadDataCache {
         case TopQuadData(x1, y1, x2, y2) =>
           richQuad.trivialSliceRect(x1.toFloat / 16, y1.toFloat / 16, (x2 + 1).toFloat / 16, (y2 + 1).toFloat / 16).toBakedQuad
         case BottomQuadData(x, y) =>
-          val center1 = richQuad
+          richQuad
             .trivialSliceRect(
               x.toFloat / 16, y.toFloat / 16,
               (x + 1).toFloat / 16, (y + 1).toFloat / 16
             )
-          val centerBottom = center1.translate(standard_pixel * (-directionVec.getX), standard_pixel * (-directionVec.getY), standard_pixel * (-directionVec.getZ))
-          centerBottom.toBakedQuad
+            .translate(deepX, deepY, deepZ)
+            .toBakedQuad
         case DownSideQuadData(x, y) =>
           val temp = richQuad
             .trivialSliceRect(

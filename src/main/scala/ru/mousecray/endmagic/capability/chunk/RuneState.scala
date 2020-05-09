@@ -71,13 +71,13 @@ class RuneState {
     else
       targetRecess.right = RightSideQuadData(x, y)
 
-    val downRecess = rune.recessQuadsMatrix(x, y - 1)
+    val downRecess = rune.recessQuadsMatrix(x, y + 1)
     if (downRecess != null)
       downRecess.up = null
     else
       targetRecess.down = DownSideQuadData(x, y)
 
-    val upRecess = rune.recessQuadsMatrix(x, y + 1)
+    val upRecess = rune.recessQuadsMatrix(x, y - 1)
     if (upRecess != null)
       upRecess.down = null
     else

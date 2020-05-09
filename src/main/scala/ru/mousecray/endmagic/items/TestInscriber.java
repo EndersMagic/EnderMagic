@@ -21,6 +21,8 @@ public class TestInscriber extends Item {
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
         Vec2i coord = PlanarGeometry.projectTo2d(new Vec3i((int) (hitX * 16), (int) (hitY * 16), (int) (hitZ * 16)), facing);
+        if (!world.isRemote)
+            System.out.println(coord);
         RuneIndex.addRunePart(world, pos, facing, coord, new RunePart());
 
         return EnumActionResult.SUCCESS;
