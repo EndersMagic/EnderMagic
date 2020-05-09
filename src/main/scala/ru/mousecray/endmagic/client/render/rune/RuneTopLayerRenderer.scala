@@ -84,6 +84,7 @@ class RuneTopLayerRenderer {
       EnumFacing.values().foreach { ef =>
         runeState.getRuneAtSide(ef).parts.foreach { case (coord: Vec2i, part: RunePart) =>
           val (x, y) = (coord.x, coord.y)
+          val color = part.color()
 
           val quad = model.getQuads(blockState, ef, 0).get(0)
 
@@ -93,13 +94,29 @@ class RuneTopLayerRenderer {
               x.toFloat / 16, y.toFloat / 16,
               (x + 1).toFloat / 16, (y + 1).toFloat / 16
             )
+
           val centerTop = center1
             .updated(atlas = atlasSpriteRune)
             .reconstruct(
               v1_a = 128,
               v2_a = 128,
               v3_a = 128,
-              v4_a = 128
+              v4_a = 128,
+
+              v1_r = color.r,
+              v2_r = color.r,
+              v3_r = color.r,
+              v4_r = color.r,
+
+              v1_g = color.g,
+              v2_g = color.g,
+              v3_g = color.g,
+              v4_g = color.g,
+
+              v1_b = color.b,
+              v2_b = color.b,
+              v3_b = color.b,
+              v4_b = color.b
             )
 
           net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, centerTop.toBakedQuad, 0xffffffff)
