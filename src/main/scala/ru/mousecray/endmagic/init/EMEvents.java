@@ -99,7 +99,7 @@ public class EMEvents {
         Chunk chunk = event.getChunkInstance();
         IRuneChunkCapability capability = RuneIndex.getCapability(chunk);
         NBTTagCompound nbt = (NBTTagCompound) runeStateCapability.writeNBT(capability, EnumFacing.UP);
-        if (!nbt.hasNoTags())
+        if (nbt != null && !nbt.hasNoTags())
             PacketTypes.SYNC_RUNE_CAPABILITY.packet()
                     .writeInt(chunk.x)
                     .writeInt(chunk.z)
