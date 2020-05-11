@@ -18,6 +18,7 @@ import ru.mousecray.endmagic.client.render.rune.VolumetricBakedQuad.atlasSpriteR
 import ru.mousecray.endmagic.rune.RuneIndex
 import ru.mousecray.endmagic.util.Java2Scala._
 import ru.mousecray.endmagic.util.Vec2i
+import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA
 import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
 
 import scala.collection.JavaConverters._
@@ -89,44 +90,14 @@ class RuneTopLayerRenderer {
 
           val quad = model.getQuads(blockState, ef, 0).get(0)
 
-          val richQuad = UnpackedQuad(quad)
-          val center1 = richQuad
+          val centerTop = UnpackedQuad(quad)
             .trivialSliceRect(
               x.toFloat / 16, y.toFloat / 16,
               (x + 1).toFloat / 16, (y + 1).toFloat / 16
             )
-
-          val centerTop = center1
             .updated(atlas = atlasSpriteRune)
-            .reconstruct(
-              v1_a = 128,
-              v2_a = 128,
-              v3_a = 128,
-              v4_a = 128,
 
-              v1_b = 255,
-              v2_b =255,
-              v3_b = 255,
-              v4_b =255
-/*
-              v1_r = color.r,
-              v2_r = color.r,
-              v3_r = color.r,
-              v4_r = color.r,
-
-              v1_g = color.g,
-              v2_g = color.g,
-              v3_g = color.g,
-              v4_g = color.g,
-
-              v1_b = color.b,
-              v2_b = color.b,
-              v3_b = color.b,
-              v4_b = color.b*/
-            )
-          println(color)
-
-          net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, centerTop.toBakedQuad, 0xff000000)//new RGBA(color.r,color.g,color.b).argb())
+          net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, centerTop.toBakedQuad, new RGBA(color.r,color.g,color.b,128).argb())
 
 
         }
