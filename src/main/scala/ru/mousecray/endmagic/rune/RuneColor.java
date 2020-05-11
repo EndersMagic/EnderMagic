@@ -5,13 +5,18 @@ public enum RuneColor {
     green(0, 255, 0)
     ;
 
-    public final byte r;
-    public final byte g;
-    public final byte b;
+    public final int r;
+    public final int g;
+    public final int b;
 
     RuneColor(int red, int green, int blue) {
-        this.r = (byte) red;
-        this.g = (byte) green;
-        this.b = (byte) blue;
+        this.r =  red;
+        this.g =  green;
+        this.b = blue;
+    }
+
+    @Override
+    public String toString() {
+        return name()+"("+r+", "+g+", "+b+")";
     }
 }
