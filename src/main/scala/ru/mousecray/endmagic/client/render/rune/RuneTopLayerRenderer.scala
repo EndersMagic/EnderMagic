@@ -11,6 +11,7 @@ import net.minecraft.world.chunk.Chunk
 import net.minecraftforge.client.event.RenderWorldLastEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
+import org.lwjgl.opengl.GL11
 import ru.mousecray.endmagic.EM
 import ru.mousecray.endmagic.capability.chunk.{RunePart, RuneState}
 import ru.mousecray.endmagic.client.render.rune.VolumetricBakedQuad.atlasSpriteRune
@@ -79,7 +80,7 @@ class RuneTopLayerRenderer {
 
       val tessellator = Tessellator.getInstance
       val bufferbuilder = tessellator.getBuffer
-      bufferbuilder.begin(7, DefaultVertexFormats.ITEM)
+      bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
 
       EnumFacing.values().foreach { ef =>
         runeState.getRuneAtSide(ef).parts.foreach { case (coord: Vec2i, part: RunePart) =>
@@ -103,6 +104,11 @@ class RuneTopLayerRenderer {
               v3_a = 128,
               v4_a = 128,
 
+              v1_b = 255,
+              v2_b =255,
+              v3_b = 255,
+              v4_b =255
+/*
               v1_r = color.r,
               v2_r = color.r,
               v3_r = color.r,
@@ -116,10 +122,11 @@ class RuneTopLayerRenderer {
               v1_b = color.b,
               v2_b = color.b,
               v3_b = color.b,
-              v4_b = color.b
+              v4_b = color.b*/
             )
+          println(color)
 
-          net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, centerTop.toBakedQuad, 0xffffffff)
+          net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, centerTop.toBakedQuad, 0xff000000)//new RGBA(color.r,color.g,color.b).argb())
 
 
         }
