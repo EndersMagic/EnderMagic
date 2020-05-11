@@ -88,20 +88,18 @@ class RuneTopLayerRenderer {
           val (x, y) = (coord.x, coord.y)
           val color = part.color()
 
-          val quad = model.getQuads(blockState, ef, 0).get(0)
-
-          val centerTop = UnpackedQuad(quad)
-            .trivialSliceRect(
-              x.toFloat / 16, y.toFloat / 16,
-              (x + 1).toFloat / 16, (y + 1).toFloat / 16
-            )
-            .updated(atlas = atlasSpriteRune)
-
-          net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, centerTop.toBakedQuad, new RGBA(color.r,color.g,color.b,128).argb())
-
-
+          model.getQuads(blockState, ef, 0).asScala.headOption.foreach(quad =>
+            net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(
+              bufferbuilder,
+              UnpackedQuad(quad)
+                .trivialSliceRect(
+                  x.toFloat / 16, y.toFloat / 16,
+                  (x + 1).toFloat / 16, (y + 1).toFloat / 16
+                )
+                .updated(atlas = atlasSpriteRune)
+                .toBakedQuad,
+              new RGBA(color.r, color.g, color.b, 128).argb()))
         }
-
       }
 
       tessellator.draw()
