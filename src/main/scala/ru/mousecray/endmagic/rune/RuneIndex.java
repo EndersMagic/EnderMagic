@@ -35,19 +35,20 @@ public class RuneIndex {
     }
 
     public static void addRunePart(World world, BlockPos pos, @Nonnull EnumFacing side, Vec2i coord, RunePart part) {
-        IRuneChunkCapability capability = getCapability(world, pos);
-        RuneState runeState = capability.createRuneStateIfAbsent(pos);
-        runeState.addRunePart(side, coord, part, System.currentTimeMillis());
-        EM.proxy.refreshChunk(world, pos);
-        if (!world.isRemote)
-            PacketTypes.ADDED_RUNE_PART.packet()
-                    .writePos(pos)
-                    .writeEnum(side)
-                    .writeInt(coord.x)
-                    .writeInt(coord.y)
-                    .writeByte(part.color)
-                    .sendToDimension(world.provider.getDimension());
-
+        if (coord.y >= 1 && coord.y <= 14 && coord.x >= 1 && coord.x <= 14) {
+            IRuneChunkCapability capability = getCapability(world, pos);
+            RuneState runeState = capability.createRuneStateIfAbsent(pos);
+            runeState.addRunePart(side, coord, part, System.currentTimeMillis());
+            EM.proxy.refreshChunk(world, pos);
+            if (!world.isRemote)
+                PacketTypes.ADDED_RUNE_PART.packet()
+                        .writePos(pos)
+                        .writeEnum(side)
+                        .writeInt(coord.x)
+                        .writeInt(coord.y)
+                        .writeByte(part.color)
+                        .sendToDimension(world.provider.getDimension());
+        }
     }
 
     private static void sync(World world, BlockPos pos, IRuneChunkCapability capability) {
