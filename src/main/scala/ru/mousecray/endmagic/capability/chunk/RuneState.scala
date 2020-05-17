@@ -18,7 +18,10 @@ class RuneState {
   private val runes = new mutable.HashMap[EnumFacing, Rune]()
   EnumFacing.values().foreach(runes += _ -> new Rune)
 
-  def addRunePart(side: EnumFacing, coord: Vec2i, runePart: RunePart, currentTimeMillis: Long, reason: AddPartReason): Unit = {
+  /**
+    * return true if rune finished
+    */
+  def addRunePart(side: EnumFacing, coord: Vec2i, runePart: RunePart, currentTimeMillis: Long, reason: AddPartReason): Boolean = {
     val rune = runes(side)
     if (!rune.parts.contains(coord)) {
       rune.parts += (coord -> runePart)
@@ -36,11 +39,11 @@ class RuneState {
         if (reason == AddPartReason.INSCRIBING) {
           if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
             rune.splashAnimation = Rune.splashAnimationMax
-          println("Rune inscribed!")
+          return true
         }
       }
-
     }
+    false
   }
 
 

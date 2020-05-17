@@ -37,7 +37,9 @@ public class RuneIndex {
         if (coord.y >= 1 && coord.y <= 14 && coord.x >= 1 && coord.x <= 14) {
             IRuneChunkCapability capability = getCapability(world, pos);
             RuneState runeState = capability.createRuneStateIfAbsent(pos);
-            runeState.addRunePart(side, coord, part, System.currentTimeMillis(), AddPartReason.INSCRIBING);
+            boolean isRuneFinished = runeState.addRunePart(side, coord, part, System.currentTimeMillis(), AddPartReason.INSCRIBING);
+            if (isRuneFinished)
+                runeState.getRuneAtSide(side).runeEffect().onInscribed(world, pos, side);
             EM.proxy.refreshChunk(world, pos);
             if (!world.isRemote)
                 PacketTypes.ADDED_RUNE_PART.packet()
