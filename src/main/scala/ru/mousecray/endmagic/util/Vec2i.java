@@ -22,9 +22,6 @@ public class Vec2i {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Vec2i) {
-            return ((Vec2i) obj).x == x && ((Vec2i) obj).y == y;
-        } else
-            return false;
+        return (obj instanceof Vec2i) && ((Vec2i) obj).x == x && ((Vec2i) obj).y == y;
     }
 }
