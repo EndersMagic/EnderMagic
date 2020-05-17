@@ -28,6 +28,7 @@ public class EMItems {
     public static final Item enderCompass = new EnderCompass();
     public static final TestInscriber testWhiteInscriber = new TestInscriber(RuneColor.white);
     public static final TestInscriber testGreenInscriber = new TestInscriber(RuneColor.green);
+    public static final RuneShaper runeShaper = new RuneShaper();
     public static final ItemPortalBinder itemPortalBinder = new ItemPortalBinder();
     public static final Item purpleEnderPearl = new PurpleEnderPearl();
     public static final Item blueEnderPearl = new BlueEnderPearl();
