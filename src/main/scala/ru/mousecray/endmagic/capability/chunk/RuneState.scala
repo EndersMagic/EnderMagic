@@ -18,7 +18,7 @@ class RuneState {
   private val runes = new mutable.HashMap[EnumFacing, Rune]()
   EnumFacing.values().foreach(runes += _ -> new Rune)
 
-  def addRunePart(side: EnumFacing, coord: Vec2i, runePart: RunePart, currentTimeMillis: Long): Unit = {
+  def addRunePart(side: EnumFacing, coord: Vec2i, runePart: RunePart, currentTimeMillis: Long, reason: AddPartReason): Unit = {
     val rune = runes(side)
     if (!rune.parts.contains(coord)) {
       rune.parts += (coord -> runePart)
@@ -31,8 +31,14 @@ class RuneState {
 
       if (rune.parts.size == 1)
         rune.startingTime = currentTimeMillis
-      else if (rune.runeEffect != RuneEffect.EmptyEffect)
+      else if (rune.runeEffect != RuneEffect.EmptyEffect) {
         rune.averageCreatingTime = (currentTimeMillis - rune.startingTime) / rune.parts.size
+        if (reason == AddPartReason.INSCRIBING) {
+          if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
+            rune.splashAnimation = Rune.splashAnimationMax
+          println("Rune inscribed!")
+        }
+      }
 
     }
   }

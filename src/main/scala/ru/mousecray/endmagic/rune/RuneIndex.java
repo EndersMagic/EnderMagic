@@ -11,10 +11,9 @@ import ru.mousecray.endmagic.network.PacketTypes;
 import ru.mousecray.endmagic.util.Vec2i;
 
 import javax.annotation.Nonnull;
-
 import java.util.Optional;
 
-import static ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider.*;
+import static ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider.runeStateCapability;
 
 public class RuneIndex {
     public static Optional<Rune> getRune(World world, BlockPos pos, @Nonnull EnumFacing side) {
@@ -38,7 +37,7 @@ public class RuneIndex {
         if (coord.y >= 1 && coord.y <= 14 && coord.x >= 1 && coord.x <= 14) {
             IRuneChunkCapability capability = getCapability(world, pos);
             RuneState runeState = capability.createRuneStateIfAbsent(pos);
-            runeState.addRunePart(side, coord, part, System.currentTimeMillis());
+            runeState.addRunePart(side, coord, part, System.currentTimeMillis(), AddPartReason.INSCRIBING);
             EM.proxy.refreshChunk(world, pos);
             if (!world.isRemote)
                 PacketTypes.ADDED_RUNE_PART.packet()
