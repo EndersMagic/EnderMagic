@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.stream.Collectors.toMap;
+import static com.google.common.collect.ImmutableMap.toImmutableMap;
 import static ru.mousecray.endmagic.capability.chunk.RuneEffect.EmptyEffect;
 
 public class RuneEffectRegistry {
@@ -36,6 +36,6 @@ public class RuneEffectRegistry {
     }
 
     public static void addEffect(Map<Vec2i, RunePart> parts, RuneEffect effect) {
-        effects.put(nail(parts, findLeft(parts).x, findBottom(parts).y), effect);
+        effects.put(nailToCenter(parts), effect);
     }
 }
