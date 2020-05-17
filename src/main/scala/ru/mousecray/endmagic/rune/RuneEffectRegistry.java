@@ -32,7 +32,7 @@ public class RuneEffectRegistry {
     }
 
     private static Map<Vec2i, RunePart> nail(Map<Vec2i, RunePart> parts, int xl, int yl) {
-        return parts.entrySet().stream().collect(toImmutableMap(p -> new Vec2i(p.getKey().x - xl, p.getKey().y - yl), Map.Entry::getValue))
+        return parts.entrySet().stream().collect(toImmutableMap(p -> new Vec2i(p.getKey().x - xl, p.getKey().y - yl), Map.Entry::getValue));
     }
 
     public static void addEffect(Map<Vec2i, RunePart> parts, RuneEffect effect) {
