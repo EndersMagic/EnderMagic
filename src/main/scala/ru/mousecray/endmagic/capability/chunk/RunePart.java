@@ -24,6 +24,11 @@ public class RunePart {
     }
 
     @Override
+    public int hashCode() {
+        return color;
+    }
+
+    @Override
     public String toString() {
         return "RunePart(" + color + ")";
     }
