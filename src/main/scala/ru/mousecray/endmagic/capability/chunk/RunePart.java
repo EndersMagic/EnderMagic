@@ -17,4 +17,14 @@ public class RunePart {
     public RuneColor color() {
         return RuneColor.values()[color];
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof RunePart) && ((RunePart) obj).color == color;
+    }
+
+    @Override
+    public String toString() {
+        return "RunePart(" + color + ")";
+    }
 }
