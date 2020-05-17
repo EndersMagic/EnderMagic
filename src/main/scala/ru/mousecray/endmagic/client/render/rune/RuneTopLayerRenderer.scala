@@ -13,9 +13,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
 import org.lwjgl.opengl.GL11
 import ru.mousecray.endmagic.EM
-import ru.mousecray.endmagic.capability.chunk.{RunePart, RuneState}
+import ru.mousecray.endmagic.capability.chunk.{Rune, RunePart, RuneState}
 import ru.mousecray.endmagic.client.render.rune.VolumetricBakedQuad.atlasSpriteRune
-import ru.mousecray.endmagic.rune.RuneIndex
+import ru.mousecray.endmagic.rune.{RuneColor, RuneIndex}
 import ru.mousecray.endmagic.util.Java2Scala._
 import ru.mousecray.endmagic.util.Vec2i
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA
@@ -84,7 +84,8 @@ class RuneTopLayerRenderer {
       bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
 
       EnumFacing.values().foreach { ef =>
-        runeState.getRuneAtSide(ef).parts.foreach { case (coord: Vec2i, part: RunePart) =>
+        val rune = runeState.getRuneAtSide(ef)
+        rune.parts.foreach { case (coord: Vec2i, part: RunePart) =>
           val (x, y) = (coord.x, coord.y)
           val color = part.color()
 
@@ -98,8 +99,9 @@ class RuneTopLayerRenderer {
                 )
                 .updated(atlas = atlasSpriteRune)
                 .toBakedQuad,
-              new RGBA(color.r, color.g, color.b, 128).argb()))
+              getColorForRune(rune, color)))
         }
+        rune.splashAnimation -= 1
       }
 
       tessellator.draw()
@@ -108,4 +110,10 @@ class RuneTopLayerRenderer {
 
   }
 
+  private def getColorForRune(rune: Rune, color: RuneColor) = {
+    if (rune.splashAnimation > 0)
+      new RGBA(color.r, color.g, color.b, 128).toHSBA.setB((rune.splashAnimation / Rune.splashAnimationMax) * 0.5f + 0.5f).toRGBA.argb()
+    else
+      new RGBA(color.r, color.g, color.b, 128).argb()
+  }
 }

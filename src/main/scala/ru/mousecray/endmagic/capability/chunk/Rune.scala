@@ -16,6 +16,8 @@ class Rune {
   var startingTime: Long = -1
   private val recessQuadsMatrix: Array[Array[Recess]] = new Array[Array[Recess]](16).map(_ => new Array[Recess](16))
 
+  var splashAnimation = 0
+
   def recessQuadsMatrix(x: Int, y: Int): Recess =
     if (x <= 15 && x >= 0 && y <= 15 && y >= 0)
       recessQuadsMatrix(x)(y)
@@ -45,6 +47,8 @@ class Rune {
 }
 
 object Rune {
+
+  val splashAnimationMax = 100
 
   class Recess {
     var left: LeftSideQuadData = _
