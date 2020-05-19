@@ -17,6 +17,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderEnd;
+import net.minecraft.world.end.DragonFightManager;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -111,12 +113,14 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
     }
 
     @Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-        if (!worldIn.isRemote) {
-            if (worldIn.isAreaLoaded(pos, 2)) {
-                if (findingArea(pos)
-                        .noneMatch(pos1 -> worldIn.getBlockState(pos1).getBlock()
-                                .canSustainLeaves(state, worldIn, pos))) {
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        if (!worldIn.isRemote)
+        {
+            if (worldIn.isAreaLoaded(pos, 2))
+            {
+                if (findingArea(pos, worldIn).noneMatch(pos1 -> worldIn.getBlockState(pos1).getBlock().canSustainLeaves(state, worldIn, pos)))
+                {
                     dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
                     worldIn.setBlockToAir(pos);
                 }
@@ -125,7 +129,21 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
         }
     }
 
-    private Stream<BlockPos> findingArea(BlockPos pos) {
+    private Stream<BlockPos> findingArea(BlockPos pos, World world) {
+        if (world.provider instanceof WorldProviderEnd) {
+            WorldProviderEnd worldproviderend = (WorldProviderEnd) world.provider;
+            DragonFightManager dragonfightmanager = worldproviderend.getDragonFightManager();
+            if(dragonfightmanager.dragonKilled)
+            {
+                return IntStream.range(-15, 15)
+                        .mapToObj(x ->
+                                IntStream.range(-15, 15)
+                                        .mapToObj(y ->
+                                                IntStream.range(-15, 15)
+                                                        .mapToObj(z ->
+                                                                pos.add(x, y, z))).flatMap(Function.identity())).flatMap(Function.identity());
+            }
+        }
         return IntStream.range(-5, 5)
                 .mapToObj(x ->
                         IntStream.range(-5, 5)
