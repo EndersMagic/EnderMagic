@@ -1,0 +1,8 @@
+id_map {
+  #| minecraft:apple
+  B| endmagic:blue_pearl;  G| custommod:customitem
+}
+recipes {
+  endmagic:tallgrass| shaped (###, B#G, ###)
+  custommod:customitem| shapeless (##G##G##,#)
+}
