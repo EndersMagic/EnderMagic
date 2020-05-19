@@ -88,7 +88,7 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable & Block
             DragonFightManager dragonfightmanager = worldproviderend.getDragonFightManager();
             if(
                     dragonfightmanager.dragonKilled && // if dragon dead
-                    ((EMLog) world.getBlockState(pos)).blockType.getName().equals(EnderBlockTypes.EnderTreeType.DRAGON.getName()) && //if dragon tree
+                    state.getValue(((EMLog) state.getBlock()).blockType).equals(EnderBlockTypes.EnderTreeType.DRAGON) && //if dragon tree
                     world.isAirBlock(pos.down())  &&
                     rand.nextInt(20) == 15 && //rand
                         pos.getX() < 300 && pos.getX() > -300 && //is cenreal island

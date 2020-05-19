@@ -25,6 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -124,12 +125,12 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
                     dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
                     worldIn.setBlockToAir(pos);
                 }
-
             }
         }
     }
 
-    private Stream<BlockPos> findingArea(BlockPos pos) {
+    private Stream<BlockPos> findingArea(BlockPos pos)
+    {
         return IntStream.range(-5, 5)
                 .mapToObj(x ->
                         IntStream.range(-5, 5)
@@ -143,6 +144,26 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
     public void beginLeavesDecay(IBlockState state, World world, BlockPos pos) {
     	//Add Change leaves
     }
+
+    @Override
+    public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        if(world instanceof World && ((World) world).provider instanceof WorldProviderEnd)
+        {
+            World worldIn = (World) world;
+            WorldProviderEnd worldproviderend = (WorldProviderEnd) worldIn.provider;
+            DragonFightManager dragonfightmanager = worldproviderend.getDragonFightManager();
+            assert dragonfightmanager != null;
+            return super.canSustainLeaves(state, world, pos) || (dragonfightmanager.dragonKilled &&
+                    state.getValue(((EMLeaves)state.getBlock()).blockType).equals(EnderBlockTypes.EnderTreeType.DRAGON));
+        }
+        else
+        {
+            return super.canSustainLeaves(state, world, pos);
+        }
+    }
+
+
 
     @Override
 	@SideOnly(Side.CLIENT)

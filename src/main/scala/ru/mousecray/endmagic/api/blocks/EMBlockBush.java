@@ -5,12 +5,15 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class EMBlockBush extends BlockBush {
 
@@ -73,4 +76,5 @@ public abstract class EMBlockBush extends BlockBush {
 	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
 		return EnderPlantType.end;
 	}
+
 }

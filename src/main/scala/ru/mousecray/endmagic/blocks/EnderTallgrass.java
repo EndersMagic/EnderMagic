@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -50,7 +51,7 @@ public class EnderTallgrass extends EMBlockBush implements IShearable, IExtended
     @Override
     @SideOnly(Side.CLIENT)
     public void registerModels(IModelRegistration modelRegistration) {
-        modelRegistration.addBakedModelOverride(getRegistryName(), base -> new BakedModelFullbright(base, EM.ID + ":blocks/ender_tallgrass"));
+        modelRegistration.addBakedModelOverride(getRegistryName(), base -> new BakedModelFullbright(base, EM.ID + ":blocks/ender_tallgrass_overlay"));
     }
 
     @Override
@@ -105,5 +106,12 @@ public class EnderTallgrass extends EMBlockBush implements IShearable, IExtended
     public boolean canSustainBush(IBlockState state) {
         //TODO: add custom end grass and remove STONE from this
         return EMUtils.isSoil(state, EndSoilType.STONE, EndSoilType.GRASS, EndSoilType.DIRT);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public BlockRenderLayer getBlockLayer()
+    {
+        return BlockRenderLayer.CUTOUT_MIPPED;
     }
 }
