@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.util.registry;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -15,10 +16,12 @@ import scala.collection.immutable.StringOps;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.lang3.ArrayUtils.toArray;
 
 public class RecipeParser {
     public static List<IRecipe> parse(String fileContent) {
@@ -64,8 +67,12 @@ public class RecipeParser {
         return recipes;
     }
 
-    private static void checkInvalidSymbols(Map<Character, ItemStack> id_map) {
+    private static Set<Character> blacklistedSymbolChars= ImmutableSet.copyOf("(){}|:,".chars().mapToObj(c-> (char) c).collect(Collectors.toSet()));
 
+    private static void checkInvalidSymbols(Map<Character, ItemStack> id_map) {
+        Set<Character> collect = id_map.keySet().stream().filter(blacklistedSymbolChars::contains).collect(Collectors.toSet());
+        if(!collect.isEmpty())
+            throw new IllegalArgumentException("Invalid symbols in id_map: "+collect);
     }
 
     private static ItemStack findItem(String id) {
