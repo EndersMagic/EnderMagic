@@ -91,15 +91,6 @@ public class EMUtils {
         return world.isAirBlock(pos) && bound > 0 ? getDownGround(world, pos.down(), --bound) : pos;
     }
 
-    public static int logBase(double x, int base) {
-        return (int) (Math.log(x) / Math.log(base));
-    }
-
-    public static int log2nlz(int bits) {
-        if (bits == 0) return 0;
-        return 31 - Integer.numberOfLeadingZeros(bits);
-    }
-
     public static BlockPos intToPos(int[] ints) {
         return new BlockPos(ints[0], ints[1], ints[2]);
     }

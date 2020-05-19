@@ -2,7 +2,7 @@ apply plugin: 'idea'
 
 idea {
     module {
-        inheritOutputDirs = false
+        inheritOutputDirs = true
     }
 }
 buildscript {
