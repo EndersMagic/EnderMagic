@@ -24,7 +24,6 @@ public class RecipeParser {
     public static List<IRecipe> parse(String fileContent) {
         Map<String, List<String>> sections = parseSections(fileContent);
         Map<Character, ItemStack> id_map = sections.getOrDefault("id_map", ImmutableList.of()).stream()
-                .map(RecipeParser::removeSpaces)
                 .map(i -> split(i, '|'))
                 .filter(i -> i.length == 2)
                 .peek(System.out::println)
@@ -34,7 +33,6 @@ public class RecipeParser {
 
         return sections.keySet().stream().filter(i -> !i.equals("id_map")).flatMap(group ->
                 sections.get(group).stream()
-                        .map(RecipeParser::removeSpaces)
                         .map(i -> split(i, '|'))
                         .filter(i -> i.length == 2)
                         .map(i -> {
@@ -115,8 +113,8 @@ public class RecipeParser {
 
                 ImmutableList.Builder<String> list = ImmutableList.builder();
 
-                for (int j = i + 1; j < secondBracket; j++)
-                    list.add(split(lines[j], ';'));
+                for (int j = i + 1; j < secondBracketLine; j++)
+                    list.add(split(removeSpaces(lines[j]), ';'));
 
                 r.put(name, list.build());
                 i = secondBracket + 1;
