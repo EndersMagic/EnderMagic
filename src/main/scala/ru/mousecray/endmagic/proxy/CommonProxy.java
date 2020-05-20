@@ -43,6 +43,7 @@ import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.RecipeParser;
+import ru.mousecray.endmagic.util.registry.RecipeParser2;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
@@ -138,6 +139,7 @@ public class CommonProxy implements IGuiHandler {
     public void registerBlocks(RegistryEvent.Register<Block> e) {
         blocksToRegister.forEach(e.getRegistry()::register);
         tilesToRegister.forEach(tile -> GameRegistry.registerTileEntity(tile, new ResourceLocation(EM.ID, tile.getSimpleName())));
+        System.out.println("EM Blocks count " + blocksToRegister.size());
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -148,6 +150,7 @@ public class CommonProxy implements IGuiHandler {
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> e) {
         itemsToRegister.forEach(e.getRegistry()::register);
+        System.out.println("EM Items count " + itemsToRegister.size());
     }
 
     @SubscribeEvent
@@ -174,7 +177,7 @@ public class CommonProxy implements IGuiHandler {
         }
         try {
             for (String file : filenames)
-                RecipeParser.parse(IOUtils.toString(getClass().getResourceAsStream(recipePath + file), StandardCharsets.UTF_8)).forEach(e.getRegistry()::register);
+                RecipeParser2.parse(IOUtils.toString(getClass().getResourceAsStream(recipePath + file), StandardCharsets.UTF_8)).forEach(e.getRegistry()::register);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
