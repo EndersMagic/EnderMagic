@@ -104,11 +104,11 @@ public class RecipeParser {
 
                 String name = removeSpaces(line.substring(0, firstBracket));
 
-                int secondBracket = i + 1;
-                while (secondBracket < lines.length && !lines[secondBracket].contains("}"))
-                    secondBracket++;
+                int secondBracketLine = i + 1;
+                while (secondBracketLine < lines.length && !lines[secondBracketLine].contains("}"))
+                    secondBracketLine++;
 
-                if (!lines[secondBracket].contains("}"))
+                if (!lines[secondBracketLine].contains("}"))
                     throw incorrectLine(fileContent, i);
 
                 ImmutableList.Builder<String> list = ImmutableList.builder();
@@ -117,7 +117,7 @@ public class RecipeParser {
                     list.add(split(removeSpaces(lines[j]), ';'));
 
                 r.put(name, list.build());
-                i = secondBracket + 1;
+                i = secondBracketLine + 1;
             }
         }
 
