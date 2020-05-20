@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -28,7 +29,6 @@ public class RecipeParser {
         Map<Character, ItemStack> id_map = sections.getOrDefault("id_map", ImmutableList.of()).stream()
                 .map(i -> split(i, '|'))
                 .filter(i -> i.length == 2)
-                .peek(System.out::println)
                 .collect(toMap(i -> i[0].toCharArray()[0], i -> findItem(i[1])));
 
         id_map.put('_', ItemStack.EMPTY);
@@ -36,6 +36,7 @@ public class RecipeParser {
         checkInvalidSymbols(id_map);
 
         sections.forEach((k, v) -> System.out.println(k + " -> " + v));
+        System.out.println(id_map);
 
         return sections.keySet().stream().filter(i -> !i.equals("id_map")).flatMap(group ->
                 sections.get(group).stream()
@@ -50,25 +51,50 @@ public class RecipeParser {
 
                             String recipe = i[1].substring(leftBracket + 1, rightBracket);
 
-                            NonNullList<Ingredient> ingredients = recipe.replaceAll(",", "").chars()
-                                    .mapToObj(c -> id_map.getOrDefault((char) c, ItemStack.EMPTY))
-                                    .map(Ingredient::fromStacks)
-                                    .collect(Collectors.toCollection(NonNullList::create));
+                            if ("(){}|:".chars().anyMatch(c -> recipe.contains("" + c)))
+                                throw new IllegalArgumentException("Invalid symbols in recipe: " + i[0] + "| " + i[1]);
 
-                            if (recipeType.equals("shaped")) {
-                                String[] recipeLines = split(recipe, ',');
-                                if (recipeLines.length == 0)
-                                    throw new IllegalArgumentException("Invalid recipe " + i[0] + "| " + i[1]);
+                            NonNullList<Ingredient> ingredients = parseGrid(recipe, recipeType, id_map);
 
-                                return new ShapedRecipes(group, recipeLines[0].length(), recipeLines.length, ingredients, result)
-                                        .setRegistryName(i[0]);
-                            } else if (recipeType.equals("shapeless")) {
-                                return new ShapelessRecipes(group, result, ingredients)
-                                        .setRegistryName(i[0]);
-                            } else
-                                throw new IllegalArgumentException("Unsupported recipe type " + recipeType);
+                            if (ingredients.stream().allMatch(j -> j.apply(ItemStack.EMPTY)))
+                                throw new IllegalArgumentException("Invalid recipe, all ingredients are empty: " + i[0] + "| " + i[1]);
+
+                            switch (recipeType) {
+                                case "shaped":
+                                    String[] recipeLines = split(recipe, ',');
+                                    if (recipeLines.length == 0)
+                                        throw new IllegalArgumentException("Invalid recipe " + i[0] + "| " + i[1]);
+
+                                    return new ShapedRecipes(group, recipeLines[0].length(), recipeLines.length, ingredients, result)
+                                            .setRegistryName(i[0]);
+                                case "shapeless":
+                                    return new ShapelessRecipes(group, result, ingredients)
+                                            .setRegistryName(i[0]);
+                                case "all":
+                                    NonNullList<Ingredient> allGrid = Stream.generate(() -> Ingredient.fromStacks(ingredients.get(0).getMatchingStacks())).limit(9).collect(Collectors.toCollection(NonNullList::create));
+                                    System.out.println("allGrid " + allGrid);
+                                    return new ShapedRecipes(group, 3, 3, allGrid, result)
+                                            .setRegistryName(i[0]);
+                                default:
+                                    throw new IllegalArgumentException("Unsupported recipe type " + recipeType);
+                            }
                         })
         ).collect(toList());
+    }
+
+    private static NonNullList<Ingredient> parseGrid(String recipe, String recipeType, Map<Character, ItemStack> id_map) {
+        String withoutComma = recipe.replaceAll(",", "");
+
+        return (
+                recipeType.equals("all") ?
+                        Stream.generate(() -> Ingredient.fromStacks(id_map.getOrDefault(withoutComma.charAt(0), ItemStack.EMPTY))).limit(9)
+                        :
+                        withoutComma
+                                .chars()
+                                .mapToObj(c -> id_map.getOrDefault((char) c, ItemStack.EMPTY))
+                                .map(Ingredient::fromStacks)
+        )
+                .collect(Collectors.toCollection(NonNullList::create));
     }
 
     private static Set<Character> blacklistedSymbolChars = ImmutableSet.copyOf("(){}|:,".chars().mapToObj(c -> (char) c).collect(Collectors.toSet()));
@@ -89,7 +115,6 @@ public class RecipeParser {
         int meta = domian_name_meta.length == 3 ? Integer.parseInt(domian_name_meta[2]) : 0;
 
         return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domian, name)), 1, meta);
-
     }
 
     private static Map<String, List<String>> parseSections(String fileContent) {
