@@ -86,7 +86,7 @@ public class RecipeParser {
         String name = domian_name_meta[1];
         int meta = domian_name_meta.length == 3 ? Integer.parseInt(domian_name_meta[2]) : 0;
 
-        return ItemStack.EMPTY;//new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domian,name)),1,meta);
+        return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domian,name)),1,meta);
 
     }
 
