@@ -1,10 +1,6 @@
 package ru.mousecray.endmagic.blocks;
 
-import java.util.Random;
-import java.util.function.Function;
-
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -25,14 +21,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.util.EnderBlockTypes.EMBlockHalf;
 
+import java.util.Random;
+
 public class EMSlab<SlabType extends Enum<SlabType> & IStringSerializable & BlockTypeBase> extends VariativeBlock<SlabType> {
 	
     public static final PropertyEnum<EMBlockHalf> STATE = PropertyEnum.<EMBlockHalf>create("state", EMBlockHalf.class);
     protected static final AxisAlignedBB AABB_BOTTOM_HALF = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
     protected static final AxisAlignedBB AABB_TOP_HALF = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);
 	
-    public EMSlab(Class<SlabType> type, Material material,Function<SlabType, MapColor> mapColors) {
-		super(type, material, "slab", mapColors);
+    public EMSlab(Class<SlabType> type, Material material) {
+		super(type, material, "slab");
     }
     
     @Override

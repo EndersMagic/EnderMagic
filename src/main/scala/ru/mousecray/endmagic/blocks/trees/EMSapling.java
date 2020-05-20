@@ -3,7 +3,6 @@ package ru.mousecray.endmagic.blocks.trees;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -18,31 +17,31 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
-import ru.mousecray.endmagic.worldgen.trees.WorldGenEnderTree;
 
 import javax.annotation.Nullable;
 import java.util.Random;
-import java.util.function.Function;
 
 import static net.minecraft.block.BlockSapling.SAPLING_AABB;
 
 public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & EMSapling.SaplingThings & BlockTypeBase> extends VariativeBlock<TreeType> implements IGrowable {
 
-    private Function<TreeType, WorldGenEnderTree> genFunc;
-
-    public EMSapling(Class<TreeType> type, Function<TreeType, MapColor> mapFunc, Function<TreeType, WorldGenEnderTree> genFunc) {
-        super(type, Material.PLANTS, "sapling", mapFunc);
-        this.genFunc = genFunc;
+    public EMSapling(Class<TreeType> type) {
+        super(type, Material.PLANTS, "sapling");
         setResistance(0.0F);
         setHardness(0.0F);
         setSoundType(SoundType.PLANT);
-        setTickRandomly(true);
+    }
+
+    @Override
+    public boolean hasTickRandomly() {
+        return true;
     }
 
     @Override
@@ -59,8 +58,7 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
     }
 
     @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer,
-                                ItemStack stack) {
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         TreeType blockType1 = byIndex.apply(stack.getItemDamage());
         world.setBlockState(pos, state.withProperty(blockType, blockType1));
         if (!blockType1.canPlaceBlockAt(world, pos)) world.setBlockState(pos, Blocks.AIR.getDefaultState());
@@ -78,7 +76,7 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
 
     @Override
     public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
-        state.getValue(blockType).grow(world, rand, pos, state, genFunc.apply(state.getValue(blockType)));
+        state.getValue(blockType).grow(world, rand, pos, state);
     }
 
     @Override
@@ -112,6 +110,14 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
     }
 
     @Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+        if (!world.isRemote) {
+            if (!world.isAreaLoaded(pos, 1)) return;
+            if (world.getLightFromNeighbors(pos.up()) >= 9 && rand.nextInt(7) == 0) grow(world, rand, pos, state);
+        }
+    }
+
+    @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this);
     }
@@ -122,8 +128,14 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
             return EMUtils.isSoil(world.getBlockState(pos.down()), EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS);
         }
 
-        default void grow(World world, Random rand, BlockPos pos, IBlockState state, @Nullable WorldGenEnderTree generator) {
+        default void grow(World world, Random rand, BlockPos pos, IBlockState state) {
+            WorldGenerator generator = getGenerator();
             if (generator != null) generator.generate(world, rand, pos);
+        }
+
+        @Nullable
+        default WorldGenerator getGenerator() {
+            return null;
         }
     }
 }

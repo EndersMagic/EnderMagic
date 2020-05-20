@@ -45,18 +45,15 @@ public final class EMBlocks {
     public static final BlockNamed enderite = new BlockNamed("enderite");
     public static final EnderOre enderOre = new EnderOre("ender_ore");
 
-    public static final EMLog enderLog = new EMLog(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor());
-    public static final EMSapling enderSapling = new EMSapling(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor(),
-            type -> ((EnderTreeType) type).getGenerator());
-    public static final EMLeaves enderLeaves = new EMLeaves(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor());
-    public static final EMPlanks enderPlanks = new EMPlanks(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor());
+    public static final EMLog enderLog = new EMLog<>(EnderTreeType.class);
+    public static final EMSapling enderSapling = new EMSapling<>(EnderTreeType.class);
+    public static final EMLeaves enderLeaves = new EMLeaves<>(EnderTreeType.class);
+    public static final EMPlanks enderPlanks = new EMPlanks<>(EnderTreeType.class);
 
-    public static final EMSlab enderWoodenSlab = new EMSlab(EnderTreeType.class, Material.WOOD,
-            type -> ((EnderTreeType) type).getMapColor()).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+    public static final EMSlab enderWoodenSlab = new EMSlab<>(EnderTreeType.class, Material.WOOD).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
 
-    public static final BlockEnderGrass<EnderGroundType> blockEnderGrass = new BlockEnderGrass<>(EnderGroundType.class, type -> type.getMapColor(),
-            type -> type.getSound());
-    public static final BlockEnderStone<EnderGroundType> blockEnderStone = new BlockEnderStone<>(EnderGroundType.class, type -> type.getMapColor());
+    public static final BlockEnderGrass blockEnderGrass = new BlockEnderGrass<>(EnderGroundType.class, EnderGroundType::getSound);
+    public static final BlockEnderStone blockEnderStone = new BlockEnderStone<>(EnderGroundType.class);
 
     public static final ChrysofillumVine chrysVine = new ChrysofillumVine();
     public static final ChrysofillumFlower chrysFlower = new ChrysofillumFlower();

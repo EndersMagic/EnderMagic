@@ -27,27 +27,27 @@ import ru.mousecray.endmagic.util.EMItemBlock;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Random;
 import java.util.function.Function;
 
 public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IStringSerializable & BlockTypeBase> extends Block implements ITechnicalBlock {
 
-    public final IProperty<BlockType> blockType;
+    protected IProperty<BlockType> blockType;
     private final Class<BlockType> type;
     protected Function<Integer, BlockType> byIndex;
     private String suffix;
     private int metaCount;
-    private Function<BlockType, MapColor> mapFunc;
 
-    public VariativeBlock(Class<BlockType> type, Material material, String suffix, Function<BlockType, MapColor> mapFunc) {
+    public VariativeBlock(Class<BlockType> type, Material material, String suffix) {
         super(material);
         this.type = type;
         blockType = PropertyEnum.create("type", type);
         this.suffix = suffix;
-        this.mapFunc = mapFunc;
 
         //super
         Collection<IProperty<?>> baseProperties = createBlockState().getProperties();
@@ -71,6 +71,21 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
                 + metaCount + " metadata. The maximum number of 4.", type.getName()));
 
         setDefaultState(blockState.getBaseState().withProperty(blockType, byIndex.apply(0)));
+
+        //Set tick randomly to true, if one of states hasTickRandomly
+        setTickRandomly(this.hasTickRandomly());
+    }
+
+    public boolean hasTickRandomly() {
+        for (BlockType type : blockType.getAllowedValues()) if (type.hasTickRandomly()) return true;
+        return false;
+    }
+
+    @Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+        BlockType type = getBlockType(state);
+        if (!type.hasTickRandomly()) return;
+        type.updateTick(world, pos, state, rand);
     }
 
     @Override
@@ -84,8 +99,8 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         return EM.EM_CREATIVE;
     }
 
-    public VariativeBlock(Class<BlockType> type, Material material, Function<BlockType, MapColor> mapFunc) {
-        this(type, material, null, mapFunc);
+    public VariativeBlock(Class<BlockType> type, Material material) {
+        this(type, material, null);
     }
 
     @Override
@@ -135,9 +150,11 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
         return state.getValue(blockType).ordinal();
     }
 
+    @Nonnull
     @Override
     public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return mapFunc == null ? super.getMapColor(state, world, pos) : mapFunc.apply(state.getValue(blockType));
+        MapColor color = state.getValue(blockType).getMapColor();
+        return color == null ? super.getMapColor(state, world, pos) : color;
     }
 
     @Override
@@ -164,6 +181,10 @@ public abstract class VariativeBlock<BlockType extends Enum<BlockType> & IString
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         for (int i = 0; i < metaCount; i++)
             items.add(new ItemStack(this, 1, i));
+    }
+
+    public BlockType getBlockType(IBlockState state) {
+        return state.getValue(blockType);
     }
 
     public IBlockState stateWithBlockType(BlockType type1) {

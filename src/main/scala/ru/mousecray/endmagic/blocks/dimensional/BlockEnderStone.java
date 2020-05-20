@@ -1,7 +1,5 @@
 package ru.mousecray.endmagic.blocks.dimensional;
 
-import java.util.function.Function;
-
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -14,9 +12,11 @@ import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
 
+import javax.annotation.Nonnull;
+
 public class BlockEnderStone<StoneType extends Enum<StoneType> & IStringSerializable & BlockTypeBase> extends VariativeBlock<StoneType> implements IEndSoil {
-	public BlockEnderStone(Class<StoneType> type, Function<StoneType, MapColor> mapFunc) {
-		super(type, Material.ROCK, "stone", mapFunc);
+	public BlockEnderStone(Class<StoneType> type) {
+		super(type, Material.ROCK, "stone");
 		
 		setHarvestLevel("pickaxe", 1);	
 		setHardness(3.0F);
@@ -24,6 +24,7 @@ public class BlockEnderStone<StoneType extends Enum<StoneType> & IStringSerializ
 		setSoundType(SoundType.STONE);
 	}
 	
+	@Nonnull
 	@Override
     public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
         return MapColor.SAND;

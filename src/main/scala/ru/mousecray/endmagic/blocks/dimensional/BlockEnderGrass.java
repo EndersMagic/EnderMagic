@@ -1,7 +1,6 @@
 package ru.mousecray.endmagic.blocks.dimensional;
 
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -26,15 +25,17 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
 
     private final Function<GrassType, SoundType> soundFunc;
 
-    public BlockEnderGrass(Class<GrassType> type, Function<GrassType, MapColor> mapColor,
-                           Function<GrassType, SoundType> soundFunc) {
-        super(type, Material.ROCK, "grass", mapColor);
-
+    public BlockEnderGrass(Class<GrassType> type, Function<GrassType, SoundType> soundFunc) {
+        super(type, Material.ROCK, "grass");
         this.soundFunc = soundFunc;
         setHarvestLevel("pickaxe", 1);
         setHardness(3.0F);
         setResistance(10.0F);
-        setTickRandomly(true);
+    }
+
+    @Override
+    public boolean hasTickRandomly() {
+        return true;
     }
 
     @Override
@@ -52,11 +53,11 @@ public class BlockEnderGrass<GrassType extends Enum<GrassType> & IStringSerializ
         return Item.getItemFromBlock(this);
     }
 
-    @Override
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        super.updateTick(world, pos, state, rand);
-        // TODO: Custom mechanics
-    }
+//    @Override
+//    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+//        super.updateTick(world, pos, state, rand);
+//        // TODO: Custom mechanics
+//    }
 
     @Override
     protected BlockStateContainer createBlockState() {
