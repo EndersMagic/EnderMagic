@@ -30,41 +30,41 @@ public class RecipeParser {
                 .peek(System.out::println)
                 .collect(toMap(i -> i[0].toCharArray()[0], i -> findItem(i[1])));
 
-        System.out.println(id_map);
-
         checkInvalidSymbols(id_map);
 
-        return sections.getOrDefault("recipes", ImmutableList.of()).stream()
-                .map(RecipeParser::removeSpaces)
-                .map(i -> split(i, '|'))
-                .filter(i -> i.length == 2)
-                .map(i -> {
-                    ItemStack result = findItem(i[0]);
-                    int leftBracket = i[1].indexOf('(');
-                    int rightBracket = i[1].indexOf(')');
+        return sections.keySet().stream().filter(i -> !i.equals("id_map")).flatMap(group ->
+                sections.get(group).stream()
+                        .map(RecipeParser::removeSpaces)
+                        .map(i -> split(i, '|'))
+                        .filter(i -> i.length == 2)
+                        .map(i -> {
+                            ItemStack result = findItem(i[0]);
+                            int leftBracket = i[1].indexOf('(');
+                            int rightBracket = i[1].indexOf(')');
 
-                    String recipeType = i[1].substring(0, leftBracket);
+                            String recipeType = i[1].substring(0, leftBracket);
 
-                    String recipe = i[1].substring(leftBracket + 1, rightBracket);
+                            String recipe = i[1].substring(leftBracket + 1, rightBracket);
 
-                    NonNullList<Ingredient> ingredients = recipe.replaceAll(",", "").chars()
-                            .mapToObj(c -> id_map.getOrDefault((char) c, ItemStack.EMPTY))
-                            .map(Ingredient::fromStacks)
-                            .collect(Collectors.toCollection(NonNullList::create));
+                            NonNullList<Ingredient> ingredients = recipe.replaceAll(",", "").chars()
+                                    .mapToObj(c -> id_map.getOrDefault((char) c, ItemStack.EMPTY))
+                                    .map(Ingredient::fromStacks)
+                                    .collect(Collectors.toCollection(NonNullList::create));
 
-                    if (recipeType.equals("shaped")) {
-                        String[] recipeLines = split(recipe, ',');
-                        if (recipeLines.length == 0)
-                            throw new IllegalArgumentException("Invalid recipe " + i[0] + "| " + i[1]);
+                            if (recipeType.equals("shaped")) {
+                                String[] recipeLines = split(recipe, ',');
+                                if (recipeLines.length == 0)
+                                    throw new IllegalArgumentException("Invalid recipe " + i[0] + "| " + i[1]);
 
-                        return new ShapedRecipes("", recipeLines[0].length(), recipeLines.length, ingredients, result)
-                                .setRegistryName(i[0]);
-                    } else if (recipeType.equals("shapeless")) {
-                        return new ShapelessRecipes("", result, ingredients)
-                                .setRegistryName(i[0]);
-                    }
-                    return null;
-                }).collect(toList());
+                                return new ShapedRecipes(group, recipeLines[0].length(), recipeLines.length, ingredients, result)
+                                        .setRegistryName(i[0]);
+                            } else if (recipeType.equals("shapeless")) {
+                                return new ShapelessRecipes(group, result, ingredients)
+                                        .setRegistryName(i[0]);
+                            }
+                            return null;
+                        })
+        ).collect(toList());
     }
 
     private static Set<Character> blacklistedSymbolChars = ImmutableSet.copyOf("(){}|:,".chars().mapToObj(c -> (char) c).collect(Collectors.toSet()));
@@ -105,9 +105,6 @@ public class RecipeParser {
                     throw incorrectLine(fileContent, i);
 
                 String name = removeSpaces(line.substring(0, firstBracket));
-
-                if (name.isEmpty())
-                    throw incorrectLine(fileContent, i);
 
                 int secondBracket = i + 1;
                 while (secondBracket < lines.length && !lines[secondBracket].contains("}"))
