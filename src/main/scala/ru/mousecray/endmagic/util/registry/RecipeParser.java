@@ -31,6 +31,8 @@ public class RecipeParser {
 
         checkInvalidSymbols(id_map);
 
+        sections.forEach((k, v) -> System.out.println(k + " -> " + v));
+
         return sections.keySet().stream().filter(i -> !i.equals("id_map")).flatMap(group ->
                 sections.get(group).stream()
                         .map(i -> split(i, '|'))
