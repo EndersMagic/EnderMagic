@@ -9,8 +9,6 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import scala.collection.immutable.StringOps;
 
 import java.util.Arrays;
@@ -21,19 +19,22 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
-import static org.apache.commons.lang3.ArrayUtils.toArray;
 
 public class RecipeParser {
     public static List<IRecipe> parse(String fileContent) {
         Map<String, List<String>> sections = parseSections(fileContent);
         Map<Character, ItemStack> id_map = sections.getOrDefault("id_map", ImmutableList.of()).stream()
+                .map(RecipeParser::removeSpaces)
                 .map(i -> split(i, '|'))
                 .filter(i -> i.length == 2)
+                .peek(System.out::println)
                 .collect(toMap(i -> i[0].toCharArray()[0], i -> findItem(i[1])));
+
+        System.out.println(id_map);
 
         checkInvalidSymbols(id_map);
 
-        List<IRecipe> recipes = sections.getOrDefault("recipes", ImmutableList.of()).stream()
+        return sections.getOrDefault("recipes", ImmutableList.of()).stream()
                 .map(RecipeParser::removeSpaces)
                 .map(i -> split(i, '|'))
                 .filter(i -> i.length == 2)
@@ -44,45 +45,44 @@ public class RecipeParser {
 
                     String recipeType = i[1].substring(0, leftBracket);
 
-                    String recipe = i[1].substring(leftBracket+1, rightBracket);
+                    String recipe = i[1].substring(leftBracket + 1, rightBracket);
 
                     NonNullList<Ingredient> ingredients = recipe.replaceAll(",", "").chars()
                             .mapToObj(c -> id_map.getOrDefault((char) c, ItemStack.EMPTY))
                             .map(Ingredient::fromStacks)
                             .collect(Collectors.toCollection(NonNullList::create));
 
-                    if(recipeType.equals("shaped")){
+                    if (recipeType.equals("shaped")) {
                         String[] recipeLines = split(recipe, ',');
-                        if(recipeLines.length==0)
-                            throw new IllegalArgumentException("Invalid recipe "+i[0]+"| "+i[1]);
+                        if (recipeLines.length == 0)
+                            throw new IllegalArgumentException("Invalid recipe " + i[0] + "| " + i[1]);
 
-                        return new ShapedRecipes("",recipeLines[0].length(),recipeLines.length,ingredients,result);
-                    }else if(recipeType.equals("shapeless")){
-                        return new ShapelessRecipes("",result,
-                                ingredients);
+                        return new ShapedRecipes("", recipeLines[0].length(), recipeLines.length, ingredients, result)
+                                .setRegistryName(i[0]);
+                    } else if (recipeType.equals("shapeless")) {
+                        return new ShapelessRecipes("", result, ingredients)
+                                .setRegistryName(i[0]);
                     }
                     return null;
                 }).collect(toList());
-
-        return recipes;
     }
 
-    private static Set<Character> blacklistedSymbolChars= ImmutableSet.copyOf("(){}|:,".chars().mapToObj(c-> (char) c).collect(Collectors.toSet()));
+    private static Set<Character> blacklistedSymbolChars = ImmutableSet.copyOf("(){}|:,".chars().mapToObj(c -> (char) c).collect(Collectors.toSet()));
 
     private static void checkInvalidSymbols(Map<Character, ItemStack> id_map) {
         Set<Character> collect = id_map.keySet().stream().filter(blacklistedSymbolChars::contains).collect(Collectors.toSet());
-        if(!collect.isEmpty())
-            throw new IllegalArgumentException("Invalid symbols in id_map: "+collect);
+        if (!collect.isEmpty())
+            throw new IllegalArgumentException("Invalid symbols in id_map: " + collect);
     }
 
     private static ItemStack findItem(String id) {
         String[] domian_name_meta = split(id, ':');
         if (domian_name_meta.length < 2)
-            throw new IllegalArgumentException("invalid item id: " + id);
+            throw new IllegalArgumentException("Invalid item id: " + id);
 
         String domian = domian_name_meta[0];
         String name = domian_name_meta[1];
-        int meta = domian_name_meta.length==3?Integer.parseInt(domian_name_meta[2]):0;
+        int meta = domian_name_meta.length == 3 ? Integer.parseInt(domian_name_meta[2]) : 0;
 
         return ItemStack.EMPTY;//new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domian,name)),1,meta);
 
@@ -99,7 +99,6 @@ public class RecipeParser {
             if (line.isEmpty())
                 i++;
             else {
-
                 int firstBracket = line.indexOf("{");
 
                 if (firstBracket == -1)
