@@ -37,7 +37,7 @@ public class RecipeParser2 {
             }
 
             if (token.type != CharType.letter)
-                throw new IllegalArgumentException("Symbol declaration must start with letter");
+                throw new IllegalArgumentException("Symbol declaration must start with letter\n" + aroundContext(id_map1, i));
             String id = token.textFragment;
 
             i++;
@@ -139,7 +139,7 @@ public class RecipeParser2 {
                         NonNullList<Ingredient> ingredients = parseGrid(recipe, recipeType, id_map);
 
                         if (ingredients.stream().allMatch(j -> j.apply(ItemStack.EMPTY)))
-                            throw new IllegalArgumentException("Invalid recipe, all ingredients are empty: " + recipe.stream().map(j->j.textFragment).collect(Collectors.joining()));
+                            throw new IllegalArgumentException("Invalid recipe, all ingredients are empty: " + recipe.stream().map(j -> j.textFragment).collect(Collectors.joining()));
 
                         switch (recipeType) {
                             case "shaped":
@@ -279,7 +279,7 @@ public class RecipeParser2 {
     }
 
     private static CharType typeOFChar(char c) {
-        if (c >= 'A' && c <= 'z')
+        if (c >= 'A' && c <= 'z' || c >= 'А' && c <= 'я')
             return CharType.letter;
         else if (c >= '0' && c <= '9')
             return CharType.number;
