@@ -29,6 +29,8 @@ public class RecipeParser {
                 .peek(System.out::println)
                 .collect(toMap(i -> i[0].toCharArray()[0], i -> findItem(i[1])));
 
+        id_map.put('_', ItemStack.EMPTY);
+
         checkInvalidSymbols(id_map);
 
         sections.forEach((k, v) -> System.out.println(k + " -> " + v));
