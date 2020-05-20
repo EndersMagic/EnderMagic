@@ -59,8 +59,8 @@ public class RecipeParser {
                             } else if (recipeType.equals("shapeless")) {
                                 return new ShapelessRecipes(group, result, ingredients)
                                         .setRegistryName(i[0]);
-                            }
-                            return null;
+                            } else
+                                throw new IllegalArgumentException("Unsupported recipe type " + recipeType);
                         })
         ).collect(toList());
     }
