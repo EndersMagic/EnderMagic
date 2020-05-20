@@ -9,6 +9,8 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import scala.collection.immutable.StringOps;
 
 import java.util.Arrays;
@@ -86,7 +88,7 @@ public class RecipeParser {
         String name = domian_name_meta[1];
         int meta = domian_name_meta.length == 3 ? Integer.parseInt(domian_name_meta[2]) : 0;
 
-        return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domian,name)),1,meta);
+        return new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domian, name)), 1, meta);
 
     }
 
