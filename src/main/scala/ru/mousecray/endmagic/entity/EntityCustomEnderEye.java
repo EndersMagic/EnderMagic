@@ -43,15 +43,10 @@ public class EntityCustomEnderEye extends EntityEnderEye {
         if (!world.isRemote && targetPos != null) {
             double dist1 = target.squareDistanceTo(posX, posY, posZ);
             double speedReversedModifier = Math.sqrt(dist1) * 10;
-            if (dist1 < 0.01) {
-                IBlockState currectBlockState = world.getBlockState(targetPos);
-                if (isEmptyPortalFrame(currectBlockState))
-                    world.setBlockState(targetPos, currectBlockState.withProperty(BlockEndPortalFrame.EYE, true));
-                else if (rand.nextInt(5) > 0)
-                    world.spawnEntity(new EntityItem(world, posX, posY, posZ, new ItemStack(Items.ENDER_EYE)));
 
-                setDead();
-            }
+            if (dist1 < 0.01)
+                insertEyeToFrame();
+
             motionX = ((double) targetPos.getX() + 0.5 - posX) / speedReversedModifier;
             motionY = ((double) targetPos.getY() + 0.75 - posY) / speedReversedModifier;
             motionZ = ((double) targetPos.getZ() + 0.5 - posZ) / speedReversedModifier;
@@ -68,6 +63,16 @@ public class EntityCustomEnderEye extends EntityEnderEye {
             posZ += motionZ;
         } else
             onSuperUpdate();
+    }
+
+    private void insertEyeToFrame() {
+        IBlockState currectBlockState = world.getBlockState(targetPos);
+        if (isEmptyPortalFrame(currectBlockState))
+            world.setBlockState(targetPos, currectBlockState.withProperty(BlockEndPortalFrame.EYE, true));
+        else if (rand.nextInt(5) > 0)
+            world.spawnEntity(new EntityItem(world, posX, posY, posZ, new ItemStack(Items.ENDER_EYE)));
+
+        setDead();
     }
 
     private void onSuperUpdate() {
