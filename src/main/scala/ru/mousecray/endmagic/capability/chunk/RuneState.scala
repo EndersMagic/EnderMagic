@@ -38,7 +38,7 @@ class RuneState {
         rune.averageCreatingTime = (currentTimeMillis - rune.startingTime) / rune.parts.size
         if (reason == AddPartReason.INSCRIBING) {
           if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
-            rune.splashAnimation = Rune.splashAnimationMax
+            rune.splashAnimation = 0
           return true
         }
       }

@@ -101,7 +101,6 @@ class RuneTopLayerRenderer {
                 .toBakedQuad,
               getColorForRune(rune, color)))
         }
-        rune.splashAnimation -= 1
       }
 
       tessellator.draw()
@@ -111,8 +110,14 @@ class RuneTopLayerRenderer {
   }
 
   private def getColorForRune(rune: Rune, color: RuneColor) = {
-    if (rune.splashAnimation > 0)
-      new RGBA(color.r, color.g, color.b, 128).toHSBA.setB((rune.splashAnimation / Rune.splashAnimationMax) * 0.5f + 0.5f).toRGBA.argb()
+    if (rune.splashAnimation >= 0) {
+      val b = (rune.splashAnimation.toFloat + Minecraft.getMinecraft.getRenderPartialTicks) / Rune.splashAnimationMax
+      println(b)
+      val ib = (100 * b).toInt
+      val a = new RGBA(color.r , color.g , color.b, 128 + ib)
+      //println(a)
+      a.argb()
+    }
     else
       new RGBA(color.r, color.g, color.b, 128).argb()
   }

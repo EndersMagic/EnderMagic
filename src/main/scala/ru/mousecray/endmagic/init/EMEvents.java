@@ -2,10 +2,15 @@ package ru.mousecray.endmagic.init;
 
 import codechicken.lib.packet.PacketCustom;
 import com.google.common.collect.ImmutableMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.GuiIngameMenu;
+import net.minecraft.client.gui.GuiListWorldSelection;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiWorldSelection;
+import net.minecraft.client.multiplayer.ChunkProviderClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +22,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
@@ -44,14 +48,16 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
-import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
-import ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider;
 import ru.mousecray.endmagic.api.GradleTarget;
 import ru.mousecray.endmagic.api.blocks.IEndSoil;
+import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
+import ru.mousecray.endmagic.capability.chunk.Rune;
+import ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -68,8 +74,8 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 
-import static ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider.runeStateCapability;
 import static ru.mousecray.endmagic.api.Target.Debug;
+import static ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider.runeStateCapability;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
@@ -154,6 +160,28 @@ public class EMEvents {
     }
 
     private static void updateWorldCapability(World world) {
+        if (world.isRemote) {
+            ReflectionHelper.<Long2ObjectMap<Chunk>, ChunkProviderClient>getPrivateValue(ChunkProviderClient.class, ((ChunkProviderClient) world.getChunkProvider()), "chunkMapping")
+                    .values().forEach(chunk -> {
+                IRuneChunkCapability runeCapability = RuneIndex.getCapability(chunk);
+                if (runeCapability != null) {
+                    runeCapability.existingRunes().forEach((__, v) -> {
+                        for (EnumFacing side : EnumFacing.values()) {
+                            Rune rune = v.getRuneAtSide(side);
+                            int splashAnimation = rune.splashAnimation();
+                            if (splashAnimation >= 0) {
+                                if (rune.splashAnimationDirection() == 1 && splashAnimation == Rune.splashAnimationMax())
+                                    rune.splashAnimationDirection_$eq(-1);
+
+                                rune.splashAnimation_$eq(splashAnimation + rune.splashAnimationDirection());
+                            }
+                        }
+                    });
+
+
+                }
+            });
+        }
         PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
         if (capability != null) {
 
