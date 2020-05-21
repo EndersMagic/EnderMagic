@@ -3,10 +3,16 @@ package ru.mousecray.endmagic.init;
 import codechicken.lib.packet.PacketCustom;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEndPortalFrame;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.GuiIngameMenu;
+import net.minecraft.client.gui.GuiListWorldSelection;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiWorldSelection;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityEnderEye;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow.PickupStatus;
@@ -48,6 +54,7 @@ import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
+import ru.mousecray.endmagic.entity.EntityCustomEnderEye;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
@@ -222,6 +229,26 @@ public class EMEvents {
                                     .writeInt(0)
                                     .writePos(pos))
                     .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
+    @SubscribeEvent
+    public static void onEnderEyeEnter(EntityJoinWorldEvent event) {
+        World world = event.getWorld();
+        if (!world.isRemote) {
+            Entity entity = event.getEntity();
+            if (entity instanceof EntityEnderEye && !(entity instanceof EntityCustomEnderEye)) {
+                WorldGenUtils.generateInAreaBreakly(entity.getPosition().add(-10, -10, -10), entity.getPosition().add(10, 10, 10), pos -> {
+                    IBlockState blockState = world.getBlockState(pos);
+                    if (blockState.getBlock() == Blocks.END_PORTAL_FRAME && !blockState.getValue(BlockEndPortalFrame.EYE) && !EntityCustomEnderEye.occupiedPoses.contains(pos)) {
+                        event.setCanceled(true);
+                        EntityCustomEnderEye.occupiedPoses.add(pos);
+                        EntityCustomEnderEye enderEye = new EntityCustomEnderEye(world, entity.posX, entity.posY, entity.posZ, pos);
+                        world.spawnEntity(enderEye);
+                        return false;
+                    } else
+                        return true;
+                });
+            }
+        }
+
     }
 
     private static boolean alreadyEnteredInWorldAutomaticaly = false;
