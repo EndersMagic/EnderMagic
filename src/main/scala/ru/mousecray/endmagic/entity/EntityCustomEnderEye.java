@@ -34,14 +34,14 @@ public class EntityCustomEnderEye extends EntityEnderEye {
     public void onUpdate() {
         if (!world.isRemote && targetPos != null) {
             double dist1 = target.squareDistanceTo(posX, posY, posZ);
-            double dist = Math.sqrt(dist1) * 10;
+            double speedReversedModifier = Math.sqrt(dist1) * 10;
             if (dist1 < 0.01) {
                 world.setBlockState(targetPos, Blocks.END_PORTAL_FRAME.getDefaultState().withProperty(BlockEndPortalFrame.EYE, true));
                 setDead();
             }
-            motionX = ((double) targetPos.getX() + 0.5 - posX) / dist;
-            motionY = ((double) targetPos.getY() + 0.75 - posY) / dist;
-            motionZ = ((double) targetPos.getZ() + 0.5 - posZ) / dist;
+            motionX = ((double) targetPos.getX() + 0.5 - posX) / speedReversedModifier;
+            motionY = ((double) targetPos.getY() + 0.75 - posY) / speedReversedModifier;
+            motionZ = ((double) targetPos.getZ() + 0.5 - posZ) / speedReversedModifier;
 
 
             lastTickPosX = posX;
