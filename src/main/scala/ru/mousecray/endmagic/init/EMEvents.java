@@ -3,7 +3,6 @@ package ru.mousecray.endmagic.init;
 import codechicken.lib.packet.PacketCustom;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockEndPortalFrame;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngameMenu;
@@ -241,7 +240,7 @@ public class EMEvents {
             if (entity instanceof EntityEnderEye && !(entity instanceof EntityCustomEnderEye)) {
                 WorldGenUtils.generateInAreaBreakly(entity.getPosition().add(-10, -10, -10), entity.getPosition().add(10, 10, 10), pos -> {
                     IBlockState blockState = world.getBlockState(pos);
-                    if (blockState.getBlock() == Blocks.END_PORTAL_FRAME && !blockState.getValue(BlockEndPortalFrame.EYE) && !EntityCustomEnderEye.occupiedPoses.contains(pos)) {
+                    if (EntityCustomEnderEye.isEmptyPortalFrame(blockState) && !EntityCustomEnderEye.occupiedPoses.contains(pos)) {
                         event.setCanceled(true);
                         EntityCustomEnderEye.occupiedPoses.add(pos);
                         EntityCustomEnderEye enderEye = new EntityCustomEnderEye(world, entity.posX, entity.posY, entity.posZ, pos);

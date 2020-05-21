@@ -1,8 +1,12 @@
 package ru.mousecray.endmagic.entity;
 
 import net.minecraft.block.BlockEndPortalFrame;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityEnderEye;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -30,13 +34,22 @@ public class EntityCustomEnderEye extends EntityEnderEye {
         super(world);
     }
 
+    public static boolean isEmptyPortalFrame(IBlockState blockState) {
+        return blockState.getBlock() == Blocks.END_PORTAL_FRAME && !blockState.getValue(BlockEndPortalFrame.EYE);
+    }
+
     @Override
     public void onUpdate() {
         if (!world.isRemote && targetPos != null) {
             double dist1 = target.squareDistanceTo(posX, posY, posZ);
             double speedReversedModifier = Math.sqrt(dist1) * 10;
             if (dist1 < 0.01) {
-                world.setBlockState(targetPos, Blocks.END_PORTAL_FRAME.getDefaultState().withProperty(BlockEndPortalFrame.EYE, true));
+                IBlockState currectBlockState = world.getBlockState(targetPos);
+                if (isEmptyPortalFrame(currectBlockState))
+                    world.setBlockState(targetPos, currectBlockState.withProperty(BlockEndPortalFrame.EYE, true));
+                else if (rand.nextInt(5) > 0)
+                    world.spawnEntity(new EntityItem(world, posX, posY, posZ, new ItemStack(Items.ENDER_EYE)));
+
                 setDead();
             }
             motionX = ((double) targetPos.getX() + 0.5 - posX) / speedReversedModifier;
