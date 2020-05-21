@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.RenderArrow;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.entity.EntityEnderArrow;
+import ru.mousecray.endmagic.gameobj.entity.EntityEnderArrow;
 
 public class RenderEnderArrow extends RenderArrow<EntityEnderArrow>{
 

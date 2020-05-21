@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import ru.mousecray.endmagic.entity.EntityCurseBush;
+import ru.mousecray.endmagic.gameobj.entity.EntityCurseBush;
 import ru.mousecray.endmagic.init.EMBlocks;
 
 import javax.annotation.Nullable;

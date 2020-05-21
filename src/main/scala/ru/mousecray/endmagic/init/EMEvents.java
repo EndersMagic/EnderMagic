@@ -51,10 +51,10 @@ import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
-import ru.mousecray.endmagic.entity.EntityEnderArrow;
-import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
-import ru.mousecray.endmagic.items.EnderArrow;
-import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
+import ru.mousecray.endmagic.gameobj.entity.EntityEnderArrow;
+import ru.mousecray.endmagic.gameobj.entity.UnexplosibleEntityItem;
+import ru.mousecray.endmagic.gameobj.items.EnderArrow;
+import ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
@@ -63,11 +63,11 @@ import java.util.Optional;
 import java.util.Random;
 
 import static ru.mousecray.endmagic.api.Target.Debug;
+import static ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_PHANROM_AVOIDINCAPABILITY;
-import static ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMax;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMin;
 

@@ -4,8 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import ru.mousecray.endmagic.gameobj.tileentity.TileBlastFurnace;
 import ru.mousecray.endmagic.init.EMBlocks;
-import ru.mousecray.endmagic.tileentity.TileBlastFurnace;
 
 public class ContainerBlastFurnace extends Container {
     public TileBlastFurnace tile;
@@ -25,34 +25,31 @@ public class ContainerBlastFurnace extends Container {
     }
 
     @Override
-	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = inventorySlots.get(index);
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
-            if(index < 3){
+            if (index < 3) {
                 if (!mergeItemStack(itemstack1, 3, inventorySlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            }
-            else if(!mergeItemStack(itemstack1,0,3,false)){
+            } else if (!mergeItemStack(itemstack1, 0, 3, false)) {
                 return ItemStack.EMPTY;
             }
-            if (itemstack1.isEmpty())
-            {
+            if (itemstack1.isEmpty()) {
                 slot.putStack(ItemStack.EMPTY);
-            }
-            else
-            {
+            } else {
                 slot.onSlotChanged();
             }
         }
         return itemstack;
     }
+
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return tile.getPos().distanceSq(playerIn.getPosition()) < 16*16//для Baubles (16 блоков от тайла)
+        return tile.getPos().distanceSq(playerIn.getPosition()) < 16 * 16//для Baubles (16 блоков от тайла)
                 && playerIn.world.getTileEntity(tile.getPos()) == tile;
     }
 }

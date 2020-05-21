@@ -3,7 +3,7 @@ package ru.mousecray.endmagic.util;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import ru.mousecray.endmagic.blocks.VariativeBlock;
+import ru.mousecray.endmagic.gameobj.blocks.VariativeBlock;
 
 public class EMItemBlock extends ItemBlock {
 	

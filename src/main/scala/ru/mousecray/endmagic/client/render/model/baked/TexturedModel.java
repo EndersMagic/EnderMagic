@@ -5,7 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import ru.mousecray.endmagic.items.ItemTextured;
+import ru.mousecray.endmagic.gameobj.items.ItemTextured;
 
 import java.util.HashMap;
 

@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntityEndPortal;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ru.mousecray.endmagic.tileentity.portal.TilePortal;
+import ru.mousecray.endmagic.gameobj.tileentity.portal.TilePortal;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityPortalRenderer extends TileEntitySpecialRenderer<TilePortal> {
@@ -20,13 +20,13 @@ public class TileEntityPortalRenderer extends TileEntitySpecialRenderer<TilePort
             return true;
         }
     };
-    
+
     public TileEntityPortalRenderer() {
-    	vanilaRender.setRendererDispatcher(TileEntityRendererDispatcher.instance);
-	}
+        vanilaRender.setRendererDispatcher(TileEntityRendererDispatcher.instance);
+    }
 
     @Override
-	public void render(TilePortal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(TilePortal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         vanilaRender.render(teEndPortal, x, y, z, partialTicks, destroyStage, alpha);
     }
 

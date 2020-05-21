@@ -4,9 +4,9 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
-import ru.mousecray.endmagic.entity.EntityCurseBush;
-import ru.mousecray.endmagic.entity.EntityEMEnderPearl;
-import ru.mousecray.endmagic.entity.EntityEnderArrow;
+import ru.mousecray.endmagic.gameobj.entity.EntityCurseBush;
+import ru.mousecray.endmagic.gameobj.entity.EntityEMEnderPearl;
+import ru.mousecray.endmagic.gameobj.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 
 @MethodsReturnNonnullByDefault

@@ -7,7 +7,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ru.mousecray.endmagic.entity.EntityEMEnderPearl;
+import ru.mousecray.endmagic.gameobj.entity.EntityEMEnderPearl;
 
 import javax.annotation.Nonnull;
 
