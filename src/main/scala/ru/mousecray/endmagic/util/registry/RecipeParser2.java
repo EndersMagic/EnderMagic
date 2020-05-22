@@ -81,6 +81,13 @@ public class RecipeParser2 {
                     List<Token> tokens = sections.get(group);
                     for (int i = 0; i < tokens.size(); i++) {
                         Token token = tokens.get(i);
+                        int count = 1;
+                        if (token.type == CharType.number && tokens.get(i + 1).textFragment.equals("x")) {
+                            count = Integer.parseInt(token.textFragment);
+                            i += 2;
+                            token = tokens.get(i);
+                        }
+
                         if (token.type != CharType.letter)
                             throw new IllegalArgumentException("Domain must consist letter");
                         String domain = token.textFragment;
@@ -106,7 +113,7 @@ public class RecipeParser2 {
                             }
                         }
 
-                        ItemStack result = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domain, path)), 1, meta);
+                        ItemStack result = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domain, path)), count, meta);
                         String recipeRegistryName = result.getItem().getRegistryName().toString() + ":" + result.getItemDamage();
 
                         i++;
