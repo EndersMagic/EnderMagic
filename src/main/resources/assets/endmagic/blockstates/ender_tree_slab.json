@@ -1,20 +1,16 @@
 {
   "variants": {
-    "state=bottom,type=dragon":  { "model": "endmagic:trees/bottom_slab_dragon" },
-    "state=top,type=dragon":   { "model": "endmagic:trees/upper_slab_dragon" },
-    "state=double,type=dragon":   { "model": "endmagic:trees/dragon_planks" },
+    "half=bottom,type=dragon":  { "model": "endmagic:trees/bottom_slab_dragon" },
+    "half=top,type=dragon":   { "model": "endmagic:trees/upper_slab_dragon" },
 
-    "state=bottom,type=natural":  { "model": "endmagic:trees/bottom_slab_natural" },
-    "state=top,type=natural":   { "model": "endmagic:trees/upper_slab_natural" },
-    "state=double,type=natural":   { "model": "endmagic:trees/natural_planks" },
+    "half=bottom,type=natural":  { "model": "endmagic:trees/bottom_slab_natural" },
+    "half=top,type=natural":   { "model": "endmagic:trees/upper_slab_natural" },
 
-    "state=bottom,type=immortal":  { "model": "endmagic:trees/bottom_slab_immortal" },
-    "state=top,type=immortal":   { "model": "endmagic:trees/upper_slab_immortal" },
-    "state=double,type=immortal":   { "model": "endmagic:trees/immortal_planks" },
+    "half=bottom,type=immortal":  { "model": "endmagic:trees/bottom_slab_immortal" },
+    "half=top,type=immortal":   { "model": "endmagic:trees/upper_slab_immortal" },
 
-    "state=bottom,type=phantom":  { "model": "endmagic:trees/bottom_slab_phantom" },
-    "state=top,type=phantom":   { "model": "endmagic:trees/upper_slab_phantom" },
-    "state=double,type=phantom":   { "model": "endmagic:trees/phantom_planks" },
+    "half=bottom,type=phantom":  { "model": "endmagic:trees/bottom_slab_phantom" },
+    "half=top,type=phantom":   { "model": "endmagic:trees/upper_slab_phantom" },
 
     "inventory":  { "model": "endmagic:trees/bottom_slab_dragon" },
     "inventory,meta=1":  { "model": "endmagic:trees/bottom_slab_natural" },

@@ -1,7 +1,5 @@
 package ru.mousecray.endmagic.init;
 
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import ru.mousecray.endmagic.blocks.*;
 import ru.mousecray.endmagic.blocks.dimensional.BlockEnderGrass;
 import ru.mousecray.endmagic.blocks.dimensional.BlockEnderStone;
@@ -51,8 +49,8 @@ public final class EMBlocks {
     public static final EMLeaves enderLeaves = new EMLeaves(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor());
     public static final EMPlanks enderPlanks = new EMPlanks(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor());
 
-    public static final EMSlab enderWoodenSlab = new EMSlab(EnderTreeType.class, Material.WOOD,
-            type -> ((EnderTreeType) type).getMapColor()).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+    public static final EMSlab.EMSlabDouble enderWoodenSlabDouble = new EMSlab.EMSlabDouble();
+    public static final EMSlab.EMSlabSingle enderWoodenSlabSingle = new EMSlab.EMSlabSingle();
 
     public static final BlockEnderGrass<EnderGroundType> blockEnderGrass = new BlockEnderGrass<>(EnderGroundType.class, type -> type.getMapColor(),
             type -> type.getSound());
