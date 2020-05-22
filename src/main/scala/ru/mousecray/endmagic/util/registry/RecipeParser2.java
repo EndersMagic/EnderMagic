@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.util.registry;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -20,14 +21,46 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
+import static net.minecraft.item.ItemStack.EMPTY;
 
 public class RecipeParser2 {
+    private static ItemStack apple = new ItemStack(Items.APPLE);
+    private static ItemStack stick = new ItemStack(Items.STICK);
+    public static Map<String, List<List<ItemStack>>> fill_shapes = ImmutableMap.<String, List<List<ItemStack>>>builder()
+            .put("all", makeFillPattern(list("aaa", "aaa", "aaa")))
+            .put("helmet", makeFillPattern(list(
+                    "aaa",
+                    "a_a")))
+            .put("chestplate", makeFillPattern(list(
+                    "a_a",
+                    "aaa",
+                    "aaa")))
+            .put("leggings", makeFillPattern(list(
+                    "aaa",
+                    "a_a",
+                    "a_a")))
+            .put("boots", makeFillPattern(list(
+                    "a_a",
+                    "a_a")))
+            .put("axe", list(list(apple, apple), list(apple, stick), list(EMPTY, stick)))
+            .put("hoe", list(list(apple, apple), list(EMPTY, stick), list(EMPTY, stick)))
+            .put("pickaxe", list(list(apple, apple, apple), list(EMPTY, stick, EMPTY), list(EMPTY, stick, EMPTY)))
+            .put("shovel", list(list(apple), list(stick), list(stick)))
+            .put("sword", list(list(apple), list(apple), list(stick)))
+            .build();
+
+    private static <A> ImmutableList<A> list(A... values) {
+        return ImmutableList.copyOf(values);
+    }
+
+    private static List<List<ItemStack>> makeFillPattern(List<String> textPattern) {
+        return textPattern.stream().map(line -> line.chars().mapToObj(c -> (char) c).map(c -> c == 'a' ? apple : EMPTY).collect(toList())).collect(toList());
+    }
+
     public static List<IRecipe> parse(String fileContent) {
         ImmutableMap<String, List<Token>> sections = parseSections(fileContent);
-        //sections.forEach((k, v) -> System.out.println(k + " -> \n" + v));
 
         List<Token> id_map1 = sections.getOrDefault("id_map", ImmutableList.of());
-        System.out.println(sections.get(""));
         ImmutableMap.Builder<String, ItemStack> id_map_builder = ImmutableMap.builder();
         for (int i = 0; i < id_map1.size(); i++) {
             Token token = id_map1.get(i);
@@ -73,7 +106,7 @@ public class RecipeParser2 {
             }
             id_map_builder.put(id, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domain, path)), 1, meta));
         }
-        id_map_builder.put("_", ItemStack.EMPTY);
+        id_map_builder.put("_", EMPTY);
         ImmutableMap<String, ItemStack> id_map = id_map_builder.build();
         return sections.keySet().stream().filter(i -> !i.equals("id_map")).flatMap(group ->
                 {
@@ -114,7 +147,7 @@ public class RecipeParser2 {
                         }
 
                         ItemStack result = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domain, path)), count, meta);
-                        String recipeRegistryName = result.getItem().getRegistryName().toString() + ":" + result.getItemDamage();
+                        String recipeRegistryName = result.getItem().getRegistryName().toString() + "@" + result.getItemDamage();
 
                         i++;
                         token = tokens.get(i);
@@ -142,30 +175,51 @@ public class RecipeParser2 {
 
                         NonNullList<Ingredient> ingredients = parseGrid(recipe, recipeType, id_map);
 
-                        if (ingredients.stream().allMatch(j -> j.apply(ItemStack.EMPTY)))
+                        if (ingredients.stream().allMatch(j -> j.apply(EMPTY)))
                             throw new IllegalArgumentException("Invalid recipe, all ingredients are empty: " + recipe.stream().map(j -> j.textFragment).collect(Collectors.joining()));
 
                         switch (recipeType) {
                             case "shaped":
-                                List<String> recipeLines = recipe.stream().filter(j -> !j.textFragment.equals(",")).map(j -> j.textFragment).collect(toList());
-                                if (recipeLines.size() == 0)
+                                ImmutableList.Builder<List<Token>> recipeLinesBuilder = ImmutableList.builder();
+                                ImmutableList.Builder<Token> lineBuilder = ImmutableList.builder();
+                                for (int j = 0; j < recipe.size(); j++) {
+                                    Token t = recipe.get(j);
+                                    if (t.textFragment.equals(";")) {
+                                        recipeLinesBuilder.add(lineBuilder.build());
+                                        lineBuilder = ImmutableList.builder();
+                                    } else if (!t.textFragment.equals(","))
+                                        lineBuilder.add(t);
+                                }
+                                recipeLinesBuilder.add(lineBuilder.build());
+
+                                ImmutableList<List<Token>> recipeLines = recipeLinesBuilder.build();
+                                if (recipeLines.size() == 0 || recipeLines.stream().map(List::size).anyMatch(j -> j != recipeLines.get(0).size()))
                                     throw new IllegalArgumentException("Invalid recipe " + recipe);
 
-                                r.add(new ShapedRecipes(group, recipeLines.get(0).length(), recipeLines.size(), ingredients, result)
+                                r.add(new ShapedRecipes(group, recipeLines.get(0).size(), recipeLines.size(), ingredients, result)
                                         .setRegistryName(recipeRegistryName));
                                 break;
                             case "shapeless":
                                 r.add(new ShapelessRecipes(group, result, ingredients)
                                         .setRegistryName(recipeRegistryName));
                                 break;
-                            case "all":
-                                NonNullList<Ingredient> allGrid = Stream.generate(() -> Ingredient.fromStacks(ingredients.get(0).getMatchingStacks())).limit(9).collect(Collectors.toCollection(NonNullList::create));
-                                System.out.println("allGrid " + allGrid);
-                                r.add(new ShapedRecipes(group, 3, 3, allGrid, result)
-                                        .setRegistryName(recipeRegistryName));
-                                break;
                             default:
-                                throw new IllegalArgumentException("Unsupported recipe type " + recipeType);
+                                if (fill_shapes.containsKey(recipeType)) {
+                                    List<List<ItemStack>> pattern = fill_shapes.get(recipeType);
+                                    NonNullList<Ingredient> filled = pattern.stream().flatMap(line -> line.stream().map(is -> {
+                                        if (is == apple)
+                                            return Ingredient.fromStacks(ingredients.get(0).getMatchingStacks());
+                                        else if (is.isEmpty())
+                                            return Ingredient.EMPTY;
+                                        else
+                                            return Ingredient.fromStacks(is);
+                                    })).collect(Collectors.toCollection(NonNullList::create));
+                                    int w = pattern.get(0).size();
+                                    int h = pattern.size();
+                                    r.add(new ShapedRecipes(group, w, h, filled, result)
+                                            .setRegistryName(recipeRegistryName));
+                                } else
+                                    throw new IllegalArgumentException("Unsupported recipe type " + recipeType);
                         }
                     }
                     return r.stream();
@@ -176,7 +230,7 @@ public class RecipeParser2 {
     private static String aroundContext(List<Token> tokens, int i) {
         String r = "";
         for (int j = Math.max(0, i - 4); j < Math.min(tokens.size(), i + 4); j++)
-            r += tokens.get(j).textFragment;
+            r += tokens.get(j).textFragment + " ";
         return r;
     }
 
@@ -187,9 +241,9 @@ public class RecipeParser2 {
     private static NonNullList<Ingredient> parseGrid(ImmutableList<Token> recipe, String recipeType, Map<String, ItemStack> id_map) {
         return (
                 recipeType.equals("all") ?
-                        Stream.generate(() -> Ingredient.fromStacks(id_map.getOrDefault(recipe.get(0).textFragment, ItemStack.EMPTY))).limit(9)
+                        Stream.generate(() -> Ingredient.fromStacks(id_map.getOrDefault(recipe.get(0).textFragment, EMPTY))).limit(9)
                         :
-                        recipe.stream().map(c -> id_map.getOrDefault(c.textFragment, ItemStack.EMPTY))
+                        recipe.stream().filter(t -> !t.textFragment.equals(",") && !t.textFragment.equals(";")).map(c -> id_map.getOrDefault(c.textFragment, EMPTY))
                                 .map(Ingredient::fromStacks)
         )
                 .collect(Collectors.toCollection(NonNullList::create));
