@@ -133,11 +133,8 @@ public class RecipeParser2 {
                             throw new IllegalArgumentException("Grid bracket must be (");
 
                         ImmutableList.Builder<Token> recipeBuilder = ImmutableList.builder();
-                        do {
-                            i++;
-                            token = tokens.get(i);
-                            recipeBuilder.add(token);
-                        } while (!token.textFragment.equals(")"));
+                        for (int j = i + 1; j < tokens.size() && !tokens.get(i).textFragment.equals(")"); j++)
+                            recipeBuilder.add(tokens.get(i));
                         ImmutableList<Token> recipe = recipeBuilder.build();
 
                         if ("(){}|:".chars().anyMatch(c -> recipe.stream().anyMatch(j -> j.textFragment.contains("" + c))))
