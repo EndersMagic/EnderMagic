@@ -98,9 +98,9 @@ public class RecipeParser2 {
             int meta = 0;
             if (i + 1 < id_map1.size()) {
                 token = id_map1.get(i + 1);
-                if (token.equals(":")) {
+                if (token.textFragment.equals(":")) {
                     i += 2;
-                    token = id_map1.get(i + 1);
+                    token = id_map1.get(i);
                     meta = Integer.parseInt(token.textFragment);
                 }
             }
@@ -139,9 +139,9 @@ public class RecipeParser2 {
                         int meta = 0;
                         if (i + 1 < tokens.size()) {
                             token = tokens.get(i + 1);
-                            if (token.equals(":")) {
+                            if (token.textFragment.equals(":")) {
                                 i += 2;
-                                token = tokens.get(i + 1);
+                                token = tokens.get(i);
                                 meta = Integer.parseInt(token.textFragment);
                             }
                         }
