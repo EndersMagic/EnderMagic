@@ -1,0 +1,23 @@
+id_map{
+
+    d| endmagic:dragon_coal
+    i| endmagic:immortal_coal
+    n| endmagic:natural_coal
+    p| endmagic:phantom_coal
+    D| endmagic:dragon_coal_block
+    I| endmagic:immortal_coal_block
+    N| endmagic:natural_coal_block
+    P| endmagic:phantom_coal_block
+
+}
+coal {
+    endmagic:dragon_coal_block| all(d)
+    endmagic:immortal_coal_block| all(i)
+    endmagic:natural_coal_block| all(n)
+    endmagic:phantom_coal_block| all(p)
+
+    9x endmagic:dragon_coal| shapeless(D)
+    9x endmagic:immortal_coal| shapeless(I)
+    9x endmagic:natural_coal| shapeless(N)
+    9x endmagic:phantom_coal| shapeless(P)
+}
