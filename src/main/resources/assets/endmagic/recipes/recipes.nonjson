@@ -15,6 +15,7 @@ id_map{
     ep| minecraft:ender_pearl
     arrow| minecraft:arrow
     ee| minecraft:ender_eye
+    gd| minecraft:glowstone_dust
 
     E| endmagic:enderite
     e| endmagic:raw_enderite
@@ -64,6 +65,10 @@ id_map{
 
     endmagic:enderite| all(e)
     9x endmagic:raw_enderite| shapeless(E)
+
+    endmagic:item_portal_binder| shaped(e, gd, e;
+                                        gd,ee,gd;
+                                        e, gd, e)
 
 
 }
