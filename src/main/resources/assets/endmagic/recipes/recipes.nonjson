@@ -35,9 +35,9 @@ id_map{
     endmagic:block_master_static_portal| shaped(O, g, O;
                                                 GL,W,GL;
                                                 EB,E,EB)
-    endmagic:block_top_mark| shaped(e, EB,e;
-                                    EB,X, EB;
-                                    e, EB,e)
+    endmagic:block_top_mark| shaped(e,    EB,   e;
+                                    EB,compass, EB;
+                                    e,    EB,   e)
 
     4x endmagic:ender_tree_planks| shapeless(DL)
     4x endmagic:ender_tree_planks:1| shapeless(IL)
