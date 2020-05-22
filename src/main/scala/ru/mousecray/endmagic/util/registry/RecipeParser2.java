@@ -43,23 +43,23 @@ public class RecipeParser2 {
             i++;
             token = id_map1.get(i);
             if (!token.textFragment.equals("|"))
-                throw new IllegalArgumentException("Symbol declaration separator must be |");
+                throw new IllegalArgumentException("Symbol declaration separator must be |\n" + aroundContext(id_map1, i));
 
             i++;
             token = id_map1.get(i);
             if (token.type != CharType.letter)
-                throw new IllegalArgumentException("Domain must consist letter");
+                throw new IllegalArgumentException("Domain must consist letter\n" + aroundContext(id_map1, i));
             String domain = token.textFragment;
 
             i++;
             token = id_map1.get(i);
             if (!token.textFragment.equals(":"))
-                throw new IllegalArgumentException("ResourceLocation separator must be :");
+                throw new IllegalArgumentException("ResourceLocation separator must be :\n" + aroundContext(id_map1, i));
 
             i++;
             token = id_map1.get(i);
             if (token.type != CharType.letter)
-                throw new IllegalArgumentException("Path must consist letter");
+                throw new IllegalArgumentException("Path must consist letter\n" + aroundContext(id_map1, i));
             String path = token.textFragment;
 
             int meta = 0;
@@ -89,18 +89,18 @@ public class RecipeParser2 {
                         }
 
                         if (token.type != CharType.letter)
-                            throw new IllegalArgumentException("Domain must consist letter");
+                            throw new IllegalArgumentException("Domain must consist letter\n" + aroundContext(tokens, i));
                         String domain = token.textFragment;
 
                         i++;
                         token = tokens.get(i);
                         if (!token.textFragment.equals(":"))
-                            throw new IllegalArgumentException("ResourceLocation separator must be :");
+                            throw new IllegalArgumentException("ResourceLocation separator must be :\n" + aroundContext(tokens, i));
 
                         i++;
                         token = tokens.get(i);
                         if (token.type != CharType.letter)
-                            throw new IllegalArgumentException("Path must consist letter");
+                            throw new IllegalArgumentException("Path must consist letter\n" + aroundContext(tokens, i));
                         String path = token.textFragment;
 
                         int meta = 0;
@@ -124,17 +124,17 @@ public class RecipeParser2 {
                         i++;
                         token = tokens.get(i);
                         if (token.type != CharType.letter)
-                            throw new IllegalArgumentException("Recipe type must consist letter");
+                            throw new IllegalArgumentException("Recipe type must consist letter\n" + aroundContext(tokens, i));
                         String recipeType = token.textFragment;
 
                         i++;
                         token = tokens.get(i);
                         if (!token.textFragment.equals("("))
-                            throw new IllegalArgumentException("Grid bracket must be (");
+                            throw new IllegalArgumentException("Grid bracket must be (\n" + aroundContext(tokens, i));
 
                         ImmutableList.Builder<Token> recipeBuilder = ImmutableList.builder();
-                        for (int j = i + 1; j < tokens.size() && !tokens.get(j).textFragment.equals(")"); j++)
-                            recipeBuilder.add(tokens.get(j));
+                        for (i++; i < tokens.size() && !tokens.get(i).textFragment.equals(")"); i++)
+                            recipeBuilder.add(tokens.get(i));
                         ImmutableList<Token> recipe = recipeBuilder.build();
 
                         if ("(){}|:".chars().anyMatch(c -> recipe.stream().anyMatch(j -> j.textFragment.contains("" + c))))
@@ -175,7 +175,7 @@ public class RecipeParser2 {
 
     private static String aroundContext(List<Token> tokens, int i) {
         String r = "";
-        for (int j = Math.max(0, i - 2); j < Math.min(tokens.size(), i + 2); j++)
+        for (int j = Math.max(0, i - 4); j < Math.min(tokens.size(), i + 4); j++)
             r += tokens.get(j).textFragment;
         return r;
     }
