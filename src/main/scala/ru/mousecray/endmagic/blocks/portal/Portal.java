@@ -1,6 +1,8 @@
 package ru.mousecray.endmagic.blocks.portal;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPortal;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -28,6 +30,8 @@ import java.util.Random;
 public class Portal extends BlockWithTile<TilePortal> implements ITechnicalBlock {
     public Portal() {
         super(Material.PORTAL);
+        setBlockUnbreakable();
+        setResistance(7000000);
     }
 
     @Override
