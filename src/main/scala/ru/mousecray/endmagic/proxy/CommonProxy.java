@@ -6,6 +6,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.tileentity.TileEntity;
@@ -40,6 +41,7 @@ import ru.mousecray.endmagic.init.util.ListSource;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
+import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.RecipeParser;
@@ -80,9 +82,6 @@ public class CommonProxy implements IGuiHandler {
 
         //Registration Entity
         entityToRegister.addAll(new ClassFieldSource<EntityEntry>(EMEntities.class).elemes());
-
-        //Registration Recipes
-        EMRecipes.initRecipes();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
 
@@ -160,6 +159,12 @@ public class CommonProxy implements IGuiHandler {
 
     @SubscribeEvent
     public void registerRecipes(RegistryEvent.Register<IRecipe> e) {
+
+        //Registration Furnace Recipes
+        EMRecipes.initRecipes();
+        //GameRegistry.addSmelting(new ItemStack(EMBlocks.enderLog, 1, EnderBlockTypes.EnderTreeType.DRAGON.ordinal()), new ItemStack(EMItems.dragonCoal), 10);
+
+        //Register Craftingtable Recipes
         List<String> filenames = new ArrayList<>();
 
         String recipePath = "/assets/" + EM.ID + "/recipes/";
