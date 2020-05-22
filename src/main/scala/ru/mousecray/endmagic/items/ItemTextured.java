@@ -1,11 +1,14 @@
 package ru.mousecray.endmagic.items;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,7 +25,9 @@ public interface ItemTextured extends IExtendedProperties {
 
     @SideOnly(Side.CLIENT)
     default javax.vecmath.Matrix4f handlePerspective(IBakedModel model, ItemCameraTransforms.TransformType cameraTransformType) {
-        return net.minecraftforge.client.ForgeHooksClient.handlePerspective(model, cameraTransformType).getRight();
+        return Minecraft.getMinecraft().getRenderItem()
+                .getItemModelWithOverrides(new ItemStack(Items.DIAMOND), Minecraft.getMinecraft().world, null).handlePerspective(cameraTransformType).getRight();
+        //return net.minecraftforge.client.ForgeHooksClient.handlePerspective(model, cameraTransformType).getRight();
     }
 
     @Override
