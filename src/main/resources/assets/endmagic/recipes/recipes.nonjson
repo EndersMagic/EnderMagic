@@ -22,6 +22,10 @@ id_map{
     IL| endmagic:ender_tree_log:1
     NL| endmagic:ender_tree_log:2
     PL| endmagic:ender_tree_log:3
+    DP| endmagic:ender_tree_planks:0
+    IP| endmagic:ender_tree_planks:1
+    NP| endmagic:ender_tree_planks:2
+    PP| endmagic:ender_tree_planks:3
 
 }
 
@@ -44,10 +48,10 @@ id_map{
     4x endmagic:ender_tree_planks:2| shapeless(NL)
     4x endmagic:ender_tree_planks:3| shapeless(PL)
 
-    6x endmagic:ender_tree_slab| shaped(DL,DL,DL)
-    6x endmagic:ender_tree_slab:1| shaped(IL,IL,IL)
-    6x endmagic:ender_tree_slab:2| shaped(NL,NL,NL)
-    6x endmagic:ender_tree_slab:3| shaped(PL,PL,PL)
+    6x endmagic:ender_tree_slab| shaped(DP,DP,DP)
+    6x endmagic:ender_tree_slab:1| shaped(IP,IP,IP)
+    6x endmagic:ender_tree_slab:2| shaped(NP,NP,NP)
+    6x endmagic:ender_tree_slab:3| shaped(PP,PP,PP)
 
     endmagic:em_book| shapeless(book,ep)
 
