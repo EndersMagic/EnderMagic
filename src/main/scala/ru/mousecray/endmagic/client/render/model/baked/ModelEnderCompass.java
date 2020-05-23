@@ -2,7 +2,7 @@ package ru.mousecray.endmagic.client.render.model.baked;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import ru.mousecray.endmagic.items.EnderCompass;
+import ru.mousecray.endmagic.gameobj.items.EnderCompass;
 
 import java.util.HashMap;
 import java.util.Map;

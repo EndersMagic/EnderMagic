@@ -1,13 +1,11 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "textures": {
-            "cross": "endmagic:blocks/ender_tallgrass"
-        }
-    },
-    "variants": {
-        "normal": {
-            "model": "tinted_cross"
+    "variants":
+    {
+        "normal":{
+            "model": "endmagic:ender_tallgrass"
+        },
+        "inventory": {
+            "model": "endmagic:ender_tallgrass"
         }
     }
 }

@@ -1,0 +1,43 @@
+{
+  "parent": "block/tinted_cross",
+  "textures": {
+    "particle": "projectend:blocks/mind_ore",
+    "cross": "endmagic:blocks/ender_tallgrass",
+    "overlay": "endmagic:blocks/ender_tallgrass_overlay"
+  },
+
+  "elements": [
+    {   "from": [ 0.8, 0, 8 ],
+      "to": [ 15.2, 16, 8 ],
+      "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+      "faces": {
+        "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 }
+      }
+    },
+    {   "from": [ 8, 0, 0.8 ],
+      "to": [ 8, 16, 15.2 ],
+      "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+      "faces": {
+        "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 },
+        "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 }
+      }
+    },
+    {   "from": [ 0.8, 0, 8 ],
+      "to": [ 15.2, 16, 8 ],
+      "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+      "faces": {
+        "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay", "tintindex": 0 },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay", "tintindex": 0 }
+      }
+    },
+    {   "from": [ 8, 0, 0.8 ],
+      "to": [ 8, 16, 15.2 ],
+      "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+      "faces": {
+        "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay", "tintindex": 0 },
+        "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay", "tintindex": 0 }
+      }
+    }
+  ]
+}

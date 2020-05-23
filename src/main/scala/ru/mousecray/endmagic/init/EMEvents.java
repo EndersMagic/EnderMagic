@@ -5,7 +5,10 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.GuiIngameMenu;
+import net.minecraft.client.gui.GuiListWorldSelection;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiWorldSelection;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,10 +51,10 @@ import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
-import ru.mousecray.endmagic.entity.EntityEnderArrow;
-import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
-import ru.mousecray.endmagic.items.EnderArrow;
-import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
+import ru.mousecray.endmagic.gameobj.entity.EntityEnderArrow;
+import ru.mousecray.endmagic.gameobj.entity.UnexplosibleEntityItem;
+import ru.mousecray.endmagic.gameobj.items.EnderArrow;
+import ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
@@ -60,11 +63,11 @@ import java.util.Optional;
 import java.util.Random;
 
 import static ru.mousecray.endmagic.api.Target.Debug;
+import static ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_PHANROM_AVOIDINCAPABILITY;
-import static ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMax;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMin;
 
@@ -90,7 +93,7 @@ public class EMEvents {
         BlockPos pos = event.getPos();
         IBlockState blockState = world.getBlockState(pos);
         if (/*!event.getEntityPlayer().world.isRemote && */(blockState.getBlock() == enderLog || blockState.getBlock() == enderLeaves) &&
-                blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
+                blockState.getValue(EnderBlockTypes.TREE_TYPE) == EnderBlockTypes.EnderTreeType.PHANTOM) {
             PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
             if (capability != null) {
                 PhantomAvoidingGroup tree = capability.groupAtPos.get(event.getPos());
@@ -238,16 +241,14 @@ public class EMEvents {
                 mainMenu = (GuiMainMenu) event.getGui();
                 mc.displayGuiScreen(new GuiWorldSelection((GuiMainMenu) event.getGui()));
             } else if (event.getGui() instanceof GuiWorldSelection) {
-                GuiListWorldSelection guiListWorldSelection = new GuiListWorldSelection((GuiWorldSelection) event.getGui(), mc, 100, 100, 32, 100 - 64, 36);
+                GuiListWorldSelection guiListWorldSelection = new GuiListWorldSelection((GuiWorldSelection) event.getGui(), mc, 100, 100, 32,
+                        100 - 64, 36);
                 try {
                     guiListWorldSelection.getListEntry(0).joinWorld();
                 } catch (Exception ignore) {
                 }
-            } else if (event.getGui() instanceof GuiOldSaveLoadConfirm) {
-                FMLClientHandler.instance().showGuiScreen(mainMenu);
-            }else if(event.getGui() instanceof GuiIngameMenu){
-                alreadyEnteredInWorldAutomaticaly = true;
-            }
+            } else if (event.getGui() instanceof GuiOldSaveLoadConfirm) FMLClientHandler.instance().showGuiScreen(mainMenu);
+            else if (event.getGui() instanceof GuiIngameMenu) alreadyEnteredInWorldAutomaticaly = true;
         }
     }
 

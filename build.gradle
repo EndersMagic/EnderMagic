@@ -22,7 +22,8 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'scala'
-
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
 jar {
     manifest {
         attributes 'FMLAT': 'EM_at.cfg'
@@ -73,7 +74,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.5.2768"
+    version = "1.12.2-14.23.5.2847"
     runDir = "run"
 
     replaceIn "EM.java"

@@ -20,13 +20,16 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
+import ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import java.util.List;
 
 import static net.minecraft.block.BlockLog.LOG_AXIS;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glScaled;
+import static org.lwjgl.opengl.GL11.glTranslated;
 
 @SideOnly(Side.CLIENT)
 public class TilePhantomAvoidingBlockRenderer extends TileEntitySpecialRenderer<TilePhantomAvoidingBlockBase> {
@@ -59,7 +62,8 @@ public class TilePhantomAvoidingBlockRenderer extends TileEntitySpecialRenderer<
             glTranslated(x, y - 12f / 16, z);
             glScaled(4, 4, 4);
         }
-        double alpha1 = (double) (TilePhantomAvoidingBlockBase.maxAvoidTicks - (te.avoidTicks + partialTicks * te.increment)) / TilePhantomAvoidingBlockBase.maxAvoidTicks;
+        double alpha1 = (double) (TilePhantomAvoidingBlockBase.maxAvoidTicks - (te.avoidTicks + partialTicks * te.increment)) /
+                TilePhantomAvoidingBlockBase.maxAvoidTicks;
         //System.out.println(alpha1);
         renderBlockWithColor(new ItemStack(block, 1, EnderBlockTypes.EnderTreeType.PHANTOM.ordinal()), alpha1);
 
@@ -76,7 +80,8 @@ public class TilePhantomAvoidingBlockRenderer extends TileEntitySpecialRenderer<
         //GlStateManager.disableAlpha();
         GlStateManager.alphaFunc(516, 0F);
         GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+                GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
         GlStateManager.pushMatrix();
         bakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(bakedmodel, ItemCameraTransforms.TransformType.GROUND, false);
 

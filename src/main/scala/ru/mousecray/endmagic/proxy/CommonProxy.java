@@ -26,9 +26,10 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.client.gui.GuiTypes;
+import ru.mousecray.endmagic.gameobj.blocks.vanilla.BlockVanillaEndstone;
+import ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMEntities;
 import ru.mousecray.endmagic.init.EMItems;
@@ -37,7 +38,6 @@ import ru.mousecray.endmagic.init.util.ClassFieldSource;
 import ru.mousecray.endmagic.init.util.ListSource;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
-import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
@@ -104,7 +104,7 @@ public class CommonProxy implements IGuiHandler {
 
         blocksToRegister.add(block);
         if (block instanceof ITechnicalBlock) {
-            ItemBlock itemBlock = ((ITechnicalBlock) block).getCustomItemBlock(block);
+            ItemBlock itemBlock = ((ITechnicalBlock) block).getCustomItemBlock();
             if (itemBlock != null) registerItem(itemBlock, block.getRegistryName().toString());
         } else registerItem(new ItemBlock(block), block.getRegistryName().toString());
     }

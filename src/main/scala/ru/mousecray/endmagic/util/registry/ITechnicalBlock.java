@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic.util.registry;
 
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 
@@ -8,7 +7,8 @@ import javax.annotation.Nullable;
 
 public interface ITechnicalBlock extends IExtendedProperties {
 
-    default ItemBlock getCustomItemBlock(Block block) {
+    @Nullable
+    default ItemBlock getCustomItemBlock() {
         return null;
     }
 

@@ -1,0 +1,30 @@
+package ru.mousecray.endmagic.gameobj.items;
+
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
+import net.minecraft.item.ItemArrow;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import ru.mousecray.endmagic.gameobj.entity.EntityEnderArrow;
+
+public class EnderArrow extends ItemArrow implements ItemOneWhiteEMTextured {
+	
+	public EntityEnderArrow createArrow(World world, EntityLivingBase shooter) {
+		EntityEnderArrow arrow = new EntityEnderArrow(world, shooter);
+		return arrow;
+	}
+
+	@Override
+	public boolean isInfinite(ItemStack stack, ItemStack bow, EntityPlayer player) {
+		int enchant = EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, bow);
+		return enchant <= 0 ? false : this.getClass() == EnderArrow.class;
+	}
+
+
+	@Override
+	public String texture() {
+		return "ender_arrow";
+	}
+}
