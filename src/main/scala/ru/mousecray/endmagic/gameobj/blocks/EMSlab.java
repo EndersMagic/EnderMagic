@@ -1,101 +1,148 @@
 package ru.mousecray.endmagic.gameobj.blocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSlab;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
-import ru.mousecray.endmagic.api.metadata.MetadataBlock;
-import ru.mousecray.endmagic.util.EnderBlockTypes.EMBlockHalf;
+import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.client.render.model.IModelRegistration;
+import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.util.EnderBlockTypes;
+import ru.mousecray.endmagic.util.registry.IExtendedProperties;
+import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import static ru.mousecray.endmagic.util.EnderBlockTypes.BLOCK_HALF;
+public abstract class EMSlab extends BlockSlab implements ITechnicalBlock, IExtendedProperties {
+    public static class EMSlabDouble extends EMSlab {
+        @Override
+        public boolean isDouble() {
+            return true;
+        }
 
-public class EMSlab extends MetadataBlock {
-
-    public EMSlab(Material material) {
-        super(material);
+        @Nullable
+        @Override
+        public String getCustomName() {
+            return "ender_tree_slab_double";
+        }
     }
 
-    //Overload method for public access
-    @Override
-    public Block setSoundType(SoundType sound) {
-        return super.setSoundType(sound);
-    }
+    public static class EMSlabSingle extends EMSlab {
+        @Override
+        public boolean isDouble() {
+            return false;
+        }
 
-    @Nonnull
-    @Override
-    protected BlockStateContainer createBlockStateContainer() {
-        return BlockStateGenerator.create(this).addFeatures(BLOCK_HALF).buildContainer();
-    }
+        @Nullable
+        @Override
+        public String getCustomName() {
+            return "ender_tree_slab";
+        }
 
-    @Override
-    protected boolean canSilkHarvest() {
-        return false;
-    }
+        @Nullable
+        @Override
+        public CreativeTabs getCustomCreativeTab() {
+            return EM.EM_CREATIVE;
+        }
 
-    @Nonnull
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess world, @Nonnull IBlockState state, BlockPos pos, EnumFacing face) {
-        if (state.getValue(BLOCK_HALF) == EMBlockHalf.DOUBLE) return BlockFaceShape.SOLID;
-        else if (face == EnumFacing.UP && state.getValue(BLOCK_HALF) == EMBlockHalf.TOP) return BlockFaceShape.SOLID;
-        else return face == EnumFacing.DOWN && state.getValue(BLOCK_HALF) == EMBlockHalf.BOTTOM ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
-    }
-
-    @Override
-    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-        if (net.minecraftforge.common.ForgeModContainer.disableStairSlabCulling)
-            return super.doesSideBlockRendering(state, world, pos, face);
-
-        if (state.isOpaqueCube()) return true;
-
-        EMBlockHalf side = state.getValue(BLOCK_HALF);
-        return (side == EMBlockHalf.TOP && face == EnumFacing.UP) || (side == EMBlockHalf.BOTTOM && face == EnumFacing.DOWN);
-    }
-
-//    //This IS NITHMAARE! Kill this code, please...
-//    @Override
-//    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-//        IBlockState iblockstate = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(STATE,
-//                EMBlockHalf.BOTTOM);
-//        BlockPos blockpos = pos.offset(EMUtils.getNegativeFacing(facing));
-//        IBlockState state = world.getBlockState(blockpos);
-//
-//        if (state.getBlock() == this && state.getValue(STATE) != EMBlockHalf.DOUBLE)
-//            if (facing == EnumFacing.DOWN) if (state.getValue(STATE) == EMBlockHalf.BOTTOM) return iblockstate;
-//            else {
-//                //Dammet mousecray
-//                world.setBlockState(blockpos, state.withProperty(STATE, EMBlockHalf.DOUBLE));
-//                return Blocks.AIR.getDefaultState();
-//            }
-//            else if (facing == EnumFacing.UP) if (state.getValue(STATE) == EMBlockHalf.TOP) return iblockstate;
-//            else {
-//                world.setBlockState(blockpos, state.withProperty(STATE, EMBlockHalf.DOUBLE));
-//                return Blocks.AIR.getDefaultState();
-//            }
-//            else return state;
-//        else if (facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double) hitY <= 0.5D)) return iblockstate;
-//        else return iblockstate.withProperty(STATE, EMBlockHalf.TOP);
-//    }
-
-    @SideOnly(Side.CLIENT)
-    public static boolean isHalfSlab(@Nonnull IBlockState state) {
-        return state.getValue(BLOCK_HALF) != EMBlockHalf.DOUBLE;
+        @Override
+        public void registerModels(IModelRegistration modelRegistration) {
+            for (EnderBlockTypes.EnderTreeType treeType : EnderBlockTypes.EnderTreeType.values()) {
+                int i = treeType.ordinal();
+                ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, new ModelResourceLocation(getRegistryName(), i == 0 ? "inventory" : "inventory,meta=" + i));
+            }
+        }
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(@Nonnull IBlockState blockState, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, EnumFacing side) {
-        if (blockState.isOpaqueCube()) return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-        else if (side != EnumFacing.UP && side != EnumFacing.DOWN && !super.shouldSideBeRendered(blockState, blockAccess, pos, side)) return false;
-        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+    public ItemBlock getCustomItemBlock() {
+        return new ItemSlab(EMBlocks.enderWoodenSlabSingle, EMBlocks.enderWoodenSlabSingle, EMBlocks.enderWoodenSlabDouble);
+    }
+
+    public static final PropertyEnum<EnderBlockTypes.EnderTreeType> VARIANT = PropertyEnum.create("type", EnderBlockTypes.EnderTreeType.class);
+
+    public EMSlab() {
+        super(Material.WOOD);
+        setSoundType(SoundType.WOOD);
+        setHardness(2.0F);
+        setResistance(5.0F);
+        IBlockState iblockstate = blockState.getBaseState();
+
+        if (!isDouble()) {
+            iblockstate = iblockstate.withProperty(HALF, BlockSlab.EnumBlockHalf.BOTTOM);
+        }
+
+        setDefaultState(iblockstate.withProperty(VARIANT, EnderBlockTypes.EnderTreeType.DRAGON));
+        setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+    }
+
+    @Override
+    public String getUnlocalizedName(int meta) {
+        return "tile.ender_tree_slab." + getStateFromMeta(meta).getValue(VARIANT).getName().toLowerCase();
+    }
+
+    public MapColor getMapColor(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        return state.getValue(VARIANT).getMapColor(state,worldIn,pos);
+    }
+
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+        return new ItemStack(EMBlocks.enderWoodenSlabSingle, 1, state.getValue(VARIANT).ordinal());
+    }
+
+    public IProperty<?> getVariantProperty() {
+        return VARIANT;
+    }
+
+    public Comparable<?> getTypeForItem(ItemStack stack) {
+        return EnderBlockTypes.EnderTreeType.values()[stack.getItemDamage() & 7];
+    }
+
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        for (EnderBlockTypes.EnderTreeType treeType : EnderBlockTypes.EnderTreeType.values())
+            items.add(new ItemStack(this, 1, treeType.ordinal()));
+    }
+
+    public IBlockState getStateFromMeta(int meta) {
+        IBlockState iblockstate = getDefaultState().withProperty(VARIANT, EnderBlockTypes.EnderTreeType.values()[meta & 7]);
+
+        if (!isDouble()) {
+            iblockstate = iblockstate.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
+        }
+
+        return iblockstate;
+    }
+
+    public int getMetaFromState(IBlockState state) {
+        int i = 0;
+        i = i | state.getValue(VARIANT).ordinal();
+
+        if (!isDouble() && state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
+            i |= 8;
+
+        return i;
+    }
+
+    protected BlockStateContainer createBlockState() {
+        return isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, HALF, VARIANT);
+    }
+
+    public int damageDropped(IBlockState state) {
+        return state.getValue(VARIANT).ordinal();
     }
 }
