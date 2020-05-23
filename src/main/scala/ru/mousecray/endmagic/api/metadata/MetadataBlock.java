@@ -47,31 +47,6 @@ public abstract class MetadataBlock extends Block implements ITechnicalBlock {
 
     protected abstract BlockStateContainer createBlockStateContainer();
 
-    @Override
-    public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
-        return ((MetadataContainer.ExtendedStateImpl) state).getSoundType();
-    }
-
-    @Override
-    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        ((MetadataContainer.ExtendedStateImpl) state).updateTick(world, pos, rand);
-    }
-
-    @Override
-    public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
-        return correctBlockState(state).createTileEntity();
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return correctBlockState(state).hasTileEntity();
-    }
-
-    @Override
-    public int damageDropped(IBlockState state) {
-        return correctBlockState(state).getDamage();
-    }
-
     protected MetadataContainer.ExtendedStateImpl correctBlockState(IBlockState state) {
         return (MetadataContainer.ExtendedStateImpl) state;
     }
@@ -86,29 +61,28 @@ public abstract class MetadataBlock extends Block implements ITechnicalBlock {
         return overrideBlockState.getMetaFromState(state);
     }
 
+    /*@formatter:off--------Methods which extend IBlockState format and use all of features from IFeaturesList------*/
+    @Override public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) { return correctBlockState(state).getSoundType(); }
+    @Override public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) { correctBlockState(state).updateTick(world, pos, rand); }
+    @Override public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) { return correctBlockState(state).createTileEntity(); }
+    @Override public boolean hasTileEntity(IBlockState state) { return correctBlockState(state).hasTileEntity(); }
+    @Override public int damageDropped(IBlockState state) { return correctBlockState(state).getDamage(); }
+    @Override public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) { overrideBlockState.getSubBlocks(tab, items, this); }
+    @Override public int quantityDropped(IBlockState state, int fortune, Random random) { return correctBlockState(state).quantityDropped(fortune, random); }
+    /*@formatter:on-------------------------------------------------------------------------------------------------*/
+
+    /*----------Methods inherited by ITechnicalBlock----------*/
     @Override
     public void registerModels(IModelRegistration modelRegistration) {
         overrideBlockState.registerItemModels(this);
     }
 
     @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-        overrideBlockState.getSubBlocks(tab, items, this);
-    }
-
-    @Override
-    public int quantityDropped(IBlockState state, int fortune, Random random) {
-        return correctBlockState(state).quantityDropped(fortune, random);
-    }
-
-    /*----------Methods inherited by ITechnicalBlock----------*/
-    @Override
     public ItemBlock getCustomItemBlock() {
         return overrideBlockState.createMetaItem(this);
     }
 
-    @Nullable
-    @Override
+    @Nullable @Override
     public CreativeTabs getCustomCreativeTab() {
         return EM.EM_CREATIVE;
     }

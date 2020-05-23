@@ -3,7 +3,6 @@ package ru.mousecray.endmagic.gameobj.blocks.trees;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,16 +16,15 @@ import net.minecraft.world.WorldProviderEnd;
 import net.minecraft.world.end.DragonFightManager;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
 import ru.mousecray.endmagic.api.metadata.MetadataBlock;
-import ru.mousecray.endmagic.api.metadata.PropertyFeature;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-public class EnderLog extends MetadataBlock {
+import static net.minecraft.block.BlockLog.LOG_AXIS;
+import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 
-    public static final PropertyEnum<BlockLog.EnumAxis> LOG_AXIS = BlockLog.LOG_AXIS;
-    public static final PropertyFeature<EnderBlockTypes.EnderTreeType> TREE_TYPE = EnderBlockTypes.TREE_TYPE;
+public class EnderLog extends MetadataBlock {
 
     public EnderLog() {
         super(Material.WOOD);
@@ -63,7 +61,7 @@ public class EnderLog extends MetadataBlock {
 
     @Override
     protected BlockStateContainer createBlockStateContainer() {
-        return BlockStateGenerator.create(this).addProperties(LOG_AXIS).addFeature(TREE_TYPE).buildContainer();
+        return BlockStateGenerator.create(this).addProperties(LOG_AXIS).addFeatures(TREE_TYPE).buildContainer();
     }
 
     @Override

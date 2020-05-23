@@ -21,18 +21,15 @@ import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
 import ru.mousecray.endmagic.api.metadata.MetadataBlock;
-import ru.mousecray.endmagic.api.metadata.PropertyFeature;
-import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
 import static net.minecraft.block.BlockSapling.SAPLING_AABB;
+import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 
 public class EnderSapling extends MetadataBlock implements IGrowable {
-
-    public static final PropertyFeature<EnderBlockTypes.EnderTreeType> TREE_TYPE = EnderBlockTypes.TREE_TYPE;
 
     public EnderSapling() {
         super(Material.PLANTS);
@@ -44,7 +41,7 @@ public class EnderSapling extends MetadataBlock implements IGrowable {
 
     @Override
     protected BlockStateContainer createBlockStateContainer() {
-        return BlockStateGenerator.create(this).addFeature(TREE_TYPE).buildContainer();
+        return BlockStateGenerator.create(this).addFeatures(TREE_TYPE).buildContainer();
     }
 
     @Override

@@ -39,31 +39,37 @@ public class MetadataContainer extends BlockStateContainer {
 
     private final ImmutableList<ExtendedStateImpl> metaToState;
     private final ImmutableMap<IBlockState, Integer> stateToMeta;
-    private final PropertyFeature feature;
+    private final int itemBlockCount;
 
-    public MetadataContainer(Block block, PropertyFeature feature, List<IProperty<?>> properties, List<IProperty<?>> excludedProp) {
-        super(block, union(properties, excludedProp, feature).toArray(new IProperty[0]));
+    public MetadataContainer(Block block, @Nullable PropertyFeature<?> featureWithItemBlock, List<PropertyFeature<?>> features, List<IProperty<?>> properties, List<IProperty<?>> excludedProp) {
+        super(block, union(properties, excludedProp, features, featureWithItemBlock).toArray(new IProperty[0]));
         Map<Comparable<?>, ExtendedStateImpl> tempStates = new HashMap<>();
-        excludedProp.forEach(
-                property -> getValidStates().forEach(state -> tempStates.putIfAbsent(state.getValue(property), (ExtendedStateImpl) state)));
+        excludedProp.forEach(property -> getValidStates()
+                .forEach(state -> tempStates.putIfAbsent(state.getValue(property), (ExtendedStateImpl) state)));
 
-        metaToState = ImmutableList.copyOf(tempStates.values());
+        metaToState = ImmutableList.copyOf(!tempStates.isEmpty() ? tempStates.values() :
+                getValidStates().stream().map(val -> (ExtendedStateImpl) val).collect(Collectors.toList()));
         stateToMeta = ImmutableMap.copyOf(metaToState.stream().collect(Collectors.toMap(key -> key, metaToState::indexOf)));
-        this.feature = feature;
+
+        itemBlockCount = featureWithItemBlock != null ? featureWithItemBlock.getAllowedValues().size() : 0;
     }
 
-    private static Set<IProperty<?>> union(List<IProperty<?>> firstList, List<IProperty<?>> secondList, IProperty<?> element) {
+    private static Set<IProperty<?>> union(List<IProperty<?>> firstList, List<IProperty<?>> secondList, List<PropertyFeature<?>> thirdList, PropertyFeature element) {
         Set<IProperty<?>> returnSet = new HashSet<>();
         returnSet.addAll(firstList);
         returnSet.addAll(secondList);
-        if (element != null) returnSet.add(element);
+        returnSet.addAll(thirdList);
+        returnSet.add(element);
         return returnSet;
     }
 
     @Override
     protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, @Nullable ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties) {
-        return properties.values().stream().filter(val -> val instanceof IFeaturesList).findFirst()
-                .map(comparable -> new ExtendedStateImpl(block, properties, (IFeaturesList) comparable))
+        return properties.values().stream()
+                .filter(val -> val instanceof IFeaturesList)
+                .map(val -> (IFeaturesList) val)
+                .min(Comparator.comparing(IFeaturesList::getPriority))
+                .map((val) -> new ExtendedStateImpl(block, properties, val))
                 .orElseGet(() -> new ExtendedStateImpl(block, properties));
     }
 
@@ -79,25 +85,21 @@ public class MetadataContainer extends BlockStateContainer {
         return metaToState.get(meta);
     }
 
-    public int getItemBlockCount() {
-        return feature == null ? 0 : feature.getAllowedValues().size();
-    }
-
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> destItems, Block block) {
-        if (getItemBlockCount() == 0) {
+        if (itemBlockCount == 0) {
             destItems.add(new ItemStack(block));
             return;
         }
-        for (int i = 0; i < getItemBlockCount(); ++i)
+        for (int i = 0; i < itemBlockCount; ++i)
             destItems.add(new ItemStack(block, 1, i));
     }
 
     public ItemBlock createMetaItem(Block block) {
-        return getItemBlockCount() == 0 ? new ItemBlock(block) : new MetaItemBlock(block);
+        return itemBlockCount == 0 ? new ItemBlock(block) : new MetaItemBlock(block);
     }
 
     public void registerItemModels(Block block) {
-        for (int i = 0; i < getItemBlockCount(); ++i)
+        for (int i = 0; i < itemBlockCount; ++i)
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), i,
                     new ModelResourceLocation(block.getRegistryName(), "inventory,meta=" + i));
     }
@@ -123,10 +125,10 @@ public class MetadataContainer extends BlockStateContainer {
 
     public static class ExtendedStateImpl extends StateImplementation {
 
-        private IFeaturesList features;
+        private final IFeaturesList features;
 
         protected ExtendedStateImpl(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties) {
-            this(block, properties, IFeaturesList.EMPTY(block.getUnlocalizedName()));
+            this(block, properties, IFeaturesList.EMPTY(""));
         }
 
         public ExtendedStateImpl(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, IFeaturesList features) {

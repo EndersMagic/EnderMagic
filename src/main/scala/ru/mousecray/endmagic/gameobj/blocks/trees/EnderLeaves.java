@@ -1,10 +1,8 @@
 package ru.mousecray.endmagic.gameobj.blocks.trees;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -27,7 +25,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
 import ru.mousecray.endmagic.api.metadata.MetadataBlock;
-import ru.mousecray.endmagic.api.metadata.PropertyFeature;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
@@ -39,11 +36,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class EnderLeaves extends MetadataBlock implements IShearable {
+import static net.minecraft.block.BlockLeaves.CHECK_DECAY;
+import static net.minecraft.block.BlockLeaves.DECAYABLE;
+import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 
-    public static final PropertyBool DECAYABLE = BlockLeaves.DECAYABLE;
-    public static final PropertyBool CHECK_DECAY = BlockLeaves.CHECK_DECAY;
-    public static final PropertyFeature<EnderBlockTypes.EnderTreeType> TREE_TYPE = EnderBlockTypes.TREE_TYPE;
+public class EnderLeaves extends MetadataBlock implements IShearable {
 
     public EnderLeaves() {
         super(Material.LEAVES);
@@ -57,7 +54,7 @@ public class EnderLeaves extends MetadataBlock implements IShearable {
 
     @Override
     protected BlockStateContainer createBlockStateContainer() {
-        return BlockStateGenerator.create(this).addProperties(DECAYABLE, CHECK_DECAY).addFeature(TREE_TYPE).buildContainer();
+        return BlockStateGenerator.create(this).addProperties(DECAYABLE, CHECK_DECAY).addFeatures(TREE_TYPE).buildContainer();
     }
 
     @Override
@@ -112,7 +109,7 @@ public class EnderLeaves extends MetadataBlock implements IShearable {
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
-        if (!state.getValue(EnderLeaves.DECAYABLE)) return;
+        if (!state.getValue(DECAYABLE)) return;
 
         if (state.getValue(CHECK_DECAY)) {
             boolean isNotLog = findingArea(pos).stream().noneMatch(currPos -> {

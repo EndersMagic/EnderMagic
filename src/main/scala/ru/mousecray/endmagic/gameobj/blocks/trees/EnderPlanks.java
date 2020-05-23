@@ -5,12 +5,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
 import ru.mousecray.endmagic.api.metadata.MetadataBlock;
-import ru.mousecray.endmagic.api.metadata.PropertyFeature;
-import ru.mousecray.endmagic.util.EnderBlockTypes;
+
+import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 
 public class EnderPlanks extends MetadataBlock {
-
-    public static final PropertyFeature<EnderBlockTypes.EnderTreeType> TREE_TYPE = EnderBlockTypes.TREE_TYPE;
 
     public EnderPlanks() {
         super(Material.WOOD);
@@ -21,6 +19,6 @@ public class EnderPlanks extends MetadataBlock {
 
     @Override
     protected BlockStateContainer createBlockStateContainer() {
-        return BlockStateGenerator.create(this).addFeature(TREE_TYPE).buildContainer();
+        return BlockStateGenerator.create(this).addFeatures(TREE_TYPE).buildContainer();
     }
 }

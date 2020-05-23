@@ -12,8 +12,9 @@ import java.util.List;
 public class BlockStateGenerator {
     protected List<IProperty<?>> properties = new ArrayList<>();
     protected List<IProperty<?>> excludedProperties = new ArrayList<>();
-    protected PropertyFeature feature;
+    protected List<PropertyFeature<?>> features = new ArrayList<>();
     protected Block block;
+    private PropertyFeature<?> featureWithItemBlock;
 
     protected BlockStateGenerator(Block block) {
         this.block = block;
@@ -37,12 +38,20 @@ public class BlockStateGenerator {
         return this;
     }
 
-    public BlockStateGenerator addFeature(PropertyFeature type) {
-        feature = Preconditions.checkNotNull(type);
+    public BlockStateGenerator addFeatures(PropertyFeature<?>... types) {
+        Arrays.stream(types).forEach(this::addFeature);
         return this;
     }
 
+    protected void addFeature(PropertyFeature<?> feature) {
+        if (featureWithItemBlock == null) featureWithItemBlock = feature;
+        Preconditions.checkArgument(!feature.hasItemBlock(),
+                "BlockState can't contains two feature with custom ItemBlock. " +
+                        "Exist feature: " + featureWithItemBlock + "; New feature: " + feature);
+        features.add(feature);
+    }
+
     public MetadataContainer buildContainer() {
-        return new MetadataContainer(block, feature, properties, excludedProperties);
+        return new MetadataContainer(block, featureWithItemBlock, features, properties, excludedProperties);
     }
 }

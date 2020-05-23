@@ -31,7 +31,7 @@ public class BlockEnderGrass extends MetadataBlock implements IEndSoil {
 
     @Override
     protected BlockStateContainer createBlockStateContainer() {
-        return BlockStateGenerator.create(this).addFeature(GROUND_TYPE).buildContainer();
+        return BlockStateGenerator.create(this).addFeatures(GROUND_TYPE).buildContainer();
     }
 
     @Override

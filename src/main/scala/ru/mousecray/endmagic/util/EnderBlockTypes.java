@@ -38,21 +38,23 @@ public class EnderBlockTypes {
     public static final PropertyFeature<EnderTreeType> TREE_TYPE = PropertyFeature.createProperty("type", EnderTreeType.class);
     public static final PropertyFeature<EnderGroundType> GROUND_TYPE = PropertyFeature.createProperty("type", EnderGroundType.class);
     public static final PropertyFeature<EMBlockHalf> BLOCK_HALF = PropertyFeature.createProperty("state", EMBlockHalf.class);
+    public static final AxisAlignedBB AABB_BOTTOM_HALF = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
+    public static final AxisAlignedBB AABB_TOP_HALF = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);
 
     public enum EnderTreeType implements EnderSapling.SaplingThings, IFeaturesList {
-        DRAGON("dragon", MapColor.PURPLE, true, WorldGenDragonTree.class, 0) {
+        DRAGON("dragon", MapColor.PURPLE, true, WorldGenDragonTree.class) {
             @Override
             public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
                 return Arrays.stream(EnumFacing.HORIZONTALS)
-                        .map(pos::offset)
-                        .map(worldIn::getBlockState)
-                        //TODO: add custom end grass and remove STONE from this
-                        .anyMatch(state -> EMUtils.isSoil(state, EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS));
+                               .map(pos::offset)
+                               .map(worldIn::getBlockState)
+                               //TODO: add custom end grass and remove STONE from this
+                               .anyMatch(state -> EMUtils.isSoil(state, EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS));
             }
         },
-        NATURAL("natural", MapColor.BROWN, true, WorldGenNaturalTree.class, 1),
-        IMMORTAL("immortal", MapColor.EMERALD, true, null, 2),
-        PHANTOM("phantom", MapColor.SILVER, false, WorldGenPhantomTree.class, 3) {
+        NATURAL("natural", MapColor.BROWN, true, WorldGenNaturalTree.class),
+        IMMORTAL("immortal", MapColor.EMERALD, true, null),
+        PHANTOM("phantom", MapColor.SILVER, false, WorldGenPhantomTree.class) {
             @Override
             public boolean hasTileEntity(IBlockState state) {
                 return state.getBlock() == EMBlocks.enderLog || state.getBlock() == EMBlocks.enderLeaves;
@@ -68,14 +70,12 @@ public class EnderBlockTypes {
         private final MapColor mapColor;
         private Class<? extends WorldGenEnderTree> generatorClass;
         private WorldGenEnderTree generator;
-        private final int damage;
         private final boolean opaque;
 
-        EnderTreeType(String name, MapColor mapColor, boolean opaque, @Nullable Class<? extends WorldGenEnderTree> generatorClass, int damage) {
+        EnderTreeType(String name, MapColor mapColor, boolean opaque, @Nullable Class<? extends WorldGenEnderTree> generatorClass) {
             this.name = name;
             this.mapColor = mapColor;
             this.generatorClass = generatorClass;
-            this.damage = damage;
             this.opaque = opaque;
         }
 
@@ -86,11 +86,6 @@ public class EnderBlockTypes {
                 e.printStackTrace();
             }
             return generator;
-        }
-
-        @Override
-        public int getDamage() {
-            return damage;
         }
 
         @Override
@@ -125,25 +120,18 @@ public class EnderBlockTypes {
     }
 
     public enum EnderGroundType implements IFeaturesList {
-        LIVE("live", MapColor.BLUE, SoundType.GROUND, 0),
-        DEAD("dead", MapColor.GRAY, SoundType.SAND, 1),
-        FROZEN("frozen", MapColor.DIAMOND, SoundType.SNOW, 2);
+        LIVE("live", MapColor.BLUE, SoundType.GROUND),
+        DEAD("dead", MapColor.GRAY, SoundType.SAND),
+        FROZEN("frozen", MapColor.DIAMOND, SoundType.SNOW);
 
         private final String name;
         private final MapColor mapColor;
         private final SoundType sound;
-        private final int damage;
 
-        EnderGroundType(String name, MapColor mapColor, SoundType sound, int damage) {
+        EnderGroundType(String name, MapColor mapColor, SoundType sound) {
             this.name = name;
             this.mapColor = mapColor;
             this.sound = sound;
-            this.damage = damage;
-        }
-
-        @Override
-        public int getDamage() {
-            return damage;
         }
 
         @Override
@@ -169,12 +157,9 @@ public class EnderBlockTypes {
     }
 
     public enum EMBlockHalf implements IFeaturesList {
-        TOP("top", 0, EMBlockHalf.AABB_TOP_HALF, false, true, 1),
-        BOTTOM("bottom", 0, EMBlockHalf.AABB_BOTTOM_HALF, false, false, 1),
+        TOP("top", 0, AABB_TOP_HALF, false, true, 1),
+        BOTTOM("bottom", 0, AABB_BOTTOM_HALF, false, false, 1),
         DOUBLE("double", 255, FULL_BLOCK_AABB, true, true, 2);
-
-        public static final AxisAlignedBB AABB_BOTTOM_HALF = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
-        public static final AxisAlignedBB AABB_TOP_HALF = new AxisAlignedBB(0.0D, 0.5D, 0.0D, 1.0D, 1.0D, 1.0D);
 
         private final String name;
         private final int lightOpacity;

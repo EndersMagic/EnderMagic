@@ -13,15 +13,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
 import ru.mousecray.endmagic.api.metadata.MetadataBlock;
-import ru.mousecray.endmagic.api.metadata.PropertyFeature;
-import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.EnderBlockTypes.EMBlockHalf;
 
 import javax.annotation.Nonnull;
 
-public class EMSlab extends MetadataBlock {
+import static ru.mousecray.endmagic.util.EnderBlockTypes.BLOCK_HALF;
 
-    public static final PropertyFeature<EMBlockHalf> BLOCK_HALF = EnderBlockTypes.BLOCK_HALF;
+public class EMSlab extends MetadataBlock {
 
     public EMSlab(Material material) {
         super(material);
@@ -36,7 +34,7 @@ public class EMSlab extends MetadataBlock {
     @Nonnull
     @Override
     protected BlockStateContainer createBlockStateContainer() {
-        return BlockStateGenerator.create(this).addFeature(BLOCK_HALF).buildContainer();
+        return BlockStateGenerator.create(this).addFeatures(BLOCK_HALF).buildContainer();
     }
 
     @Override
