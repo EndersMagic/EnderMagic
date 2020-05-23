@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "normal": {
+      "model": "endmagic:dragon_diamond_block"
+    },
+    "inventory": {
+      "model": "endmagic:dragon_diamond_block"
+    }
+  }
+}

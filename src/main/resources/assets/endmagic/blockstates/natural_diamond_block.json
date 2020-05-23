@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "normal": {
+      "model": "endmagic:natural_diamond_block"
+    },
+    "inventory": {
+      "model": "endmagic:natural_diamond_block"
+    }
+  }
+}

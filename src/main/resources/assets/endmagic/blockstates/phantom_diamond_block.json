@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "normal": {
+      "model": "endmagic:phantom_diamond_block"
+    },
+    "inventory": {
+      "model": "endmagic:phantom_diamond_block"
+    }
+  }
+}

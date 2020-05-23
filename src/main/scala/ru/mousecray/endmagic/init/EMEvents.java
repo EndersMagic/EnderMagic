@@ -229,7 +229,7 @@ public class EMEvents {
 
     @GradleTarget(Debug)
     @SideOnly(Side.CLIENT)
-    @SubscribeEvent
+    //@SubscribeEvent
     public static void loadLastWorld(GuiOpenEvent event) {
         System.out.println(event.getGui());
         if (!alreadyEnteredInWorldAutomaticaly) {
