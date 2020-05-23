@@ -62,11 +62,12 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
         super(notify, areaRequirementsMin, areaRequirementsMax);
     }
 
-    private IBlockState phantomLog = EMBlocks.enderLog.stateWithBlockType(EnderBlockTypes.EnderTreeType.PHANTOM);
-    private IBlockState phantomLeaves = EMBlocks.enderLeaves.stateWithBlockType(EnderBlockTypes.EnderTreeType.PHANTOM);
+    private IBlockState phantomLog = EMBlocks.enderLog.getDefaultState().withProperty(EnderBlockTypes.TREE_TYPE,
+            EnderBlockTypes.EnderTreeType.PHANTOM);
+    private IBlockState phantomLeaves = EMBlocks.enderLeaves.getDefaultState().withProperty(EnderBlockTypes.TREE_TYPE,
+            EnderBlockTypes.EnderTreeType.PHANTOM);
     private IBlockState air = Blocks.AIR.getDefaultState();
 
-    @SuppressWarnings("unused")
     private void setWithOffset(World world, BlockPos position, Vec3i offset, IBlockState state) {
         setBlockAndNotifyAdequately(world, position.add(offset), state);
         ((TilePhantomAvoidingBlockBase) world.getTileEntity(position)).offsetFromSapling = offset;
@@ -153,12 +154,11 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
 
     private void generatePlaneWithAxis(WorldSetWithTile world, BlockPos start, Vec2i vec2i, IBlockState[][] iBlockStates) {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        for (int y = 0; y < iBlockStates.length; y++) {
+        for (int y = 0; y < iBlockStates.length; y++)
             for (int horizontal = 0; horizontal < iBlockStates[y].length; horizontal++) {
                 pos.setPos(start.getX() + vec2i.x * horizontal, start.getY() - y, start.getZ() + vec2i.y * horizontal);
                 world.setBlockState(pos, iBlockStates[y][horizontal]);
             }
-        }
     }
 
     //@formatter:off

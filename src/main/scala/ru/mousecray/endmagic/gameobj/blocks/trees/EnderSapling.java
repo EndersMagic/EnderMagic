@@ -7,12 +7,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -22,26 +19,32 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
-import ru.mousecray.endmagic.gameobj.blocks.BlockTypeBase;
-import ru.mousecray.endmagic.gameobj.blocks.VariativeBlock;
+import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
+import ru.mousecray.endmagic.api.metadata.MetadataBlock;
+import ru.mousecray.endmagic.api.metadata.PropertyFeature;
+import ru.mousecray.endmagic.util.EnderBlockTypes;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Random;
 
 import static net.minecraft.block.BlockSapling.SAPLING_AABB;
 
-public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & EMSapling.SaplingThings & BlockTypeBase> extends VariativeBlock<TreeType> implements IGrowable {
+public class EnderSapling extends MetadataBlock implements IGrowable {
 
-    public EMSapling(Class<TreeType> type) {
-        super(type, Material.PLANTS, "sapling");
+    public static final PropertyFeature<EnderBlockTypes.EnderTreeType> TREE_TYPE = EnderBlockTypes.TREE_TYPE;
+
+    public EnderSapling() {
+        super(Material.PLANTS);
         setResistance(0.0F);
         setHardness(0.0F);
         setSoundType(SoundType.PLANT);
+        setTickRandomly(true);
     }
 
     @Override
-    public boolean hasTickRandomly() {
-        return true;
+    protected BlockStateContainer createBlockStateContainer() {
+        return BlockStateGenerator.create(this).addFeature(TREE_TYPE).buildContainer();
     }
 
     @Override
@@ -50,18 +53,11 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        if (!world.getBlockState(pos).getValue(blockType).canPlaceBlockAt(world, pos)) {
+    public void neighborChanged(IBlockState state, @Nonnull World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (!world.getBlockState(pos).getValue(TREE_TYPE).canPlaceBlockAt(world, pos)) {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             dropBlockAsItem(world, pos, state, 4);
         }
-    }
-
-    @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        TreeType blockType1 = byIndex.apply(stack.getItemDamage());
-        world.setBlockState(pos, state.withProperty(blockType, blockType1));
-        if (!blockType1.canPlaceBlockAt(world, pos)) world.setBlockState(pos, Blocks.AIR.getDefaultState());
     }
 
     @Override
@@ -76,7 +72,7 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
 
     @Override
     public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
-        state.getValue(blockType).grow(world, rand, pos, state);
+        state.getValue(TREE_TYPE).grow(world, rand, pos, state);
     }
 
     @Override
@@ -115,11 +111,6 @@ public class EMSapling<TreeType extends Enum<TreeType> & IStringSerializable & E
             if (!world.isAreaLoaded(pos, 1)) return;
             if (world.getLightFromNeighbors(pos.up()) >= 9 && rand.nextInt(7) == 0) grow(world, rand, pos, state);
         }
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this);
     }
 
     public interface SaplingThings {

@@ -93,7 +93,7 @@ public class EMEvents {
         BlockPos pos = event.getPos();
         IBlockState blockState = world.getBlockState(pos);
         if (/*!event.getEntityPlayer().world.isRemote && */(blockState.getBlock() == enderLog || blockState.getBlock() == enderLeaves) &&
-                enderLog.getBlockType(blockState) == EnderBlockTypes.EnderTreeType.PHANTOM) {
+                blockState.getValue(EnderBlockTypes.TREE_TYPE) == EnderBlockTypes.EnderTreeType.PHANTOM) {
             PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
             if (capability != null) {
                 PhantomAvoidingGroup tree = capability.groupAtPos.get(event.getPos());
@@ -247,11 +247,8 @@ public class EMEvents {
                     guiListWorldSelection.getListEntry(0).joinWorld();
                 } catch (Exception ignore) {
                 }
-            } else if (event.getGui() instanceof GuiOldSaveLoadConfirm) {
-                FMLClientHandler.instance().showGuiScreen(mainMenu);
-            } else if (event.getGui() instanceof GuiIngameMenu) {
-                alreadyEnteredInWorldAutomaticaly = true;
-            }
+            } else if (event.getGui() instanceof GuiOldSaveLoadConfirm) FMLClientHandler.instance().showGuiScreen(mainMenu);
+            else if (event.getGui() instanceof GuiIngameMenu) alreadyEnteredInWorldAutomaticaly = true;
         }
     }
 
