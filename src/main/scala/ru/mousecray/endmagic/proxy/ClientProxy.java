@@ -34,6 +34,7 @@ import ru.mousecray.endmagic.api.embook.components.ImageComponent;
 import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
+import ru.mousecray.endmagic.client.gui.GuiScreenTest;
 import ru.mousecray.endmagic.client.gui.GuiTypes;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
@@ -53,11 +54,7 @@ import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
@@ -72,7 +69,6 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
@@ -107,7 +103,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         super.postInit(event);
 
         //Register new vanilla EndStone model
-         setModel(Blocks.END_STONE, 0, new ModelResourceLocation(new ResourceLocation("minecraft", "end_stone"), "normal"));
+        setModel(Blocks.END_STONE, 0, new ModelResourceLocation(new ResourceLocation("minecraft", "end_stone"), "normal"));
 
         //formatter:off
         //Add default book chapters
@@ -244,6 +240,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         switch (GuiTypes.values()[id]) {
             case blastFurnaceGui:
                 return new GuiBlastFurnace(new ContainerBlastFurnace(player, EMBlocks.blockBlastFurnace.tile(world, new BlockPos(x, y, z))));
+            case testItemGui:
+                return new GuiScreenTest();
             default:
                 return null;
         }

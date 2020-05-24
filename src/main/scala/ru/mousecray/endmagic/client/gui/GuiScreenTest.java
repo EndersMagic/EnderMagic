@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.client.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,25 +18,26 @@ import static ru.mousecray.endmagic.network.PacketTypes.STRUCTURE_FIND;
 
 @SideOnly(Side.CLIENT)
 public class GuiScreenTest extends GuiScreen {
+
     private static final ResourceLocation BOOK_TEXTURES = new ResourceLocation(EM.ID, "textures/gui/book.png");
     private static int bookFullWidth = 256;
     private static int bookFullHeight = 192;
-    //GuiButtonExt buttonFindStr;//to structure find todo
 
     @Override
     public void initGui() {
+        super.initGui();
         WorldServer[] worlds = DimensionManager.getWorlds();
         for (int i = 0; i < worlds.length; i++) {
             WorldServer world = worlds[i];
-            buttonList.add(new GuiButtonExt(world.provider.getDimension(), width / 2 - 100, 50 + i * 30, "Teleprt to " + world.getProviderName() + " demension"));
+            buttonList.add(new GuiButtonExt(world.provider.getDimension(), width / 2 - 100, 50 + i * 30, "Teleprt to " + world.provider.getDimensionType().getName() + " demension"));
         }
-        super.initGui();
     }
 
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        Minecraft mc = Minecraft.getMinecraft();
         mc.getTextureManager().bindTexture(BOOK_TEXTURES);
         int i = (width - bookFullWidth) / 2;
         int j = (height - bookFullHeight) / 2;
