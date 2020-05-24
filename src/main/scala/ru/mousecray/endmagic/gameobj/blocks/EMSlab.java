@@ -41,6 +41,12 @@ public abstract class EMSlab extends BlockSlab implements ITechnicalBlock, IExte
         public String getCustomName() {
             return "ender_tree_slab_double";
         }
+
+        @Nullable
+        @Override
+        public CreativeTabs getCustomCreativeTab() {
+            return null;
+        }
     }
 
     public static class EMSlabSingle extends EMSlab {
@@ -67,6 +73,11 @@ public abstract class EMSlab extends BlockSlab implements ITechnicalBlock, IExte
                 int i = treeType.ordinal();
                 ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, new ModelResourceLocation(getRegistryName(), i == 0 ? "inventory" : "inventory,meta=" + i));
             }
+        }
+
+        public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+            for (EnderBlockTypes.EnderTreeType treeType : EnderBlockTypes.EnderTreeType.values())
+                items.add(new ItemStack(this, 1, treeType.ordinal()));
         }
     }
 
@@ -111,11 +122,6 @@ public abstract class EMSlab extends BlockSlab implements ITechnicalBlock, IExte
 
     public Comparable<?> getTypeForItem(ItemStack stack) {
         return EnderBlockTypes.EnderTreeType.values()[stack.getItemDamage() & 7];
-    }
-
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (EnderBlockTypes.EnderTreeType treeType : EnderBlockTypes.EnderTreeType.values())
-            items.add(new ItemStack(this, 1, treeType.ordinal()));
     }
 
     public IBlockState getStateFromMeta(int meta) {
