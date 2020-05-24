@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.client.render.model.baked;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Streams;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -41,18 +42,22 @@ public class TexturedFinalisedModel extends BakedModelDelegate {
     }
 
     private ImmutableList<BakedQuad> getQuads() {
-        if (quads == null) {
-            quads = getTextureAtlasSprite()
-                    .stream()
-                    .flatMap(p ->
+        if (true) {
+            double decalConstant = 0.0015;
+            quads =
+                    Streams.mapWithIndex(getTextureAtlasSprite().stream(), (p, index) ->
                             ItemLayerModel.getQuadsForSprite(1, p.getKey(), DefaultVertexFormats.ITEM, Optional.empty())
                                     .stream()
                                     .map(UnpackedBakedQuad::unpack)
                                     .peek(quad -> quad.getVertices()
-                                            .forEach(v -> v.setColor(RGBA.fromARGB(p.getValue()))))
+                                            .forEach(v -> {
+                                                v.setColor(RGBA.fromARGB(p.getValue()));
+                                                v.setPos(v.getPos().scale(1 + index * decalConstant).addVector(0, 0, index * -decalConstant / 2));
+                                            }))
                                     .map(quad -> quad.pack(DefaultVertexFormats.ITEM))
                     )
-                    .collect(ImmutableList.toImmutableList());
+                            .flatMap(i -> i)
+                            .collect(ImmutableList.toImmutableList());
         }
 
         return quads;
