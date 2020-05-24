@@ -41,9 +41,10 @@ public class TexturedFinalisedModel extends BakedModelDelegate {
 
     }
 
+    private static final double decalConstant = 0.0015;
+
     private ImmutableList<BakedQuad> getQuads() {
-        if (quads==null) {
-            final double decalConstant = 0.0015;
+        if (quads == null) {
             quads =
                     Streams.mapWithIndex(getTextureAtlasSprite().stream(), (p, index) ->
                             ItemLayerModel.getQuadsForSprite(1, p.getKey(), DefaultVertexFormats.ITEM, Optional.empty())
