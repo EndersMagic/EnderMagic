@@ -31,6 +31,8 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @ParametersAreNonnullByDefault
@@ -65,12 +67,12 @@ public class MetadataContainer extends BlockStateContainer {
 
     @Override
     protected StateImplementation createState(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, @Nullable ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties) {
-        return properties.values().stream()
+        Collection<IFeaturesList> list = properties.values().stream()
                 .filter(val -> val instanceof IFeaturesList)
                 .map(val -> (IFeaturesList) val)
-                .min(Comparator.comparing(IFeaturesList::getPriority))
-                .map((val) -> new ExtendedStateImpl(block, properties, val))
-                .orElseGet(() -> new ExtendedStateImpl(block, properties));
+                .sorted(Comparator.comparing(IFeaturesList::getPriority))
+                .collect(Collectors.toList());
+        return list.isEmpty() ? new ExtendedStateImpl(block, properties) : new ExtendedStateImpl(block, properties, list);
     }
 
     public boolean hasBlockTickRandomly() {
@@ -125,142 +127,166 @@ public class MetadataContainer extends BlockStateContainer {
 
     public static class ExtendedStateImpl extends StateImplementation {
 
-        private final IFeaturesList features;
+        private final List<IFeaturesList> features = new ArrayList<>();
 
         protected ExtendedStateImpl(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties) {
-            this(block, properties, IFeaturesList.EMPTY(""));
+            this(block, properties, Collections.singleton(IFeaturesList.EMPTY("")));
         }
 
-        public ExtendedStateImpl(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, IFeaturesList features) {
+        public ExtendedStateImpl(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, Collection<IFeaturesList> features) {
             super(block, properties);
-            this.features = features;
+            this.features.addAll(features);
         }
 
-        public IFeaturesList getFeatures() {
-            return features;
+        @Nullable
+        private <R> R iterateFeatures(@Nullable R defaultReturn, Function<IFeaturesList, R> function) {
+            for (IFeaturesList feature : features)
+                try { return function.apply(feature); } catch (UnsupportedOperationException ignore) {}
+            return defaultReturn;
         }
 
+        private void iterateVoidFeatures(Consumer<IFeaturesList> function) {
+            for (IFeaturesList feature : features)
+                try { function.accept(feature); } catch (UnsupportedOperationException ignore) {}
+        }
+
+        public ImmutableList<IFeaturesList> getFeatures() {
+            return ImmutableList.copyOf(features);
+        }
+
+        /*-------------------------New methods-------------------------*/
         public int getDamage() {
-            return features.getDamage();
+            //Excessively, because IFeaturesList#getDamage don't create exception, but used for iteration of features list
+            return iterateFeatures(0, IFeaturesList::getDamage);
         }
 
-        public TileEntity createTileEntity() {
-            return features.createTileEntity();
+        public TileEntity createTileEntity(World world) {
+            //Can't access to Block#createTileEntity, because of recursion
+            return iterateFeatures(null, feature -> feature.createTileEntity(world));
         }
 
         public boolean hasTileEntity() {
-            return features.hasTileEntity(this);
+            //Can't access to Block#hasTileEntity, because of recursion
+            return iterateFeatures(false, IFeaturesList::hasTileEntity);
         }
 
         public void updateTick(World world, BlockPos pos, Random rand) {
-            features.updateTick(world, pos, this, rand);
+            //Void method
+            iterateVoidFeatures(feature -> feature.updateTick(world, pos, this, rand));
         }
 
         public boolean hasTickRandomly() {
-            return features.hasTickRandomly();
+            //Don't create recursion, because MetadataBlock don't overriding Block#getTickRandomly, and set it in constructor
+            return iterateFeatures(getBlock().getTickRandomly(), IFeaturesList::hasTickRandomly);
+        }
+
+        public int quantityDropped(int fortune, Random random) {
+            //Access to Block#quantityDropped with one parameter, because of recursion
+            return iterateFeatures(getBlock().quantityDropped(random), feature -> feature.quantityDropped(fortune, random));
         }
 
         public String getName() {
-            return features.getName();
+            //Excessively, because IFeaturesList#getName don't create exception, but used for iteration of features list
+            return iterateFeatures("", IFeaturesList::getName);
         }
 
+        public SoundType getSoundType(World world, BlockPos pos, Entity entity) {
+            //Access to Block#getSoundType without parameters, because of recursion
+            return iterateFeatures(getBlock().getSoundType(), feature -> feature.getSoundType(world, pos, entity));
+        }
+        /*-------------------------New methods-------------------------*/
+
+        /*-------------------------Overriding methods-------------------------*/
         @Override
         public void neighborChanged(World world, BlockPos pos, Block block, BlockPos fromPos) {
-            features.neighbourChanged(world, pos, block, fromPos);
-        }
-
-        public SoundType getSoundType() {
-            return features.getSoundType(this);
+            iterateVoidFeatures(feature -> feature.neighbourChanged(world, pos, block, fromPos));
         }
 
         @Override
         public Material getMaterial() {
-            return features.getMaterial(this);
+            return iterateFeatures(getBlock().getMaterial(this), IFeaturesList::getMaterial);
         }
 
         @Override
-        public MapColor getMapColor(IBlockAccess access, BlockPos pos) {
-            return features.getMapColor(this, access, pos);
+        public MapColor getMapColor(IBlockAccess world, BlockPos pos) {
+            return iterateFeatures(getBlock().getMapColor(this, world, pos), feature -> feature.getMapColor(world, pos));
         }
 
         @Override
         public float getBlockHardness(World world, BlockPos pos) {
-            return features.getHardness(this, world, pos);
+            return iterateFeatures(getBlock().getBlockHardness(this, world, pos), feature -> feature.getHardness(world, pos));
         }
 
         @Override
         public boolean isOpaqueCube() {
-            return features.isOpaqueCube(this);
+            return iterateFeatures(getBlock().isOpaqueCube(this), IFeaturesList::isOpaqueCube);
         }
 
         @Override
         public boolean isFullCube() {
-            return features.isFullCube(this);
+            return iterateFeatures(getBlock().isFullCube(this), IFeaturesList::isFullCube);
         }
 
         @Override
         public int getLightValue(IBlockAccess world, BlockPos pos) {
-            return features.getLightValue(this, world, pos);
+            return iterateFeatures(getBlock().getLightValue(this, world, pos), feature -> feature.getLightValue(world, pos));
         }
 
         @Override
         public int getLightOpacity(IBlockAccess world, BlockPos pos) {
-            return features.getLightOpacity(this, world, pos);
+            return iterateFeatures(getBlock().getLightOpacity(this, world, pos), feature -> feature.getLightOpacity(world, pos));
         }
 
         @Override
         public EnumBlockRenderType getRenderType() {
-            return features.getRenderType(this);
+            return iterateFeatures(getBlock().getRenderType(this), IFeaturesList::getRenderType);
         }
 
         @Override
         public BlockFaceShape getBlockFaceShape(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-            return features.getFaceShape(this, world, pos, facing);
-        }
-
-        public int quantityDropped(int fortune, Random random) {
-            return features.quantityDropped(this, fortune, random);
+            return iterateFeatures(getBlock().getBlockFaceShape(world, this, pos, facing), feature -> feature.getFaceShape(world, pos, facing));
         }
 
         @Override
         public boolean isTopSolid() {
-            return features.isTopSolid(this);
+            return iterateFeatures(getBlock().isTopSolid(this), IFeaturesList::isTopSolid);
         }
 
         @Override
         public boolean canProvidePower() {
-            return features.canProvidePower(this);
+            return iterateFeatures(getBlock().canProvidePower(this), IFeaturesList::canProvidePower);
         }
 
         @Override
         public boolean canEntitySpawn(Entity entity) {
-            return features.canEntitySpawn(this, entity);
+            return iterateFeatures(getBlock().canEntitySpawn(this, entity), feature -> feature.canEntitySpawn(entity));
         }
 
         @Override
-        public AxisAlignedBB getBoundingBox(IBlockAccess blockAccess, BlockPos pos) {
-            return features.getBoundingBox(this, blockAccess, pos);
+        public AxisAlignedBB getBoundingBox(IBlockAccess world, BlockPos pos) {
+            return iterateFeatures(getBlock().getBoundingBox(this, world, pos), feature -> feature.getBoundingBox(world, pos));
         }
 
         @Nullable
         @Override
         public AxisAlignedBB getCollisionBoundingBox(IBlockAccess world, BlockPos pos) {
-            return features.getCollisionAABB(this, world, pos);
+            return iterateFeatures(getBlock().getCollisionBoundingBox(this, world, pos), feature -> feature.getCollisionAABB(world, pos));
         }
 
         @Override
         public AxisAlignedBB getSelectedBoundingBox(World world, BlockPos pos) {
-            return features.getSelectedAABB(this, world, pos);
+            return iterateFeatures(getBlock().getSelectedBoundingBox(this, world, pos), feature -> feature.getSelectedAABB(world, pos));
         }
 
         @Override
-        public int getStrongPower(IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-            return features.getStrongPower(this, blockAccess, pos, side);
+        public int getStrongPower(IBlockAccess world, BlockPos pos, EnumFacing side) {
+            return iterateFeatures(getBlock().getStrongPower(this, world, pos, side), feature -> feature.getStrongPower(world, pos, side));
         }
 
         @Override
-        public int getWeakPower(IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-            return features.getWeakPower(this, blockAccess, pos, side);
+        public int getWeakPower(IBlockAccess world, BlockPos pos, EnumFacing side) {
+            return iterateFeatures(getBlock().getWeakPower(this, world, pos, side), feature -> feature.getWeakPower(world, pos, side));
         }
+        /*-------------------------Overriding methods-------------------------*/
     }
 }

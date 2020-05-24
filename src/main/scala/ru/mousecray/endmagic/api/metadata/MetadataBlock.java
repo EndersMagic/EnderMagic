@@ -32,6 +32,7 @@ public abstract class MetadataBlock extends Block implements ITechnicalBlock {
     public MetadataBlock(Material material) {
         super(material);
         overrideBlockState = (MetadataContainer) blockState;
+        //Use state tick randomly if any state has tick randomly
         setTickRandomly(overrideBlockState.hasBlockTickRandomly());
     }
 
@@ -62,9 +63,9 @@ public abstract class MetadataBlock extends Block implements ITechnicalBlock {
     }
 
     /*@formatter:off--------Methods which extend IBlockState format and use all of features from IFeaturesList------*/
-    @Override public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) { return correctBlockState(state).getSoundType(); }
+    @Override public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) { return correctBlockState(state).getSoundType(world, pos, entity); }
     @Override public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) { correctBlockState(state).updateTick(world, pos, rand); }
-    @Override public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) { return correctBlockState(state).createTileEntity(); }
+    @Override public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) { return correctBlockState(state).createTileEntity(world); }
     @Override public boolean hasTileEntity(IBlockState state) { return correctBlockState(state).hasTileEntity(); }
     @Override public int damageDropped(IBlockState state) { return correctBlockState(state).getDamage(); }
     @Override public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) { overrideBlockState.getSubBlocks(tab, items, this); }

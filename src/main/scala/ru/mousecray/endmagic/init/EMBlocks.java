@@ -4,8 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import ru.mousecray.endmagic.gameobj.blocks.*;
-import ru.mousecray.endmagic.gameobj.blocks.dimensional.BlockEnderGrass;
-import ru.mousecray.endmagic.gameobj.blocks.dimensional.BlockEnderStone;
+import ru.mousecray.endmagic.gameobj.blocks.dimensional.EnderGrass;
+import ru.mousecray.endmagic.gameobj.blocks.dimensional.EnderStone;
 import ru.mousecray.endmagic.gameobj.blocks.portal.BlockMasterDarkPortal;
 import ru.mousecray.endmagic.gameobj.blocks.portal.BlockMasterStaticPortal;
 import ru.mousecray.endmagic.gameobj.blocks.portal.BlockTopMark;
@@ -54,8 +54,8 @@ public final class EMBlocks {
             .setHardness(2.0F)
             .setResistance(5.0F);
 
-    public static final BlockEnderGrass blockEnderGrass = new BlockEnderGrass();
-    public static final BlockEnderStone blockEnderStone = new BlockEnderStone();
+    public static final EnderGrass blockEnderGrass = new EnderGrass();
+    public static final EnderStone blockEnderStone = new EnderStone();
 
     public static final ChrysofillumVine chrysVine = new ChrysofillumVine();
     public static final ChrysofillumFlower chrysFlower = new ChrysofillumFlower();

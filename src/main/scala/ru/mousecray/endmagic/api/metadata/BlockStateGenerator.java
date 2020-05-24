@@ -27,13 +27,11 @@ public class BlockStateGenerator {
 
     @Nonnull
     public BlockStateGenerator addProperties(IProperty<?>... properties) {
-//        Preconditions.checkArgument(properties.length > 0, "If you add properties, properties length must be more of 0");
         this.properties.addAll(Arrays.asList(properties));
         return this;
     }
 
     public BlockStateGenerator excludeProperties(IProperty<?>... properties) {
-//        Preconditions.checkArgument(properties.length > 0, "If you exclude properties, properties length must be more of 0");
         excludedProperties.addAll(Arrays.asList(properties));
         return this;
     }
@@ -44,7 +42,7 @@ public class BlockStateGenerator {
     }
 
     protected void addFeature(PropertyFeature<?> feature) {
-        if (featureWithItemBlock == null) featureWithItemBlock = feature;
+        if (featureWithItemBlock == null) if (feature.hasItemBlock()) featureWithItemBlock = feature;
         Preconditions.checkArgument(!feature.hasItemBlock(),
                 "BlockState can't contains two feature with custom ItemBlock. " +
                         "Exist feature: " + featureWithItemBlock + "; New feature: " + feature);

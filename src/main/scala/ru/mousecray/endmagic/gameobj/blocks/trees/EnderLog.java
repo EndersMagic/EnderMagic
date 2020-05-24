@@ -7,6 +7,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFallingBlock;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.WorldProviderEnd;
 import net.minecraft.world.end.DragonFightManager;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
 import ru.mousecray.endmagic.api.metadata.MetadataBlock;
+import ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import javax.annotation.Nonnull;
@@ -57,6 +59,16 @@ public class EnderLog extends MetadataBlock {
                 world.spawnEntity(entity);
             }
         }
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return state.getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.PHANTOM;
+    }
+
+    @Override
+    public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
+        return state.getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.PHANTOM ? new TilePhantomAvoidingBlockBase() : null;
     }
 
     @Override

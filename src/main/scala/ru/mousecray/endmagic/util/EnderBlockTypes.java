@@ -3,8 +3,7 @@ package ru.mousecray.endmagic.util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -15,8 +14,6 @@ import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.api.metadata.IFeaturesList;
 import ru.mousecray.endmagic.api.metadata.PropertyFeature;
 import ru.mousecray.endmagic.gameobj.blocks.trees.EnderSapling;
-import ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase;
-import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.worldgen.trees.WorldGenDragonTree;
 import ru.mousecray.endmagic.worldgen.trees.WorldGenEnderTree;
 import ru.mousecray.endmagic.worldgen.trees.WorldGenNaturalTree;
@@ -44,27 +41,17 @@ public class EnderBlockTypes {
     public enum EnderTreeType implements EnderSapling.SaplingThings, IFeaturesList {
         DRAGON("dragon", MapColor.PURPLE, true, WorldGenDragonTree.class) {
             @Override
-            public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+            public boolean canPlaceBlockAt(World world, BlockPos pos) {
                 return Arrays.stream(EnumFacing.HORIZONTALS)
-                               .map(pos::offset)
-                               .map(worldIn::getBlockState)
-                               //TODO: add custom end grass and remove STONE from this
-                               .anyMatch(state -> EMUtils.isSoil(state, EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS));
+                        .map(pos::offset)
+                        .map(world::getBlockState)
+                        //TODO: add custom end grass and remove STONE from this
+                        .anyMatch(state -> EMUtils.isSoil(state, EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS));
             }
         },
         NATURAL("natural", MapColor.BROWN, true, WorldGenNaturalTree.class),
         IMMORTAL("immortal", MapColor.EMERALD, true, null),
-        PHANTOM("phantom", MapColor.SILVER, false, WorldGenPhantomTree.class) {
-            @Override
-            public boolean hasTileEntity(IBlockState state) {
-                return state.getBlock() == EMBlocks.enderLog || state.getBlock() == EMBlocks.enderLeaves;
-            }
-
-            @Override
-            public TileEntity createTileEntity() {
-                return new TilePhantomAvoidingBlockBase();
-            }
-        };
+        PHANTOM("phantom", MapColor.SILVER, false, WorldGenPhantomTree.class);
 
         private final String name;
         private final MapColor mapColor;
@@ -89,12 +76,12 @@ public class EnderBlockTypes {
         }
 
         @Override
-        public boolean isFullCube(IBlockState state) {
+        public boolean isFullCube() {
             return opaque;
         }
 
         @Override
-        public boolean isOpaqueCube(IBlockState state) {
+        public boolean isOpaqueCube() {
             return opaque;
         }
 
@@ -104,7 +91,7 @@ public class EnderBlockTypes {
         }
 
         @Override
-        public MapColor getMapColor(IBlockState state, IBlockAccess access, BlockPos pos) {
+        public MapColor getMapColor(IBlockAccess world, BlockPos pos) {
             return mapColor;
         }
 
@@ -135,12 +122,12 @@ public class EnderBlockTypes {
         }
 
         @Override
-        public MapColor getMapColor(IBlockState state, IBlockAccess access, BlockPos pos) {
+        public MapColor getMapColor(IBlockAccess world, BlockPos pos) {
             return mapColor;
         }
 
         @Override
-        public SoundType getSoundType(IBlockState state) {
+        public SoundType getSoundType(World world, BlockPos pos, Entity entity) {
             return sound;
         }
 
@@ -178,32 +165,32 @@ public class EnderBlockTypes {
         }
 
         @Override
-        public int quantityDropped(IBlockState state, int fortune, Random rand) {
+        public int quantityDropped(int fortune, Random rand) {
             return dropCount;
         }
 
         @Override
-        public boolean isTopSolid(IBlockState state) {
+        public boolean isTopSolid() {
             return topSolid;
         }
 
         @Override
-        public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+        public int getLightOpacity(IBlockAccess world, BlockPos pos) {
             return lightOpacity;
         }
 
         @Override
-        public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess access, BlockPos pos) {
+        public AxisAlignedBB getBoundingBox(IBlockAccess world, BlockPos pos) {
             return aabb;
         }
 
         @Override
-        public boolean isOpaqueCube(IBlockState state) {
+        public boolean isOpaqueCube() {
             return opaque;
         }
 
         @Override
-        public boolean isFullCube(IBlockState state) {
+        public boolean isFullCube() {
             return opaque;
         }
 

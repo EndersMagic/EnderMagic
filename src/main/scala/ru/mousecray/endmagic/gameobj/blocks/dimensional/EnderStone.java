@@ -18,11 +18,11 @@ import ru.mousecray.endmagic.util.EnderBlockTypes;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BlockEnderStone extends MetadataBlock implements IEndSoil {
+public class EnderStone extends MetadataBlock implements IEndSoil {
 
     public static final PropertyFeature<EnderBlockTypes.EnderGroundType> GROUND_TYPE = EnderBlockTypes.GROUND_TYPE;
 
-    public BlockEnderStone() {
+    public EnderStone() {
         super(Material.ROCK);
         setHarvestLevel("pickaxe", 1);
         setHardness(3.0F);

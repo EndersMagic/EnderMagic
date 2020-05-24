@@ -17,11 +17,11 @@ import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import java.util.Random;
 
-public class BlockEnderGrass extends MetadataBlock implements IEndSoil {
+public class EnderGrass extends MetadataBlock implements IEndSoil {
 
     public static final PropertyFeature<EnderBlockTypes.EnderGroundType> GROUND_TYPE = EnderBlockTypes.GROUND_TYPE;
 
-    public BlockEnderGrass() {
+    public EnderGrass() {
         super(Material.ROCK);
         setHarvestLevel("pickaxe", 1);
         setHardness(3.0F);

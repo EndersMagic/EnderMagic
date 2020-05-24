@@ -25,6 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
 import ru.mousecray.endmagic.api.metadata.MetadataBlock;
+import ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
@@ -128,6 +129,16 @@ public class EnderLeaves extends MetadataBlock implements IShearable {
                 .flatMap(Function.identity()))
                 .flatMap(Function.identity())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return state.getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.PHANTOM;
+    }
+
+    @Override
+    public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
+        return state.getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.PHANTOM ? new TilePhantomAvoidingBlockBase() : null;
     }
 
     //TODO: sdjfhdbgh

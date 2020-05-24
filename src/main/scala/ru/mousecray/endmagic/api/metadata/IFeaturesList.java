@@ -24,11 +24,11 @@ import java.util.Random;
 @ParametersAreNonnullByDefault
 public interface IFeaturesList extends IStringSerializable {
 
-    @Nonnull static IFeaturesList EMPTY(String blockName) {
+    @Nonnull static IFeaturesList EMPTY(String stateName) {
         return new IFeaturesList() {
             @Override
             public String name() {
-                return blockName;
+                return stateName;
             }
 
             @Override
@@ -43,42 +43,30 @@ public interface IFeaturesList extends IStringSerializable {
         };
     }
 
-    default void neighbourChanged(World world, BlockPos pos, Block block, BlockPos fromPos) {}
-    default void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {}
-    @Nullable default TileEntity createTileEntity() { return null; }
-    default boolean hasTileEntity(IBlockState state) { return false; }
-    default boolean hasTickRandomly() { return false; }
-    default Material getMaterial(IBlockState state) { return state.getBlock().getMaterial(state); }
-    default MapColor getMapColor(IBlockState state, IBlockAccess access, BlockPos pos) { return state.getBlock().getMapColor(state, access, pos); }
-    default float getHardness(IBlockState state, World world, BlockPos pos) { return state.getBlock().getBlockHardness(state, world, pos); }
-    default boolean isOpaqueCube(IBlockState state) { return state.getBlock().isOpaqueCube(state); }
-    default boolean isFullCube(IBlockState state) { return state.getBlock().isFullCube(state); }
-    default int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) { return state.getBlock().getLightValue(state, world, pos); }
-    default int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) { return state.getBlock().getLightOpacity(state, world, pos); }
-    @Nullable default EnumBlockRenderType getRenderType(IBlockState state) { return state.getBlock().getRenderType(state); }
-    default boolean canProvidePower(IBlockState state) { return state.getBlock().canProvidePower(state); }
-    default boolean canEntitySpawn(IBlockState state, Entity entity) { return state.getBlock().canEntitySpawn(state, entity); }
-    default SoundType getSoundType(IBlockState state) { return state.getBlock().getSoundType(); }
-    default boolean isTopSolid(IBlockState state) { return state.getBlock().isTopSolid(state); }
-    default int quantityDropped(IBlockState state, int fortune, Random rand) { return state.getBlock().quantityDropped(state, fortune, rand); }
-    default BlockFaceShape getFaceShape(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing facing) {
-        return state.getBlock().getBlockFaceShape(world, state, pos, facing);
-    }
-    @Nullable default AxisAlignedBB getCollisionAABB(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return state.getBlock().getCollisionBoundingBox(state, world, pos);
-    }
-    @Nullable default AxisAlignedBB getSelectedAABB(IBlockState state, World world, BlockPos pos) {
-        return state.getBlock().getSelectedBoundingBox(state, world, pos);
-    }
-    default AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess access, BlockPos pos) {
-        return state.getBlock().getBoundingBox(state, access, pos);
-    }
-    default int getWeakPower(IBlockState state, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return state.getBlock().getWeakPower(state, blockAccess, pos, side);
-    }
-    default int getStrongPower(IBlockState state, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return state.getBlock().getStrongPower(state, blockAccess, pos, side);
-    }
+    default void neighbourChanged(World world, BlockPos pos, Block block, BlockPos fromPos) { throw new UnsupportedOperationException(); }
+    default void updateTick(World world, BlockPos pos, IBlockState state, Random rand) { throw new UnsupportedOperationException(); }
+    @Nullable default TileEntity createTileEntity(World world) { throw new UnsupportedOperationException(); }
+    default boolean hasTileEntity() { throw new UnsupportedOperationException(); }
+    default boolean hasTickRandomly() { throw new UnsupportedOperationException(); }
+    default Material getMaterial() { throw new UnsupportedOperationException(); }
+    default MapColor getMapColor(IBlockAccess world, BlockPos pos) { throw new UnsupportedOperationException(); }
+    default float getHardness(World world, BlockPos pos) { throw new UnsupportedOperationException(); }
+    default boolean isOpaqueCube() { throw new UnsupportedOperationException(); }
+    default boolean isFullCube() { throw new UnsupportedOperationException(); }
+    default int getLightValue(IBlockAccess world, BlockPos pos) { throw new UnsupportedOperationException(); }
+    default int getLightOpacity(IBlockAccess world, BlockPos pos) { throw new UnsupportedOperationException(); }
+    @Nullable default EnumBlockRenderType getRenderType() { throw new UnsupportedOperationException(); }
+    default boolean canProvidePower() { throw new UnsupportedOperationException(); }
+    default boolean canEntitySpawn(Entity entity) { throw new UnsupportedOperationException(); }
+    default SoundType getSoundType(World world, BlockPos pos, Entity entity) { throw new UnsupportedOperationException(); }
+    default boolean isTopSolid() { throw new UnsupportedOperationException(); }
+    default int quantityDropped(int fortune, Random rand) { throw new UnsupportedOperationException(); }
+    default BlockFaceShape getFaceShape(IBlockAccess world, BlockPos pos, EnumFacing facing) { throw new UnsupportedOperationException(); }
+    @Nullable default AxisAlignedBB getCollisionAABB(IBlockAccess world, BlockPos pos) { throw new UnsupportedOperationException(); }
+    @Nullable default AxisAlignedBB getSelectedAABB(IBlockAccess world, BlockPos pos) { throw new UnsupportedOperationException(); }
+    default AxisAlignedBB getBoundingBox(IBlockAccess world, BlockPos pos) { throw new UnsupportedOperationException(); }
+    default int getWeakPower(IBlockAccess world, BlockPos pos, EnumFacing side) { throw new UnsupportedOperationException(); }
+    default int getStrongPower(IBlockAccess world, BlockPos pos, EnumFacing side) { throw new UnsupportedOperationException(); }
     default int getDamage() { return ordinal(); }
     @Override default String getName() { return name().toLowerCase(); }
     String name();
