@@ -55,7 +55,7 @@ public class EnderLeaves extends MetadataBlock implements IShearable {
 
     @Override
     protected BlockStateContainer createBlockStateContainer() {
-        return BlockStateGenerator.create(this).addProperties(DECAYABLE, CHECK_DECAY).addFeatures(TREE_TYPE).buildContainer();
+        return BlockStateGenerator.create(this).addProperties(DECAYABLE, CHECK_DECAY).addFeature(TREE_TYPE, true).buildContainer();
     }
 
     @Override

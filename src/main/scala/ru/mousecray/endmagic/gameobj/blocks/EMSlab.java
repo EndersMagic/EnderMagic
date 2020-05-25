@@ -25,16 +25,16 @@ public class EMSlab extends MetadataBlock {
         super(material);
     }
 
+    @Nonnull
+    @Override
+    protected BlockStateContainer createBlockStateContainer() {
+        return BlockStateGenerator.create(this).addFeature(BLOCK_HALF, false).buildContainer();
+    }
+
     //Overload method for public access
     @Override
     public Block setSoundType(SoundType sound) {
         return super.setSoundType(sound);
-    }
-
-    @Nonnull
-    @Override
-    protected BlockStateContainer createBlockStateContainer() {
-        return BlockStateGenerator.create(this).addFeatures(BLOCK_HALF).buildContainer();
     }
 
     @Override

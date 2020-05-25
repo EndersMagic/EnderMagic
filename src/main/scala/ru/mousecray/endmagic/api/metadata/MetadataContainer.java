@@ -14,6 +14,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -42,6 +43,7 @@ public class MetadataContainer extends BlockStateContainer {
     private final ImmutableList<ExtendedStateImpl> metaToState;
     private final ImmutableMap<IBlockState, Integer> stateToMeta;
     private final int itemBlockCount;
+    private MetaItemBlock itemBlock;
 
     public MetadataContainer(Block block, @Nullable PropertyFeature<?> featureWithItemBlock, List<PropertyFeature<?>> features, List<IProperty<?>> properties, List<IProperty<?>> excludedProp) {
         super(block, union(properties, excludedProp, features, featureWithItemBlock).toArray(new IProperty[0]));
@@ -56,12 +58,12 @@ public class MetadataContainer extends BlockStateContainer {
         itemBlockCount = featureWithItemBlock != null ? featureWithItemBlock.getAllowedValues().size() : 0;
     }
 
-    private static Set<IProperty<?>> union(List<IProperty<?>> firstList, List<IProperty<?>> secondList, List<PropertyFeature<?>> thirdList, PropertyFeature element) {
+    private static Set<IProperty<?>> union(List<IProperty<?>> firstList, List<IProperty<?>> secondList, List<PropertyFeature<?>> thirdList, @Nullable PropertyFeature element) {
         Set<IProperty<?>> returnSet = new HashSet<>();
         returnSet.addAll(firstList);
         returnSet.addAll(secondList);
         returnSet.addAll(thirdList);
-        returnSet.add(element);
+        if (element != null) returnSet.add(element);
         return returnSet;
     }
 
@@ -97,31 +99,39 @@ public class MetadataContainer extends BlockStateContainer {
     }
 
     public ItemBlock createMetaItem(Block block) {
-        return itemBlockCount == 0 ? new ItemBlock(block) : new MetaItemBlock(block);
+        return itemBlock == null ? (itemBlock = new MetaItemBlock(block, itemBlockCount > 0)) : itemBlock;
     }
 
     public void registerItemModels(Block block) {
         for (int i = 0; i < itemBlockCount; ++i)
+            //TODO: Test for 4+ ItemBlocks
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), i,
                     new ModelResourceLocation(block.getRegistryName(), "inventory,meta=" + i));
     }
 
     public class MetaItemBlock extends ItemBlock {
 
-        public MetaItemBlock(Block block) {
+        public MetaItemBlock(Block block, boolean hasSubtypes) {
             super(block);
-            setHasSubtypes(true);
-            setMaxDamage(0);
+            setHasSubtypes(hasSubtypes);
         }
 
         @Override
         public String getUnlocalizedName(ItemStack stack) {
-            return super.getUnlocalizedName() + "." + getStateFromMeta(stack.getMetadata()).getName();
+            String name = super.getUnlocalizedName();
+            if (getHasSubtypes()) name = name + getStateFromMeta(stack.getMetadata()).getName();
+            return name;
+        }
+
+        @Override
+        public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+            if (((ExtendedStateImpl) newState).canPlaceBlockAt(world, pos)) return false;
+            return super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
         }
 
         @Override
         public int getMetadata(int damage) {
-            return damage;
+            return getHasSubtypes() ? damage : 0;
         }
     }
 
@@ -193,6 +203,15 @@ public class MetadataContainer extends BlockStateContainer {
         public SoundType getSoundType(World world, BlockPos pos, Entity entity) {
             //Access to Block#getSoundType without parameters, because of recursion
             return iterateFeatures(getBlock().getSoundType(), feature -> feature.getSoundType(world, pos, entity));
+        }
+
+        public boolean canPlaceBlockAt(World world, BlockPos pos) {
+            boolean canPlace = true;
+            if (getBlock() instanceof IStayBlock) {
+                IStayBlock block = (IStayBlock) getBlock();
+                canPlace = block.canPlaceBlockAt(this, world, pos);
+            }
+            return iterateFeatures(canPlace, feature -> feature.canPlaceBlockAt(world, pos));
         }
         /*-------------------------New methods-------------------------*/
 

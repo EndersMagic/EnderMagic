@@ -19,6 +19,6 @@ public class EnderPlanks extends MetadataBlock {
 
     @Override
     protected BlockStateContainer createBlockStateContainer() {
-        return BlockStateGenerator.create(this).addFeatures(TREE_TYPE).buildContainer();
+        return BlockStateGenerator.create(this).addFeature(TREE_TYPE, true).buildContainer();
     }
 }

@@ -21,9 +21,11 @@ import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
 import ru.mousecray.endmagic.api.metadata.MetadataBlock;
+import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.Random;
 
 import static net.minecraft.block.BlockSapling.SAPLING_AABB;
@@ -41,17 +43,23 @@ public class EnderSapling extends MetadataBlock implements IGrowable {
 
     @Override
     protected BlockStateContainer createBlockStateContainer() {
-        return BlockStateGenerator.create(this).addFeatures(TREE_TYPE).buildContainer();
+        return BlockStateGenerator.create(this).addFeature(TREE_TYPE, true).buildContainer();
     }
 
     @Override
-    public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return true;
+    public boolean canPlaceBlockAt(IBlockState state, World world, BlockPos pos) {
+        if (state.getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.DRAGON) return Arrays.stream(EnumFacing.HORIZONTALS)
+                .map(pos::offset)
+                .map(world::getBlockState)
+                //TODO: add custom end grass and remove STONE from this
+                .anyMatch(currState -> EMUtils.isSoil(currState, EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS));
+        else  //TODO: add custom end grass and remove STONE from this
+            return EMUtils.isSoil(world.getBlockState(pos.down()), EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS);
     }
 
     @Override
     public void neighborChanged(IBlockState state, @Nonnull World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        if (!world.getBlockState(pos).getValue(TREE_TYPE).canPlaceBlockAt(world, pos)) {
+        if (!correctBlockState(state).canPlaceBlockAt(world, pos)) {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             dropBlockAsItem(world, pos, state, 4);
         }
@@ -111,11 +119,6 @@ public class EnderSapling extends MetadataBlock implements IGrowable {
     }
 
     public interface SaplingThings {
-        default boolean canPlaceBlockAt(World world, BlockPos pos) {
-            //TODO: add custom end grass and remove STONE from this
-            return EMUtils.isSoil(world.getBlockState(pos.down()), EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS);
-        }
-
         default void grow(World world, Random rand, BlockPos pos, IBlockState state) {
             WorldGenerator generator = getGenerator();
             if (generator != null) generator.generate(world, rand, pos);

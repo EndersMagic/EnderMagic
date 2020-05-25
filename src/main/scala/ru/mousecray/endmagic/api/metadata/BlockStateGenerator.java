@@ -36,17 +36,16 @@ public class BlockStateGenerator {
         return this;
     }
 
-    public BlockStateGenerator addFeatures(PropertyFeature<?>... types) {
-        Arrays.stream(types).forEach(this::addFeature);
+    public BlockStateGenerator addFeature(@Nonnull PropertyFeature<?> feature, boolean hasCustomItemBlock) {
+        Preconditions.checkNotNull(feature);
+        if (hasCustomItemBlock) {
+            Preconditions.checkArgument(featureWithItemBlock == null,
+                    "BlockState can't contains two feature with custom ItemBlock. " +
+                            "Exist feature: " + featureWithItemBlock + "; " +
+                            "New feature: " + feature);
+            featureWithItemBlock = feature;
+        } else features.add(feature);
         return this;
-    }
-
-    protected void addFeature(PropertyFeature<?> feature) {
-        if (featureWithItemBlock == null) if (feature.hasItemBlock()) featureWithItemBlock = feature;
-        Preconditions.checkArgument(!feature.hasItemBlock(),
-                "BlockState can't contains two feature with custom ItemBlock. " +
-                        "Exist feature: " + featureWithItemBlock + "; New feature: " + feature);
-        features.add(feature);
     }
 
     public MetadataContainer buildContainer() {

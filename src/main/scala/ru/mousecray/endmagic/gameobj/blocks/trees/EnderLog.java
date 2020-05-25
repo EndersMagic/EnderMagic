@@ -40,6 +40,11 @@ public class EnderLog extends MetadataBlock {
     }
 
     @Override
+    protected BlockStateContainer createBlockStateContainer() {
+        return BlockStateGenerator.create(this).addProperties(LOG_AXIS).addFeature(TREE_TYPE, true).buildContainer();
+    }
+
+    @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
         if (state.getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.DRAGON) if (world.provider instanceof WorldProviderEnd) {
             DragonFightManager dragonfightmanager = ((WorldProviderEnd) world.provider).getDragonFightManager();
@@ -69,11 +74,6 @@ public class EnderLog extends MetadataBlock {
     @Override
     public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
         return state.getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.PHANTOM ? new TilePhantomAvoidingBlockBase() : null;
-    }
-
-    @Override
-    protected BlockStateContainer createBlockStateContainer() {
-        return BlockStateGenerator.create(this).addProperties(LOG_AXIS).addFeatures(TREE_TYPE).buildContainer();
     }
 
     @Override

@@ -68,6 +68,16 @@ public interface IFeaturesList extends IStringSerializable {
     default int getWeakPower(IBlockAccess world, BlockPos pos, EnumFacing side) { throw new UnsupportedOperationException(); }
     default int getStrongPower(IBlockAccess world, BlockPos pos, EnumFacing side) { throw new UnsupportedOperationException(); }
     default int getDamage() { return ordinal(); }
+
+    /**
+     * Works only with MetaItemBlock from MetadataContainer
+     *
+     * @param world in the player present
+     * @param pos   of this block
+     * @return true if block may be place
+     */
+    default boolean canPlaceBlockAt(World world, BlockPos pos) { throw new UnsupportedOperationException();}
+
     @Override default String getName() { return name().toLowerCase(); }
     String name();
     int ordinal();

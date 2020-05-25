@@ -10,48 +10,28 @@ import java.util.function.Predicate;
 
 public class PropertyFeature<T extends Enum<T> & IFeaturesList> extends PropertyEnum<T> {
 
-    private final boolean hasItemBlock;
-
-    protected PropertyFeature(String name, Class<T> valueClass, Collection<T> allowedValues, boolean hasItemBlock) {
+    protected PropertyFeature(String name, Class<T> valueClass, Collection<T> allowedValues) {
         super(name, valueClass, allowedValues);
-        this.hasItemBlock = hasItemBlock;
-    }
-
-    public boolean hasItemBlock() {
-        return hasItemBlock;
     }
 
     @Nonnull
     public static <T extends Enum<T> & IFeaturesList> PropertyFeature<T> createProperty(String name, Class<T> clazz) {
-        return createProperty(name, clazz, false, t -> true);
+        return createProperty(name, clazz, t -> true);
     }
 
     @Nonnull
-    public static <T extends Enum<T> & IFeaturesList> PropertyFeature<T> createProperty(String name, Class<T> clazz, boolean hasItemBlock) {
-        return createProperty(name, clazz, hasItemBlock, t -> true);
-    }
-
-
-    @Nonnull
-    public static <T extends Enum<T> & IFeaturesList> PropertyFeature<T> createProperty(String name, Class<T> clazz, boolean hasItemBlock, @Nonnull Predicate<T> filter) {
-        return createProperty(name, clazz, hasItemBlock, Collections2.filter(Lists.newArrayList(clazz.getEnumConstants()), filter::test));
+    public static <T extends Enum<T> & IFeaturesList> PropertyFeature<T> createProperty(String name, Class<T> clazz, @Nonnull Predicate<T> filter) {
+        return createProperty(name, clazz, Collections2.filter(Lists.newArrayList(clazz.getEnumConstants()), filter::test));
     }
 
     @Nonnull
     @SafeVarargs
     public static <T extends Enum<T> & IFeaturesList> PropertyFeature<T> createProperty(String name, Class<T> clazz, T... values) {
-        return createProperty(name, clazz, false, Lists.newArrayList(values));
+        return createProperty(name, clazz, Lists.newArrayList(values));
     }
 
     @Nonnull
-    @SafeVarargs
-    public static <T extends Enum<T> & IFeaturesList> PropertyFeature<T> createProperty(String name, Class<T> clazz, boolean hasItemBlock, T... values) {
-        return createProperty(name, clazz, hasItemBlock, Lists.newArrayList(values));
-    }
-
-
-    @Nonnull
-    public static <T extends Enum<T> & IFeaturesList> PropertyFeature<T> createProperty(String name, Class<T> clazz, boolean hasItemBlock, Collection<T> values) {
-        return new PropertyFeature<>(name, clazz, values, hasItemBlock);
+    public static <T extends Enum<T> & IFeaturesList> PropertyFeature<T> createProperty(String name, Class<T> clazz, Collection<T> values) {
+        return new PropertyFeature<>(name, clazz, values);
     }
 }

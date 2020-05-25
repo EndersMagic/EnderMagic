@@ -25,7 +25,7 @@ import java.util.Random;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public abstract class MetadataBlock extends Block implements ITechnicalBlock {
+public abstract class MetadataBlock extends Block implements ITechnicalBlock, IStayBlock {
 
     private final MetadataContainer overrideBlockState;
 
@@ -62,6 +62,19 @@ public abstract class MetadataBlock extends Block implements ITechnicalBlock {
         return overrideBlockState.getMetaFromState(state);
     }
 
+    /*----------State sensitive version of canPlaceBlockAt----------*/
+    @Override
+    @Deprecated //EM: State sensitive version
+    public boolean canPlaceBlockAt(World world, BlockPos pos) {
+        return super.canPlaceBlockAt(world, pos);
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(IBlockState state, World world, BlockPos pos) {
+        return canPlaceBlockAt(world, pos);
+    }
+    /*----------State sensitive version of canPlaceBlockAt----------*/
+
     /*@formatter:off--------Methods which extend IBlockState format and use all of features from IFeaturesList------*/
     @Override public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) { return correctBlockState(state).getSoundType(world, pos, entity); }
     @Override public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) { correctBlockState(state).updateTick(world, pos, rand); }
@@ -70,7 +83,7 @@ public abstract class MetadataBlock extends Block implements ITechnicalBlock {
     @Override public int damageDropped(IBlockState state) { return correctBlockState(state).getDamage(); }
     @Override public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) { overrideBlockState.getSubBlocks(tab, items, this); }
     @Override public int quantityDropped(IBlockState state, int fortune, Random random) { return correctBlockState(state).quantityDropped(fortune, random); }
-    /*@formatter:on-------------------------------------------------------------------------------------------------*/
+    /*@formatter:on--------Methods which extend IBlockState format and use all of features from IFeaturesList------*/
 
     /*----------Methods inherited by ITechnicalBlock----------*/
     @Override
@@ -87,5 +100,5 @@ public abstract class MetadataBlock extends Block implements ITechnicalBlock {
     public CreativeTabs getCustomCreativeTab() {
         return EM.EM_CREATIVE;
     }
-    /*--------------------------------------------------------*/
+    /*----------Methods inherited by ITechnicalBlock----------*/
 }
