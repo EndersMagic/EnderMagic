@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
-import ru.mousecray.endmagic.api.metadata.MetadataBlock;
+import ru.mousecray.endmagic.gameobj.blocks.utils.EMMetadataBlock;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import javax.annotation.Nonnull;
@@ -31,7 +31,7 @@ import java.util.Random;
 import static net.minecraft.block.BlockSapling.SAPLING_AABB;
 import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 
-public class EnderSapling extends MetadataBlock implements IGrowable {
+public class EnderSapling extends EMMetadataBlock implements IGrowable {
 
     public EnderSapling() {
         super(Material.PLANTS);
@@ -42,7 +42,7 @@ public class EnderSapling extends MetadataBlock implements IGrowable {
     }
 
     @Override
-    protected BlockStateContainer createBlockStateContainer() {
+    public BlockStateContainer createBlockState() {
         return BlockStateGenerator.create(this).addFeature(TREE_TYPE, true).buildContainer();
     }
 

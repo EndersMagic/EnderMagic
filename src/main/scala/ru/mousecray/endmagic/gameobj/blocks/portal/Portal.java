@@ -18,7 +18,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ru.mousecray.endmagic.gameobj.blocks.BlockWithTile;
+import ru.mousecray.endmagic.gameobj.blocks.utils.BlockWithTile;
 import ru.mousecray.endmagic.gameobj.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.teleport.TeleportUtils;

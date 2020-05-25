@@ -24,7 +24,7 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
-import ru.mousecray.endmagic.api.metadata.MetadataBlock;
+import ru.mousecray.endmagic.gameobj.blocks.utils.EMMetadataBlock;
 import ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
@@ -41,7 +41,7 @@ import static net.minecraft.block.BlockLeaves.CHECK_DECAY;
 import static net.minecraft.block.BlockLeaves.DECAYABLE;
 import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 
-public class EnderLeaves extends MetadataBlock implements IShearable {
+public class EnderLeaves extends EMMetadataBlock implements IShearable {
 
     public EnderLeaves() {
         super(Material.LEAVES);
@@ -54,7 +54,7 @@ public class EnderLeaves extends MetadataBlock implements IShearable {
     }
 
     @Override
-    protected BlockStateContainer createBlockStateContainer() {
+    public BlockStateContainer createBlockState() {
         return BlockStateGenerator.create(this).addProperties(DECAYABLE, CHECK_DECAY).addFeature(TREE_TYPE, true).buildContainer();
     }
 

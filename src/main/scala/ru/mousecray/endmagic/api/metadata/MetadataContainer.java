@@ -98,7 +98,7 @@ public class MetadataContainer extends BlockStateContainer {
             destItems.add(new ItemStack(block, 1, i));
     }
 
-    public ItemBlock createMetaItem(Block block) {
+    public MetaItemBlock createMetaItem(Block block) {
         return itemBlock == null ? (itemBlock = new MetaItemBlock(block, itemBlockCount > 0)) : itemBlock;
     }
 
@@ -207,8 +207,8 @@ public class MetadataContainer extends BlockStateContainer {
 
         public boolean canPlaceBlockAt(World world, BlockPos pos) {
             boolean canPlace = true;
-            if (getBlock() instanceof IStayBlock) {
-                IStayBlock block = (IStayBlock) getBlock();
+            if (getBlock() instanceof IMetadataBlock) {
+                IMetadataBlock block = (IMetadataBlock) getBlock();
                 canPlace = block.canPlaceBlockAt(this, world, pos);
             }
             return iterateFeatures(canPlace, feature -> feature.canPlaceBlockAt(world, pos));

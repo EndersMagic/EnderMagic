@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.gameobj.blocks;
+package ru.mousecray.endmagic.gameobj.blocks.utils;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;

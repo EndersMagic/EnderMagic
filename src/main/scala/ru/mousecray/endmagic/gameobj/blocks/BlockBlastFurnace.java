@@ -17,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.gameobj.blocks.utils.BlockWithTile;
 import ru.mousecray.endmagic.gameobj.tileentity.TileBlastFurnace;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
@@ -44,12 +45,10 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
     }
 
     private Map<Pair<Item, Item>, Item> indexed() {
-        if (indexed == null) {
-            indexed = recipes()
-                    .stream()
-                    .map(r -> Pair.of(Pair.of(r.coal, r.iron), r.steel))
-                    .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
-        }
+        if (indexed == null) indexed = recipes()
+                .stream()
+                .map(r -> Pair.of(Pair.of(r.coal, r.iron), r.steel))
+                .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
         return indexed;
     }
 
@@ -115,23 +114,17 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
     }
 
     public Set<Item> coalSet() {
-        if (coal == null) {
-            coal = getCollect(i -> i.coal);
-        }
+        if (coal == null) coal = getCollect(i -> i.coal);
         return coal;
     }
 
     public Set<Item> ironSet() {
-        if (iron == null) {
-            iron = getCollect(i -> i.iron);
-        }
+        if (iron == null) iron = getCollect(i -> i.iron);
         return iron;
     }
 
     public Set<Item> steelSet() {
-        if (steel == null) {
-            steel = getCollect(i -> i.steel);
-        }
+        if (steel == null) steel = getCollect(i -> i.steel);
         return steel;
     }
 

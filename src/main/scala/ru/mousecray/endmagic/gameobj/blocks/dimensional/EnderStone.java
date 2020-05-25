@@ -11,14 +11,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
-import ru.mousecray.endmagic.api.metadata.MetadataBlock;
 import ru.mousecray.endmagic.api.metadata.PropertyFeature;
+import ru.mousecray.endmagic.gameobj.blocks.utils.EMMetadataBlock;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class EnderStone extends MetadataBlock implements IEndSoil {
+public class EnderStone extends EMMetadataBlock implements IEndSoil {
 
     public static final PropertyFeature<EnderBlockTypes.EnderGroundType> GROUND_TYPE = EnderBlockTypes.GROUND_TYPE;
 
@@ -30,7 +30,7 @@ public class EnderStone extends MetadataBlock implements IEndSoil {
     }
 
     @Override
-    protected BlockStateContainer createBlockStateContainer() {
+    public BlockStateContainer createBlockState() {
         return BlockStateGenerator.create(this).addFeature(GROUND_TYPE, true).buildContainer();
     }
 

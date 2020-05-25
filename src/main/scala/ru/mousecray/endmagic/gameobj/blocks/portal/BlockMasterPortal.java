@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.Configuration;
-import ru.mousecray.endmagic.gameobj.blocks.BlockWithTile;
+import ru.mousecray.endmagic.gameobj.blocks.utils.BlockWithTile;
 import ru.mousecray.endmagic.gameobj.tileentity.portal.TileMasterPortal;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.teleport.Location;
@@ -29,11 +29,7 @@ public abstract class BlockMasterPortal<A extends TileMasterPortal> extends Bloc
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        if (!worldIn.isRemote) {
-            if (worldIn.isBlockPowered(pos)) {
-                openPortal(pos, worldIn);
-            }
-        }
+        if (!worldIn.isRemote) if (worldIn.isBlockPowered(pos)) openPortal(pos, worldIn);
     }
 
     @Override

@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderEnd;
 import net.minecraft.world.end.DragonFightManager;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
-import ru.mousecray.endmagic.api.metadata.MetadataBlock;
+import ru.mousecray.endmagic.gameobj.blocks.utils.EMMetadataBlock;
 import ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
@@ -26,7 +26,7 @@ import java.util.Random;
 import static net.minecraft.block.BlockLog.LOG_AXIS;
 import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 
-public class EnderLog extends MetadataBlock {
+public class EnderLog extends EMMetadataBlock {
 
     public EnderLog() {
         super(Material.WOOD);
@@ -40,7 +40,7 @@ public class EnderLog extends MetadataBlock {
     }
 
     @Override
-    protected BlockStateContainer createBlockStateContainer() {
+    public BlockStateContainer createBlockState() {
         return BlockStateGenerator.create(this).addProperties(LOG_AXIS).addFeature(TREE_TYPE, true).buildContainer();
     }
 

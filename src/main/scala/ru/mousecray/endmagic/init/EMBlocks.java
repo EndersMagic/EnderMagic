@@ -14,6 +14,7 @@ import ru.mousecray.endmagic.gameobj.blocks.trees.EnderLeaves;
 import ru.mousecray.endmagic.gameobj.blocks.trees.EnderLog;
 import ru.mousecray.endmagic.gameobj.blocks.trees.EnderPlanks;
 import ru.mousecray.endmagic.gameobj.blocks.trees.EnderSapling;
+import ru.mousecray.endmagic.gameobj.blocks.utils.BlockNamed;
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
