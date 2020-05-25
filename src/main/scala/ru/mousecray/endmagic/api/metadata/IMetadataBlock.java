@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public interface IMetadataBlock {
-    BlockStateContainer createBlockState();
     MetadataContainer getMetadataContainer();
     Block getBlock();
     MetadataContainer.ExtendedStateImpl correctBlockState(IBlockState state);

@@ -23,6 +23,8 @@ public abstract class MetadataBlock extends Block implements IMetadataBlock {
         setTickRandomly(overrideBlockState.hasBlockTickRandomly());
     }
 
+    protected abstract BlockStateContainer createBlockState();
+
     @Override
     public MetadataContainer getMetadataContainer() {
         return overrideBlockState;
@@ -32,9 +34,6 @@ public abstract class MetadataBlock extends Block implements IMetadataBlock {
     public Block getBlock() {
         return this;
     }
-
-    @Override
-    public abstract BlockStateContainer createBlockState();
 
     @Override
     public MetadataContainer.ExtendedStateImpl correctBlockState(IBlockState state) {
