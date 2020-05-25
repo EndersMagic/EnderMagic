@@ -8,7 +8,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import ru.mousecray.endmagic.api.EMUtils;
+import ru.mousecray.endmagic.api.utils.EMUtils;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 

@@ -21,9 +21,9 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EMBlockBush;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
+import ru.mousecray.endmagic.api.utils.EMUtils;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelFullbright;
 import ru.mousecray.endmagic.init.EMItems;
@@ -110,8 +110,7 @@ public class EnderTallgrass extends EMBlockBush implements IShearable, IExtended
 
     @SideOnly(Side.CLIENT)
     @Override
-    public BlockRenderLayer getBlockLayer()
-    {
+    public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT_MIPPED;
     }
 }

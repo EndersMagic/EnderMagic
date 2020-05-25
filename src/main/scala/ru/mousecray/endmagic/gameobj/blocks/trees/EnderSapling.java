@@ -17,9 +17,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.api.metadata.BlockStateGenerator;
+import ru.mousecray.endmagic.api.utils.EMUtils;
 import ru.mousecray.endmagic.gameobj.blocks.utils.EMMetadataBlock;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 

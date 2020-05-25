@@ -12,9 +12,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.IShearable;
-import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EMBlockBush;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
+import ru.mousecray.endmagic.api.utils.EMUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Random;

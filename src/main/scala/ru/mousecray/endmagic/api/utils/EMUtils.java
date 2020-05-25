@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.api;
+package ru.mousecray.endmagic.api.utils;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Streams;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class EMUtils {
 
-    public static EnumFacing getNegativeFacing(EnumFacing facing) {
+    public static EnumFacing getNegativeFacing(@Nonnull EnumFacing facing) {
         switch (facing) {
             case UP:
                 return EnumFacing.DOWN;
@@ -41,7 +41,7 @@ public class EMUtils {
         }
     }
 
-    public static Axis getAxisRotationForY(Axis startAxis, Rotation rotate) {
+    public static Axis getAxisRotationForY(Axis startAxis, @Nonnull Rotation rotate) {
         switch (rotate) {
             case CLOCKWISE_90:
             case COUNTERCLOCKWISE_90:
@@ -79,15 +79,15 @@ public class EMUtils {
                 .collect(Collectors.toList());
     }
 
-    public static boolean isEnderArrow(ItemStack stack) {
+    public static boolean isEnderArrow(@Nonnull ItemStack stack) {
         return stack.getItem() == EMItems.enderArrow;
     }
 
-    public static boolean isArrow(ItemStack stack) {
+    public static boolean isArrow(@Nonnull ItemStack stack) {
         return stack.getItem() instanceof ItemArrow;
     }
 
-    private static BlockPos getDownGround(World world, BlockPos pos, int bound) {
+    private static BlockPos getDownGround(@Nonnull World world, BlockPos pos, int bound) {
         return world.isAirBlock(pos) && bound > 0 ? getDownGround(world, pos.down(), --bound) : pos;
     }
 
@@ -100,15 +100,17 @@ public class EMUtils {
         return 31 - Integer.numberOfLeadingZeros(bits);
     }
 
-    public static BlockPos intToPos(int[] ints) {
+    @Nonnull
+    public static BlockPos intToPos(@Nonnull int[] ints) {
         return new BlockPos(ints[0], ints[1], ints[2]);
     }
 
-    public static int[] posToInt(BlockPos pos) {
+    @Nonnull
+    public static int[] posToInt(@Nonnull BlockPos pos) {
         return new int[]{pos.getX(), pos.getY(), pos.getZ()};
     }
 
-    public static int[][] rotateForY(int[][] positions, int[] pos0, Rotation rotation) {
+    public static int[][] rotateForY(int[][] positions, int[] pos0, @Nonnull Rotation rotation) {
         switch (rotation) {
             case COUNTERCLOCKWISE_90: {
                 for (int s = 0; s < positions.length; ++s) {
@@ -136,7 +138,7 @@ public class EMUtils {
         return positions;
     }
 
-    public static List<BlockPos> rotateForY(List<BlockPos> positions, BlockPos pos0, Rotation rotation) {
+    public static List<BlockPos> rotateForY(List<BlockPos> positions, BlockPos pos0, @Nonnull Rotation rotation) {
         switch (rotation) {
             case COUNTERCLOCKWISE_90: {
                 positions.forEach(loaded -> loaded = new BlockPos(
@@ -167,7 +169,7 @@ public class EMUtils {
         return accessedRots.get(rand.nextInt(accessedRots.size()));
     }
 
-    public static Rotation getRandomRotation(Random rand) {
+    public static Rotation getRandomRotation(@Nonnull Random rand) {
         int r = rand.nextInt(4);
         return r == 0 ? Rotation.CLOCKWISE_90
                 : r == 1 ? Rotation.CLOCKWISE_180 : r == 2 ? Rotation.COUNTERCLOCKWISE_90 : Rotation.NONE;

@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.api.blocks;
+package ru.mousecray.endmagic.api.utils;
 
 import net.minecraft.util.math.AxisAlignedBB;
 
