@@ -315,27 +315,6 @@ public class RecipeParser2 {
         return r.build();
     }
 
-    public static void main(String[] args) {
-        String test = "id_map {\n" +
-                "    d| endmagic:dragon_diamond\n" +
-                "    i| endmagic:immortal_diamond\n" +
-                "    n| endmagic:natural_diamond\n" +
-                "    p| endmagic:phantom_diamond\n" +
-                "\n" +
-                "    I| minecraft:stick\n" +
-                "}\n" +
-                "{\n" +
-                "    endmagic:dragon_diamond_axe| shaped(dd,dI,_I)\n" +
-                "    endmagic:dragon_diamond_hoe| shaped(dd,_I,_I)\n" +
-                "    endmagic:dragon_diamond_pickaxe| shaped(ddd,_I_,_I_)\n" +
-                "    endmagic:dragon_diamond_shovel| shaped(d,I,I)\n" +
-                "    endmagic:dragon_diamond_sword| shaped(d,d,I)\n" +
-                "\n" +
-                "}";
-        System.out.println(parse(test));
-
-    }
-
     private static CharType typeOFChar(char c) {
         if (c >= 'A' && c <= 'z' || c >= 'А' && c <= 'я')
             return CharType.letter;
