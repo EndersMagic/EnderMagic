@@ -228,10 +228,10 @@ public class RecipeParser {
     }
 
     private static String aroundContext(List<Token> tokens, int i) {
-        String r = "";
+        StringBuilder r = new StringBuilder();
         for (int j = Math.max(0, i - 4); j < Math.min(tokens.size(), i + 4); j++)
-            r += tokens.get(j).textFragment + " ";
-        return r;
+            r.append(tokens.get(j).textFragment).append(" ");
+        return r.toString();
     }
 
     private static NonNullList<Ingredient> parseGrid(ImmutableList<Token> recipe, String recipeType, Map<String, ItemStack> id_map) {
