@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static net.minecraft.item.ItemStack.EMPTY;
@@ -59,7 +58,7 @@ public class RecipeParser {
 
     public static List<IRecipe> parse(String fileContent) {
         ImmutableMap<String, List<Token>> sections = parseSections(fileContent);
-        sections.forEach((k,v)-> System.out.println(k+" -> "+v));
+        sections.forEach((k, v) -> System.out.println(k + " -> " + v));
 
         List<Token> id_map1 = sections.getOrDefault("id_map", ImmutableList.of());
         ImmutableMap.Builder<String, ItemStack> id_map_builder = ImmutableMap.builder();
@@ -240,13 +239,10 @@ public class RecipeParser {
     }
 
     private static NonNullList<Ingredient> parseGrid(ImmutableList<Token> recipe, String recipeType, Map<String, ItemStack> id_map) {
-        return (
-                recipeType.equals("all") ?
-                        Stream.generate(() -> Ingredient.fromStacks(id_map.getOrDefault(recipe.get(0).textFragment, EMPTY))).limit(9)
-                        :
-                        recipe.stream().filter(t -> !t.textFragment.equals(",") && !t.textFragment.equals(";")).map(c -> id_map.getOrDefault(c.textFragment, EMPTY))
-                                .map(Ingredient::fromStacks)
-        )
+        return recipe.stream()
+                .filter(t -> !t.textFragment.equals(",") && !t.textFragment.equals(";"))
+                .map(c -> id_map.getOrDefault(c.textFragment, EMPTY))
+                .map(Ingredient::fromStacks)
                 .collect(Collectors.toCollection(NonNullList::create));
     }
 
