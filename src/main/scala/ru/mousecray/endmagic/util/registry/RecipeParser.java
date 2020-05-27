@@ -234,10 +234,6 @@ public class RecipeParser {
         return r;
     }
 
-    public static String[] split(String some, char separator) {
-        return new StringOps(some).split(separator);
-    }
-
     private static NonNullList<Ingredient> parseGrid(ImmutableList<Token> recipe, String recipeType, Map<String, ItemStack> id_map) {
         return recipe.stream()
                 .filter(t -> !t.textFragment.equals(",") && !t.textFragment.equals(";"))
