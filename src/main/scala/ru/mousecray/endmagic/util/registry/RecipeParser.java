@@ -59,6 +59,7 @@ public class RecipeParser {
 
     public static List<IRecipe> parse(String fileContent) {
         ImmutableMap<String, List<Token>> sections = parseSections(fileContent);
+        sections.forEach((k,v)-> System.out.println(k+" -> "+v));
 
         List<Token> id_map1 = sections.getOrDefault("id_map", ImmutableList.of());
         ImmutableMap.Builder<String, ItemStack> id_map_builder = ImmutableMap.builder();
@@ -277,7 +278,7 @@ public class RecipeParser {
                 StringBuilder list = new StringBuilder();
 
                 for (int j = i + 1; j < secondBracketLine; j++)
-                    list.append(lines[j] + "\n");
+                    list.append(lines[j]).append("\n");
 
                 r.put(name, parseTokens(list.toString()));
                 i = secondBracketLine + 1;
@@ -299,19 +300,20 @@ public class RecipeParser {
 
     private static List<Token> parseTokens(String fileContent) {
         ImmutableList.Builder<Token> r = ImmutableList.builder();
-        String acc = "";
+        StringBuilder acc = new StringBuilder();
         CharType prevType = CharType.white;
         for (int i = 0; i < fileContent.length(); i++) {
             char c = fileContent.charAt(i);
             CharType currentType = typeOFChar(c);
             if (prevType != currentType) {
                 if (prevType != CharType.white)
-                    r.add(new Token(acc, prevType));
-                acc = "";
+                    r.add(new Token(acc.toString(), prevType));
+                acc = new StringBuilder();
             }
             prevType = currentType;
-            acc += c;
+            acc.append(c);
         }
+        //drop last accumulator because it is }
         return r.build();
     }
 
