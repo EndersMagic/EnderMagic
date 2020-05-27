@@ -304,7 +304,7 @@ public class RecipeParser {
         CharType prevType = CharType.white;
         for (int i = 0; i < fileContent.length(); i++) {
             char c = fileContent.charAt(i);
-            CharType currentType = typeOFChar(c);
+            CharType currentType = typeOfChar(c);
             if (prevType != currentType) {
                 if (prevType != CharType.white)
                     r.add(new Token(acc.toString(), prevType));
@@ -317,7 +317,7 @@ public class RecipeParser {
         return r.build();
     }
 
-    private static CharType typeOFChar(char c) {
+    private static CharType typeOfChar(char c) {
         if (c >= 'A' && c <= 'z' || c >= 'А' && c <= 'я')
             return CharType.letter;
         else if (c >= '0' && c <= '9')
