@@ -11,7 +11,7 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import scala.collection.immutable.StringOps;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,32 +79,11 @@ public class RecipeParser {
                 throw new IllegalArgumentException("Symbol declaration separator must be |\n" + aroundContext(id_map1, i));
 
             i++;
-            token = id_map1.get(i);
-            if (token.type != CharType.letter)
-                throw new IllegalArgumentException("Domain must consist letter\n" + aroundContext(id_map1, i));
-            String domain = token.textFragment;
 
-            i++;
-            token = id_map1.get(i);
-            if (!token.textFragment.equals(":"))
-                throw new IllegalArgumentException("ResourceLocation separator must be :\n" + aroundContext(id_map1, i));
-
-            i++;
-            token = id_map1.get(i);
-            if (token.type != CharType.letter)
-                throw new IllegalArgumentException("Path must consist letter\n" + aroundContext(id_map1, i));
-            String path = token.textFragment;
-
-            int meta = 0;
-            if (i + 1 < id_map1.size()) {
-                token = id_map1.get(i + 1);
-                if (token.textFragment.equals(":")) {
-                    i += 2;
-                    token = id_map1.get(i);
-                    meta = Integer.parseInt(token.textFragment);
-                }
-            }
-            id_map_builder.put(id, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domain, path)), 1, meta));
+            Pair<ItemStack, Integer> itemStack_newI = parseItemStack(id_map1, i);
+            ItemStack result = itemStack_newI.getLeft();
+            i = itemStack_newI.getRight();
+            id_map_builder.put(id, result);
         }
         id_map_builder.put("_", EMPTY);
         ImmutableMap<String, ItemStack> id_map = id_map_builder.build();
@@ -113,44 +92,15 @@ public class RecipeParser {
                     List<IRecipe> r = new ArrayList<>();
                     List<Token> tokens = sections.get(group);
                     for (int i = 0; i < tokens.size(); i++) {
-                        Token token = tokens.get(i);
-                        int count = 1;
-                        if (token.type == CharType.number && tokens.get(i + 1).textFragment.equals("x")) {
-                            count = Integer.parseInt(token.textFragment);
-                            i += 2;
-                            token = tokens.get(i);
-                        }
 
-                        if (token.type != CharType.letter)
-                            throw new IllegalArgumentException("Domain must consist letter\n" + aroundContext(tokens, i));
-                        String domain = token.textFragment;
+                        Pair<ItemStack, Integer> itemStack_newI = parseItemStack(tokens, i);
+                        ItemStack result = itemStack_newI.getLeft();
+                        i = itemStack_newI.getRight();
 
-                        i++;
-                        token = tokens.get(i);
-                        if (!token.textFragment.equals(":"))
-                            throw new IllegalArgumentException("ResourceLocation separator must be :\n" + aroundContext(tokens, i));
-
-                        i++;
-                        token = tokens.get(i);
-                        if (token.type != CharType.letter)
-                            throw new IllegalArgumentException("Path must consist letter\n" + aroundContext(tokens, i));
-                        String path = token.textFragment;
-
-                        int meta = 0;
-                        if (i + 1 < tokens.size()) {
-                            token = tokens.get(i + 1);
-                            if (token.textFragment.equals(":")) {
-                                i += 2;
-                                token = tokens.get(i);
-                                meta = Integer.parseInt(token.textFragment);
-                            }
-                        }
-
-                        ItemStack result = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domain, path)), count, meta);
                         String recipeRegistryName = result.getItem().getRegistryName().toString() + "@" + result.getItemDamage();
 
                         i++;
-                        token = tokens.get(i);
+                        Token token = tokens.get(i);
                         if (!token.textFragment.equals("|"))
                             throw new IllegalArgumentException("Symbol declaration separator must be |\n" + aroundContext(tokens, i));
 
@@ -225,6 +175,42 @@ public class RecipeParser {
                     return r.stream();
                 }
         ).collect(toList());
+    }
+
+    private static Pair<ItemStack, Integer> parseItemStack(List<Token> tokens, int i) {
+        Token token = tokens.get(i);
+        int count = 1;
+        if (token.type == CharType.number && tokens.get(i + 1).textFragment.equals("x")) {
+            count = Integer.parseInt(token.textFragment);
+            i += 2;
+            token = tokens.get(i);
+        }
+
+        if (token.type != CharType.letter)
+            throw new IllegalArgumentException("Domain must consist letter\n" + aroundContext(tokens, i));
+        String domain = token.textFragment;
+
+        i++;
+        token = tokens.get(i);
+        if (!token.textFragment.equals(":"))
+            throw new IllegalArgumentException("ResourceLocation separator must be :\n" + aroundContext(tokens, i));
+
+        i++;
+        token = tokens.get(i);
+        if (token.type != CharType.letter)
+            throw new IllegalArgumentException("Path must consist letter\n" + aroundContext(tokens, i));
+        String path = token.textFragment;
+
+        int meta = 0;
+        if (i + 1 < tokens.size()) {
+            token = tokens.get(i + 1);
+            if (token.textFragment.equals(":")) {
+                i += 2;
+                token = tokens.get(i);
+                meta = Integer.parseInt(token.textFragment);
+            }
+        }
+        return Pair.of(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(domain, path)), count, meta), i);
     }
 
     private static String aroundContext(List<Token> tokens, int i) {
