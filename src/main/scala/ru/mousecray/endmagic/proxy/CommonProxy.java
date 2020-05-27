@@ -44,7 +44,7 @@ import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
-import ru.mousecray.endmagic.util.registry.RecipeParser2;
+import ru.mousecray.endmagic.util.registry.RecipeParser;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
@@ -181,7 +181,7 @@ public class CommonProxy implements IGuiHandler {
         }
         try {
             for (String file : filenames)
-                RecipeParser2.parse(IOUtils.toString(getClass().getResourceAsStream(recipePath + file), StandardCharsets.UTF_8)).forEach(e.getRegistry()::register);
+                RecipeParser.parse(IOUtils.toString(getClass().getResourceAsStream(recipePath + file), StandardCharsets.UTF_8)).forEach(e.getRegistry()::register);
         } catch (IOException e1) {
             e1.printStackTrace();
         }

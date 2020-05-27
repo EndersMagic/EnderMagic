@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 import static net.minecraft.item.ItemStack.EMPTY;
 
-public class RecipeParser2 {
+public class RecipeParser {
     private static ItemStack apple = new ItemStack(Items.APPLE);
     private static ItemStack stick = new ItemStack(Items.STICK);
     public static Map<String, List<List<ItemStack>>> fill_shapes = ImmutableMap.<String, List<List<ItemStack>>>builder()
