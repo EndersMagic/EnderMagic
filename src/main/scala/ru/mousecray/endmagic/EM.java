@@ -1,9 +1,5 @@
 package ru.mousecray.endmagic;
 
-import java.util.Random;
-
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.DamageSource;
@@ -18,6 +14,10 @@ import ru.mousecray.endmagic.proxy.CommonProxy;
 import ru.mousecray.endmagic.util.EMCreativeTab;
 import ru.mousecray.endmagic.util.EMEntityDSI;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Random;
+
 @Mod(modid = EM.ID, name = EM.NAME, dependencies = "required-after:codechickenlib")
 public class EM {
     public static final String ID = "endmagic";
@@ -27,6 +27,7 @@ public class EM {
     public static final String CLIENT = "ru.mousecray.endmagic.proxy.ClientProxy";
     public static EMCreativeTab EM_CREATIVE = new EMCreativeTab();
 
+    @Nonnull
     public static DamageSource causeArrowDamage(EntityArrow arrow, @Nullable Entity indirectEntity) {
         return (new EMEntityDSI("arrow", arrow, indirectEntity)).setProjectile();
     }

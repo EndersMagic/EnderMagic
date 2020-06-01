@@ -31,11 +31,12 @@ public class MetadataRegister<T extends Block & IMetadataBlock> {
     }
 
     public void addBlockToRegister(@Nonnull T block) {
-        Class<? extends TileEntity> tile = block.createNewTileEntity(null, 0).getClass();
-        if (tile != null) tilesToRegister.add(tile);
-
+        List<Class<? extends TileEntity>> tiles = new ArrayList<>();
+        block.getMetadataContainer().getValidStates().forEach(
+                state -> tiles.add(((MetadataContainer.ExtendedStateImpl) state).createTileEntity(null).getClass()));
+        tiles.forEach(tile -> { if (tile != null) tilesToRegister.add(tile); });
         blocksToRegister.add(block);
-        MetadataContainer.MetaItemBlock itemBlock = block.getCustomItemBlock();
+        MetadataContainer.MetaItemBlock itemBlock = block.getItemBlock(block);
         itemsToRegister.add(itemBlock);
     }
 

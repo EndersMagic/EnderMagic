@@ -119,7 +119,7 @@ public class MetadataContainer extends BlockStateContainer {
         @Override
         public String getUnlocalizedName(ItemStack stack) {
             String name = super.getUnlocalizedName();
-            if (getHasSubtypes()) name = name + getStateFromMeta(stack.getMetadata()).getName();
+            if (getHasSubtypes()) name = name + metaToState.get(stack.getMetadata()).getName();
             return name;
         }
 
