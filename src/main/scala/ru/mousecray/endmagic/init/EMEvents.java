@@ -58,7 +58,6 @@ import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -68,8 +67,8 @@ import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_PHANROM_AVOIDINCAPABILITY;
 import static ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
-import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMax;
-import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMin;
+import static ru.mousecray.endmagic.world.gen.trees.WorldGenPhantomTree.areaRequirementsMax;
+import static ru.mousecray.endmagic.world.gen.trees.WorldGenPhantomTree.areaRequirementsMin;
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {

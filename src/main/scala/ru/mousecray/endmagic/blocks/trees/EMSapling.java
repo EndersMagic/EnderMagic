@@ -24,7 +24,7 @@ import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.VariativeBlock;
-import ru.mousecray.endmagic.worldgen.trees.WorldGenEnderTree;
+import ru.mousecray.endmagic.world.gen.trees.WorldGenEnderTree;
 
 import javax.annotation.Nullable;
 import java.util.Random;

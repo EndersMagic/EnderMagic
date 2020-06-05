@@ -1,11 +1,11 @@
-package ru.mousecray.endmagic.worldgen.trees.world;
+package ru.mousecray.endmagic.world.gen.trees.world;
 
 import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import ru.mousecray.endmagic.worldgen.trees.WorldGenNaturalTree;
+import ru.mousecray.endmagic.world.gen.trees.WorldGenNaturalTree;
 
 public class WorldGenNaturalTreeWorld {
 	

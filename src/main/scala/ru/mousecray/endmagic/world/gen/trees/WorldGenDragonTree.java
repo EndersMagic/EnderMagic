@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.worldgen.trees;
+package ru.mousecray.endmagic.world.gen.trees;
 
 import static net.minecraft.block.BlockLog.LOG_AXIS;
 import static net.minecraft.init.Blocks.AIR;

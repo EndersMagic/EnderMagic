@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.worldgen.plants;
+package ru.mousecray.endmagic.world.gen.plants;
 
 import java.util.Random;
 

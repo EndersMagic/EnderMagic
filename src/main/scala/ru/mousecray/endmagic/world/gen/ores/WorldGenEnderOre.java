@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.worldgen.ores;
+package ru.mousecray.endmagic.world.gen.ores;
 
 import java.util.Arrays;
 import java.util.Random;

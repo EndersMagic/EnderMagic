@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.worldgen;
+package ru.mousecray.endmagic.world.gen;
 
 import java.util.Random;
 
@@ -7,9 +7,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import ru.mousecray.endmagic.worldgen.trees.world.WorldGenDragonTreeWorld;
-import ru.mousecray.endmagic.worldgen.trees.world.WorldGenNaturalTreeWorld;
-import ru.mousecray.endmagic.worldgen.trees.world.WorldGenPhantomTreeWorld;
+import ru.mousecray.endmagic.world.gen.trees.world.WorldGenDragonTreeWorld;
+import ru.mousecray.endmagic.world.gen.trees.world.WorldGenNaturalTreeWorld;
+import ru.mousecray.endmagic.world.gen.trees.world.WorldGenPhantomTreeWorld;
 
 public class WorldGenEnderTrees implements IWorldGenerator {
 

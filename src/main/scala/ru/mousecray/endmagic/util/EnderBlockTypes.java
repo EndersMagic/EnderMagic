@@ -15,10 +15,10 @@ import ru.mousecray.endmagic.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.blocks.trees.EMSapling;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
-import ru.mousecray.endmagic.worldgen.trees.WorldGenDragonTree;
-import ru.mousecray.endmagic.worldgen.trees.WorldGenEnderTree;
-import ru.mousecray.endmagic.worldgen.trees.WorldGenNaturalTree;
-import ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree;
+import ru.mousecray.endmagic.world.gen.trees.WorldGenDragonTree;
+import ru.mousecray.endmagic.world.gen.trees.WorldGenEnderTree;
+import ru.mousecray.endmagic.world.gen.trees.WorldGenNaturalTree;
+import ru.mousecray.endmagic.world.gen.trees.WorldGenPhantomTree;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;

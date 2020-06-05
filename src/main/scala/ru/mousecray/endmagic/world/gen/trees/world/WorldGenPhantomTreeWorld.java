@@ -1,13 +1,13 @@
-package ru.mousecray.endmagic.worldgen.trees.world;
+package ru.mousecray.endmagic.world.gen.trees.world;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree;
+import ru.mousecray.endmagic.world.gen.trees.WorldGenPhantomTree;
 
 import java.util.Random;
 
-import static ru.mousecray.endmagic.worldgen.trees.world.WorldGenDragonTreeWorld.centralIslandSize;
+import static ru.mousecray.endmagic.world.gen.trees.world.WorldGenDragonTreeWorld.centralIslandSize;
 
 public class WorldGenPhantomTreeWorld {
     WorldGenPhantomTree treeGen = new WorldGenPhantomTree(false);

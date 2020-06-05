@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.worldgen.trees;
+package ru.mousecray.endmagic.world.gen.trees;
 
 import java.util.ArrayList;
 import java.util.Collections;
