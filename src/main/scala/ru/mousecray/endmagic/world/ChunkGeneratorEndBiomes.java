@@ -174,7 +174,6 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
                 Biome current = biomeMap[i + j * 16]; //some backwards ass shit
                 IBlockState surface = END_STONE;
                 IBlockState filler = END_STONE;
-                IBlockState underfill = END_STONE;
                 //if(current == BiomeRegistrar.END_UNDER)  underfill = BlocksRegister.BASOR.getDefaultState();
                 if(current != Biomes.SKY)
                 {
@@ -221,7 +220,7 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
                         {
                             l = rand.nextInt(2) + 3;
 
-                            if (i1 >= 0) primer.setBlockState(i, i1, j, underfill);
+                            if (i1 >= 0) primer.setBlockState(i, i1, j, filler);
                         }
                         else if (l > 0)
                         {

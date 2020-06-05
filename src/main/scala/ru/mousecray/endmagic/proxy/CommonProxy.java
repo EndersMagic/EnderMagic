@@ -4,6 +4,7 @@ import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
@@ -45,11 +46,12 @@ import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.RecipeParser;
-import ru.mousecray.endmagic.world.BiomeRegistrar;
+import ru.mousecray.endmagic.init.EMBiomes;
 import ru.mousecray.endmagic.world.WorldProviderEndBiomes;
 import ru.mousecray.endmagic.world.gen.WorldGenEnderOres;
 import ru.mousecray.endmagic.world.gen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.world.gen.WorldGenEnderTrees;
+import ru.mousecray.endmagic.world.gen.WorldGenSurfacePatch;
 
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
@@ -193,7 +195,8 @@ public class CommonProxy implements IGuiHandler {
 
     public void init(FMLInitializationEvent event) {
         overrideEnd();
-        BiomeRegistrar.registerBiomes();
+        EMBiomes.registerBiomes();
+        GameRegistry.registerWorldGenerator(new WorldGenSurfacePatch(EMBlocks.blockEnderStone.getDefaultState(), Blocks.END_STONE.getDefaultState(), 1), 15);
         GameRegistry.registerWorldGenerator(new WorldGenEnderTrees(), 10);
         GameRegistry.registerWorldGenerator(new WorldGenEnderPlants(), 5);
         GameRegistry.registerWorldGenerator(new WorldGenEnderOres(), 5);

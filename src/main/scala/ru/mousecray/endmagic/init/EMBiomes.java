@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.world;
+package ru.mousecray.endmagic.init;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
@@ -6,7 +6,7 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import ru.mousecray.endmagic.world.biomes.BiomeEndIceDesert;
 
-public class BiomeRegistrar 
+public class EMBiomes
 {
 	public static final Biome ICE_DESERT = new BiomeEndIceDesert();
 	

@@ -5,24 +5,17 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 import ru.mousecray.endmagic.Configuration;
-import ru.mousecray.endmagic.world.BiomeRegistrar;
+import ru.mousecray.endmagic.init.EMBiomes;
 
 public class GenLayerEndBiomes extends GenLayer
 {
 	private final int SKY_ID;
-	//private final int END_FOREST_ID;
-	//private final int END_VOLCANO_ID;
     private final int ICE_DESERT_ID;
-	private final int PLACEHOLDER;
 	private final static int MAIN_ISLAND_SIZE;
 
 	static
 	{
 		MAIN_ISLAND_SIZE = (int) (80 / Math.pow(2, (Configuration.endBiomeSize - 1)));
-//		SKY_ID = Biome.getIdForBiome(Biomes.SKY);
-//		END_FOREST_ID = Biome.getIdForBiome(Biomes.MESA);
-		//END_VOLCANO_ID = Biome.getIdForBiome(Biomes.MUSHROOM_ISLAND);
-//		PLACEHOLDER = SKY_ID;
 	}
 	
     public GenLayerEndBiomes(long seed, GenLayer parent)
@@ -30,10 +23,7 @@ public class GenLayerEndBiomes extends GenLayer
         super(seed);
         this.parent = parent;  
 		SKY_ID = Biome.getIdForBiome(Biomes.SKY);
-		//END_FOREST_ID = Biome.getIdForBiome(BiomeRegistrar.END_JUNGLE);
-		//END_VOLCANO_ID = Biome.getIdForBiome(BiomeRegistrar.END_VOLCANO);
-        ICE_DESERT_ID = Biome.getIdForBiome(BiomeRegistrar.ICE_DESERT);
-		PLACEHOLDER = SKY_ID;
+        ICE_DESERT_ID = Biome.getIdForBiome(EMBiomes.ICE_DESERT);
     }
     
     public int[] getInts(int areaX, int areaY, int areaWidth, int areaHeight)

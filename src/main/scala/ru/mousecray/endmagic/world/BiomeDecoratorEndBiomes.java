@@ -18,4 +18,5 @@ public class BiomeDecoratorEndBiomes extends BiomeEndDecorator
         super.genDecorations(biomeIn, worldIn, random);
     }
 
+
 }
