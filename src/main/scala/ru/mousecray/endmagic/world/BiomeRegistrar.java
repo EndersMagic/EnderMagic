@@ -4,7 +4,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import projectend.world.biomes.BiomeEndUnder;
 import ru.mousecray.endmagic.world.biomes.BiomeEndIceDesert;
 
 public class BiomeRegistrar 
@@ -13,7 +12,7 @@ public class BiomeRegistrar
 	
 	public static void registerBiomes()
 	{
-		initBiome(ICE_DESERT,"under", Type.END);
+		initBiome(ICE_DESERT,"ice_desert", Type.END);
 	}
 	
 	private static void initBiome(Biome biome, String name, Type... types)

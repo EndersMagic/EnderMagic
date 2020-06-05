@@ -12,7 +12,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -43,6 +45,8 @@ import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.RecipeParser;
+import ru.mousecray.endmagic.world.BiomeRegistrar;
+import ru.mousecray.endmagic.world.WorldProviderEndBiomes;
 import ru.mousecray.endmagic.world.gen.WorldGenEnderOres;
 import ru.mousecray.endmagic.world.gen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.world.gen.WorldGenEnderTrees;
@@ -188,6 +192,8 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void init(FMLInitializationEvent event) {
+        overrideEnd();
+        BiomeRegistrar.registerBiomes();
         GameRegistry.registerWorldGenerator(new WorldGenEnderTrees(), 10);
         GameRegistry.registerWorldGenerator(new WorldGenEnderPlants(), 5);
         GameRegistry.registerWorldGenerator(new WorldGenEnderOres(), 5);
@@ -211,5 +217,12 @@ public class CommonProxy implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         return null;
+    }
+
+    public void overrideEnd()
+    {
+        DimensionManager.unregisterDimension(1);
+        DimensionType endBiomes = DimensionType.register("End", "_end", 1, WorldProviderEndBiomes.class, false);
+        DimensionManager.registerDimension(1, endBiomes);
     }
 }

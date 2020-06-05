@@ -12,7 +12,7 @@ public class GenLayerEndBiomes extends GenLayer
 	private final int SKY_ID;
 	//private final int END_FOREST_ID;
 	//private final int END_VOLCANO_ID;
-    private final int END_UNDER_ID;
+    private final int ICE_DESERT_ID;
 	private final int PLACEHOLDER;
 	private final static int MAIN_ISLAND_SIZE;
 
@@ -32,7 +32,7 @@ public class GenLayerEndBiomes extends GenLayer
 		SKY_ID = Biome.getIdForBiome(Biomes.SKY);
 		//END_FOREST_ID = Biome.getIdForBiome(BiomeRegistrar.END_JUNGLE);
 		//END_VOLCANO_ID = Biome.getIdForBiome(BiomeRegistrar.END_VOLCANO);
-        END_UNDER_ID = Biome.getIdForBiome(BiomeRegistrar.END_UNDER);
+        ICE_DESERT_ID = Biome.getIdForBiome(BiomeRegistrar.ICE_DESERT);
 		PLACEHOLDER = SKY_ID;
     }
     
@@ -45,7 +45,7 @@ public class GenLayerEndBiomes extends GenLayer
         {
             for (int j = 0; j < areaWidth; ++j)
             {
-            	this.initChunkSeed((long)(j + areaX), (long)(i + areaY));
+            	this.initChunkSeed(j + areaX, i + areaY);
                 int biomeInt = inLayer[j + i * areaWidth];
 
                 if(biomeInt == 0 || (areaX < MAIN_ISLAND_SIZE && areaX > -MAIN_ISLAND_SIZE && areaY < MAIN_ISLAND_SIZE && areaY > -MAIN_ISLAND_SIZE))
@@ -54,7 +54,7 @@ public class GenLayerEndBiomes extends GenLayer
                 }
                 else if(biomeInt == 1)
                 {
-                    outLayer[j + i * areaWidth] = END_UNDER_ID;
+                    outLayer[j + i * areaWidth] = ICE_DESERT_ID;
                 }
                 else
                 {
