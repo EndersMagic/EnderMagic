@@ -3,10 +3,12 @@ package ru.mousecray.endmagic.gameobj.blocks.trees;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -16,7 +18,6 @@ import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -26,8 +27,7 @@ import net.minecraft.world.end.DragonFightManager;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ru.mousecray.endmagic.gameobj.blocks.BlockTypeBase;
-import ru.mousecray.endmagic.gameobj.blocks.VariativeBlock;
+import ru.mousecray.endmagic.gameobj.blocks.utils.AutoMetadataBlock;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
@@ -36,13 +36,15 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & BlockTypeBase> extends VariativeBlock<TreeType> implements IShearable {
+import static ru.mousecray.endmagic.util.EnderBlockTypes.treeType;
+
+public class EMLeaves extends AutoMetadataBlock implements IShearable {
 
     public static final PropertyBool DECAYABLE = PropertyBool.create("decayable");
     public static final PropertyBool CHECK_DECAY = PropertyBool.create("check_decay");
 
-    public EMLeaves(Class<TreeType> type) {
-        super(type, Material.LEAVES, "leaves");
+    public EMLeaves() {
+        super(Material.LEAVES);
         setHardness(0.2F);
         setResistance(0.4F);
         setLightOpacity(1);
@@ -64,8 +66,8 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
     }
 
     @Override
-    public boolean hasTickRandomly() {
-        return true;
+    public List<IProperty<?>> properties() {
+        return ImmutableList.of(treeType);
     }
 
     @Override
@@ -280,7 +282,7 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
             DragonFightManager dragonfightmanager = worldproviderend.getDragonFightManager();
             assert dragonfightmanager != null;
             return super.canSustainLeaves(state, world, pos) || (dragonfightmanager.dragonKilled &&
-                    getBlockType(state) == EnderBlockTypes.EnderTreeType.DRAGON);
+                    state.getValue(treeType) == EnderBlockTypes.EnderTreeType.DRAGON);
         } else {
             return super.canSustainLeaves(state, world, pos);
         }

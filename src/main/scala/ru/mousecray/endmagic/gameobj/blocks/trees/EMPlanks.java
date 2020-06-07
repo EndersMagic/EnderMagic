@@ -1,23 +1,29 @@
 package ru.mousecray.endmagic.gameobj.blocks.trees;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.util.IStringSerializable;
-import ru.mousecray.endmagic.gameobj.blocks.BlockTypeBase;
-import ru.mousecray.endmagic.gameobj.blocks.VariativeBlock;
+import ru.mousecray.endmagic.gameobj.blocks.utils.AutoMetadataBlock;
+import ru.mousecray.endmagic.gameobj.blocks.utils.PropertyFeature;
+import ru.mousecray.endmagic.util.EnderBlockTypes;
 
-public class EMPlanks<TreeType extends Enum<TreeType> & IStringSerializable & BlockTypeBase> extends VariativeBlock<TreeType> {
+import java.util.List;
 
-	public EMPlanks(Class<TreeType> type) {
-		super(type, Material.WOOD, "planks");
-		setHardness(2.5F);
-		setResistance(7.0F);
-		setSoundType(SoundType.WOOD);	
-	}
+import static ru.mousecray.endmagic.util.EnderBlockTypes.treeType;
 
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this);
-	}
+public class EMPlanks extends AutoMetadataBlock {
+
+    public EMPlanks() {
+        super(Material.WOOD);
+        setHardness(2.5F);
+        setResistance(7.0F);
+        setSoundType(SoundType.WOOD);
+    }
+
+    @Override
+    public List<IProperty<?>> properties() {
+        return ImmutableList.of(treeType);
+    }
 }

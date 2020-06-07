@@ -64,8 +64,6 @@ import java.util.Random;
 
 import static ru.mousecray.endmagic.api.Target.Debug;
 import static ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
-import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
-import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_PHANROM_AVOIDINCAPABILITY;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMax;
@@ -92,7 +90,7 @@ public class EMEvents {
         World world = event.getEntityPlayer().world;
         BlockPos pos = event.getPos();
         IBlockState blockState = world.getBlockState(pos);
-        if (/*!event.getEntityPlayer().world.isRemote && */(blockState.getBlock() == enderLog || blockState.getBlock() == enderLeaves) &&
+        /*if ((blockState.getBlock() == enderLog || blockState.getBlock() == enderLeaves) &&
                 enderLog.getBlockType(blockState) == EnderBlockTypes.EnderTreeType.PHANTOM) {
             PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
             if (capability != null) {
@@ -109,7 +107,7 @@ public class EMEvents {
                 tree.avoidingStarted = true;
                 System.out.print("");
             }
-        }
+        }*/
     }
 
     private static void collectNewGroup(PhantomAvoidingGroup tree, BlockPos pos, World world) {

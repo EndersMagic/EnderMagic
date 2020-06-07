@@ -1,0 +1,30 @@
+package ru.mousecray.endmagic.gameobj.blocks.utils;
+
+public enum FeatureTypes {
+    neighbourChanged,
+    updateTick,
+    createTileEntity,
+    hasTileEntity,
+    hasTickRandomly,
+    getMaterial,
+    getMapColor,
+    getHardness,
+    isOpaqueCube,
+    isFullCube,
+    getLightValue,
+    getLightOpacity,
+    getRenderType,
+    canProvidePower,
+    canEntitySpawn,
+    getSoundType,
+    isTopSolid,
+    quantityDropped,
+    getFaceShape,
+    getCollisionAABB,
+    getSelectedAABB,
+    getBoundingBox,
+    getWeakPower,
+    getStrongPower,
+    canPlaceBlockAt,
+    isSubtypeSource
+}

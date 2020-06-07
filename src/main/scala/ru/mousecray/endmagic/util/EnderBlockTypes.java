@@ -9,6 +9,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderEnd;
 import net.minecraft.world.end.DragonFightManager;
@@ -17,6 +18,8 @@ import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.gameobj.blocks.BlockTypeBase;
 import ru.mousecray.endmagic.gameobj.blocks.trees.EMLeaves;
 import ru.mousecray.endmagic.gameobj.blocks.trees.EMSapling;
+import ru.mousecray.endmagic.gameobj.blocks.utils.IFeaturesList;
+import ru.mousecray.endmagic.gameobj.blocks.utils.PropertyFeature;
 import ru.mousecray.endmagic.gameobj.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.worldgen.trees.WorldGenDragonTree;
@@ -33,8 +36,9 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class EnderBlockTypes {
+    public static PropertyFeature<EnderTreeType> treeType = PropertyFeature.createProperty("treeType", EnderBlockTypes.EnderTreeType.class);
 
-    public enum EnderTreeType implements IStringSerializable, EMSapling.SaplingThings, BlockTypeBase {
+    public enum EnderTreeType implements IFeaturesList, EMSapling.SaplingThings {
         DRAGON("dragon", MapColor.PURPLE, WorldGenDragonTree.class) {
             @Override
             public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
@@ -99,20 +103,18 @@ public class EnderBlockTypes {
         IMMORTAL("immortal", MapColor.EMERALD, null),
         PHANTOM("phantom", MapColor.SILVER, WorldGenPhantomTree.class) {
             @Override
-            public boolean hasTileEntity(IBlockState state) {
-                return state.getBlock() == EMBlocks.enderLog || state.getBlock() == EMBlocks.enderLeaves;
+            public boolean hasTileEntity() {
+                return true;
             }
 
             @Override
-            public TileEntity createTileEntity(World world, IBlockState state) {
+            public TileEntity createTileEntity(World world) {
                 return new TilePhantomAvoidingBlockBase();
             }
 
             @Override
-            public EnumBlockRenderType getRenderType(IBlockState state) {
-                return state.getBlock() == EMBlocks.enderLog || state.getBlock() == EMBlocks.enderLeaves
-                        ? EnumBlockRenderType.ENTITYBLOCK_ANIMATED
-                        : EnumBlockRenderType.MODEL;
+            public EnumBlockRenderType getRenderType() {
+                return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
             }
 
             @Override
@@ -137,6 +139,11 @@ public class EnderBlockTypes {
             this.generatorClass = generatorClass;
         }
 
+        public boolean canPlaceBlockAt(World world, BlockPos pos) {
+            //TODO: add custom end grass and remove STONE from this
+            return EMUtils.isSoil(world.getBlockState(pos.down()), EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS);
+        }
+
         private WorldGenEnderTree generator() {
             if (generator == null) try {
                 generator = generatorClass.getDeclaredConstructor(boolean.class).newInstance(true);
@@ -152,7 +159,7 @@ public class EnderBlockTypes {
         }
 
         @Override
-        public MapColor getMapColor() {
+        public MapColor getMapColor(IBlockAccess world, BlockPos pos) {
             return mapColor;
         }
 
