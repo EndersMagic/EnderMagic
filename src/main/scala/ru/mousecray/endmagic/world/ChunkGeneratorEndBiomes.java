@@ -4,7 +4,6 @@ import net.minecraft.block.BlockChorusFlower;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -29,8 +28,6 @@ import net.minecraftforge.event.terraingen.InitMapGenEvent;
 import net.minecraftforge.event.terraingen.InitNoiseGensEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 
 public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd 
@@ -396,6 +393,7 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
     /**
      * Generate initial structures in this chunk, e.g. mineshafts, temples, lakes, and dungeons
      */
+    @Override
     public void populate(int x, int z)//заселяем/заполняем
     {
         BlockFalling.fallInstantly = true;
@@ -405,7 +403,6 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
         if (this.mapFeaturesEnabled)
         {
             endCityGen.generateStructure(this.world, this.rand, new ChunkPos(x, z));
-           // endGenCorn.generateStructure(this.world, this.rand, new ChunkPos(x, z));
         }
 
         this.world.getBiome(blockpos.add(16, 0, 16)).decorate(this.world, this.world.rand, blockpos);
@@ -473,53 +470,5 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
 
         ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, x, z, false);
         BlockFalling.fallInstantly = false;
-    }
-
-    /**
-     * Called to generate additional structures after initial worldgen, used by ocean monuments
-     */
-    public boolean generateStructures(Chunk chunkIn, int x, int z)
-    {
-        return false;
-    }
-
-    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
-    {
-        return this.world.getBiome(pos).getSpawnableList(creatureType);
-    }
-
-    @Nullable
-    public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored)
-    {
-        switch (structureName) {
-            case "EndCity":
-                return this.endCityGen != null ? this.endCityGen.getNearestStructurePos(worldIn, position, findUnexplored) : null;
-            case "Corn":
-                //return this.endGenCorn != null ? endGenCorn.getNearestStructurePos(worldIn, position, findUnexplored) : null;
-            default:
-                return null;
-        }
-    }
-
-    public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos)
-    {
-        switch (structureName)
-        {
-            case "EndCity":
-                return this.endCityGen != null && this.endCityGen.isInsideStructure(pos);
-            case "Corn":
-              //  return this.endGenCorn != null && endGenCorn.isInsideStructure(pos);
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * Recreates data about structures intersecting given chunk (used for example by getPossibleCreatures), without
-     * placing any blocks. When called for the first time before any chunk is generated - also initializes the internal
-     * state needed by getPossibleCreatures.
-     */
-    public void recreateStructures(Chunk chunkIn, int x, int z)
-    {
     }
 }

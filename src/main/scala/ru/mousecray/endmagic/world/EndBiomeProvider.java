@@ -32,12 +32,9 @@ public class EndBiomeProvider extends BiomeProvider {
         this.biomeIndexLayer = agenlayer[1];
 	}
 
-    /**
-     * Returns the biome generator
-     */
     public Biome getBiome(BlockPos pos)
     {
-        return this.getBiome(pos, (Biome)null);
+        return this.getBiome(pos, null);
     }
 
     public Biome getBiome(BlockPos pos, Biome defaultBiome)
@@ -45,17 +42,6 @@ public class EndBiomeProvider extends BiomeProvider {
         return this.biomeCache.getBiome(pos.getX(), pos.getZ(), defaultBiome);
     }
 
-    /**
-     * Return an adjusted version of a given temperature based on the y height
-     */
-    public float getTemperatureAtHeight(float p_76939_1_, int p_76939_2_)
-    {
-        return p_76939_1_;
-    }
-
-    /**
-     * Returns an array of biomes for the location input.
-     */
     public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height)
     {
         IntCache.resetIntCache();
