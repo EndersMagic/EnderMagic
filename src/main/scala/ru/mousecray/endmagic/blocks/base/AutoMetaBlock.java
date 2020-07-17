@@ -56,8 +56,6 @@ public abstract class AutoMetaBlock extends Block implements ITechnicalBlock {
 
         if (properties.size() > 0)
             firstProperty = ((IProperty<?>) properties.get(0)).getAllowedValues().stream().sorted(Comparable::compareTo).collect(toImmutableList());
-
-        setDefaultState(blockState.getBaseState());
     }
 
     private static int countOfStates(List<IProperty> properties) {
