@@ -51,7 +51,7 @@ public class EMSapling extends BaseTreeBlock implements IGrowable {
     }
 
     public boolean checkPlacement(World worldIn, BlockPos pos) {
-        return worldIn.getBlockState(pos).getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.PHANTOM
+        return worldIn.getBlockState(pos).getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.DRAGON
                 ? Arrays.stream(EnumFacing.HORIZONTALS)
                 .map(pos::offset)
                 .map(worldIn::getBlockState)
