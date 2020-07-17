@@ -34,17 +34,13 @@ public class EnderBlockTypes {
             this.generatorClass = generatorClass;
         }
 
-        private WorldGenEnderTree generator() {
+        public WorldGenEnderTree generator() {
             if (generator == null) try {
                 generator = generatorClass.getDeclaredConstructor(boolean.class).newInstance(true);
             } catch (InstantiationException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
                 e.printStackTrace();
             }
             return generator;
-        }
-
-        public WorldGenEnderTree getGenerator() {
-            return generator();
         }
 
         public MapColor getMapColor() {

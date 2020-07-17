@@ -90,7 +90,7 @@ public class EMSapling extends BaseTreeBlock implements IGrowable {
 
     @Override
     public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
-        WorldGenEnderTree generator = state.getValue(TREE_TYPE).getGenerator();
+        WorldGenEnderTree generator = state.getValue(TREE_TYPE).generator();
         if (generator != null)
             generator.generate(world, rand, pos);
     }
