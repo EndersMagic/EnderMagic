@@ -40,6 +40,10 @@ public class EMLog extends BaseTreeBlock {
         setHarvestLevel("axe", 3, getDefaultState().withProperty(TREE_TYPE, IMMORTAL));
         setHarvestLevel("axe", 1, getDefaultState().withProperty(TREE_TYPE, PHANTOM));
 
+        setDefaultState(blockState.getBaseState()
+                .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y)
+                .withProperty(TREE_TYPE, DRAGON));
+
     }
 
     @Override
