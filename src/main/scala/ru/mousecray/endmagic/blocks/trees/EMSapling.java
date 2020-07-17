@@ -47,6 +47,10 @@ public class EMSapling extends BaseTreeBlock implements IGrowable {
 
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        return true;
+    }
+
+    public boolean checkPlacement(World worldIn, BlockPos pos) {
         return worldIn.getBlockState(pos).getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.PHANTOM
                 ? Arrays.stream(EnumFacing.HORIZONTALS)
                 .map(pos::offset)
@@ -59,7 +63,7 @@ public class EMSapling extends BaseTreeBlock implements IGrowable {
 
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        if (!canPlaceBlockAt(world, pos)) {
+        if (!checkPlacement(world, pos)) {
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
             dropBlockAsItem(world, pos, state, 4);
         }
@@ -67,7 +71,7 @@ public class EMSapling extends BaseTreeBlock implements IGrowable {
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        if (!canPlaceBlockAt(world, pos))
+        if (!checkPlacement(world, pos))
             world.setBlockState(pos, Blocks.AIR.getDefaultState());
         else
             world.setBlockState(pos, state.withProperty(TREE_TYPE, EnderBlockTypes.EnderTreeType.values()[stack.getItemDamage()]));
