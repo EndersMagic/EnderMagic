@@ -1,29 +1,25 @@
 package ru.mousecray.endmagic.worldgen.trees;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.function.Consumer;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeModContainer;
+import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.Vec2i;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
+
+import java.util.*;
+import java.util.function.Consumer;
+
+import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 
 public class WorldGenPhantomTree extends WorldGenEnderTree {
 
@@ -64,12 +60,12 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
         super(notify, areaRequirementsMin, areaRequirementsMax);
     }
 
-    private IBlockState phantomLog = EMBlocks.enderLog.stateWithBlockType(EnderBlockTypes.EnderTreeType.PHANTOM);
-    private IBlockState phantomLeaves = EMBlocks.enderLeaves.stateWithBlockType(EnderBlockTypes.EnderTreeType.PHANTOM);
+    private IBlockState phantomLog = EMBlocks.enderLog.getDefaultState().withProperty(TREE_TYPE, EnderBlockTypes.EnderTreeType.PHANTOM);
+    private IBlockState phantomLeaves = EMBlocks.enderLeaves.getDefaultState().withProperty(TREE_TYPE, EnderBlockTypes.EnderTreeType.PHANTOM);
     private IBlockState air = Blocks.AIR.getDefaultState();
 
     @SuppressWarnings("unused")
-	private void setWithOffset(World world, BlockPos position, Vec3i offset, IBlockState state) {
+    private void setWithOffset(World world, BlockPos position, Vec3i offset, IBlockState state) {
         setBlockAndNotifyAdequately(world, position.add(offset), state);
         ((TilePhantomAvoidingBlockBase) world.getTileEntity(position)).offsetFromSapling = offset;
     }
@@ -121,7 +117,7 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
                     Pair.of(new Vec3i(-1, 4, 0), ImmutableSet.of(new Vec3i(-1, 4, 1), new Vec3i(-1, 4, -1))),
                     Pair.of(new Vec3i(0, 4, -1), ImmutableSet.of(new Vec3i(-1, 4, -1), new Vec3i(1, 4, -1)))
             );
-            Pair<Vec3i, Set<Vec3i>> centerChosenPos = centerLeaves.get(list.indexOf(rand.nextBoolean()?variant4WeepingLeaves:variant2WeepingLeaves));
+            Pair<Vec3i, Set<Vec3i>> centerChosenPos = centerLeaves.get(list.indexOf(rand.nextBoolean() ? variant4WeepingLeaves : variant2WeepingLeaves));
             specialWorld.setBlockState(position.add(centerChosenPos.getLeft()), phantomLeaves);
 
             List<Vec3i> middleLeaves = Lists.newArrayList(
@@ -229,7 +225,7 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
         }
 
         public boolean setBlockState(BlockPos pos, IBlockState state) {
-            boolean r = world.setBlockState(pos, state, doBlockNotify ? 3 : ForgeModContainer.fixVanillaCascading ? 2| 16 : 2);
+            boolean r = world.setBlockState(pos, state, doBlockNotify ? 3 : ForgeModContainer.fixVanillaCascading ? 2 | 16 : 2);
             if (r && (state == phantomLog || state == phantomLeaves))
                 ((TilePhantomAvoidingBlockBase) world.getTileEntity(pos)).offsetFromSapling = pos.subtract(saplingPosition);
             return r;

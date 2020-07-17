@@ -58,7 +58,6 @@ import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -68,6 +67,7 @@ import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_PHANROM_AVOIDINCAPABILITY;
 import static ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
+import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMax;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMin;
 
@@ -93,7 +93,7 @@ public class EMEvents {
         BlockPos pos = event.getPos();
         IBlockState blockState = world.getBlockState(pos);
         if (/*!event.getEntityPlayer().world.isRemote && */(blockState.getBlock() == enderLog || blockState.getBlock() == enderLeaves) &&
-                blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
+                blockState.getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.PHANTOM) {
             PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
             if (capability != null) {
                 PhantomAvoidingGroup tree = capability.groupAtPos.get(event.getPos());
@@ -169,8 +169,9 @@ public class EMEvents {
         anyTile.ifPresent(t -> {
             BlockPos saplingPos = t.getPos().subtract(t.offsetFromSapling);
             BlockPos newSaplingPos;
-            do newSaplingPos = world.getTopSolidOrLiquidBlock(saplingPos.add(world.rand.nextInt(2 * teleportRadius) - teleportRadius, 0,
-                    world.rand.nextInt(2 * teleportRadius) - teleportRadius));
+            do
+                newSaplingPos = world.getTopSolidOrLiquidBlock(saplingPos.add(world.rand.nextInt(2 * teleportRadius) - teleportRadius, 0,
+                        world.rand.nextInt(2 * teleportRadius) - teleportRadius));
             while (newSaplingPos.getY() == -1);
             System.out.println(world.getBlockState(newSaplingPos).getBlock());
 
@@ -218,13 +219,14 @@ public class EMEvents {
     @SubscribeEvent
     public static void onPlayerEnter(EntityJoinWorldEvent event) {
         if (!event.getWorld().isRemote)
-            if (event.getEntity() instanceof EntityPlayer) Optional.ofNullable(((WorldServer) event.getWorld()).getChunkProvider()
-                    .getNearestStructurePos(event.getWorld(), "Stronghold", new BlockPos(event.getEntity()), false))
-                    .map(pos ->
-                            UPDATE_COMPAS_TARGET.packet()
-                                    .writeInt(0)
-                                    .writePos(pos))
-                    .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
+            if (event.getEntity() instanceof EntityPlayer)
+                Optional.ofNullable(((WorldServer) event.getWorld()).getChunkProvider()
+                        .getNearestStructurePos(event.getWorld(), "Stronghold", new BlockPos(event.getEntity()), false))
+                        .map(pos ->
+                                UPDATE_COMPAS_TARGET.packet()
+                                        .writeInt(0)
+                                        .writePos(pos))
+                        .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
     }
 
     private static boolean alreadyEnteredInWorldAutomaticaly = false;
@@ -249,7 +251,7 @@ public class EMEvents {
             } else if (event.getGui() instanceof GuiConfirmation) {
                 alreadyEnteredInWorldAutomaticaly = true;
                 ReflectionHelper.findMethod(GuiConfirmation.class, "actionPerformed", null, GuiButton.class)
-                        .invoke(event.getGui(), new GuiButton(0,0,0,""));
+                        .invoke(event.getGui(), new GuiButton(0, 0, 0, ""));
                 FMLClientHandler.instance().showGuiScreen(mainMenu);
             } else if (event.getGui() instanceof GuiIngameMenu) {
                 alreadyEnteredInWorldAutomaticaly = true;

@@ -2,19 +2,8 @@ package ru.mousecray.endmagic.util;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import ru.mousecray.endmagic.api.EMUtils;
-import ru.mousecray.endmagic.api.blocks.EndSoilType;
-import ru.mousecray.endmagic.blocks.BlockTypeBase;
-import ru.mousecray.endmagic.blocks.trees.EMSapling;
-import ru.mousecray.endmagic.init.EMBlocks;
-import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.worldgen.trees.WorldGenDragonTree;
 import ru.mousecray.endmagic.worldgen.trees.WorldGenEnderTree;
 import ru.mousecray.endmagic.worldgen.trees.WorldGenNaturalTree;
@@ -22,51 +11,17 @@ import ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 public class EnderBlockTypes {
 
-    public static enum EnderTreeType implements IStringSerializable, EMSapling.SaplingThings, BlockTypeBase {
-        DRAGON("dragon", MapColor.PURPLE, WorldGenDragonTree.class) {
-            @Override
-            public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-                return Arrays.stream(EnumFacing.HORIZONTALS)
-                        .map(pos::offset)
-                        .map(worldIn::getBlockState)
-                        //TODO: add custom end grass and remove STONE from this
-                        .anyMatch(state -> EMUtils.isSoil(state, EndSoilType.STONE, EndSoilType.DIRT, EndSoilType.GRASS));
-            }
-        },
+    public static final PropertyEnum<EnderTreeType> TREE_TYPE = PropertyEnum.create("type", EnderTreeType.class);
+    public static final PropertyEnum<EnderGroundType> GROUND_TYPE = PropertyEnum.create("type", EnderGroundType.class);
+
+    public static enum EnderTreeType implements IStringSerializable {
+        DRAGON("dragon", MapColor.PURPLE, WorldGenDragonTree.class),
         NATURAL("natural", MapColor.BROWN, WorldGenNaturalTree.class),
         IMMORTAL("immortal", MapColor.EMERALD, null),
-        PHANTOM("phantom", MapColor.SILVER, WorldGenPhantomTree.class) {
-            @Override
-            public boolean hasTileEntity(IBlockState state) {
-                return state.getBlock() == EMBlocks.enderLog || state.getBlock() == EMBlocks.enderLeaves;
-            }
-
-            @Override
-            public TileEntity createTileEntity(World world, IBlockState state) {
-                return new TilePhantomAvoidingBlockBase();
-            }
-
-            @Override
-            public EnumBlockRenderType getRenderType(IBlockState state) {
-                return state.getBlock() == EMBlocks.enderLog || state.getBlock() == EMBlocks.enderLeaves
-                        ? EnumBlockRenderType.ENTITYBLOCK_ANIMATED
-                        : EnumBlockRenderType.MODEL;
-            }
-
-            @Override
-            public boolean isFullCube() {
-                return false;
-            }
-
-            @Override
-            public boolean isOpaqueCube() {
-                return false;
-            }
-        };
+        PHANTOM("phantom", MapColor.SILVER, WorldGenPhantomTree.class);
 
         private final String name;
         private final MapColor mapColor;
@@ -107,7 +62,7 @@ public class EnderBlockTypes {
         }
     }
 
-    public static enum EnderGroundType implements IStringSerializable, BlockTypeBase {
+    public static enum EnderGroundType implements IStringSerializable {
         LIVE("live", MapColor.BLUE, SoundType.GROUND),
         DEAD("dead", MapColor.GRAY, SoundType.SAND),
         FROZEN("frozen", MapColor.DIAMOND, SoundType.SNOW);
@@ -141,25 +96,4 @@ public class EnderBlockTypes {
         }
     }
 
-    public static enum EMBlockHalf implements IStringSerializable {
-        TOP("top"),
-        BOTTOM("bottom"),
-        DOUBLE("double");
-
-        private final String name;
-
-        private EMBlockHalf(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-    }
 }

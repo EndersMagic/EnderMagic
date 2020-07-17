@@ -1,62 +1,54 @@
 package ru.mousecray.endmagic.blocks.trees;
 
-import static net.minecraft.block.BlockLog.LOG_AXIS;
-
-import java.util.function.Function;
-
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import ru.mousecray.endmagic.blocks.BlockTypeBase;
-import ru.mousecray.endmagic.blocks.VariativeBlock;
+import ru.mousecray.endmagic.blocks.base.BaseTreeBlock;
+import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 
-public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable & BlockTypeBase> extends VariativeBlock<TreeType> {
+import java.util.List;
 
-    public EMLog(Class<TreeType> type, Function<TreeType, MapColor> mapFunc) {
-        super(type, Material.WOOD, "log", mapFunc);
+import static net.minecraft.block.BlockLog.LOG_AXIS;
+import static ru.mousecray.endmagic.util.EnderBlockTypes.EnderTreeType.*;
+import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
+
+public class EMLog extends BaseTreeBlock {
+
+    @Override
+    public List<IProperty> properties() {
+        return ImmutableList.of(TREE_TYPE, LOG_AXIS);
+    }
+
+    public EMLog() {
+        super(Material.WOOD);
 
         setHardness(2.5F);
         setResistance(4.0F);
         setSoundType(SoundType.WOOD);
 
-        setHarvestLevel("axe", 2, getDefaultState().withProperty(blockType, byIndex.apply(0)));
-        setHarvestLevel("axe", 2, getDefaultState().withProperty(blockType, byIndex.apply(1)));
-        setHarvestLevel("axe", 3, getDefaultState().withProperty(blockType, byIndex.apply(2)));
-        setHarvestLevel("axe", 1, getDefaultState().withProperty(blockType, byIndex.apply(3)));
+        setHarvestLevel("axe", 2, getDefaultState().withProperty(TREE_TYPE, DRAGON));
+        setHarvestLevel("axe", 2, getDefaultState().withProperty(TREE_TYPE, NATURAL));
+        setHarvestLevel("axe", 3, getDefaultState().withProperty(TREE_TYPE, IMMORTAL));
+        setHarvestLevel("axe", 1, getDefaultState().withProperty(TREE_TYPE, PHANTOM));
 
-        setDefaultState(blockState.getBaseState()
-                .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y)
-                .withProperty(blockType, byIndex.apply(0)));
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
-        IBlockState r = super.getStateFromMeta(meta);
-        int axis = meta >> 2;
-        return r.withProperty(LOG_AXIS, BlockLog.EnumAxis.values()[axis]);
+    protected String suffix() {
+        return "log";
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
-        int r = super.getMetaFromState(state);
-        return (state.getValue(LOG_AXIS).ordinal() << 2) + r;
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, LOG_AXIS);
-    }
-
-    @Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return getStateFromMeta(meta).withProperty(LOG_AXIS, BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()));
     }
 
@@ -70,4 +62,30 @@ public class EMLog<TreeType extends Enum<TreeType> & IStringSerializable & Block
         return true;
     }
 
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return state.getValue(TREE_TYPE) == PHANTOM;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return state.getValue(TREE_TYPE) == PHANTOM ? new TilePhantomAvoidingBlockBase() : null;
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return state.getValue(TREE_TYPE) == PHANTOM ?
+                EnumBlockRenderType.ENTITYBLOCK_ANIMATED :
+                EnumBlockRenderType.MODEL;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return state.getValue(TREE_TYPE) != PHANTOM;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return state.getValue(TREE_TYPE) != PHANTOM;
+    }
 }

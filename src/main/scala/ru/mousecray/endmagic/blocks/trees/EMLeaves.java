@@ -2,9 +2,7 @@ package ru.mousecray.endmagic.blocks.trees;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
@@ -12,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -20,8 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ru.mousecray.endmagic.blocks.BlockTypeBase;
-import ru.mousecray.endmagic.blocks.VariativeBlock;
+import ru.mousecray.endmagic.blocks.base.BaseTreeBlock;
 import ru.mousecray.endmagic.init.EMBlocks;
 
 import javax.annotation.Nonnull;
@@ -31,10 +27,10 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & BlockTypeBase> extends VariativeBlock<TreeType> implements IShearable {
+public class EMLeaves extends BaseTreeBlock implements IShearable {
 
-    public EMLeaves(Class<TreeType> type, Function<TreeType, MapColor> mapFunc) {
-        super(type, Material.LEAVES, "leaves", mapFunc);
+    public EMLeaves() {
+        super(Material.LEAVES);
 
         setTickRandomly(true);
         setHardness(0.2F);
@@ -44,17 +40,17 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this);
+    protected String suffix() {
+        return "leaves";
     }
 
     @Override
-	public int quantityDropped(Random random) {
+    public int quantityDropped(Random random) {
         return random.nextInt(20) == 0 ? 1 : 0;
     }
 
     @Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return Item.getItemFromBlock(EMBlocks.enderSapling);
     }
 
@@ -111,7 +107,7 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
     }
 
     @Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         if (!worldIn.isRemote) {
             if (worldIn.isAreaLoaded(pos, 2)) {
                 if (findingArea(pos)
@@ -137,12 +133,12 @@ public class EMLeaves<TreeType extends Enum<TreeType> & IStringSerializable & Bl
 
     @Override
     public void beginLeavesDecay(IBlockState state, World world, BlockPos pos) {
-    	//Add Change leaves
+        //Add Change leaves
     }
 
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
         Blocks.LEAVES.randomDisplayTick(stateIn, worldIn, pos, rand);
     }

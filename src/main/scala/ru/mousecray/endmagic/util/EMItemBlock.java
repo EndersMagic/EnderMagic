@@ -3,7 +3,7 @@ package ru.mousecray.endmagic.util;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import ru.mousecray.endmagic.blocks.VariativeBlock;
+import ru.mousecray.endmagic.blocks.base.AutoMetaBlock;
 
 public class EMItemBlock extends ItemBlock {
 	
@@ -15,11 +15,15 @@ public class EMItemBlock extends ItemBlock {
 	
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		return super.getUnlocalizedName() + "." + ((VariativeBlock) this.block).getNameForStack(stack);
+		return (block instanceof AutoMetaBlock)?
+				((AutoMetaBlock) block).getUnlocalizedName(stack):
+				super.getUnlocalizedName(stack);
 	}
-	
+
 	@Override
 	public int getMetadata(int damage) {
-		return damage;
+		return (block instanceof AutoMetaBlock)?
+				block.getMetaFromState(((AutoMetaBlock) block).getStateByItemStackDamage(damage)) :
+				damage;
 	}
 }
