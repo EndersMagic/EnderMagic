@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 
 import static com.google.common.collect.ImmutableMap.toImmutableMap;
 
-public abstract class AutoMetaBlock extends Block implements ITechnicalBlock {
+public abstract class AutoMetaBlock extends Block {
     public AutoMetaBlock(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
         init();
