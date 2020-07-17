@@ -8,7 +8,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.blocks.base.BaseTreeBlock;
 import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -26,6 +29,9 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import static ru.mousecray.endmagic.util.EnderBlockTypes.EnderTreeType.PHANTOM;
+import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 
 public class EMLeaves extends BaseTreeBlock implements IShearable {
 
@@ -84,7 +90,7 @@ public class EMLeaves extends BaseTreeBlock implements IShearable {
     @SideOnly(Side.CLIENT)
     @Override
     public boolean isOpaqueCube(IBlockState state) {
-        return !Minecraft.getMinecraft().gameSettings.fancyGraphics;
+        return !Minecraft.getMinecraft().gameSettings.fancyGraphics && state.getValue(TREE_TYPE) != PHANTOM;
     }
 
     @Override
@@ -141,5 +147,23 @@ public class EMLeaves extends BaseTreeBlock implements IShearable {
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
         Blocks.LEAVES.randomDisplayTick(stateIn, worldIn, pos, rand);
+    }
+
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return state.getValue(TREE_TYPE) == PHANTOM;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return state.getValue(TREE_TYPE) == PHANTOM ? new TilePhantomAvoidingBlockBase() : null;
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return state.getValue(TREE_TYPE) == PHANTOM ?
+                EnumBlockRenderType.ENTITYBLOCK_ANIMATED :
+                EnumBlockRenderType.MODEL;
     }
 }
