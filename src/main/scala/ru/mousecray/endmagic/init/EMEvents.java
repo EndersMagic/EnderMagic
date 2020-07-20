@@ -242,8 +242,9 @@ public class EMEvents {
                     IBlockState blockState = world.getBlockState(pos);
                     if (EntityCustomEnderEye.isEmptyPortalFrame(blockState) && !EntityCustomEnderEye.occupiedPoses.contains(pos)) {
                         event.setCanceled(true);
-                        EntityCustomEnderEye.occupiedPoses.add(pos);
-                        EntityCustomEnderEye enderEye = new EntityCustomEnderEye(world, entity.posX, entity.posY, entity.posZ, pos);
+                        BlockPos immutable = pos.toImmutable();
+                        EntityCustomEnderEye.occupiedPoses.add(immutable);
+                        EntityCustomEnderEye enderEye = new EntityCustomEnderEye(world, entity.posX, entity.posY, entity.posZ, immutable);
                         world.spawnEntity(enderEye);
                         return false;
                     } else
