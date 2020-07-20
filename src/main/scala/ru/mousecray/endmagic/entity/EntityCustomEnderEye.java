@@ -8,32 +8,90 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.client.render.entity.RenderEntityCustomEnderEye;
+import ru.mousecray.endmagic.util.BaseDataSerializer;
 import ru.mousecray.endmagic.util.registry.EMEntity;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 @EMEntity(renderClass = RenderEntityCustomEnderEye.class)
 public class EntityCustomEnderEye extends EntityEnderEye {
 
     public static Set<BlockPos> occupiedPoses = new HashSet<>();
+    private List<Vec3d> path;
+    private Function<Double, Vec3d> curve;
 
-    private BlockPos targetPos;
-    private Vec3d target;
+    private final static DataParameter<Double> T = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("T", PacketBuffer::writeDouble, PacketBuffer::readDouble));
+    private final static DataParameter<BlockPos> TARGET_POS = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("TARGET_POS", PacketBuffer::writeBlockPos, PacketBuffer::readBlockPos));
+    private final static DataParameter<Vec3d> START_POS = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("START_POS", (buf, value) -> {
+        buf.writeDouble(value.x);
+        buf.writeDouble(value.y);
+        buf.writeDouble(value.z);
+    }, buf -> new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble())));
 
     public EntityCustomEnderEye(World worldIn, double x, double y, double z, BlockPos targetPos) {
         super(worldIn, x, y, z);
-        this.targetPos = targetPos;
-        target = new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 0.75, targetPos.getZ() + 0.5);
+        path = makePath(worldIn, new Vec3d(x, y, z), targetPos);
+        curve = bezierCurve(path);
+
+        System.out.println("test1");
+        getDataManager().register(T, 0d);
+        getDataManager().register(TARGET_POS, targetPos);
+        getDataManager().register(START_POS, new Vec3d(x, y, z));
+        System.out.println("test2");
+    }
+
+    @Override
+    public void notifyDataManagerChange(DataParameter<?> key) {
+        if (key == START_POS) {
+            System.out.println("test");
+            path = makePath(world, startPos(), targetPos());
+            curve = bezierCurve(path);
+        }
+    }
+
+    private Function<Double, Vec3d> bezierCurve(List<Vec3d> path) {
+        return null;
+    }
+
+    private List<Vec3d> makePath(World worldIn, Vec3d startPos, BlockPos targetPos) {
+        double x = startPos.x;
+        double y = startPos.y;
+        double z = startPos.z;
+
+        List<Vec3d> r = new ArrayList<>();
+        r.add(new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 0.75, targetPos.getZ() + 0.5));
+        Vec3d aboveFrame = new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 3, targetPos.getZ() + 0.5);
+        r.add(aboveFrame);
+        double height = aboveFrame.y - y;
+        if (height > 1) {
+            Vec3d direction = aboveFrame.subtract(x, y, z).normalize();
+            r.add(new Vec3d(
+                    x + height * direction.x,
+                    y + height,
+                    z + height * direction.z
+            ));
+        }
+        r.add(startPos);
+        return r;
     }
 
     public EntityCustomEnderEye(World world) {
         super(world);
+        getDataManager().register(T, 0d);
+        getDataManager().register(TARGET_POS, BlockPos.ORIGIN);
+        getDataManager().register(START_POS, Vec3d.ZERO);
     }
 
     public static boolean isEmptyPortalFrame(IBlockState blockState) {
@@ -42,32 +100,56 @@ public class EntityCustomEnderEye extends EntityEnderEye {
 
     @Override
     public void onUpdate() {
-        if (!world.isRemote && targetPos != null) {
-            double dist1 = target.squareDistanceTo(posX, posY, posZ);
-            double speedReversedModifier = Math.sqrt(dist1) * 10;
+        if (!world.isRemote && !targetPos().equals(BlockPos.ORIGIN)) {
 
-            if (dist1 < 0.01)
-                insertEyeToFrame();
+            //System.out.println(targetPos());
 
-            motionX = ((double) targetPos.getX() + 0.5 - posX) / speedReversedModifier;
-            motionY = ((double) targetPos.getY() + 0.75 - posY) / speedReversedModifier;
-            motionZ = ((double) targetPos.getZ() + 0.5 - posZ) / speedReversedModifier;
+            /*
+            Vec3d currentTarget = target.peek();
 
+            double dist = currentTarget.distanceTo(getPositionVector());
+            double speedModifier = 0.1;
+
+            if (dist < 0.1) {
+                if (target.size() == 1)
+                    insertEyeToFrame();
+                else
+                    target.pop();
+            }
+
+            double targetMotionX = (currentTarget.x - posX) / dist * speedModifier;
+            double targetMotionY = (currentTarget.y - posY) / dist * speedModifier;
+            double targetMotionZ = (currentTarget.z - posZ) / dist * speedModifier;
+
+            Vec3d a = new Vec3d(targetMotionX - motionX, targetMotionY - motionY, targetMotionZ - motionZ).scale(0.1);
+
+            motionX += a.x;
+            motionY += a.y;
+            motionZ += a.z;
 
             lastTickPosX = posX;
             lastTickPosY = posY;
             lastTickPosZ = posZ;
-
+            */
             onSuperUpdate();
-
-            posX += motionX;
-            posY += motionY;
-            posZ += motionZ;
         } else
             onSuperUpdate();
     }
 
+    public BlockPos targetPos() {
+        return getDataManager().get(TARGET_POS);
+    }
+
+    public Vec3d startPos() {
+        return getDataManager().get(START_POS);
+    }
+
+    public double t() {
+        return getDataManager().get(T);
+    }
+
     private void insertEyeToFrame() {
+        BlockPos targetPos = targetPos();
         IBlockState currectBlockState = world.getBlockState(targetPos);
         if (isEmptyPortalFrame(currectBlockState)) {
             world.setBlockState(targetPos, currectBlockState.withProperty(BlockEndPortalFrame.EYE, true));
@@ -94,5 +176,9 @@ public class EntityCustomEnderEye extends EntityEnderEye {
         }
 
         onEntityUpdate();
+
+        posX += motionX;
+        posY += motionY;
+        posZ += motionZ;
     }
 }
