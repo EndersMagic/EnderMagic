@@ -40,6 +40,8 @@ public class EntityCustomEnderEye extends EntityEnderEye {
     public int curveLen;
     public List<Vec3d> curveCache;
 
+    public int clientOrientedT = 0;
+
     private final static DataParameter<Integer> T = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("T", PacketBuffer::writeInt, PacketBuffer::readInt));
     private final static DataParameter<BlockPos> TARGET_POS = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("TARGET_POS", PacketBuffer::writeBlockPos, PacketBuffer::readBlockPos));
     private final static DataParameter<Vec3d> START_POS = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("START_POS", (buf, value) -> {
@@ -66,7 +68,8 @@ public class EntityCustomEnderEye extends EntityEnderEye {
             curveLen = calcCurveLen(curve);
 
             curveCache = IntStream.range(0, curveLen).mapToDouble(i -> 1 - ((double) i) / curveLen).mapToObj(curve::apply).collect(Collectors.toList());
-        }
+        } else if (key == T)
+            clientOrientedT = Math.max(clientOrientedT, t());
     }
 
     private int calcCurveLen(Function<Double, Vec3d> curve) {
@@ -151,26 +154,29 @@ public class EntityCustomEnderEye extends EntityEnderEye {
 
     @Override
     public void onUpdate() {
-        if (!world.isRemote && curve != null) {
-            int t = t();
-            if (t >= curveLen)
-                insertEyeToFrame();
-            else {
-                Vec3d vec = curveCache.get(t);
+        if (!world.isRemote) {
+            if (curve != null) {
+                int t = t();
+                if (t >= curveLen)
+                    insertEyeToFrame();
+                else {
+                    Vec3d vec = curveCache.get(t);
 
-                setPosition(vec.x, vec.y, vec.z);
+                    setPosition(vec.x, vec.y, vec.z);
 
-                setT(t + 1);
+                    setClientOrientedT(t + 1);
+                }
+
+                onSuperUpdate();
+            } else {
+                onSuperUpdate();
+
+                posX += motionX;
+                posY += motionY;
+                posZ += motionZ;
             }
-
-            onSuperUpdate();
-        } else {
-            onSuperUpdate();
-
-            posX += motionX;
-            posY += motionY;
-            posZ += motionZ;
-        }
+        } else
+            clientOrientedT++;
     }
 
     private BlockPos targetPos() {
@@ -185,8 +191,8 @@ public class EntityCustomEnderEye extends EntityEnderEye {
         return getDataManager().get(T);
     }
 
-    private void setT(int t) {
-        getDataManager().set(T, t);
+    private void setClientOrientedT(int clientOrientedT) {
+        getDataManager().set(T, clientOrientedT);
     }
 
     private void insertEyeToFrame() {

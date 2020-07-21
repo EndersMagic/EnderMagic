@@ -27,13 +27,25 @@ public class RenderEntityCustomEnderEye extends RenderSnowball<EntityCustomEnder
         debugDrawing(entity, partialTicks);
 
 
-        int t = entity.t();
-        if (t < entity.curveLen) {
-            Vec3d currentPos = entity.curveCache.get(t);
-            Vec3d nextPos = t + 1 < entity.curveCache.size() ? entity.curveCache.get(t + 1) : currentPos;
+        GlStateManager.pushMatrix();
+        translateToZeroCoord(partialTicks);
+
+        float t = entity.clientOrientedT + partialTicks;
+        System.out.println(t);
+
+        double tt = 1 - ((double) t) / entity.curveLen;
+        Vec3d vec = entity.curve.apply(tt);
+
+        super.doRender(entity, vec.x, vec.y, vec.z, entityYaw, partialTicks);
+
+        GlStateManager.popMatrix();
+        /*
+        if (clientOrientedT < entity.curveLen) {
+            Vec3d currentPos = entity.curveCache.get(clientOrientedT);
+            Vec3d nextPos = clientOrientedT + 1 < entity.curveCache.size() ? entity.curveCache.get(clientOrientedT + 1) : currentPos;
             Vec3d partialTickAddition = nextPos.subtract(currentPos).scale(partialTicks);
             super.doRender(entity, x + partialTickAddition.x, y + partialTickAddition.y, z + partialTickAddition.z, entityYaw, partialTicks);
-        }
+        }*/
     }
 
     private void drawPolyChain(List<Vec3d> path, Color color) {
