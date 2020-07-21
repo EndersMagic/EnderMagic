@@ -1,5 +1,7 @@
 package ru.mousecray.endmagic.entity;
 
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.block.BlockEndPortalFrame;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
@@ -19,20 +21,26 @@ import ru.mousecray.endmagic.util.BaseDataSerializer;
 import ru.mousecray.endmagic.util.registry.EMEntity;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
+import javax.vecmath.Vector2d;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @EMEntity(renderClass = RenderEntityCustomEnderEye.class)
 public class EntityCustomEnderEye extends EntityEnderEye {
+    ///kill @e[type=endmagic:custom_ender_eye]
 
     public static Set<BlockPos> occupiedPoses = new HashSet<>();
-    private List<Vec3d> path;
-    private Function<Double, Vec3d> curve;
+    public List<Vec3d> path;
+    public Function<Double, Vec3d> curve;
+    public int curveLen;
+    public List<Vec3d> curveCache;
 
-    private final static DataParameter<Double> T = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("T", PacketBuffer::writeDouble, PacketBuffer::readDouble));
+    private final static DataParameter<Integer> T = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("T", PacketBuffer::writeInt, PacketBuffer::readInt));
     private final static DataParameter<BlockPos> TARGET_POS = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("TARGET_POS", PacketBuffer::writeBlockPos, PacketBuffer::readBlockPos));
     private final static DataParameter<Vec3d> START_POS = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("START_POS", (buf, value) -> {
         buf.writeDouble(value.x);
@@ -42,45 +50,88 @@ public class EntityCustomEnderEye extends EntityEnderEye {
 
     public EntityCustomEnderEye(World worldIn, double x, double y, double z, BlockPos targetPos) {
         super(worldIn, x, y, z);
-        path = makePath(worldIn, new Vec3d(x, y, z), targetPos);
-        curve = bezierCurve(path);
 
-        System.out.println("test1");
-        getDataManager().register(T, 0d);
+        getDataManager().register(T, 0);
         getDataManager().register(TARGET_POS, targetPos);
         getDataManager().register(START_POS, new Vec3d(x, y, z));
-        System.out.println("test2");
+
+        notifyDataManagerChange(START_POS);
     }
 
     @Override
     public void notifyDataManagerChange(DataParameter<?> key) {
         if (key == START_POS) {
-            System.out.println("test");
             path = makePath(world, startPos(), targetPos());
             curve = bezierCurve(path);
+            curveLen = calcCurveLen(curve);
+
+            curveCache = IntStream.range(0, curveLen).mapToDouble(i -> 1 - ((double) i) / curveLen).mapToObj(curve::apply).collect(Collectors.toList());
         }
     }
 
+    private int calcCurveLen(Function<Double, Vec3d> curve) {
+        return 100;
+    }
+
     private Function<Double, Vec3d> bezierCurve(List<Vec3d> path) {
-        return null;
+        //Можно развернуть точки так, чтобы они лежали в плоскости ZoY, заюзать двумерноые безье, и повернуть обратно
+        Vec3d first = path.get(0);
+        Vec3d last = path.get(path.size() - 1);
+        float angle = (float) Math.atan2(last.x - first.x, last.z - first.z);
+
+        List<Vec3d> rotatedPath = path.stream().map(v -> v.rotateYaw(-angle)).collect(Collectors.toList());
+
+        return t -> {
+            double z = 0;
+            double y = 0;
+
+            int n = rotatedPath.size() - 1;
+
+            Vec3d vec = rotatedPath.get(0);
+            double pow_1_minus_t_n = Math.pow((1 - t), n);
+            z += vec.z * pow_1_minus_t_n;
+            y += vec.y * pow_1_minus_t_n;
+
+            double factorial_n = factorial(n);
+
+            for (int index = 1; index < rotatedPath.size(); index++) {
+                Vec3d item = rotatedPath.get(index);
+                z += factorial_n / factorial(index) / factorial(n - index) * item.z * Math.pow((1 - t), n - index) * Math.pow(t, index);
+                y += factorial_n / factorial(index) / factorial(n - index) * item.y * Math.pow((1 - t), n - index) * Math.pow(t, index);
+            }
+            return new Vec3d(vec.x, y, z).rotateYaw(angle);
+        };
+    }
+
+    private Int2IntMap factorialCache = new Int2IntOpenHashMap();
+
+    private double factorial(int num) {
+        return factorialCache.computeIfAbsent(num, num1 -> factorial(num1, 1));
+    }
+
+    private int factorial(int num, int acc) {
+        if (num <= 1) {
+            return acc;
+        } else {
+            return factorial(num - 1, acc * num);
+        }
     }
 
     private List<Vec3d> makePath(World worldIn, Vec3d startPos, BlockPos targetPos) {
-        double x = startPos.x;
-        double y = startPos.y;
-        double z = startPos.z;
 
         List<Vec3d> r = new ArrayList<>();
         r.add(new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 0.75, targetPos.getZ() + 0.5));
         Vec3d aboveFrame = new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 3, targetPos.getZ() + 0.5);
         r.add(aboveFrame);
-        double height = aboveFrame.y - y;
+        double height = aboveFrame.y - startPos.y;
         if (height > 1) {
-            Vec3d direction = aboveFrame.subtract(x, y, z).normalize();
+            Vector2d direction = new Vector2d(aboveFrame.x, aboveFrame.z);
+            direction.sub(new Vector2d(startPos.x, startPos.z));
+            direction.normalize();
             r.add(new Vec3d(
-                    x + height * direction.x,
-                    y + height,
-                    z + height * direction.z
+                    startPos.x + height * direction.x,
+                    startPos.y + height,
+                    startPos.z + height * direction.y
             ));
         }
         r.add(startPos);
@@ -89,7 +140,7 @@ public class EntityCustomEnderEye extends EntityEnderEye {
 
     public EntityCustomEnderEye(World world) {
         super(world);
-        getDataManager().register(T, 0d);
+        getDataManager().register(T, 0);
         getDataManager().register(TARGET_POS, BlockPos.ORIGIN);
         getDataManager().register(START_POS, Vec3d.ZERO);
     }
@@ -100,52 +151,42 @@ public class EntityCustomEnderEye extends EntityEnderEye {
 
     @Override
     public void onUpdate() {
-        if (!world.isRemote && !targetPos().equals(BlockPos.ORIGIN)) {
+        if (!world.isRemote && curve != null) {
+            int t = t();
+            if (t >= curveLen)
+                insertEyeToFrame();
+            else {
+                Vec3d vec = curveCache.get(t);
 
-            //System.out.println(targetPos());
+                setPosition(vec.x, vec.y, vec.z);
 
-            /*
-            Vec3d currentTarget = target.peek();
-
-            double dist = currentTarget.distanceTo(getPositionVector());
-            double speedModifier = 0.1;
-
-            if (dist < 0.1) {
-                if (target.size() == 1)
-                    insertEyeToFrame();
-                else
-                    target.pop();
+                setT(t + 1);
             }
 
-            double targetMotionX = (currentTarget.x - posX) / dist * speedModifier;
-            double targetMotionY = (currentTarget.y - posY) / dist * speedModifier;
-            double targetMotionZ = (currentTarget.z - posZ) / dist * speedModifier;
-
-            Vec3d a = new Vec3d(targetMotionX - motionX, targetMotionY - motionY, targetMotionZ - motionZ).scale(0.1);
-
-            motionX += a.x;
-            motionY += a.y;
-            motionZ += a.z;
-
-            lastTickPosX = posX;
-            lastTickPosY = posY;
-            lastTickPosZ = posZ;
-            */
             onSuperUpdate();
-        } else
+        } else {
             onSuperUpdate();
+
+            posX += motionX;
+            posY += motionY;
+            posZ += motionZ;
+        }
     }
 
-    public BlockPos targetPos() {
+    private BlockPos targetPos() {
         return getDataManager().get(TARGET_POS);
     }
 
-    public Vec3d startPos() {
+    private Vec3d startPos() {
         return getDataManager().get(START_POS);
     }
 
-    public double t() {
+    public int t() {
         return getDataManager().get(T);
+    }
+
+    private void setT(int t) {
+        getDataManager().set(T, t);
     }
 
     private void insertEyeToFrame() {
@@ -170,15 +211,16 @@ public class EntityCustomEnderEye extends EntityEnderEye {
         setDead();
     }
 
+    @Override
+    public void setDead() {
+        occupiedPoses.remove(targetPos());
+        super.setDead();
+    }
+
     private void onSuperUpdate() {
-        if (!world.isRemote) {
+        if (!world.isRemote)
             setFlag(6, isGlowing());
-        }
 
         onEntityUpdate();
-
-        posX += motionX;
-        posY += motionY;
-        posZ += motionZ;
     }
 }
