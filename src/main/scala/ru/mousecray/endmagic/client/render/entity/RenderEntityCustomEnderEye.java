@@ -24,22 +24,7 @@ public class RenderEntityCustomEnderEye extends RenderSnowball<EntityCustomEnder
 
     @Override
     public void doRender(EntityCustomEnderEye entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        GlStateManager.pushMatrix();
-        translateToZeroCoord(partialTicks);
-        GlStateManager.disableLighting();
-        GlStateManager.depthMask(false);
-        GlStateManager.glLineWidth(2.0F);
-        GlStateManager.disableTexture2D();
-
-        drawPolyChain(entity.path, Color.green);
-        //drawPolyChain(entity.rotatedPath, Color.blue);
-        List<Vec3d> collect = IntStream.range(0, 100).mapToDouble(i -> ((double) i) / 100).mapToObj(entity.curve::apply).collect(Collectors.toList());
-        drawPolyChain(collect, Color.red);
-
-        GlStateManager.enableLighting();
-        GlStateManager.depthMask(true);
-        GlStateManager.enableTexture2D();
-        GlStateManager.popMatrix();
+        debugDrawing(entity, partialTicks);
 
 
         int t = entity.t();
@@ -73,5 +58,24 @@ public class RenderEntityCustomEnderEye extends RenderSnowball<EntityCustomEnder
 
     private void drawLine(Vec3d first, Color color, BufferBuilder buffer) {
         buffer.pos(first.x, first.y, first.z).color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+    }
+
+    private void debugDrawing(EntityCustomEnderEye entity, float partialTicks) {
+        GlStateManager.pushMatrix();
+        translateToZeroCoord(partialTicks);
+        GlStateManager.disableLighting();
+        GlStateManager.depthMask(false);
+        GlStateManager.glLineWidth(2.0F);
+        GlStateManager.disableTexture2D();
+
+        drawPolyChain(entity.path, Color.green);
+        //drawPolyChain(entity.rotatedPath, Color.blue);
+        List<Vec3d> collect = IntStream.range(0, 100).mapToDouble(i -> ((double) i) / 100).mapToObj(entity.curve::apply).collect(Collectors.toList());
+        drawPolyChain(collect, Color.red);
+
+        GlStateManager.enableLighting();
+        GlStateManager.depthMask(true);
+        GlStateManager.enableTexture2D();
+        GlStateManager.popMatrix();
     }
 }
