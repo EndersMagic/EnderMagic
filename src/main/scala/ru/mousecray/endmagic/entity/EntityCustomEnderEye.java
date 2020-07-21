@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -28,7 +29,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @EMEntity(renderClass = RenderEntityCustomEnderEye.class)
 public class EntityCustomEnderEye extends EntityEnderEye {
@@ -38,11 +38,10 @@ public class EntityCustomEnderEye extends EntityEnderEye {
     public List<Vec3d> path;
     public Function<Double, Vec3d> curve;
     public int curveLen;
-    public List<Vec3d> curveCache;
 
-    public int clientOrientedT = 0;
+    public int clientOrientedTick = 0;
 
-    private final static DataParameter<Integer> T = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("T", PacketBuffer::writeInt, PacketBuffer::readInt));
+    private final static DataParameter<Integer> TICK = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("TICK", PacketBuffer::writeInt, PacketBuffer::readInt));
     private final static DataParameter<BlockPos> TARGET_POS = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("TARGET_POS", PacketBuffer::writeBlockPos, PacketBuffer::readBlockPos));
     private final static DataParameter<Vec3d> START_POS = EntityDataManager.createKey(EntityCustomEnderEye.class, new BaseDataSerializer<>("START_POS", (buf, value) -> {
         buf.writeDouble(value.x);
@@ -53,7 +52,7 @@ public class EntityCustomEnderEye extends EntityEnderEye {
     public EntityCustomEnderEye(World worldIn, double x, double y, double z, BlockPos targetPos) {
         super(worldIn, x, y, z);
 
-        getDataManager().register(T, 0);
+        getDataManager().register(TICK, 0);
         getDataManager().register(TARGET_POS, targetPos);
         getDataManager().register(START_POS, new Vec3d(x, y, z));
 
@@ -66,10 +65,8 @@ public class EntityCustomEnderEye extends EntityEnderEye {
             path = makePath(world, startPos(), targetPos());
             curve = bezierCurve(path);
             curveLen = calcCurveLen(curve);
-
-            curveCache = IntStream.range(0, curveLen).mapToDouble(i -> 1 - ((double) i) / curveLen).mapToObj(curve::apply).collect(Collectors.toList());
-        } else if (key == T)
-            clientOrientedT = Math.max(clientOrientedT, t());
+        } else if (key == TICK)
+            clientOrientedTick = Math.max(clientOrientedTick, tick());
     }
 
     private int calcCurveLen(Function<Double, Vec3d> curve) {
@@ -123,9 +120,9 @@ public class EntityCustomEnderEye extends EntityEnderEye {
     private List<Vec3d> makePath(World worldIn, Vec3d startPos, BlockPos targetPos) {
 
         List<Vec3d> r = new ArrayList<>();
-        r.add(new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 0.75, targetPos.getZ() + 0.5));
+        r.add(startPos);
+
         Vec3d aboveFrame = new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 3, targetPos.getZ() + 0.5);
-        r.add(aboveFrame);
         double height = aboveFrame.y - startPos.y;
         if (height > 1) {
             Vector2d direction = new Vector2d(aboveFrame.x, aboveFrame.z);
@@ -137,46 +134,43 @@ public class EntityCustomEnderEye extends EntityEnderEye {
                     startPos.z + height * direction.y
             ));
         }
-        r.add(startPos);
+        r.add(aboveFrame);
+
+        Vec3d finalPos = new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 0.75, targetPos.getZ() + 0.5);
+        r.add(finalPos);
         return r;
     }
 
     public EntityCustomEnderEye(World world) {
         super(world);
-        getDataManager().register(T, 0);
+        getDataManager().register(TICK, 0);
         getDataManager().register(TARGET_POS, BlockPos.ORIGIN);
         getDataManager().register(START_POS, Vec3d.ZERO);
-    }
-
-    public static boolean isEmptyPortalFrame(IBlockState blockState) {
-        return blockState.getBlock() == Blocks.END_PORTAL_FRAME && !blockState.getValue(BlockEndPortalFrame.EYE);
     }
 
     @Override
     public void onUpdate() {
         if (!world.isRemote) {
             if (curve != null) {
-                int t = t();
+                int t = tick();
                 if (t >= curveLen)
                     insertEyeToFrame();
                 else {
-                    Vec3d vec = curveCache.get(t);
+                    Vec3d vec = curve.apply((double) t / curveLen);
 
                     setPosition(vec.x, vec.y, vec.z);
 
-                    setClientOrientedT(t + 1);
+                    setTick(t + 1);
                 }
 
                 onSuperUpdate();
-            } else {
-                onSuperUpdate();
-
-                posX += motionX;
-                posY += motionY;
-                posZ += motionZ;
             }
-        } else
-            clientOrientedT++;
+        } else {
+            clientOrientedTick++;
+            world.spawnParticle(EnumParticleTypes.PORTAL,
+                    posX + rand.nextDouble() * 0.1 - 0.3, posY - 0.5, posZ + rand.nextDouble() * 0.1 - 0.3,
+                    rand.nextDouble(), rand.nextDouble(), rand.nextDouble());
+        }
     }
 
     private BlockPos targetPos() {
@@ -187,12 +181,16 @@ public class EntityCustomEnderEye extends EntityEnderEye {
         return getDataManager().get(START_POS);
     }
 
-    public int t() {
-        return getDataManager().get(T);
+    public int tick() {
+        return getDataManager().get(TICK);
     }
 
-    private void setClientOrientedT(int clientOrientedT) {
-        getDataManager().set(T, clientOrientedT);
+    private void setTick(int t) {
+        getDataManager().set(TICK, t);
+    }
+
+    public static boolean isEmptyPortalFrame(IBlockState blockState) {
+        return blockState.getBlock() == Blocks.END_PORTAL_FRAME && !blockState.getValue(BlockEndPortalFrame.EYE);
     }
 
     private void insertEyeToFrame() {
@@ -217,16 +215,14 @@ public class EntityCustomEnderEye extends EntityEnderEye {
         setDead();
     }
 
-    @Override
-    public void setDead() {
-        occupiedPoses.remove(targetPos());
-        super.setDead();
-    }
-
     private void onSuperUpdate() {
         if (!world.isRemote)
             setFlag(6, isGlowing());
 
         onEntityUpdate();
+
+        posX += motionX;
+        posY += motionY;
+        posZ += motionZ;
     }
 }

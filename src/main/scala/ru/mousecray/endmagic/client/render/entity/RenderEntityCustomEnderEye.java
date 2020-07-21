@@ -24,28 +24,27 @@ public class RenderEntityCustomEnderEye extends RenderSnowball<EntityCustomEnder
 
     @Override
     public void doRender(EntityCustomEnderEye entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        debugDrawing(entity, partialTicks);
-
+        //debugDrawing(entity, partialTicks);
 
         GlStateManager.pushMatrix();
         translateToZeroCoord(partialTicks);
 
-        float t = entity.clientOrientedT + partialTicks;
-        System.out.println(t);
+        double compositeTick = entity.clientOrientedTick + partialTicks;
 
-        double tt = 1 - ((double) t) / entity.curveLen;
-        Vec3d vec = entity.curve.apply(tt);
+        double function_t = compositeTick / entity.curveLen;
+        Vec3d vec = entity.curve.apply(function_t);
 
         super.doRender(entity, vec.x, vec.y, vec.z, entityYaw, partialTicks);
 
         GlStateManager.popMatrix();
-        /*
-        if (clientOrientedT < entity.curveLen) {
-            Vec3d currentPos = entity.curveCache.get(clientOrientedT);
-            Vec3d nextPos = clientOrientedT + 1 < entity.curveCache.size() ? entity.curveCache.get(clientOrientedT + 1) : currentPos;
-            Vec3d partialTickAddition = nextPos.subtract(currentPos).scale(partialTicks);
-            super.doRender(entity, x + partialTickAddition.x, y + partialTickAddition.y, z + partialTickAddition.z, entityYaw, partialTicks);
-        }*/
+    }
+
+    private void translateToZeroCoord(float partialTicks) {
+        Entity player = Minecraft.getMinecraft().player;
+        double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
+        double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
+        double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
+        GlStateManager.translate(-x, -y, -z);
     }
 
     private void drawPolyChain(List<Vec3d> path, Color color) {
@@ -56,16 +55,7 @@ public class RenderEntityCustomEnderEye extends RenderSnowball<EntityCustomEnder
         for (Vec3d vec3d : path)
             drawLine(vec3d, color, buffer);
 
-
         tessellator.draw();
-    }
-
-    private void translateToZeroCoord(float partialTicks) {
-        Entity player = Minecraft.getMinecraft().getRenderViewEntity();
-        double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
-        double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
-        double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
-        GlStateManager.translate(-x, -y, -z);
     }
 
     private void drawLine(Vec3d first, Color color, BufferBuilder buffer) {
@@ -81,9 +71,7 @@ public class RenderEntityCustomEnderEye extends RenderSnowball<EntityCustomEnder
         GlStateManager.disableTexture2D();
 
         drawPolyChain(entity.path, Color.green);
-        //drawPolyChain(entity.rotatedPath, Color.blue);
-        List<Vec3d> collect = IntStream.range(0, 100).mapToDouble(i -> ((double) i) / 100).mapToObj(entity.curve::apply).collect(Collectors.toList());
-        drawPolyChain(collect, Color.red);
+        drawPolyChain(IntStream.range(0, 100).mapToDouble(i -> ((double) i) / 100).mapToObj(entity.curve::apply).collect(Collectors.toList()), Color.red);
 
         GlStateManager.enableLighting();
         GlStateManager.depthMask(true);
