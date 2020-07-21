@@ -1,7 +1,5 @@
 package ru.mousecray.endmagic.entity;
 
-import it.unimi.dsi.fastutil.ints.Int2IntMap;
-import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.block.BlockEndPortalFrame;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
@@ -28,7 +26,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+
+import static ru.mousecray.endmagic.util.MathUtils.bezierCurve;
 
 @EMEntity(renderClass = RenderEntityCustomEnderEye.class)
 public class EntityCustomEnderEye extends EntityEnderEye {
@@ -69,54 +68,6 @@ public class EntityCustomEnderEye extends EntityEnderEye {
             clientOrientedTick = Math.max(clientOrientedTick, tick());
     }
 
-    private int calcCurveLen(Function<Double, Vec3d> curve) {
-        return 100;
-    }
-
-    private Function<Double, Vec3d> bezierCurve(List<Vec3d> path) {
-        //Можно развернуть точки так, чтобы они лежали в плоскости ZoY, заюзать двумерноые безье, и повернуть обратно
-        Vec3d first = path.get(0);
-        Vec3d last = path.get(path.size() - 1);
-        float angle = (float) Math.atan2(last.x - first.x, last.z - first.z);
-
-        List<Vec3d> rotatedPath = path.stream().map(v -> v.rotateYaw(-angle)).collect(Collectors.toList());
-
-        return t -> {
-            double z = 0;
-            double y = 0;
-
-            int n = rotatedPath.size() - 1;
-
-            Vec3d vec = rotatedPath.get(0);
-            double pow_1_minus_t_n = Math.pow((1 - t), n);
-            z += vec.z * pow_1_minus_t_n;
-            y += vec.y * pow_1_minus_t_n;
-
-            double factorial_n = factorial(n);
-
-            for (int index = 1; index < rotatedPath.size(); index++) {
-                Vec3d item = rotatedPath.get(index);
-                z += factorial_n / factorial(index) / factorial(n - index) * item.z * Math.pow((1 - t), n - index) * Math.pow(t, index);
-                y += factorial_n / factorial(index) / factorial(n - index) * item.y * Math.pow((1 - t), n - index) * Math.pow(t, index);
-            }
-            return new Vec3d(vec.x, y, z).rotateYaw(angle);
-        };
-    }
-
-    private Int2IntMap factorialCache = new Int2IntOpenHashMap();
-
-    private double factorial(int num) {
-        return factorialCache.computeIfAbsent(num, num1 -> factorial(num1, 1));
-    }
-
-    private int factorial(int num, int acc) {
-        if (num <= 1) {
-            return acc;
-        } else {
-            return factorial(num - 1, acc * num);
-        }
-    }
-
     private List<Vec3d> makePath(World worldIn, Vec3d startPos, BlockPos targetPos) {
 
         List<Vec3d> r = new ArrayList<>();
@@ -139,6 +90,10 @@ public class EntityCustomEnderEye extends EntityEnderEye {
         Vec3d finalPos = new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 0.75, targetPos.getZ() + 0.5);
         r.add(finalPos);
         return r;
+    }
+
+    private int calcCurveLen(Function<Double, Vec3d> curve) {
+        return 100;
     }
 
     public EntityCustomEnderEye(World world) {
