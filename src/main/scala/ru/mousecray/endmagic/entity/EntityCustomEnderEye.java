@@ -63,19 +63,20 @@ public class EntityCustomEnderEye extends EntityEnderEye {
         if (key == START_POS) {
             path = makePath(world, startPos(), targetPos());
             curve = bezierCurve(path);
-            curveLen = calcCurveLen(curve);
+            curveLen = calcCurveLen(path);
         } else if (key == TICK)
             clientOrientedTick = Math.max(clientOrientedTick, tick());
     }
 
     private List<Vec3d> makePath(World worldIn, Vec3d startPos, BlockPos targetPos) {
+        Vec3d finalPos = new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 0.75, targetPos.getZ() + 0.5);
 
         List<Vec3d> r = new ArrayList<>();
         r.add(startPos);
 
         Vec3d aboveFrame = new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 3, targetPos.getZ() + 0.5);
         double height = aboveFrame.y - startPos.y;
-        if (height > 1) {
+        if (height > 1 && startPos.squareDistanceTo(finalPos) > 25) {
             Vector2d direction = new Vector2d(aboveFrame.x, aboveFrame.z);
             direction.sub(new Vector2d(startPos.x, startPos.z));
             direction.normalize();
@@ -87,13 +88,14 @@ public class EntityCustomEnderEye extends EntityEnderEye {
         }
         r.add(aboveFrame);
 
-        Vec3d finalPos = new Vec3d(targetPos.getX() + 0.5, targetPos.getY() + 0.75, targetPos.getZ() + 0.5);
         r.add(finalPos);
         return r;
     }
 
-    private int calcCurveLen(Function<Double, Vec3d> curve) {
-        return 100;
+    private int calcCurveLen(List<Vec3d> path) {
+        Vec3d startPos = path.get(0);
+        Vec3d finalPos = path.get(path.size() - 1);
+        return (int) (startPos.distanceTo(finalPos) * 7);
     }
 
     public EntityCustomEnderEye(World world) {
