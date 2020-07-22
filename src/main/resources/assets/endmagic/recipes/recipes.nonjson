@@ -1,0 +1,74 @@
+id_map{
+
+    L| minecraft:lava_bucket
+    W| minecraft:water_bucket
+    F| minecraft:furnace
+    Ш| minecraft:iron_bars
+    B| minecraft:brick_block
+    EB| minecraft:end_bricks
+    O| minecraft:obsidian
+    g| minecraft:gold_nugget
+    GL| minecraft:glass
+    glp| minecraft:glass_pane
+    compass| minecraft:compass
+    book| minecraft:book
+    ep| minecraft:ender_pearl
+    arrow| minecraft:arrow
+    ee| minecraft:ender_eye
+    gd| minecraft:glowstone_dust
+
+    E| endmagic:enderite
+    e| endmagic:raw_enderite
+    DL| endmagic:ender_tree_log:0
+    IL| endmagic:ender_tree_log:1
+    NL| endmagic:ender_tree_log:2
+    PL| endmagic:ender_tree_log:3
+    DP| endmagic:ender_tree_planks:0
+    IP| endmagic:ender_tree_planks:1
+    NP| endmagic:ender_tree_planks:2
+    PP| endmagic:ender_tree_planks:3
+
+}
+
+{
+    endmagic:block_blast_furnace| shaped(Ш,Ш,Ш;
+                                         B,F,B;
+                                         B,L,B)
+    endmagic:block_master_dark_portal| shaped(O, g, O;
+                                              GL,L,GL;
+                                              EB,E,EB)
+    endmagic:block_master_static_portal| shaped(O, g, O;
+                                                GL,W,GL;
+                                                EB,E,EB)
+    endmagic:block_top_mark| shaped(e,    EB,   e;
+                                    EB,compass, EB;
+                                    e,    EB,   e)
+
+    4x endmagic:ender_tree_planks| shapeless(DL)
+    4x endmagic:ender_tree_planks:1| shapeless(IL)
+    4x endmagic:ender_tree_planks:2| shapeless(NL)
+    4x endmagic:ender_tree_planks:3| shapeless(PL)
+
+    6x endmagic:ender_tree_slab| shaped(DP,DP,DP)
+    6x endmagic:ender_tree_slab:1| shaped(IP,IP,IP)
+    6x endmagic:ender_tree_slab:2| shaped(NP,NP,NP)
+    6x endmagic:ender_tree_slab:3| shaped(PP,PP,PP)
+
+    endmagic:em_book| shapeless(book,ep)
+
+    endmagic:ender_arrow| shaped(_,ep;
+                                 arrow,_)
+
+    endmagic:ender_compass| shaped(glp,GL,glp;
+                                   GL, ee, GL;
+                                   glp,GL,glp)
+
+    endmagic:enderite| all(e)
+    9x endmagic:raw_enderite| shapeless(E)
+
+    endmagic:item_portal_binder| shaped(e, gd, e;
+                                        gd,ee,gd;
+                                        e, gd, e)
+
+
+}

@@ -1,0 +1,75 @@
+id_map{
+
+    d| endmagic:dragon_steel
+    i| endmagic:immortal_steel
+    n| endmagic:natural_steel
+    p| endmagic:phantom_steel
+    D| endmagic:dragon_steel_block
+    I| endmagic:immortal_steel_block
+    N| endmagic:natural_steel_block
+    P| endmagic:phantom_steel_block
+
+}
+steels{
+    endmagic:dragon_steel_block| all(d)
+    endmagic:immortal_steel_block| all(i)
+    endmagic:natural_steel_block| all(n)
+    endmagic:phantom_steel_block| all(p)
+
+    9x endmagic:dragon_steel| shapeless(D)
+    9x endmagic:immortal_steel| shapeless(I)
+    9x endmagic:natural_steel| shapeless(N)
+    9x endmagic:phantom_steel| shapeless(P)
+
+
+
+    endmagic:dragon_steel_axe| axe(d)
+    endmagic:dragon_steel_hoe| hoe(d)
+    endmagic:dragon_steel_pickaxe| pickaxe(d)
+    endmagic:dragon_steel_shovel| shovel(d)
+    endmagic:dragon_steel_sword| sword(d)
+
+    endmagic:immortal_steel_axe| axe(i)
+    endmagic:immortal_steel_hoe| hoe(i)
+    endmagic:immortal_steel_pickaxe| pickaxe(i)
+    endmagic:immortal_steel_shovel| shovel(i)
+    endmagic:immortal_steel_sword| sword(i)
+
+    endmagic:natural_steel_axe| axe(n)
+    endmagic:natural_steel_hoe| hoe(n)
+    endmagic:natural_steel_pickaxe| pickaxe(n)
+    endmagic:natural_steel_shovel| shovel(n)
+    endmagic:natural_steel_sword| sword(n)
+
+    endmagic:phantom_steel_axe| axe(p)
+    endmagic:phantom_steel_hoe| hoe(p)
+    endmagic:phantom_steel_pickaxe| pickaxe(p)
+    endmagic:phantom_steel_shovel| shovel(p)
+    endmagic:phantom_steel_sword| sword(p)
+
+
+
+
+
+    endmagic:dragon_steel_helmet| helmet(d)
+    endmagic:dragon_steel_chestplate| chestplate(d)
+    endmagic:dragon_steel_leggings| leggings(d)
+    endmagic:dragon_steel_boots| boots(d)
+
+    endmagic:immortal_steel_helmet| helmet(i)
+    endmagic:immortal_steel_chestplate| chestplate(i)
+    endmagic:immortal_steel_leggings| leggings(i)
+    endmagic:immortal_steel_boots| boots(i)
+
+    endmagic:natural_steel_helmet| helmet(n)
+    endmagic:natural_steel_chestplate| chestplate(n)
+    endmagic:natural_steel_leggings| leggings(n)
+    endmagic:natural_steel_boots| boots(n)
+
+    endmagic:phantom_steel_helmet| helmet(p)
+    endmagic:phantom_steel_chestplate| chestplate(p)
+    endmagic:phantom_steel_leggings| leggings(p)
+    endmagic:phantom_steel_boots| boots(p)
+
+
+}

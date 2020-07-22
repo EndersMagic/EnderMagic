@@ -39,11 +39,12 @@ import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.client.GuiOldSaveLoadConfirm;
+import net.minecraftforge.fml.client.GuiConfirmation;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
@@ -61,7 +62,9 @@ import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -261,8 +264,10 @@ public class EMEvents {
     @GradleTarget(Debug)
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public static void loadLastWorld(GuiOpenEvent event) {
+
+    public static void loadLastWorld(GuiOpenEvent event) throws InvocationTargetException, IllegalAccessException {
         if (!alreadyEnteredInWorldAutomaticaly) {
+            System.out.println(event.getGui());
             Minecraft mc = Minecraft.getMinecraft();
             if (event.getGui() instanceof GuiMainMenu) {
                 mainMenu = (GuiMainMenu) event.getGui();
@@ -273,7 +278,10 @@ public class EMEvents {
                     guiListWorldSelection.getListEntry(0).joinWorld();
                 } catch (Exception ignore) {
                 }
-            } else if (event.getGui() instanceof GuiOldSaveLoadConfirm) {
+            } else if (event.getGui() instanceof GuiConfirmation) {
+                alreadyEnteredInWorldAutomaticaly = true;
+                ReflectionHelper.findMethod(GuiConfirmation.class, "actionPerformed", null, GuiButton.class)
+                        .invoke(event.getGui(), new GuiButton(0,0,0,""));
                 FMLClientHandler.instance().showGuiScreen(mainMenu);
             } else if (event.getGui() instanceof GuiIngameMenu) {
                 alreadyEnteredInWorldAutomaticaly = true;
