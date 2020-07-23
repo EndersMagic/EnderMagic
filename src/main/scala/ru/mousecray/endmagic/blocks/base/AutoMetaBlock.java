@@ -11,8 +11,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
@@ -26,9 +24,11 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
-import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableMap.toImmutableMap;
 
+/**
+ * Universal implementation of meta<->state convertation functions
+ */
 public abstract class AutoMetaBlock extends Block implements ITechnicalBlock {
     public AutoMetaBlock(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
@@ -42,20 +42,16 @@ public abstract class AutoMetaBlock extends Block implements ITechnicalBlock {
 
     /**
      * State properties of block
-     * First property in determine block name and subtypes
      */
     public abstract List<IProperty> properties();
 
-    private void init() {
+    void init() {
         List<IProperty> properties = properties();
         if (countOfStates(properties) > 16)
             throw new IllegalArgumentException("To many variants of block states");
 
         stateByMeta = blockState.getValidStates();
         metaByState = IntStream.range(0, stateByMeta.size()).boxed().collect(toImmutableMap(i -> stateByMeta.get(i).getProperties(), Function.identity()));
-
-        if (properties.size() > 0)
-            firstProperty = ((IProperty<?>) properties.get(0)).getAllowedValues().stream().sorted(Comparable::compareTo).collect(toImmutableList());
     }
 
     private static int countOfStates(List<IProperty> properties) {
@@ -71,8 +67,6 @@ public abstract class AutoMetaBlock extends Block implements ITechnicalBlock {
     private Map<ImmutableMap<IProperty<?>, Comparable<?>>, Integer> metaByState;
     private List<IBlockState> stateByMeta;
 
-    private List<Comparable> firstProperty;
-
     @Override
     public int getMetaFromState(IBlockState state) {
         return metaByState.getOrDefault(state.getProperties(), 0);
@@ -81,27 +75,6 @@ public abstract class AutoMetaBlock extends Block implements ITechnicalBlock {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return meta >= 0 && meta < stateByMeta.size() ? stateByMeta.get(meta) : getDefaultState();
-    }
-
-    public String getUnlocalizedName(ItemStack itemStack) {
-        return getUnlocalizedName() + (firstProperty != null ?
-                "." + properties().get(0).getName(firstProperty.get(itemStack.getItemDamage())) :
-                "");
-    }
-
-    public IBlockState getStateByItemStackDamage(int damage) {
-        return firstProperty != null ?
-                getDefaultState().withProperty(properties().get(0), firstProperty.get(damage)) :
-                getDefaultState();
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        if (firstProperty != null)
-            for (int i = 0; i < firstProperty.size(); i++)
-                items.add(new ItemStack(this, 1, i));
-        else
-            super.getSubBlocks(itemIn, items);
     }
 
     @Override
@@ -118,8 +91,6 @@ public abstract class AutoMetaBlock extends Block implements ITechnicalBlock {
 
     @Override
     public void registerModels(IModelRegistration modelRegistration) {
-        for (int i = 0; i < (firstProperty != null ? firstProperty.size() : 1); i++)
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i,
-                    new ModelResourceLocation(getRegistryName(), i == 0 ? "inventory" : "inventory,meta=" + i));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
     }
 }
