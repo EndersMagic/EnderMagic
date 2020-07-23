@@ -47,12 +47,12 @@ public class EnderBlockTypes {
 
         @Override
         public String toString() {
-            return name();
+            return name().toLowerCase();
         }
 
         @Override
         public String getName() {
-            return name();
+            return name().toLowerCase();
         }
     }
 
@@ -79,12 +79,12 @@ public class EnderBlockTypes {
 
         @Override
         public String toString() {
-            return name();
+            return name().toLowerCase();
         }
 
         @Override
         public String getName() {
-            return name();
+            return name().toLowerCase();
         }
     }
 
