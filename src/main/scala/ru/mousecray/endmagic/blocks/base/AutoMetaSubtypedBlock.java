@@ -46,20 +46,20 @@ public abstract class AutoMetaSubtypedBlock extends AutoMetaBlock {
     private List<Comparable> firstPropertyOrderedValues;
 
     public String getUnlocalizedName(ItemStack itemStack) {
-        return getUnlocalizedName() + (firstPropertyOrderedValues != null ?
+        return getUnlocalizedName() + (firstProperty != null ?
                 "." + firstProperty.getName(firstPropertyOrderedValues.get(itemStack.getItemDamage())) :
                 "");
     }
 
     public IBlockState getStateByItemStackDamage(int damage) {
-        return firstPropertyOrderedValues != null ?
+        return firstProperty != null ?
                 getDefaultState().withProperty(firstProperty, firstPropertyOrderedValues.get(damage)) :
                 getDefaultState();
     }
 
     @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        if (firstPropertyOrderedValues != null)
+        if (firstProperty != null)
             for (int i = 0; i < firstPropertyOrderedValues.size(); i++)
                 items.add(new ItemStack(this, 1, i));
         else
@@ -68,7 +68,7 @@ public abstract class AutoMetaSubtypedBlock extends AutoMetaBlock {
 
     @Override
     public void registerModels(IModelRegistration modelRegistration) {
-        for (int i = 0; i < (firstPropertyOrderedValues != null ? firstPropertyOrderedValues.size() : 1); i++)
+        for (int i = 0; i < (firstProperty != null ? firstPropertyOrderedValues.size() : 1); i++)
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i,
                     new ModelResourceLocation(getRegistryName(), i == 0 ? "inventory" : "inventory,meta=" + i));
     }
