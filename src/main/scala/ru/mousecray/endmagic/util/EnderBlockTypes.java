@@ -18,18 +18,16 @@ public class EnderBlockTypes {
     public static final PropertyEnum<EnderGroundType> GROUND_TYPE = PropertyEnum.create("type", EnderGroundType.class);
 
     public static enum EnderTreeType implements IStringSerializable {
-        DRAGON("dragon", MapColor.PURPLE, WorldGenDragonTree.class),
-        NATURAL("natural", MapColor.BROWN, WorldGenNaturalTree.class),
-        IMMORTAL("immortal", MapColor.EMERALD, null),
-        PHANTOM("phantom", MapColor.SILVER, WorldGenPhantomTree.class);
+        DRAGON(MapColor.PURPLE, WorldGenDragonTree.class),
+        NATURAL(MapColor.BROWN, WorldGenNaturalTree.class),
+        IMMORTAL(MapColor.EMERALD, null),
+        PHANTOM(MapColor.SILVER, WorldGenPhantomTree.class);
 
-        private final String name;
         private final MapColor mapColor;
         private Class<? extends WorldGenEnderTree> generatorClass;
         private WorldGenEnderTree generator;
 
-        EnderTreeType(String name, MapColor mapColor, @Nullable Class<? extends WorldGenEnderTree> generatorClass) {
-            this.name = name;
+        EnderTreeType(MapColor mapColor, @Nullable Class<? extends WorldGenEnderTree> generatorClass) {
             this.mapColor = mapColor;
             this.generatorClass = generatorClass;
         }
@@ -49,26 +47,24 @@ public class EnderBlockTypes {
 
         @Override
         public String toString() {
-            return name;
+            return name();
         }
 
         @Override
         public String getName() {
-            return name;
+            return name();
         }
     }
 
     public static enum EnderGroundType implements IStringSerializable {
-        LIVE("live", MapColor.BLUE, SoundType.GROUND),
-        DEAD("dead", MapColor.GRAY, SoundType.SAND),
-        FROZEN("frozen", MapColor.DIAMOND, SoundType.SNOW);
+        LIVE(MapColor.BLUE, SoundType.GROUND),
+        DEAD(MapColor.GRAY, SoundType.SAND),
+        FROZEN(MapColor.DIAMOND, SoundType.SNOW);
 
-        private final String name;
         private final MapColor mapColor;
         private final SoundType sound;
 
-        EnderGroundType(String name, MapColor mapColor, SoundType sound) {
-            this.name = name;
+        EnderGroundType(MapColor mapColor, SoundType sound) {
             this.mapColor = mapColor;
             this.sound = sound;
         }
@@ -83,12 +79,12 @@ public class EnderBlockTypes {
 
         @Override
         public String toString() {
-            return name;
+            return name();
         }
 
         @Override
         public String getName() {
-            return name;
+            return name();
         }
     }
 
