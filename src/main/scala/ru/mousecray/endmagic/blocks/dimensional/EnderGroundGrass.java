@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.blocks.base.AutoMetaBlock;
+import ru.mousecray.endmagic.blocks.base.AutoMetaSubtypedBlock;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.EnderBlockTypes.EnderGroundType;
 
@@ -24,7 +25,7 @@ import java.util.Random;
 
 import static ru.mousecray.endmagic.util.EnderBlockTypes.GROUND_TYPE;
 
-public class EnderGroundGrass extends AutoMetaBlock implements IEndSoil {
+public class EnderGroundGrass extends AutoMetaSubtypedBlock implements IEndSoil {
 
     @Override
     public List<IProperty> properties() {

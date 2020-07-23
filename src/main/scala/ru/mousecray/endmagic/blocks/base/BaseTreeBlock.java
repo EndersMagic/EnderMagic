@@ -12,7 +12,7 @@ import java.util.List;
 
 import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 
-public abstract class BaseTreeBlock extends AutoMetaBlock {
+public abstract class BaseTreeBlock extends AutoMetaSubtypedBlock {
 
     @Override
     public List<IProperty> properties() {

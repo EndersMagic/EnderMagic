@@ -10,11 +10,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.blocks.base.AutoMetaBlock;
+import ru.mousecray.endmagic.blocks.base.AutoMetaSubtypedBlock;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import java.util.List;
 
-public class EnderGroundStone extends AutoMetaBlock implements IEndSoil {
+public class EnderGroundStone extends AutoMetaSubtypedBlock implements IEndSoil {
 
     @Override
     public List<IProperty> properties() {
