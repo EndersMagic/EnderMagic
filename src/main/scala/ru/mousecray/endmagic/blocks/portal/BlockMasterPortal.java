@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.blocks.portal;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumBlockRenderType;
@@ -22,7 +23,10 @@ public abstract class BlockMasterPortal<A extends TileMasterPortal> extends Bloc
     protected static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
 
     public BlockMasterPortal() {
-        super(Material.PORTAL);
+        super(Material.ROCK);
+        setResistance(8.0F);
+        setHardness(4.0F);
+        setSoundType(SoundType.STONE);
     }
 
     public abstract boolean isValidDistination(Location loc, int lenght);

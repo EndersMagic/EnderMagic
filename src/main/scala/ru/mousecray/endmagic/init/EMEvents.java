@@ -7,6 +7,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityEnderEye;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow.PickupStatus;
@@ -49,6 +51,7 @@ import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
+import ru.mousecray.endmagic.entity.EntityCustomEnderEye;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
@@ -61,6 +64,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 
+import static ru.mousecray.endmagic.Configuration.enderPortalFrameSearchRadius;
 import static ru.mousecray.endmagic.api.Target.Debug;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
@@ -229,12 +233,38 @@ public class EMEvents {
                         .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
     }
 
+    @SubscribeEvent
+    public static void onEnderEyeEnter(EntityJoinWorldEvent event) {
+        World world = event.getWorld();
+        if (!world.isRemote) {
+            Entity entity = event.getEntity();
+            if (entity instanceof EntityEnderEye && !(entity instanceof EntityCustomEnderEye)) {
+                WorldGenUtils.generateInAreaBreakly(
+                        entity.getPosition().add(-enderPortalFrameSearchRadius, -enderPortalFrameSearchRadius, -enderPortalFrameSearchRadius),
+                        entity.getPosition().add(enderPortalFrameSearchRadius, enderPortalFrameSearchRadius, enderPortalFrameSearchRadius),
+                        pos -> {
+                            IBlockState blockState = world.getBlockState(pos);
+                            if (EntityCustomEnderEye.isEmptyPortalFrame(blockState) && !EntityCustomEnderEye.occupiedPoses.contains(pos)) {
+                                event.setCanceled(true);
+                                BlockPos immutable = pos.toImmutable();
+                                EntityCustomEnderEye.occupiedPoses.add(immutable);
+                                EntityCustomEnderEye enderEye = new EntityCustomEnderEye(world, entity.posX, entity.posY, entity.posZ, immutable);
+                                world.spawnEntity(enderEye);
+                                return false;
+                            } else
+                                return true;
+                        });
+            }
+        }
+    }
+
     private static boolean alreadyEnteredInWorldAutomaticaly = false;
     private static GuiMainMenu mainMenu;
 
     @GradleTarget(Debug)
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
+
     public static void loadLastWorld(GuiOpenEvent event) throws InvocationTargetException, IllegalAccessException {
         if (!alreadyEnteredInWorldAutomaticaly) {
             System.out.println(event.getGui());

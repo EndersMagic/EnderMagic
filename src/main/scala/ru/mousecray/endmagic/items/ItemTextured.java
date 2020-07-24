@@ -17,6 +17,8 @@ import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 public interface ItemTextured extends IExtendedProperties {
@@ -33,8 +35,24 @@ public interface ItemTextured extends IExtendedProperties {
     @Override
     default void registerModels(IModelRegistration modelRegistration) {
         textures().keySet().forEach(t -> modelRegistration.registerTexture(new ResourceLocation(t)));
-        //Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(this, 0, companion.simpletexturemodel);
-        ModelLoader.setCustomModelResourceLocation((Item) this, 0, companion.simpletexturemodel);
+
+        Item item = (Item) this;
+        if (isModelExists(item.getRegistryName()))
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+        else
+            ModelLoader.setCustomModelResourceLocation(item, 0, companion.simpletexturemodel);
+    }
+
+    static boolean isModelExists(ResourceLocation modelResourceLocation) {
+        InputStream inputStream = ItemTextured.class.getResourceAsStream("/assets/" + modelResourceLocation.getResourceDomain() + "/models/item/" + modelResourceLocation.getResourcePath() + ".json");
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            } catch (IOException ignored) {
+            }
+            return true;
+        } else
+            return false;
     }
 
     class companion {
@@ -45,7 +63,6 @@ public interface ItemTextured extends IExtendedProperties {
                 return ImmutableMap.of("none", 0xffffff);
             }
 
-            @SuppressWarnings("unused")
             public CreativeTabs creativeTab() {
                 return null;
             }
