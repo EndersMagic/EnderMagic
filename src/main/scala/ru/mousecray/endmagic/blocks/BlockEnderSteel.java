@@ -12,7 +12,7 @@ public class BlockEnderSteel extends BlockNamed implements BlockColored {
         this.color = color;
         setHardness(5.0F);
         setResistance(10.0F);
-        setSoundType(SoundType.STONE);
+        setSoundType(SoundType.METAL);
     }
 
     @Override

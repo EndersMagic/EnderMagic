@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.blocks.portal;
 
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -13,6 +14,9 @@ import javax.annotation.Nullable;
 public class BlockTopMark extends BlockContainer {
     public BlockTopMark() {
         super(Material.ROCK);
+        setResistance(8.0F);
+        setHardness(4.0F);
+        setSoundType(SoundType.STONE);
     }
     
 	@Override
