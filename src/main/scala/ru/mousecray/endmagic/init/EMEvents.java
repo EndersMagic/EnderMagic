@@ -5,10 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiListWorldSelection;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiWorldSelection;
+import net.minecraft.client.gui.*;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderEye;
@@ -64,7 +61,6 @@ import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -281,7 +277,7 @@ public class EMEvents {
             } else if (event.getGui() instanceof GuiConfirmation) {
                 alreadyEnteredInWorldAutomaticaly = true;
                 ReflectionHelper.findMethod(GuiConfirmation.class, "actionPerformed", null, GuiButton.class)
-                        .invoke(event.getGui(), new GuiButton(0,0,0,""));
+                        .invoke(event.getGui(), new GuiButton(0, 0, 0, ""));
                 FMLClientHandler.instance().showGuiScreen(mainMenu);
             } else if (event.getGui() instanceof GuiIngameMenu) {
                 alreadyEnteredInWorldAutomaticaly = true;
