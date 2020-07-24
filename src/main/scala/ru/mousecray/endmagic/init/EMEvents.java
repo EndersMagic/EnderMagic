@@ -64,6 +64,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 
+import static ru.mousecray.endmagic.Configuration.enderPortalFrameSearchRadius;
 import static ru.mousecray.endmagic.api.Target.Debug;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
@@ -237,18 +238,21 @@ public class EMEvents {
         if (!world.isRemote) {
             Entity entity = event.getEntity();
             if (entity instanceof EntityEnderEye && !(entity instanceof EntityCustomEnderEye)) {
-                WorldGenUtils.generateInAreaBreakly(entity.getPosition().add(-10, -10, -10), entity.getPosition().add(10, 10, 10), pos -> {
-                    IBlockState blockState = world.getBlockState(pos);
-                    if (EntityCustomEnderEye.isEmptyPortalFrame(blockState) && !EntityCustomEnderEye.occupiedPoses.contains(pos)) {
-                        event.setCanceled(true);
-                        BlockPos immutable = pos.toImmutable();
-                        EntityCustomEnderEye.occupiedPoses.add(immutable);
-                        EntityCustomEnderEye enderEye = new EntityCustomEnderEye(world, entity.posX, entity.posY, entity.posZ, immutable);
-                        world.spawnEntity(enderEye);
-                        return false;
-                    } else
-                        return true;
-                });
+                WorldGenUtils.generateInAreaBreakly(
+                        entity.getPosition().add(-enderPortalFrameSearchRadius, -enderPortalFrameSearchRadius, -enderPortalFrameSearchRadius),
+                        entity.getPosition().add(enderPortalFrameSearchRadius, enderPortalFrameSearchRadius, enderPortalFrameSearchRadius),
+                        pos -> {
+                            IBlockState blockState = world.getBlockState(pos);
+                            if (EntityCustomEnderEye.isEmptyPortalFrame(blockState) && !EntityCustomEnderEye.occupiedPoses.contains(pos)) {
+                                event.setCanceled(true);
+                                BlockPos immutable = pos.toImmutable();
+                                EntityCustomEnderEye.occupiedPoses.add(immutable);
+                                EntityCustomEnderEye enderEye = new EntityCustomEnderEye(world, entity.posX, entity.posY, entity.posZ, immutable);
+                                world.spawnEntity(enderEye);
+                                return false;
+                            } else
+                                return true;
+                        });
             }
         }
 
