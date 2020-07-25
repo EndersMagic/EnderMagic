@@ -72,11 +72,11 @@ public abstract class EMSlab extends BlockSlab implements ITechnicalBlock, IExte
             }
         }
 
+        @Override
         public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
             for (EnderBlockTypes.EnderTreeType treeType : EnderBlockTypes.EnderTreeType.values())
                 items.add(new ItemStack(this, 1, treeType.ordinal()));
         }
-    }
 
         @Override
         public ItemBlock getCustomItemBlock(Block block) {
