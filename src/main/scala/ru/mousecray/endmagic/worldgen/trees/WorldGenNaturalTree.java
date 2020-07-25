@@ -1,9 +1,5 @@
 package ru.mousecray.endmagic.worldgen.trees;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockLog.EnumAxis;
 import net.minecraft.block.material.Material;
@@ -16,11 +12,17 @@ import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
+
 public class WorldGenNaturalTree extends WorldGenEnderTree {
 
 	public static List<int[][]> branches = new ArrayList();
 	public static List<int[][]> leaves = new ArrayList();
-	
+
     public static final Vec3i areaRequirementsMin = new Vec3i(-3, 0, -3);
     public static final Vec3i areaRequirementsMax = new Vec3i(3, 9, 3);
 
@@ -71,8 +73,8 @@ public class WorldGenNaturalTree extends WorldGenEnderTree {
 		leaves.add(leaves3);
 	}
 
-	private IBlockState enderLog = EMBlocks.enderLog.stateWithBlockType(EnderBlockTypes.EnderTreeType.NATURAL);
-	private IBlockState enderLeaves = EMBlocks.enderLeaves.stateWithBlockType(EnderBlockTypes.EnderTreeType.NATURAL);
+	private IBlockState enderLog = EMBlocks.enderLog.getDefaultState().withProperty(TREE_TYPE,EnderBlockTypes.EnderTreeType.NATURAL);
+	private IBlockState enderLeaves = EMBlocks.enderLeaves.getDefaultState().withProperty(TREE_TYPE,EnderBlockTypes.EnderTreeType.NATURAL);
 
 	public WorldGenNaturalTree(boolean notify) {
 		super(notify, areaRequirementsMin, areaRequirementsMax);
