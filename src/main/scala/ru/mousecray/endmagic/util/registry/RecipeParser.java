@@ -296,7 +296,7 @@ public class RecipeParser {
     }
 
     private static CharType typeOfChar(char c) {
-        if (c >= 'A' && c <= 'z' || c >= 'А' && c <= 'я')
+        if (c >= 'A' && c <= 'z' || c >= '\u0410' && c <= '\u044F')
             return CharType.letter;
         else if (c >= '0' && c <= '9')
             return CharType.number;
