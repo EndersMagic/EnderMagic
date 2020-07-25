@@ -82,6 +82,11 @@ public abstract class EMSlab extends BlockSlab implements ITechnicalBlock, IExte
         public ItemBlock getCustomItemBlock(Block block) {
             return new ItemSlab(EMBlocks.enderWoodenSlabSingle, EMBlocks.enderWoodenSlabSingle, EMBlocks.enderWoodenSlabDouble);
         }
+
+        @Override
+        public boolean getUseNeighborBrightness(IBlockState state) {
+            return true;
+        }
     }
 
     public static final PropertyEnum<EnderBlockTypes.EnderTreeType> VARIANT = PropertyEnum.create("type", EnderBlockTypes.EnderTreeType.class);
