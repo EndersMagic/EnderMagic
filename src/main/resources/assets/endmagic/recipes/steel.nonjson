@@ -8,6 +8,10 @@ id_map{
     I| endmagic:immortal_steel_block
     N| endmagic:natural_steel_block
     P| endmagic:phantom_steel_block
+    di| endmagic:dragon_steel_nugget
+    ii| endmagic:immortal_steel_nugget
+    ni| endmagic:natural_steel_nugget
+    pi| endmagic:phantom_steel_nugget
 
 }
 steels{
@@ -20,6 +24,16 @@ steels{
     9x endmagic:immortal_steel| shapeless(I)
     9x endmagic:natural_steel| shapeless(N)
     9x endmagic:phantom_steel| shapeless(P)
+
+    endmagic:dragon_steel| all(di)
+    endmagic:immortal_steel| all(ii)
+    endmagic:natural_steel| all(ni)
+    endmagic:phantom_steel| all(pi)
+
+    9x endmagic:dragon_steel_nugget| shapeless(d)
+    9x endmagic:immortal_steel_nugget| shapeless(i)
+    9x endmagic:natural_steel_nugget| shapeless(n)
+    9x endmagic:phantom_steel_nugget| shapeless(p)
 
 
 
