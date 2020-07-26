@@ -1,15 +1,12 @@
 package ru.mousecray.endmagic.items.materials;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.item.ItemArmor;
-import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.items.ItemNamed;
 
-public class EnderDiamond extends ItemNamed implements MaterialProvider {
+public class EnderDiamond extends BaseMaterial implements MaterialProvider {
     private final ToolMaterial material;
 
     public EnderDiamond(String name, int color, ToolMaterial material) {
-        super(name+"_diamond", ImmutableMap.of(EM.ID + ":items/colorless_diamond", color | 0xff000000));
+        super(name, "_diamond", color);
         this.material = material;
     }
 

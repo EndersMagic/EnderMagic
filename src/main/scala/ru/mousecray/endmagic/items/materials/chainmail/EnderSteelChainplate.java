@@ -1,11 +1,9 @@
 package ru.mousecray.endmagic.items.materials.chainmail;
 
-import com.google.common.collect.ImmutableMap;
-import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.items.ItemNamed;
+import ru.mousecray.endmagic.items.materials.BaseMaterial;
 
-public class EnderSteelChainplate extends ItemNamed {
+public class EnderSteelChainplate extends BaseMaterial {
     public EnderSteelChainplate(String name, int color) {
-        super(name + "_steel_chainplate", ImmutableMap.of(EM.ID + ":items/colorless_chainplate", color | 0xff000000));
+        super(name, "_steel_chainplate", color);
     }
 }
