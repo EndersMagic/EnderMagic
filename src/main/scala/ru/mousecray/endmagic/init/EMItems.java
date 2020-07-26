@@ -69,10 +69,10 @@ public class EMItems {
                                     new EMAxe(((MaterialProvider) material).material(), material.getCustomName() + "_axe", toolColor),
                                     new EMSword(((MaterialProvider) material).material(), material.getCustomName() + "_sword", toolColor),
                                     new EMHoe(((MaterialProvider) material).material(), material.getCustomName() + "_hoe", toolColor),
-                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.HEAD, material.getCustomName() + "_helmet", material, toolColor),
-                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.CHEST, material.getCustomName() + "_chestplate", material, toolColor),
-                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.LEGS, material.getCustomName() + "_leggings", material, toolColor),
-                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.FEET, material.getCustomName() + "_boots", material, toolColor)
+                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.HEAD,  "_helmet", material, toolColor),
+                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.CHEST,  "_chestplate", material, toolColor),
+                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.LEGS,  "_leggings", material, toolColor),
+                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.FEET,  "_boots", material, toolColor)
                             );
                         }
                 ).collect(Collectors.toList());
