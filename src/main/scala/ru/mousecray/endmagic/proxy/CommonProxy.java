@@ -4,6 +4,7 @@ import codechicken.lib.packet.PacketCustom;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -41,7 +42,6 @@ import ru.mousecray.endmagic.init.util.ListSource;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
-import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.RecipeParser;
@@ -58,6 +58,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import static net.minecraft.item.ItemStack.EMPTY;
+import static ru.mousecray.endmagic.util.registry.RecipeParser.AdvancedRecipeShapeRegister.*;
 
 public class CommonProxy implements IGuiHandler {
     protected List<Item> itemsToRegister = new LinkedList<>();
@@ -154,6 +157,32 @@ public class CommonProxy implements IGuiHandler {
     @SubscribeEvent
     public void registerEntities(RegistryEvent.Register<EntityEntry> e) {
         entityToRegister.forEach(e.getRegistry()::register);
+    }
+
+    @SubscribeEvent
+    public void registerRecipeShapes(RecipeParser.AdvancedRecipeShapeRegister e) {
+        ItemStack stick = new ItemStack(Items.STICK);
+        e
+                .addShape("all", makeFillPattern(list("aaa", "aaa", "aaa")))
+                .addShape("helmet", makeFillPattern(list(
+                        "aaa",
+                        "a_a")))
+                .addShape("chestplate", makeFillPattern(list(
+                        "a_a",
+                        "aaa",
+                        "aaa")))
+                .addShape("leggings", makeFillPattern(list(
+                        "aaa",
+                        "a_a",
+                        "a_a")))
+                .addShape("boots", makeFillPattern(list(
+                        "a_a",
+                        "a_a")))
+                .addShape("axe", list(list(replaceable, replaceable), list(replaceable, stick), list(EMPTY, stick)))
+                .addShape("hoe", list(list(replaceable, replaceable), list(EMPTY, stick), list(EMPTY, stick)))
+                .addShape("pickaxe", list(list(replaceable, replaceable, replaceable), list(EMPTY, stick, EMPTY), list(EMPTY, stick, EMPTY)))
+                .addShape("shovel", list(list(replaceable), list(stick), list(stick)))
+                .addShape("sword", list(list(replaceable), list(replaceable), list(stick)));
     }
 
     @SubscribeEvent

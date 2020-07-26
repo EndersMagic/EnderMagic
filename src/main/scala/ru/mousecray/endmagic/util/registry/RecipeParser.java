@@ -10,6 +10,8 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -21,40 +23,36 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static net.minecraft.item.ItemStack.EMPTY;
+import static ru.mousecray.endmagic.util.registry.RecipeParser.AdvancedRecipeShapeRegister.replaceable;
 
 public class RecipeParser {
-    private static ItemStack apple = new ItemStack(Items.APPLE);
-    private static ItemStack stick = new ItemStack(Items.STICK);
-    public static Map<String, List<List<ItemStack>>> fill_shapes = ImmutableMap.<String, List<List<ItemStack>>>builder()
-            .put("all", makeFillPattern(list("aaa", "aaa", "aaa")))
-            .put("helmet", makeFillPattern(list(
-                    "aaa",
-                    "a_a")))
-            .put("chestplate", makeFillPattern(list(
-                    "a_a",
-                    "aaa",
-                    "aaa")))
-            .put("leggings", makeFillPattern(list(
-                    "aaa",
-                    "a_a",
-                    "a_a")))
-            .put("boots", makeFillPattern(list(
-                    "a_a",
-                    "a_a")))
-            .put("axe", list(list(apple, apple), list(apple, stick), list(EMPTY, stick)))
-            .put("hoe", list(list(apple, apple), list(EMPTY, stick), list(EMPTY, stick)))
-            .put("pickaxe", list(list(apple, apple, apple), list(EMPTY, stick, EMPTY), list(EMPTY, stick, EMPTY)))
-            .put("shovel", list(list(apple), list(stick), list(stick)))
-            .put("sword", list(list(apple), list(apple), list(stick)))
-            .build();
 
-    private static <A> ImmutableList<A> list(A... values) {
-        return ImmutableList.copyOf(values);
+    public static class AdvancedRecipeShapeRegister extends Event {
+        private ImmutableMap.Builder<String, List<List<ItemStack>>> builder = ImmutableMap.builder();
+
+        public AdvancedRecipeShapeRegister addShape(String name, List<List<ItemStack>> shape) {
+            builder.put(name, shape);
+            return this;
+        }
+
+        public static final ItemStack replaceable = new ItemStack(Items.APPLE);
+
+        public static List<List<ItemStack>> makeFillPattern(List<String> textPattern) {
+            return textPattern.stream().map(line -> line.chars().mapToObj(c -> (char) c).map(c -> c == 'a' ? replaceable : EMPTY).collect(toList())).collect(toList());
+        }
+
+        public static <A> ImmutableList<A> list(A... values) {
+            return ImmutableList.copyOf(values);
+        }
     }
 
-    private static List<List<ItemStack>> makeFillPattern(List<String> textPattern) {
-        return textPattern.stream().map(line -> line.chars().mapToObj(c -> (char) c).map(c -> c == 'a' ? apple : EMPTY).collect(toList())).collect(toList());
+    static {
+        AdvancedRecipeShapeRegister advancedRecipeShapeRegister = new AdvancedRecipeShapeRegister();
+        MinecraftForge.EVENT_BUS.post(advancedRecipeShapeRegister);
+        fill_shapes = advancedRecipeShapeRegister.builder.build();
     }
+
+    public static final Map<String, List<List<ItemStack>>> fill_shapes;
 
     public static List<IRecipe> parse(String fileContent) {
         ImmutableMap<String, List<Token>> sections = parseSections(fileContent);
@@ -157,7 +155,7 @@ public class RecipeParser {
                                 if (fill_shapes.containsKey(recipeType)) {
                                     List<List<ItemStack>> pattern = fill_shapes.get(recipeType);
                                     NonNullList<Ingredient> filled = pattern.stream().flatMap(line -> line.stream().map(is -> {
-                                        if (is == apple)
+                                        if (is == replaceable)
                                             return Ingredient.fromStacks(ingredients.get(0).getMatchingStacks());
                                         else if (is.isEmpty())
                                             return Ingredient.EMPTY;
