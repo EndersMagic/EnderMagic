@@ -19,24 +19,30 @@ chainmail{
     2x endmagic:dragon_steel_ring| shaped(_,di,_;
                                           di,_,di;
                                           _,di,_)
+
     2x endmagic:immortal_steel_ring| shaped(_,ii,_;
                                            ii,_,ii;
                                            _,ii,_)
+
     2x endmagic:natural_steel_ring| shaped(_,ni,_;
                                            ni,_,ni;
                                            _,ni,_)
+
     2x endmagic:phantom_steel_ring| shaped(_,pi,_;
                                            pi,_,pi;
                                            _,pi,_)
 
     endmagic:dragon_steel_chainplate| shaped(dr,dr;
                                              dr,dr)
+
     endmagic:immortal_steel_chainplate| shaped(ir,ir;
-                                         ir,ir)
+                                               ir,ir)
+
     endmagic:natural_steel_chainplate| shaped(nr,nr;
-                                        nr,nr)
+                                              nr,nr)
+
     endmagic:phantom_steel_chainplate| shaped(pr,pr;
-                                        pr,pr)
+                                              pr,pr)
 
 
     endmagic:dragon_steel_helmet_chainmail| helmet_chainmail(d)
