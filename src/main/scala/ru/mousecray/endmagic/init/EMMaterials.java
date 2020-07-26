@@ -6,6 +6,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraftforge.common.util.EnumHelper;
 import ru.mousecray.endmagic.EM;
 
+@SuppressWarnings("WeakerAccess")
 public class EMMaterials {
 
     public static Item.ToolMaterial NATURAL_STEEL_TOOL_MATERIAL =
