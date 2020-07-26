@@ -10,7 +10,7 @@ public class EnderSteel extends ItemNamed implements MaterialProvider {
     private final ItemArmor.ArmorMaterial armorMaterial;
 
     public EnderSteel(String name, int color, ToolMaterial material, ItemArmor.ArmorMaterial armorMaterial) {
-        super(name, ImmutableMap.of(EM.ID + ":items/colorless_steel", color | 0xff000000));
+        super(name+"_steel", ImmutableMap.of(EM.ID + ":items/colorless_steel", color | 0xff000000));
         this.material = material;
         this.armorMaterial = armorMaterial;
     }

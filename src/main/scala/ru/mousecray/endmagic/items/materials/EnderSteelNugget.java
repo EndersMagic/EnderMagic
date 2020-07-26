@@ -6,6 +6,6 @@ import ru.mousecray.endmagic.items.ItemNamed;
 
 public class EnderSteelNugget extends ItemNamed {
     public EnderSteelNugget(String name, int color) {
-        super(name, ImmutableMap.of(EM.ID + ":items/colorless_steel_nugget", color | 0xff000000));
+        super(name + "_steel_nugget", ImmutableMap.of(EM.ID + ":items/colorless_steel_nugget", color | 0xff000000));
     }
 }

@@ -29,28 +29,28 @@ public class EMItems {
     //@formatter:off
     //public static final ItemTextured simpletexturemodel = ItemTextured.companion.simpletexturemodelItem; //may be unused
     private static final int naturalColor = new Color(0xEAB277).getRGB();
-    public static final ItemNamed naturalCoal = new EnderCoal("natural_coal", naturalColor);
-    public static final ItemNamed naturalSteel = new EnderSteel("natural_steel", naturalColor, EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, EMMaterials.NATURAL_STEEL_ARMOR_MATERIAL);
-    public static final ItemNamed naturalDiamond = new EnderDiamond("natural_diamond", naturalColor, EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL);
-    public static final ItemNamed naturalSteelNugget=new EnderSteelNugget("natural_steel_nugget",naturalColor);
+    public static final ItemNamed naturalCoal = new EnderCoal("natural", naturalColor);
+    public static final ItemNamed naturalSteel = new EnderSteel("natural", naturalColor, EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, EMMaterials.NATURAL_STEEL_ARMOR_MATERIAL);
+    public static final ItemNamed naturalDiamond = new EnderDiamond("natural", naturalColor, EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL);
+    public static final ItemNamed naturalSteelNugget=new EnderSteelNugget("natural",naturalColor);
 
     private static final int phantomColor = new Color(0xA9D7F2).getRGB();
-    public static final ItemNamed phantomCoal = new EnderCoal("phantom_coal", phantomColor);
-    public static final ItemNamed phantomSteel = new EnderSteel("phantom_steel", phantomColor, EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, EMMaterials.PHANTOM_STEEL_ARMOR_MATERIAL);
-    public static final ItemNamed phantomDiamond = new EnderDiamond("phantom_diamond", phantomColor, EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL);
-    public static final ItemNamed phantomSteelNugget=new EnderSteelNugget("phantom_steel_nugget",phantomColor);
+    public static final ItemNamed phantomCoal = new EnderCoal("phantom", phantomColor);
+    public static final ItemNamed phantomSteel = new EnderSteel("phantom", phantomColor, EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, EMMaterials.PHANTOM_STEEL_ARMOR_MATERIAL);
+    public static final ItemNamed phantomDiamond = new EnderDiamond("phantom", phantomColor, EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL);
+    public static final ItemNamed phantomSteelNugget=new EnderSteelNugget("phantom",phantomColor);
 
     private static final int dragonColor = new Color(0xA87DD2).getRGB();
-    public static final ItemNamed dragonCoal = new EnderCoal("dragon_coal", dragonColor);
-    public static final ItemNamed dragonSteel = new EnderSteel("dragon_steel", dragonColor, EMMaterials.DRAGON_STEEL_TOOL_MATERIAL, EMMaterials.DRAGON_STEEL_ARMOR_MATERIAL);
-    public static final ItemNamed dragonDiamond = new EnderDiamond("dragon_diamond", dragonColor, EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL);
-    public static final ItemNamed dragonSteelNugget=new EnderSteelNugget("dragon_steel_nugget",dragonColor);
+    public static final ItemNamed dragonCoal = new EnderCoal("dragon", dragonColor);
+    public static final ItemNamed dragonSteel = new EnderSteel("dragon", dragonColor, EMMaterials.DRAGON_STEEL_TOOL_MATERIAL, EMMaterials.DRAGON_STEEL_ARMOR_MATERIAL);
+    public static final ItemNamed dragonDiamond = new EnderDiamond("dragon", dragonColor, EMMaterials.DRAGON_DIAMOND_TOOL_MATERIAL);
+    public static final ItemNamed dragonSteelNugget=new EnderSteelNugget("dragon",dragonColor);
 
     private static final int immortalColor = new Color(0xE5D67E).getRGB();
-    public static final ItemNamed immortalCoal = new EnderCoal("immortal_coal", immortalColor);
-    public static final ItemNamed immortalSteel = new EnderSteel("immortal_steel", immortalColor, EMMaterials.IMMORTAL_STEEL_TOOL_MATERIAL, EMMaterials.IMMORTAL_STEEL_ARMOR_MATERIAL);
-    public static final ItemNamed immortalDiamond = new EnderDiamond("immortal_diamond", immortalColor, EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL);
-    public static final ItemNamed immortalSteelNugget=new EnderSteelNugget("immortal_steel_nugget",immortalColor);
+    public static final ItemNamed immortalCoal = new EnderCoal("immortal", immortalColor);
+    public static final ItemNamed immortalSteel = new EnderSteel("immortal", immortalColor, EMMaterials.IMMORTAL_STEEL_TOOL_MATERIAL, EMMaterials.IMMORTAL_STEEL_ARMOR_MATERIAL);
+    public static final ItemNamed immortalDiamond = new EnderDiamond("immortal", immortalColor, EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL);
+    public static final ItemNamed immortalSteelNugget=new EnderSteelNugget("immortal",immortalColor);
 
     private static final List<Item> steelToolsAndArmor;
     private static final List<Item> diamondTools;

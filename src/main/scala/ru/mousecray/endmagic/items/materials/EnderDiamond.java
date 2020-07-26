@@ -9,7 +9,7 @@ public class EnderDiamond extends ItemNamed implements MaterialProvider {
     private final ToolMaterial material;
 
     public EnderDiamond(String name, int color, ToolMaterial material) {
-        super(name, ImmutableMap.of(EM.ID + ":items/colorless_diamond", color | 0xff000000));
+        super(name+"_diamond", ImmutableMap.of(EM.ID + ":items/colorless_diamond", color | 0xff000000));
         this.material = material;
     }
 
