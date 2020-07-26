@@ -162,27 +162,54 @@ public class CommonProxy implements IGuiHandler {
     @SubscribeEvent
     public void registerRecipeShapes(RecipeParser.AdvancedRecipeShapeRegister e) {
         ItemStack stick = new ItemStack(Items.STICK);
+        ItemStack leather_helmet = new ItemStack(Items.LEATHER_HELMET);
+        ItemStack leather_chestplate = new ItemStack(Items.LEATHER_CHESTPLATE);
+        ItemStack leather_leggings = new ItemStack(Items.LEATHER_LEGGINGS);
+        ItemStack leather_boots = new ItemStack(Items.LEATHER_BOOTS);
+
+        //@name hints:off
         e
-                .addShape("all", makeFillPattern(list("aaa", "aaa", "aaa")))
-                .addShape("helmet", makeFillPattern(list(
+                .addShape("all", makeFillPattern("aaa", "aaa", "aaa"))
+                .addShape("helmet", makeFillPattern(
                         "aaa",
-                        "a_a")))
-                .addShape("chestplate", makeFillPattern(list(
+                        "a_a"))
+                .addShape("chestplate", makeFillPattern(
                         "a_a",
                         "aaa",
-                        "aaa")))
-                .addShape("leggings", makeFillPattern(list(
+                        "aaa"))
+                .addShape("leggings", makeFillPattern(
                         "aaa",
                         "a_a",
-                        "a_a")))
-                .addShape("boots", makeFillPattern(list(
+                        "a_a"))
+                .addShape("boots", makeFillPattern(
                         "a_a",
-                        "a_a")))
+                        "a_a"))
+
                 .addShape("axe", list(list(replaceable, replaceable), list(replaceable, stick), list(EMPTY, stick)))
                 .addShape("hoe", list(list(replaceable, replaceable), list(EMPTY, stick), list(EMPTY, stick)))
                 .addShape("pickaxe", list(list(replaceable, replaceable, replaceable), list(EMPTY, stick, EMPTY), list(EMPTY, stick, EMPTY)))
                 .addShape("shovel", list(list(replaceable), list(stick), list(stick)))
-                .addShape("sword", list(list(replaceable), list(replaceable), list(stick)));
+                .addShape("sword", list(list(replaceable), list(replaceable), list(stick)))
+
+                .addShape("helmet_chainmail", list(
+                        list(replaceable, replaceable, replaceable),
+                        list(replaceable, leather_helmet, replaceable)
+                ))
+                .addShape("chestplate_chainmail", list(
+                        list(replaceable, EMPTY, replaceable),
+                        list(replaceable, leather_chestplate, replaceable),
+                        list(replaceable, replaceable, replaceable)
+                ))
+                .addShape("leggings_chainmail", list(
+                        list(replaceable, replaceable, replaceable),
+                        list(replaceable, leather_leggings, replaceable),
+                        list(replaceable, EMPTY, replaceable)
+                ))
+                .addShape("boots_chainmail", list(
+                        list(replaceable, leather_boots, replaceable),
+                        list(replaceable, EMPTY, replaceable)
+                ))
+        ;
     }
 
     @SubscribeEvent

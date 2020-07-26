@@ -37,8 +37,9 @@ public class RecipeParser {
 
         public static final ItemStack replaceable = new ItemStack(Items.APPLE);
 
-        public static List<List<ItemStack>> makeFillPattern(List<String> textPattern) {
-            return textPattern.stream().map(line -> line.chars().mapToObj(c -> (char) c).map(c -> c == 'a' ? replaceable : EMPTY).collect(toList())).collect(toList());
+        //@name hints:off
+        public static List<List<ItemStack>> makeFillPattern(String... textPattern) {
+            return ImmutableList.copyOf(textPattern).stream().map(line -> line.chars().mapToObj(c -> (char) c).map(c -> c == 'a' ? replaceable : EMPTY).collect(toList())).collect(toList());
         }
 
         public static <A> ImmutableList<A> list(A... values) {
