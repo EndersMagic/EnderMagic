@@ -77,6 +77,11 @@ item.natural_steel.name=Природная сталь
 item.immortal_steel.name=Сталь бессмертия
 item.phantom_steel.name=Призрачная сталь
 
+item.dragon_steel_nugget.name=Самородок драконьей стали
+item.natural_steel_nugget.name=Самородок природной стали
+item.immortal_steel_nugget.name=Самородок стали бессмертия
+item.phantom_steel_nugget.name=Самородок призрачной стали
+
 item.dragon_diamond.name=Драконий алмаз
 item.natural_diamond.name=Природный алмаз
 item.immortal_diamond.name=Алмаз бессмертия

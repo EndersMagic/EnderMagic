@@ -77,6 +77,11 @@ item.natural_steel.name=Nature Steel Ingot
 item.immortal_steel.name=Immortal Steel Ingot
 item.phantom_steel.name=Ghost Steel Ingot
 
+item.dragon_steel_nugget.name=Dragon Steel Nugget
+item.natural_steel_nugget.name=Nature Steel Nugget
+item.immortal_steel_nugget.name=Immortal Steel Nugget
+item.phantom_steel_nugget.name=Ghost Steel Nugget
+
 item.dragon_diamond.name=Compressed Dragon Diamond
 item.natural_diamond.name=Compressed Nature Diamond
 item.immortal_diamond.name=Compressed Immortal Diamond
