@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.worldgen.trees;
 
 import static net.minecraft.block.BlockLog.LOG_AXIS;
 import static net.minecraft.init.Blocks.AIR;
+import static net.minecraft.init.Blocks.END_STONE;
 import static ru.mousecray.endmagic.util.worldgen.WorldGenUtils.generateInArea;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class WorldGenDragonTree extends WorldGenEnderTree {
             if (EMBlocks.enderSapling.canPlaceBlockAt(world, pos) && (check ? aroundBlocks(world, pos, AIR, 77, alreadyChecked) : true)) {
 
                 int lvl = 2 + random.nextInt(3);
-                for (int i = 0; i < lvl; i++)
+                for (int i = -1; i < lvl; i++)
                 	setBlockAndNotifyAdequately(world, pos.offset(direction, i), enderLog.withProperty(LOG_AXIS, value));
 
                 generateLeavesAround(world, pos.offset(direction), lvl);
@@ -123,7 +124,7 @@ public class WorldGenDragonTree extends WorldGenEnderTree {
 
     private EnumFacing logDirection(World world, BlockPos pos) {
         return Arrays.stream(EnumFacing.values())
-                        .filter((i -> world.getBlockState(pos.offset(i)).getBlock() == AIR))
+                        .filter((i -> world.getBlockState(pos.offset(i)).getBlock() == END_STONE))
                         .findAny()
                         .orElse(EnumFacing.UP);
     }

@@ -6,6 +6,8 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -25,6 +27,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.commons.io.IOUtils;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
@@ -38,13 +41,21 @@ import ru.mousecray.endmagic.init.util.ListSource;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
+import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
+import ru.mousecray.endmagic.util.registry.RecipeParser;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
 
 import javax.annotation.Nullable;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,9 +81,6 @@ public class CommonProxy implements IGuiHandler {
 
         //Registration Entity
         entityToRegister.addAll(new ClassFieldSource<EntityEntry>(EMEntities.class).elemes());
-
-        //Registration Recipes
-        EMRecipes.initRecipes();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
 
@@ -129,6 +137,7 @@ public class CommonProxy implements IGuiHandler {
     public void registerBlocks(RegistryEvent.Register<Block> e) {
         blocksToRegister.forEach(e.getRegistry()::register);
         tilesToRegister.forEach(tile -> GameRegistry.registerTileEntity(tile, new ResourceLocation(EM.ID, tile.getSimpleName())));
+        System.out.println("EM Blocks count " + blocksToRegister.size());
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -139,11 +148,45 @@ public class CommonProxy implements IGuiHandler {
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> e) {
         itemsToRegister.forEach(e.getRegistry()::register);
+        System.out.println("EM Items count " + itemsToRegister.size());
     }
 
     @SubscribeEvent
     public void registerEntities(RegistryEvent.Register<EntityEntry> e) {
         entityToRegister.forEach(e.getRegistry()::register);
+    }
+
+    @SubscribeEvent
+    public void registerRecipes(RegistryEvent.Register<IRecipe> e) {
+
+        //Registration Furnace Recipes
+        EMRecipes.initRecipes();
+        //GameRegistry.addSmelting(new ItemStack(EMBlocks.enderLog, 1, EnderBlockTypes.EnderTreeType.DRAGON.ordinal()), new ItemStack(EMItems.dragonCoal), 10);
+
+        //Register Craftingtable Recipes
+        List<String> filenames = new ArrayList<>();
+
+        String recipePath = "/assets/" + EM.ID + "/recipes/";
+        try (
+                InputStream in = getClass().getResourceAsStream(recipePath);
+                BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+            String resource;
+
+            while ((resource = br.readLine()) != null) {
+                if (resource.endsWith(".nonjson"))
+                    filenames.add(resource);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        try {
+            for (String file : filenames)
+                RecipeParser.parse(IOUtils.toString(getClass().getResourceAsStream(recipePath + file), StandardCharsets.UTF_8)).forEach(e.getRegistry()::register);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+        //e.getRegistry().registerAll(RecipeParser.parse());
     }
 
     public void init(FMLInitializationEvent event) {

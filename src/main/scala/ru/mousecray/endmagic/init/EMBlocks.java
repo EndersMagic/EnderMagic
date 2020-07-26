@@ -1,10 +1,8 @@
 package ru.mousecray.endmagic.init;
 
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import ru.mousecray.endmagic.blocks.*;
-import ru.mousecray.endmagic.blocks.dimensional.BlockEnderGrass;
-import ru.mousecray.endmagic.blocks.dimensional.BlockEnderStone;
+import ru.mousecray.endmagic.blocks.dimensional.EnderGroundGrass;
+import ru.mousecray.endmagic.blocks.dimensional.EnderGroundStone;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterDarkPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterStaticPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockTopMark;
@@ -13,8 +11,6 @@ import ru.mousecray.endmagic.blocks.trees.EMLeaves;
 import ru.mousecray.endmagic.blocks.trees.EMLog;
 import ru.mousecray.endmagic.blocks.trees.EMPlanks;
 import ru.mousecray.endmagic.blocks.trees.EMSapling;
-import ru.mousecray.endmagic.util.EnderBlockTypes.EnderGroundType;
-import ru.mousecray.endmagic.util.EnderBlockTypes.EnderTreeType;
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
@@ -45,18 +41,16 @@ public final class EMBlocks {
     public static final BlockNamed enderite = new BlockNamed("enderite");
     public static final EnderOre enderOre = new EnderOre("ender_ore");
 
-    public static final EMLog enderLog = new EMLog(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor());
-    public static final EMSapling enderSapling = new EMSapling(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor(),
-            type -> ((EnderTreeType) type).getGenerator());
-    public static final EMLeaves enderLeaves = new EMLeaves(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor());
-    public static final EMPlanks enderPlanks = new EMPlanks(EnderTreeType.class, type -> ((EnderTreeType) type).getMapColor());
+    public static final EMLog enderLog = new EMLog();
+    public static final EMSapling enderSapling = new EMSapling();
+    public static final EMLeaves enderLeaves = new EMLeaves();
+    public static final EMPlanks enderPlanks = new EMPlanks();
 
-    public static final EMSlab enderWoodenSlab = new EMSlab(EnderTreeType.class, Material.WOOD,
-            type -> ((EnderTreeType) type).getMapColor()).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+    public static final EMSlab.EMSlabDouble enderWoodenSlabDouble = new EMSlab.EMSlabDouble();
+    public static final EMSlab.EMSlabSingle enderWoodenSlabSingle = new EMSlab.EMSlabSingle();
 
-    public static final BlockEnderGrass<EnderGroundType> blockEnderGrass = new BlockEnderGrass<>(EnderGroundType.class, type -> type.getMapColor(),
-            type -> type.getSound());
-    public static final BlockEnderStone<EnderGroundType> blockEnderStone = new BlockEnderStone<>(EnderGroundType.class, type -> type.getMapColor());
+    public static final EnderGroundGrass ENDER_GROUND_GRASS = new EnderGroundGrass();
+    public static final EnderGroundStone ENDER_GROUND_STONE = new EnderGroundStone();
 
     public static final ChrysofillumVine chrysVine = new ChrysofillumVine();
     public static final ChrysofillumFlower chrysFlower = new ChrysofillumFlower();
