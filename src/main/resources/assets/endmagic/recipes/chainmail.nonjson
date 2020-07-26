@@ -1,0 +1,61 @@
+id_map{
+
+    di| endmagic:dragon_steel_nugget
+    ii| endmagic:immortal_steel_nugget
+    ni| endmagic:natural_steel_nugget
+    pi| endmagic:phantom_steel_nugget
+    dr| endmagic:dragon_steel_ring
+    ir| endmagic:immortal_steel_ring
+    nr| endmagic:natural_steel_ring
+    pr| endmagic:phantom_steel_ring
+    d| endmagic:dragon_steel_chainplate
+    i| endmagic:immortal_steel_chainplate
+    n| endmagic:natural_steel_chainplate
+    p| endmagic:phantom_steel_chainplate
+
+}
+chainmail{
+
+    2x endmagic:dragon_steel_ring| shaped(_,di,_;
+                                          di,_,di;
+                                          _,di,_)
+    2x endmagic:immortal_steel_ring| shaped(_,ii,_;
+                                           ii,_,ii;
+                                           _,ii,_)
+    2x endmagic:natural_steel_ring| shaped(_,ni,_;
+                                           ni,_,ni;
+                                           _,ni,_)
+    2x endmagic:phantom_steel_ring| shaped(_,pi,_;
+                                           pi,_,pi;
+                                           _,pi,_)
+
+    endmagic:dragon_steel_chainplate| shaped(dr,dr;
+                                             dr,dr)
+    endmagic:immortal_steel_chainplate| shaped(ir,ir;
+                                         ir,ir)
+    endmagic:natural_steel_chainplate| shaped(nr,nr;
+                                        nr,nr)
+    endmagic:phantom_steel_chainplate| shaped(pr,pr;
+                                        pr,pr)
+
+
+    endmagic:dragon_steel_helmet_chainmail| helmet_chainmail(d)
+    endmagic:dragon_steel_chestplate_chainmail| chestplate_chainmail(d)
+    endmagic:dragon_steel_leggings_chainmail| leggings_chainmail(d)
+    endmagic:dragon_steel_boots_chainmail| boots_chainmail(d)
+
+    endmagic:immortal_steel_helmet_chainmail| helmet_chainmail(i)
+    endmagic:immortal_steel_chestplate_chainmail| chestplate_chainmail(i)
+    endmagic:immortal_steel_leggings_chainmail| leggings_chainmail(i)
+    endmagic:immortal_steel_boots_chainmail| boots_chainmail(i)
+
+    endmagic:natural_steel_helmet_chainmail| helmet_chainmail(n)
+    endmagic:natural_steel_chestplate_chainmail| chestplate_chainmail(n)
+    endmagic:natural_steel_leggings_chainmail| leggings_chainmail(n)
+    endmagic:natural_steel_boots_chainmail| boots_chainmail(n)
+
+    endmagic:phantom_steel_helmet_chainmail| helmet_chainmail(p)
+    endmagic:phantom_steel_chestplate_chainmail| chestplate_chainmail(p)
+    endmagic:phantom_steel_leggings_chainmail| leggings_chainmail(p)
+    endmagic:phantom_steel_boots_chainmail| boots_chainmail(p)
+}
