@@ -16,9 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -28,7 +26,6 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import org.apache.commons.io.IOUtils;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
@@ -51,10 +48,11 @@ import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import static ru.mousecray.endmagic.util.ResourcesUtils.listResources;
+import static ru.mousecray.endmagic.util.ResourcesUtils.readResource;
 
 public class CommonProxy implements IGuiHandler {
     protected List<Item> itemsToRegister = new LinkedList<>();
@@ -161,22 +159,14 @@ public class CommonProxy implements IGuiHandler {
         //GameRegistry.addSmelting(new ItemStack(EMBlocks.enderLog, 1, EnderBlockTypes.EnderTreeType.DRAGON.ordinal()), new ItemStack(EMItems.dragonCoal), 10);
 
         //Register Craftingtable Recipes
-        List<String> filenames = new ArrayList<>();
 
-        String recipePath = "/assets/" + EM.ID + "/recipes/";
+        List<String> recipeFiles = listResources("/assets/" + EM.ID + "/recipes/", f -> f.endsWith(".nonjson"));
 
-        CraftingHelper.findFiles(Loader.instance().activeModContainer(), "assets/" + EM.ID + "/recipes", null, (root, resource) -> {
-            if (resource.toString().endsWith(".nonjson"))
-                filenames.add(root.relativize(resource).toString());
-
-            return true;
-        }, true, true);
-
-        System.out.println("Found " + filenames.size() + " recipe files");
+        System.out.println("Found " + recipeFiles.size() + " recipe files");
         try {
-            for (String file : filenames) {
-                System.out.println("Loading recipes from " + recipePath + file);
-                RecipeParser.parse(IOUtils.toString(getClass().getResourceAsStream(recipePath + file), StandardCharsets.UTF_8)).forEach(e.getRegistry()::register);
+            for (String file : recipeFiles) {
+                System.out.println("Loading recipes from " + file);
+                RecipeParser.parse(readResource(file)).forEach(e.getRegistry()::register);
             }
         } catch (IOException e1) {
             e1.printStackTrace();
