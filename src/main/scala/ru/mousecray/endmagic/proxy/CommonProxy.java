@@ -159,7 +159,6 @@ public class CommonProxy implements IGuiHandler {
         //GameRegistry.addSmelting(new ItemStack(EMBlocks.enderLog, 1, EnderBlockTypes.EnderTreeType.DRAGON.ordinal()), new ItemStack(EMItems.dragonCoal), 10);
 
         //Register Craftingtable Recipes
-
         List<String> recipeFiles = listResources("/assets/" + EM.ID + "/recipes/", f -> f.endsWith(".nonjson"));
 
         System.out.println("Found " + recipeFiles.size() + " recipe files");
@@ -171,8 +170,6 @@ public class CommonProxy implements IGuiHandler {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-
-        //e.getRegistry().registerAll(RecipeParser.parse());
     }
 
     public void init(FMLInitializationEvent event) {
