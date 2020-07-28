@@ -85,10 +85,10 @@ public class EMItems {
                                     new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.LEGS,  "_leggings", material, toolColor),
                                     new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.FEET,  "_boots", material, toolColor),
 
-                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.HEAD,  "_helmet_chainmail", material, toolColor),
-                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.CHEST,  "_chestplate_chainmail", material, toolColor),
-                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.LEGS,  "_leggings_chainmail", material, toolColor),
-                                    new EMArmor(((MaterialProvider) material).armorMaterial(), 4, EntityEquipmentSlot.FEET,  "_boots_chainmail", material, toolColor)
+                                    new EMArmor(((MaterialProvider) material).chainmailMaterial(), 4, EntityEquipmentSlot.HEAD,  "_helmet_chainmail", material, toolColor),
+                                    new EMArmor(((MaterialProvider) material).chainmailMaterial(), 4, EntityEquipmentSlot.CHEST,  "_chestplate_chainmail", material, toolColor),
+                                    new EMArmor(((MaterialProvider) material).chainmailMaterial(), 4, EntityEquipmentSlot.LEGS,  "_leggings_chainmail", material, toolColor),
+                                    new EMArmor(((MaterialProvider) material).chainmailMaterial(), 4, EntityEquipmentSlot.FEET,  "_boots_chainmail", material, toolColor)
                             );
                         }
                 ).collect(Collectors.toList());

@@ -19,4 +19,9 @@ public class EnderDiamond extends BaseMaterial implements MaterialProvider {
     public ItemArmor.ArmorMaterial armorMaterial() {
         return null;
     }
+
+    @Override
+    public ItemArmor.ArmorMaterial chainmailMaterial() {
+        return null;
+    }
 }
