@@ -6,7 +6,6 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.tileentity.TileEntity;
@@ -17,7 +16,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -41,7 +42,6 @@ import ru.mousecray.endmagic.init.util.ListSource;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
-import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.RecipeParser;
@@ -50,10 +50,7 @@ import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
 
 import javax.annotation.Nullable;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -167,21 +164,20 @@ public class CommonProxy implements IGuiHandler {
         List<String> filenames = new ArrayList<>();
 
         String recipePath = "/assets/" + EM.ID + "/recipes/";
-        try (
-                InputStream in = getClass().getResourceAsStream(recipePath);
-                BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-            String resource;
 
-            while ((resource = br.readLine()) != null) {
-                if (resource.endsWith(".nonjson"))
-                    filenames.add(resource);
-            }
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
+        CraftingHelper.findFiles(Loader.instance().activeModContainer(), "assets/" + EM.ID + "/recipes", null, (root, resource) -> {
+            if (resource.toString().endsWith(".nonjson"))
+                filenames.add(root.relativize(resource).toString());
+
+            return true;
+        }, true, true);
+
+        System.out.println("Found " + filenames.size() + " recipe files");
         try {
-            for (String file : filenames)
+            for (String file : filenames) {
+                System.out.println("Loading recipes from " + recipePath + file);
                 RecipeParser.parse(IOUtils.toString(getClass().getResourceAsStream(recipePath + file), StandardCharsets.UTF_8)).forEach(e.getRegistry()::register);
+            }
         } catch (IOException e1) {
             e1.printStackTrace();
         }
