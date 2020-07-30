@@ -6,12 +6,11 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiListWorldSelection;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiWorldSelection;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.multiplayer.ChunkProviderClient;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityEnderEye;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow.PickupStatus;
@@ -43,7 +42,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.client.GuiOldSaveLoadConfirm;
+import net.minecraftforge.fml.client.GuiConfirmation;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -61,6 +60,7 @@ import ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
+import ru.mousecray.endmagic.entity.EntityCustomEnderEye;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
@@ -70,10 +70,12 @@ import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Random;
 
+import static ru.mousecray.endmagic.Configuration.enderPortalFrameSearchRadius;
 import static ru.mousecray.endmagic.api.Target.Debug;
 import static ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider.runeStateCapability;
 import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
@@ -81,6 +83,7 @@ import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_PHANROM_AVOIDINCAPABILITY;
 import static ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
+import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMax;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMin;
 
@@ -129,7 +132,7 @@ public class EMEvents {
         BlockPos pos = event.getPos();
         IBlockState blockState = world.getBlockState(pos);
         if (/*!event.getEntityPlayer().world.isRemote && */(blockState.getBlock() == enderLog || blockState.getBlock() == enderLeaves) &&
-                blockState.getValue(enderLog.blockType) == EnderBlockTypes.EnderTreeType.PHANTOM) {
+                blockState.getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.PHANTOM) {
             PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
             if (capability != null) {
                 PhantomAvoidingGroup tree = capability.groupAtPos.get(event.getPos());
@@ -285,6 +288,32 @@ public class EMEvents {
                                         .writeInt(0)
                                         .writePos(pos))
                         .ifPresent(p -> p.sendToPlayer((EntityPlayer) event.getEntity()));
+
+    }
+
+    @SubscribeEvent
+    public static void onEnderEyeEnter(EntityJoinWorldEvent event) {
+        World world = event.getWorld();
+        if (!world.isRemote) {
+            Entity entity = event.getEntity();
+            if (entity instanceof EntityEnderEye && !(entity instanceof EntityCustomEnderEye)) {
+                WorldGenUtils.generateInAreaBreakly(
+                        entity.getPosition().add(-enderPortalFrameSearchRadius, -enderPortalFrameSearchRadius, -enderPortalFrameSearchRadius),
+                        entity.getPosition().add(enderPortalFrameSearchRadius, enderPortalFrameSearchRadius, enderPortalFrameSearchRadius),
+                        pos -> {
+                            IBlockState blockState = world.getBlockState(pos);
+                            if (EntityCustomEnderEye.isEmptyPortalFrame(blockState) && !EntityCustomEnderEye.occupiedPoses.contains(pos)) {
+                                event.setCanceled(true);
+                                BlockPos immutable = pos.toImmutable();
+                                EntityCustomEnderEye.occupiedPoses.add(immutable);
+                                EntityCustomEnderEye enderEye = new EntityCustomEnderEye(world, entity.posX, entity.posY, entity.posZ, immutable);
+                                world.spawnEntity(enderEye);
+                                return false;
+                            } else
+                                return true;
+                        });
+            }
+        }
     }
 
     private static boolean alreadyEnteredInWorldAutomaticaly = false;
@@ -293,8 +322,9 @@ public class EMEvents {
     @GradleTarget(Debug)
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public static void loadLastWorld(GuiOpenEvent event) {
+    public static void loadLastWorld(GuiOpenEvent event) throws InvocationTargetException, IllegalAccessException {
         if (!alreadyEnteredInWorldAutomaticaly) {
+            System.out.println(event.getGui());
             Minecraft mc = Minecraft.getMinecraft();
             if (event.getGui() instanceof GuiMainMenu) {
                 mainMenu = (GuiMainMenu) event.getGui();
@@ -305,7 +335,10 @@ public class EMEvents {
                     guiListWorldSelection.getListEntry(0).joinWorld();
                 } catch (Exception ignore) {
                 }
-            } else if (event.getGui() instanceof GuiOldSaveLoadConfirm) {
+            } else if (event.getGui() instanceof GuiConfirmation) {
+                alreadyEnteredInWorldAutomaticaly = true;
+                ReflectionHelper.findMethod(GuiConfirmation.class, "actionPerformed", null, GuiButton.class)
+                        .invoke(event.getGui(), new GuiButton(0, 0, 0, ""));
                 FMLClientHandler.instance().showGuiScreen(mainMenu);
             } else if (event.getGui() instanceof GuiIngameMenu) {
                 alreadyEnteredInWorldAutomaticaly = true;

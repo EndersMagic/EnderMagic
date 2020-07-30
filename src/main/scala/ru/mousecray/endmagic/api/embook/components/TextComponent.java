@@ -27,6 +27,7 @@ public class TextComponent implements IChapterComponent {
     }
 
     private ImmutableList<IPage> buildPagesForFont(FontRenderer font) {
+        boolean unicodeFlag = font.getUnicodeFlag();
         font.setUnicodeFlag(true);
         String[] words = text.split("\\s+");
 
@@ -35,6 +36,8 @@ public class TextComponent implements IChapterComponent {
         GroupIterator<String> lines = new GroupIterator<>(Arrays.asList(words).listIterator(), lineSize, w -> font.getStringWidth(w) + spaceWidth);
 
         GroupIterator<List<String>> pages = new GroupIterator<>(lines, pageSize, __ -> 1);
+
+        font.setUnicodeFlag(unicodeFlag);
 
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(pages, Spliterator.ORDERED), false)
                 .map(page ->

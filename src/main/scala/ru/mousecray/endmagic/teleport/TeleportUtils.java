@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.play.server.SPacketEntityEffect;
 import net.minecraft.network.play.server.SPacketPlayerAbilities;
 import net.minecraft.network.play.server.SPacketRespawn;
@@ -14,19 +15,29 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import ru.mousecray.endmagic.EM;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.LinkedList;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
- * Created by brandon3055 on 6/12/2016.
+ * Based on created by brandon3055 on 6/12/2016.
  * https://github.com/brandon3055/BrandonsCore/blob/master/src/main/java/com/brandon3055/brandonscore/lib/TeleportUtils.java
  * <p>
  * This is a universal class for handling teleportation. Simply tell it where to send an entity and it just works!
  * Also has support for teleporting mounts.
  */
 public class TeleportUtils {
+
     public static Entity teleportToBlockLocation(Entity entity, Location location) {
-        return teleportEntity(entity, location.dim, location.x + 0.5, location.y+1, location.z + 0.5);
+        return teleportEntity(entity, location.dim, location.x + 0.5, location.y + 1, location.z + 0.5);
     }
 
     public static Entity teleportToLocation(Entity entity, Location location) {
@@ -47,6 +58,13 @@ public class TeleportUtils {
             return entity;
         }
 
+        boolean prevInvulnerableDimensionChange = false;
+        if (entity instanceof EntityPlayerMP) {
+            EntityPlayerMP playerMP = (EntityPlayerMP) entity;
+            prevInvulnerableDimensionChange = playerMP.invulnerableDimensionChange;
+            playerMP.invulnerableDimensionChange = true;
+        }
+
         MinecraftServer server = entity.getServer();
         int sourceDim = entity.world.provider.getDimension();
 
@@ -56,6 +74,12 @@ public class TeleportUtils {
 
         Entity rootEntity = entity.getLowestRidingEntity();
         PassengerHelper passengerHelper = new PassengerHelper(rootEntity);
+
+        Optional<EntityPlayerMP> maybePlayer = getPlayerInRiding(passengerHelper).findAny();
+
+        if (maybePlayer.isPresent() && maybePlayer.get() != entity)
+            return entity;
+
         PassengerHelper rider = passengerHelper.getPassenger(entity);
         if (rider == null) {
             //LogHelperBC.error("RiddenEntity: This error should not be possible");
@@ -65,7 +89,19 @@ public class TeleportUtils {
         passengerHelper.remountRiders();
         passengerHelper.updateClients();
 
+        if (entity instanceof EntityPlayerMP) {
+            ((EntityPlayerMP) entity).invulnerableDimensionChange = prevInvulnerableDimensionChange;
+        }
+
+
         return rider.entity;
+    }
+
+    private static Stream<EntityPlayerMP> getPlayerInRiding(PassengerHelper passengerHelper) {
+        return Stream.concat(
+                passengerHelper.passengers.stream().filter(p -> p.entity instanceof EntityPlayerMP).map(p -> (EntityPlayerMP) p.entity),
+                passengerHelper.passengers.stream().flatMap(TeleportUtils::getPlayerInRiding)
+        );
     }
 
     /**

@@ -1,0 +1,33 @@
+id_map{
+    d| endmagic:dragon_diamond
+    i| endmagic:immortal_diamond
+    n| endmagic:natural_diamond
+    p| endmagic:phantom_diamond
+
+}
+diamonds{
+    endmagic:dragon_diamond_axe| axe(d)
+    endmagic:dragon_diamond_hoe| hoe(d)
+    endmagic:dragon_diamond_pickaxe| pickaxe(d)
+    endmagic:dragon_diamond_shovel| shovel(d)
+    endmagic:dragon_diamond_sword| sword(d)
+
+    endmagic:immortal_diamond_axe| axe(i)
+    endmagic:immortal_diamond_hoe| hoe(i)
+    endmagic:immortal_diamond_pickaxe| pickaxe(i)
+    endmagic:immortal_diamond_shovel| shovel(i)
+    endmagic:immortal_diamond_sword| sword(i)
+
+    endmagic:natural_diamond_axe| axe(n)
+    endmagic:natural_diamond_hoe| hoe(n)
+    endmagic:natural_diamond_pickaxe| pickaxe(n)
+    endmagic:natural_diamond_shovel| shovel(n)
+    endmagic:natural_diamond_sword| sword(n)
+
+    endmagic:phantom_diamond_axe| axe(p)
+    endmagic:phantom_diamond_hoe| hoe(p)
+    endmagic:phantom_diamond_pickaxe| pickaxe(p)
+    endmagic:phantom_diamond_shovel| shovel(p)
+    endmagic:phantom_diamond_sword| sword(p)
+
+}

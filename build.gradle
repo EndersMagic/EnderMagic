@@ -2,14 +2,15 @@ apply plugin: 'idea'
 
 idea {
     module {
-        inheritOutputDirs = false
+        inheritOutputDirs = true
     }
 }
 buildscript {
     repositories {
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
-
+		
+        maven { url = "https://files.minecraftforge.net/maven" }
+		
         maven { url "https://jitpack.io" }
 
         maven {
@@ -18,7 +19,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'tech.justagod:cutter:2.0.1-SNAPSHOT'
+        classpath 'tech.justagod:cutter:2.0.1'
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
@@ -66,7 +67,7 @@ cutter {
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "1.4.2b"
+version = "1.4.7b"
 group = "ru.mousecray.endmagic" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "endmagic"
 

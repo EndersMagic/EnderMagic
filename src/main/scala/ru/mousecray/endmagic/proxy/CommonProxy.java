@@ -6,6 +6,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -44,13 +45,18 @@ import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
+import ru.mousecray.endmagic.util.registry.RecipeParser;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+
+import static ru.mousecray.endmagic.util.ResourcesUtils.listResources;
+import static ru.mousecray.endmagic.util.ResourcesUtils.readResource;
 
 public class CommonProxy implements IGuiHandler {
     protected List<Item> itemsToRegister = new LinkedList<>();
@@ -74,9 +80,6 @@ public class CommonProxy implements IGuiHandler {
 
         //Registration Entity
         entityToRegister.addAll(new ClassFieldSource<EntityEntry>(EMEntities.class).elemes());
-
-        //Registration Recipes
-        EMRecipes.initRecipes();
 
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
 
@@ -135,6 +138,7 @@ public class CommonProxy implements IGuiHandler {
     public void registerBlocks(RegistryEvent.Register<Block> e) {
         blocksToRegister.forEach(e.getRegistry()::register);
         tilesToRegister.forEach(tile -> GameRegistry.registerTileEntity(tile, new ResourceLocation(EM.ID, tile.getSimpleName())));
+        System.out.println("EM Blocks count " + blocksToRegister.size());
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -145,11 +149,33 @@ public class CommonProxy implements IGuiHandler {
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> e) {
         itemsToRegister.forEach(e.getRegistry()::register);
+        System.out.println("EM Items count " + itemsToRegister.size());
     }
 
     @SubscribeEvent
     public void registerEntities(RegistryEvent.Register<EntityEntry> e) {
         entityToRegister.forEach(e.getRegistry()::register);
+    }
+
+    @SubscribeEvent
+    public void registerRecipes(RegistryEvent.Register<IRecipe> e) {
+
+        //Registration Furnace Recipes
+        EMRecipes.initRecipes();
+        //GameRegistry.addSmelting(new ItemStack(EMBlocks.enderLog, 1, EnderBlockTypes.EnderTreeType.DRAGON.ordinal()), new ItemStack(EMItems.dragonCoal), 10);
+
+        //Register Craftingtable Recipes
+        List<String> recipeFiles = listResources("/assets/" + EM.ID + "/recipes/", f -> f.endsWith(".nonjson"));
+
+        System.out.println("Found " + recipeFiles.size() + " recipe files");
+        try {
+            for (String file : recipeFiles) {
+                System.out.println("Loading recipes from " + file);
+                RecipeParser.parse(readResource(file)).forEach(e.getRegistry()::register);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
     public void init(FMLInitializationEvent event) {
