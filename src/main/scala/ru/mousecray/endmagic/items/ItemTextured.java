@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+import static ru.mousecray.endmagic.util.ResourcesUtils.isModelExists;
+
 public interface ItemTextured extends IExtendedProperties {
 
     Map<String, Integer> textures();
@@ -41,18 +43,6 @@ public interface ItemTextured extends IExtendedProperties {
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
         else
             ModelLoader.setCustomModelResourceLocation(item, 0, companion.simpletexturemodel);
-    }
-
-    static boolean isModelExists(ResourceLocation modelResourceLocation) {
-        InputStream inputStream = ItemTextured.class.getResourceAsStream("/assets/" + modelResourceLocation.getResourceDomain() + "/models/item/" + modelResourceLocation.getResourcePath() + ".json");
-        if (inputStream != null) {
-            try {
-                inputStream.close();
-            } catch (IOException ignored) {
-            }
-            return true;
-        } else
-            return false;
     }
 
     class companion {

@@ -1,10 +1,13 @@
 package ru.mousecray.endmagic.util;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.commons.io.IOUtils;
+import ru.mousecray.endmagic.items.ItemTextured;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,5 +41,17 @@ public class ResourcesUtils {
 
     public static String readResource(String resource) throws IOException {
         return IOUtils.toString(ResourcesUtils.class.getResourceAsStream(resource), StandardCharsets.UTF_8);
+    }
+
+    public static boolean isModelExists(ResourceLocation modelResourceLocation) {
+        InputStream inputStream = ItemTextured.class.getResourceAsStream("/assets/" + modelResourceLocation.getResourceDomain() + "/models/item/" + modelResourceLocation.getResourcePath() + ".json");
+        if (inputStream != null) {
+            try {
+                inputStream.close();
+            } catch (IOException ignored) {
+            }
+            return true;
+        } else
+            return false;
     }
 }
