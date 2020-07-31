@@ -8,11 +8,25 @@ public enum RuneColor {
     public final int r;
     public final int g;
     public final int b;
+    public final ResourceLocation texture;
 
-    RuneColor(int red, int green, int blue) {
-        this.r =  red;
-        this.g =  green;
-        this.b = blue;
+    private TextureAtlasSprite atlasSpriteRune;
+
+    public TextureAtlasSprite atlasSpriteRune() {
+        if (atlasSpriteRune == null)
+            atlasSpriteRune = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(texture.toString());
+        return atlasSpriteRune;
+    }
+
+    RuneColor(Color color) {
+        this(color, new ResourceLocation(EM.ID, "runes/rune"));
+    }
+
+    RuneColor(Color color, ResourceLocation texture) {
+        r = color.getRed();
+        g = color.getGreen();
+        b = color.getBlue();
+        this.texture = texture;
     }
 
     @Override
