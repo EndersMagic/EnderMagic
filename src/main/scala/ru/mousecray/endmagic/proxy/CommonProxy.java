@@ -27,11 +27,10 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.blocks.VariativeBlock;
+import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
 import ru.mousecray.endmagic.capability.chunk.CommonRuneChunkCapability;
 import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
 import ru.mousecray.endmagic.capability.chunk.RuneStorage;
-import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.client.gui.GuiTypes;
 import ru.mousecray.endmagic.init.EMBlocks;
@@ -75,7 +74,7 @@ public class CommonProxy implements IGuiHandler {
         registerTile(TilePhantomAvoidingBlockBase.class);
 
         //Registration Items
-        new ClassFieldSource<Item>(EMItems.class).and(new ListSource<>(EMItems.steelToolsAndArmor())).and(new ListSource<>(EMItems.diamondTools()))
+        new ClassFieldSource<Item>(EMItems.class).and(new ListSource<>(EMItems.steelToolsAndArmor())).and(new ListSource<>(EMItems.diamondTools())).and(new ListSource<>(EMItems.inscribers()))
                 .elemes().forEach(this::registerItem);
 
         //Registration Entity

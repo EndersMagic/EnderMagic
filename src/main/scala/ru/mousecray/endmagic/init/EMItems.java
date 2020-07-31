@@ -4,21 +4,18 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.items.*;
+import ru.mousecray.endmagic.items.inscribers.BaseInscriber;
 import ru.mousecray.endmagic.items.materials.EnderCoal;
 import ru.mousecray.endmagic.items.materials.EnderDiamond;
 import ru.mousecray.endmagic.items.materials.EnderSteel;
 import ru.mousecray.endmagic.items.materials.MaterialProvider;
-import ru.mousecray.endmagic.items.tools.EMArmor;
-import ru.mousecray.endmagic.items.tools.EMAxe;
-import ru.mousecray.endmagic.items.tools.EMHoe;
-import ru.mousecray.endmagic.items.tools.EMPickaxe;
-import ru.mousecray.endmagic.items.tools.EMShovel;
-import ru.mousecray.endmagic.items.tools.EMSword;
+import ru.mousecray.endmagic.items.tools.*;
 import ru.mousecray.endmagic.rune.RuneColor;
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.HSBA;
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,8 +23,6 @@ import java.util.stream.Stream;
 public class EMItems {
     public static final ItemNamed rawEnderite = new ItemNamed("raw_enderite");
     public static final Item enderCompass = new EnderCompass();
-    public static final TestInscriber testWhiteInscriber = new TestInscriber(RuneColor.white);
-    public static final TestInscriber testGreenInscriber = new TestInscriber(RuneColor.green);
     public static final RuneShaper runeShaper = new RuneShaper();
     public static final ItemPortalBinder itemPortalBinder = new ItemPortalBinder();
     public static final Item purpleEnderPearl = new PurpleEnderPearl();
@@ -58,6 +53,7 @@ public class EMItems {
     public static final ItemNamed immortalDiamond = new EnderDiamond("immortal_diamond", immortalColor, EMMaterials.IMMORTAL_DIAMOND_TOOL_MATERIAL);
     private static final List<Item> steelToolsAndArmor;
     private static final List<Item> diamondTools;
+    private static final List<Item> inscribers;
     //formatter:on
 
     static {
@@ -96,6 +92,10 @@ public class EMItems {
                             );
                         }
                 ).collect(Collectors.toList());
+
+        inscribers= Arrays.stream(RuneColor.values())
+                .map(BaseInscriber::new)
+                .collect(Collectors.toList());
     }
 
     public static List<Item> steelToolsAndArmor() {
@@ -104,5 +104,9 @@ public class EMItems {
 
     public static List<Item> diamondTools() {
         return diamondTools;
+    }
+
+    public static List<Item> inscribers() {
+        return inscribers;
     }
 }
