@@ -31,6 +31,6 @@ public enum RuneColor {
 
     @Override
     public String toString() {
-        return name()+"("+r+", "+g+", "+b+")";
+        return name() + "(" + r + ", " + g + ", " + b + ")";
     }
 }
