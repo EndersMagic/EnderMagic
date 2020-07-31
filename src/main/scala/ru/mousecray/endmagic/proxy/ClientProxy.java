@@ -49,6 +49,7 @@ import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
 import ru.mousecray.endmagic.items.ItemTextured;
 import ru.mousecray.endmagic.network.ClientPacketHandler;
+import ru.mousecray.endmagic.rune.RuneColor;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
 import ru.mousecray.endmagic.util.RecipeHelper;
@@ -57,11 +58,7 @@ import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
@@ -74,7 +71,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 
     public ClientProxy() {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
-        registerTexture(new ResourceLocation(EM.ID, "blocks/rune"));
+        for (RuneColor runeColor : RuneColor.values())
+            registerTexture(runeColor.texture);
     }
 
     @Override
