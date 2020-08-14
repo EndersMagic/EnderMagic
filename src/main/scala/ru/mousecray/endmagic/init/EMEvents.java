@@ -6,6 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
+import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderEye;
@@ -29,6 +33,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
@@ -51,6 +56,7 @@ import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
+import ru.mousecray.endmagic.client.gui.elements.GuiButtonSort;
 import ru.mousecray.endmagic.entity.EntityCustomEnderEye;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
@@ -423,5 +429,16 @@ public class EMEvents {
             }
 
         return ItemStack.EMPTY;
+    }
+
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onGuiInit(GuiScreenEvent.InitGuiEvent.Post event)
+    {
+        if (event.getGui() instanceof GuiContainerCreative)
+        {
+            event.getButtonList().add(new GuiButtonSort(15, 8, 4, 10, 10, "", (GuiContainerCreative) event.getGui()));
+        }
     }
 }
