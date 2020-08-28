@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 import static org.lwjgl.opengl.GL11.*;
 
 public class RenderDungeonSlime extends Render<EntityDungeonSlime> {
-    protected RenderDungeonSlime(RenderManager renderManager) {
+    public RenderDungeonSlime(RenderManager renderManager) {
         super(renderManager);
     }
 

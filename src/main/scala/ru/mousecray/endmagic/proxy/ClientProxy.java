@@ -35,10 +35,12 @@ import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
 import ru.mousecray.endmagic.api.embook.components.TextComponent;
 import ru.mousecray.endmagic.client.gui.GuiTypes;
+import ru.mousecray.endmagic.client.render.entity.RenderDungeonSlime;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TilePhantomAvoidingBlockRenderer;
+import ru.mousecray.endmagic.entity.EntityDungeonSlime;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
@@ -74,18 +76,24 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void preInit(FMLPreInitializationEvent event) {
+    public void preInit(FMLPreInitializationEvent event)
+    {
         super.preInit(event);
         PacketCustom.assignHandler(EM.ID, new ClientPacketHandler());
         //Registration renders for entity with annotation
-        entityToRegister.forEach(entityEntry -> {
-            if (entityEntry.getEntityClass().isAnnotationPresent(EMEntity.class)) {
-                IRenderFactory factory = manager -> {
+        entityToRegister.forEach(entityEntry ->
+        {
+            if (entityEntry.getEntityClass().isAnnotationPresent(EMEntity.class))
+            {
+                IRenderFactory factory = manager ->
+                {
                     Render render = null;
                     EMEntity annotation = entityEntry.getEntityClass().getAnnotation(EMEntity.class);
-                    try {
+                    try
+                    {
                         render = annotation.renderClass().getConstructor(RenderManager.class).newInstance(manager);
-                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
+                    {
                         e.printStackTrace();
                     }
                     return render;
@@ -93,6 +101,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 RenderingRegistry.registerEntityRenderingHandler(entityEntry.getEntityClass(), factory);
             }
         });
+        RenderingRegistry.registerEntityRenderingHandler(EntityDungeonSlime.class, RenderDungeonSlime::new);
     }
 
     @Override
