@@ -8,13 +8,26 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.util.EMCreativeTab;
+import ru.mousecray.endmagic.util.ResourcesUtils;
 
 import javax.annotation.Nonnull;
 
 public class GuiButtonSort extends GuiButton
 {
-    protected static final String[] names = {"ALL", "ITEMS", "BLOCKS", "TOOLS"};
-    protected static final ResourceLocation[] textures = new ResourceLocation[4];
+    protected static final ResourceLocation[] textures =
+            {
+                    ResourcesUtils.texture(  "gui/sort_button.png"),
+                    ResourcesUtils.texture( "gui/tools_button.png"),
+                    ResourcesUtils.texture("gui/blocks_button.png"),
+                    ResourcesUtils.texture( "gui/items_button.png")
+            };
+    protected static final ResourceLocation[] textures_colored =
+            {
+                    ResourcesUtils.texture(  "gui/sort_button.png"),
+                    ResourcesUtils.texture( "gui/tools_button_c.png"),
+                    ResourcesUtils.texture("gui/blocks_button_c.png"),
+                    ResourcesUtils.texture( "gui/items_button_c.png")
+            };
     GuiContainerCreative gui;
     public GuiButtonSort(int id, int xPos, int yPos, int width, int height, String displayString, GuiContainerCreative gui)
     {
@@ -47,34 +60,11 @@ public class GuiButtonSort extends GuiButton
     {
         if (this.visible)
         {
-            FontRenderer fontrenderer = mc.fontRenderer;
-            mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
+            mc.getTextureManager().bindTexture(textures_colored[EMCreativeTab.Sort % 4]);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
-            int i = this.getHoverState(this.hovered);
-            GlStateManager.enableBlend();
-            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            this.drawTexturedModalRect(this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
-            this.drawTexturedModalRect(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
+            drawModalRectWithCustomSizedTexture(this.x, this.y, 0, 0, width, height, width, height);
             this.mouseDragged(mc, mouseX, mouseY);
-            int j = 14737632;
-
-            if (packedFGColour != 0)
-            {
-                j = packedFGColour;
-            }
-            else
-            if (!this.enabled)
-            {
-                j = 10526880;
-            }
-            else if (this.hovered)
-            {
-                j = 16777120;
-            }
-
-            this.drawCenteredString(fontrenderer, names[EMCreativeTab.Sort % names.length], this.x + this.width / 2, this.y + (this.height - 8) / 2, j);
         }
     }
 }
