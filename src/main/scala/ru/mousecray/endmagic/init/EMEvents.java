@@ -56,6 +56,7 @@ import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
+import ru.mousecray.endmagic.client.gui.elements.EMTextField;
 import ru.mousecray.endmagic.client.gui.elements.GuiButtonSort;
 import ru.mousecray.endmagic.entity.EntityCustomEnderEye;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
@@ -63,6 +64,7 @@ import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
+import ru.mousecray.endmagic.util.GuiContainerCreativeEM;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -434,11 +436,24 @@ public class EMEvents {
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public static void onGuiInit(GuiScreenEvent.InitGuiEvent.Post event)
+    public static void onGuiInitPost(GuiScreenEvent.InitGuiEvent.Post event)
     {
         if (event.getGui() instanceof GuiContainerCreative)
         {
             event.getButtonList().add(new GuiButtonSort(15, 8, 4, 10, 10, "", (GuiContainerCreative) event.getGui()));
+            GuiTextField text = ((GuiContainerCreative) event.getGui()).searchField;
+            ((GuiContainerCreative) event.getGui()).searchField = new EMTextField(text.getId(), Minecraft.getMinecraft().fontRenderer,
+                    text.x, text.y, text.width, text.height,(GuiContainerCreative) event.getGui());
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onGuiInit(GuiOpenEvent  event)
+    {
+        if (event.getGui() instanceof GuiContainerCreative)
+        {
+            event.setGui(new GuiContainerCreativeEM(Minecraft.getMinecraft().player));
         }
     }
 }

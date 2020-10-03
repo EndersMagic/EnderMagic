@@ -32,8 +32,6 @@ public class EMCreativeTab extends CreativeTabs
 		return true;
 	}
 
-
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> itemStacks)
