@@ -433,20 +433,6 @@ public class EMEvents {
         return ItemStack.EMPTY;
     }
 
-
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public static void onGuiInitPost(GuiScreenEvent.InitGuiEvent.Post event)
-    {
-        if (event.getGui() instanceof GuiContainerCreative)
-        {
-            event.getButtonList().add(new GuiButtonSort(15, 8, 4, 10, 10, "", (GuiContainerCreative) event.getGui()));
-            GuiTextField text = ((GuiContainerCreative) event.getGui()).searchField;
-            ((GuiContainerCreative) event.getGui()).searchField = new EMTextField(text.getId(), Minecraft.getMinecraft().fontRenderer,
-                    text.x, text.y, text.width, text.height,(GuiContainerCreative) event.getGui());
-        }
-    }
-
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void onGuiInit(GuiOpenEvent  event)
