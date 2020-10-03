@@ -14,13 +14,11 @@ import java.util.function.Predicate;
 
 public class ResourcesUtils {
 
-    public static ResourceLocation resource(String location)
-    {
+    public static ResourceLocation resource(String location) {
         return new ResourceLocation(EM.ID, location);
     }
 
-    public static ResourceLocation texture(String location)
-    {
+    public static ResourceLocation texture(String location) {
         return new ResourceLocation(EM.ID, "textures/" + location);
     }
 
