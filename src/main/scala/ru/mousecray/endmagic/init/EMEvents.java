@@ -430,7 +430,7 @@ public class EMEvents {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void onGuiInit(GuiOpenEvent event) {
-        if (event.getGui() instanceof GuiContainerCreative)
+        if (event.getGui() instanceof GuiContainerCreative && !(event.getGui() instanceof GuiContainerCreativeEM))
             event.setGui(new GuiContainerCreativeEM(Minecraft.getMinecraft().player));
     }
 }

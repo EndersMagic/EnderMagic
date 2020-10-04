@@ -18,18 +18,12 @@ public class GuiContainerCreativeEM extends GuiContainerCreative {
     public void initGui() {
         super.initGui();
         buttonList.add(new GuiButtonSort(15, 8, 4, 10, 10, "", this));
-        searchField = new EMTextField(searchField.getId(), Minecraft.getMinecraft().fontRenderer, searchField.x, searchField.y, searchField.width, searchField.height, this);
+        searchField = new EMTextField(searchField.getId(), Minecraft.getMinecraft().fontRenderer, searchField.x, searchField.y, searchField.width - 2, searchField.height, this);
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         searchField.mouseClicked(mouseX, mouseY, mouseButton);
         super.mouseClicked(mouseX, mouseY, mouseButton);
-    }
-
-    @Override
-    public void setCurrentCreativeTab(CreativeTabs tab) {
-        super.setCurrentCreativeTab(tab);
-        searchField.width = tab.getSearchbarWidth() - 2;
     }
 }
