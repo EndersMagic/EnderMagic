@@ -16,6 +16,7 @@ public class EMCreativeTab extends CreativeTabs {
 
     public EMCreativeTab() {
         super("em_cretive_tab");
+        setBackgroundImageName("item_search.png");
     }
 
     @Nonnull
