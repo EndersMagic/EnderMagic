@@ -48,7 +48,6 @@ public class GenLayerEndBiomes extends GenLayer
                 }
                 else
                 {
-                    //System.out.println("Shit: biome id " + biomeInt + " found in genlayer");
                 	outLayer[j + i * areaWidth] = SKY_ID;
                 }
             	

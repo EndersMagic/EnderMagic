@@ -43,14 +43,12 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
     public NoiseGeneratorOctaves noiseGen5;
     /** A NoiseGeneratorOctaves used in generating terrain */
     public NoiseGeneratorOctaves noiseGen6;
-    /** Projectend to the World object. */
+    /** Reference   to the World object. */
     private final World world;
     /** are map structures going to be generated (e.g. strongholds) */
     private final boolean mapFeaturesEnabled;
     private final BlockPos spawnPoint;
-    private MapGenCaves genCaves;
     private MapGenEndCity endCityGen = new MapGenEndCity(this);
-   // private MapGenCorn endGenCorn = new MapGenCorn();
     private NoiseGeneratorSimplex islandNoise;
     private double[] buffer;
     /** The biomes that are used to generate the chunk */
@@ -73,7 +71,6 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
         this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 10);
         this.noiseGen6 = new NoiseGeneratorOctaves(this.rand, 16);
         this.islandNoise = new NoiseGeneratorSimplex(this.rand);
-        this.genCaves = new MapGenCaves();
 
        InitNoiseGensEvent.ContextEnd ctx =
                 new InitNoiseGensEvent.ContextEnd(lperlinNoise1, lperlinNoise2, perlinNoise1, noiseGen5, noiseGen6, islandNoise);
@@ -85,8 +82,6 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
         this.noiseGen6 = ctx.getScale();
         this.islandNoise = ctx.getIsland();
         this.endCityGen = (MapGenEndCity)  TerrainGen.getModdedMapGen(this.endCityGen, InitMapGenEvent.EventType.END_CITY);
-        this.genCaves =      (MapGenCaves) TerrainGen.getModdedMapGen(this.genCaves,   InitMapGenEvent.EventType.CAVE);
-        //this.endGenCorn = (MapGenCorn) TerrainGen.getModdedMapGen(this.endGenCorn,   InitMapGenEvent.EventType.CUSTOM);
     }
 
     /**

@@ -4,7 +4,6 @@ import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeEnd;
-import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.world.BiomeDecoratorEndBiomes;
 
 public class BiomeEndIceDesert extends BiomeEnd

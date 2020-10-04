@@ -12,10 +12,4 @@ public class BiomeDecoratorEndBiomes extends BiomeEndDecorator
     public BiomeDecoratorEndBiomes()
     {
     }
-
-    @Override
-    protected void genDecorations(Biome biomeIn, World worldIn, Random random)
-    {
-        super.genDecorations(biomeIn, worldIn, random);
-    }
 }
