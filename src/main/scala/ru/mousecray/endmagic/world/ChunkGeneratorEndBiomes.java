@@ -155,7 +155,7 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
         }
     }
 
-    public void buildSurfaces(ChunkPrimer primer, int chunkX, int chunkZ, Biome[] biomeMap)
+    public void buildSurfaces(ChunkPrimer primer, int chunkX, int chunkZ, Biome[] biomeMap)//важно - есть изменения
     {
         if (!ForgeEventFactory.onReplaceBiomeBlocks(this, chunkX, chunkZ, primer, this.world)) return;
         for (int i = 0; i < 16; ++i)
@@ -166,7 +166,6 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
                 Biome current = biomeMap[i + j * 16]; //some backwards ass shit
                 IBlockState surface = END_STONE;
                 IBlockState filler = END_STONE;
-                //if(current == BiomeRegistrar.END_UNDER)  underfill = BlocksRegister.BASOR.getDefaultState();
                 if(current != Biomes.SKY)
                 {
                 	surface = current.topBlock;
@@ -228,7 +227,7 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
     /**
      * Generates the chunk at the specified position, from scratch
      */
-    public Chunk generateChunk(int x, int z)
+    public Chunk generateChunk(int x, int z) //важно
     {
         this.rand.setSeed((long)x * 341873128712L + (long)z * 132897987541L);
         ChunkPrimer chunkprimer = new ChunkPrimer();
@@ -254,7 +253,9 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
         return chunk;
     }
 
-    public float getIslandHeightValue(int p_185960_1_, int p_185960_2_, int p_185960_3_, int p_185960_4_)
+
+
+    public float getIslandHeightValue(int p_185960_1_, int p_185960_2_, int p_185960_3_, int p_185960_4_)//делаем публичным, потмо заменю АТ
     {
         float f = (float)(p_185960_1_ * 2 + p_185960_3_);
         float f1 = (float)(p_185960_2_ * 2 + p_185960_4_);
