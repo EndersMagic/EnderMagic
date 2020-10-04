@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.entity;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFallingBlock;
@@ -96,7 +97,7 @@ public class EntityEMEnderPearl extends EntityThrowable {
                     for (int j = -2; j < 2; ++j) {
                         BlockPos blockpos = result.getBlockPos().add(i, 0, j);
                         TileEntity tileentity = world.getTileEntity(blockpos);
-                        if (tileentity == null) {
+                        if (tileentity == null && world.getBlockState(blockpos).getBlock().getBlockHardness(world.getBlockState(blockpos), world, blockpos) >= 0) {
                             EntityFallingBlock entity = new EntityFallingBlock(world, blockpos.getX(), blockpos.getY(),
                                     blockpos.getZ(), world.getBlockState(blockpos));
                             entity.motionY = ((double) 1 / (rand.nextInt(5) + 2));
