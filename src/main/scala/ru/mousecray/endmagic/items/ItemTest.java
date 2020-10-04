@@ -10,9 +10,9 @@ import net.minecraft.world.World;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.client.gui.GuiTypes;
 
-public class Test extends Item {
+public class ItemTest extends Item {
 
-    public Test() {
+    public ItemTest() {
         setMaxStackSize(1);
         setUnlocalizedName("test");
     }

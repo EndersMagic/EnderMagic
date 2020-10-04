@@ -15,7 +15,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'tech.justagod:cutter:2.0.1-SNAPSHOT'
+        classpath 'tech.justagod:cutter:2.0.1'
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
