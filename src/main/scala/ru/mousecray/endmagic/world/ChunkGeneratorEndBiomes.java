@@ -305,11 +305,6 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
         return f2;
     }
 
-    public boolean isIslandChunk(int p_185961_1_, int p_185961_2_)
-    {
-        return (long)p_185961_1_ * (long)p_185961_1_ + (long)p_185961_2_ * (long)p_185961_2_ > 4096L && this.getIslandHeightValue(p_185961_1_, p_185961_2_, 1, 1) >= 0.0F;
-    }
-
     public double[] getHeights(double[] p_185963_1_, int p_185963_2_, int p_185963_3_, int p_185963_4_, int p_185963_5_, int p_185963_6_, int p_185963_7_)
     {
         ChunkGeneratorEvent.InitNoiseField event = new ChunkGeneratorEvent.InitNoiseField(this, p_185963_1_, p_185963_2_, p_185963_3_, p_185963_4_, p_185963_5_, p_185963_6_, p_185963_7_);
@@ -383,87 +378,5 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
         }
 
         return p_185963_1_;
-    }
-
-    /**
-     * Generate initial structures in this chunk, e.g. mineshafts, temples, lakes, and dungeons
-     */
-    @Override
-    public void populate(int x, int z)//заселяем/заполняем
-    {
-        BlockFalling.fallInstantly = true;
-        ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, x, z, false);
-        BlockPos blockpos = new BlockPos(x * 16, 0, z * 16);
-
-        if (this.mapFeaturesEnabled)
-        {
-            endCityGen.generateStructure(this.world, this.rand, new ChunkPos(x, z));
-        }
-
-        this.world.getBiome(blockpos.add(16, 0, 16)).decorate(this.world, this.world.rand, blockpos);
-
-        long i = (long)x * (long)x + (long)z * (long)z;
-
-        if (i > 4096L)
-        {
-            float f = this.getIslandHeightValue(x, z, 1, 1);
-
-            if (f < -20.0F && this.rand.nextInt(14) == 0)
-            {
-                this.endIslands.generate(this.world, this.rand, blockpos.add(this.rand.nextInt(16) + 8, 55 + this.rand.nextInt(16), this.rand.nextInt(16) + 8));
-
-                if (this.rand.nextInt(4) == 0)
-                {
-                    this.endIslands.generate(this.world, this.rand, blockpos.add(this.rand.nextInt(16) + 8, 55 + this.rand.nextInt(16), this.rand.nextInt(16) + 8));
-                }
-            }
-
-            if (this.getIslandHeightValue(x, z, 1, 1) > 40.0F)
-            {
-                int j = this.rand.nextInt(5);
-
-                for (int k = 0; k < j; ++k)
-                {
-                    int l = this.rand.nextInt(16) + 8;
-                    int i1 = this.rand.nextInt(16) + 8;
-                    int j1 = this.world.getHeight(blockpos.add(l, 0, i1)).getY();
-
-                    if (j1 > 0)
-                    {
-                        int k1 = j1 - 1;
-
-                        if (this.world.isAirBlock(blockpos.add(l, k1 + 1, i1)) &&
-                            this.world.getBlockState(blockpos.add(l, k1, i1)).getBlock() == Blocks.END_STONE)
-                        {
-                            BlockChorusFlower.generatePlant(this.world, blockpos.add(l, k1 + 1, i1), this.rand, 8);
-                        }
-                    }
-                }
-
-                if (this.rand.nextInt(700) == 0)
-                {
-                    int l1 = this.rand.nextInt(16) + 8;
-                    int i2 = this.rand.nextInt(16) + 8;
-                    int j2 = this.world.getHeight(blockpos.add(l1, 0, i2)).getY();
-
-                    if (j2 > 0)
-                    {
-                        int k2 = j2 + 3 + this.rand.nextInt(7);
-                        BlockPos blockpos1 = blockpos.add(l1, k2, i2);
-                        (new WorldGenEndGateway()).generate(this.world, this.rand, blockpos1);
-                        TileEntity tileentity = this.world.getTileEntity(blockpos1);
-
-                        if (tileentity instanceof TileEntityEndGateway)
-                        {
-                            TileEntityEndGateway tileentityendgateway = (TileEntityEndGateway)tileentity;
-                            tileentityendgateway.setExactPosition(this.spawnPoint);
-                        }
-                    }
-                }
-            }
-        }
-
-        ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, x, z, false);
-        BlockFalling.fallInstantly = false;
     }
 }
