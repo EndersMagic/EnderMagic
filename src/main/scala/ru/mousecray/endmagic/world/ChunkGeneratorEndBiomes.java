@@ -98,7 +98,7 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
         int j = 3;
         int k = 33;
         int l = 3;
-        this.buffer = this.getHeights(this.buffer, x * 2, 0, z * 2, 3, 33, 3);
+        this.buffer = this.getHeightsPublic(this.buffer, x * 2, 0, z * 2, 3, 33, 3);
 
         for (int i1 = 0; i1 < 2; ++i1)
         {
@@ -312,9 +312,9 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
         return f2;
     }
 
-    public double[] getHeights(double[] p_185963_1_, int p_185963_2_, int p_185963_3_, int p_185963_4_, int p_185963_5_, int p_185963_6_, int p_185963_7_)
+    public double[] getHeightsPublic(double[] p_185963_1_, int p_185963_2_, int p_185963_3_, int p_185963_4_, int p_185963_5_, int p_185963_6_, int p_185963_7_)//распревачено - потом заменю на АТ
     {
-        ChunkGeneratorEvent.InitNoiseField event = new ChunkGeneratorEvent.InitNoiseField(this, p_185963_1_, p_185963_2_, p_185963_3_, p_185963_4_, p_185963_5_, p_185963_6_, p_185963_7_);
+        net.minecraftforge.event.terraingen.ChunkGeneratorEvent.InitNoiseField event = new net.minecraftforge.event.terraingen.ChunkGeneratorEvent.InitNoiseField(this, p_185963_1_, p_185963_2_, p_185963_3_, p_185963_4_, p_185963_5_, p_185963_6_, p_185963_7_);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == net.minecraftforge.fml.common.eventhandler.Event.Result.DENY) return event.getNoisefield();
 
@@ -325,7 +325,7 @@ public class ChunkGeneratorEndBiomes extends ChunkGeneratorEnd
 
         double d0 = 684.412D;
         double d1 = 684.412D;
-        d0 *= 2.0D;
+        d0 = d0 * 2.0D;
         this.pnr = this.perlinNoise1.generateNoiseOctaves(this.pnr, p_185963_2_, p_185963_3_, p_185963_4_, p_185963_5_, p_185963_6_, p_185963_7_, d0 / 80.0D, 4.277575000000001D, d0 / 80.0D);
         this.ar = this.lperlinNoise1.generateNoiseOctaves(this.ar, p_185963_2_, p_185963_3_, p_185963_4_, p_185963_5_, p_185963_6_, p_185963_7_, d0, 684.412D, d0);
         this.br = this.lperlinNoise2.generateNoiseOctaves(this.br, p_185963_2_, p_185963_3_, p_185963_4_, p_185963_5_, p_185963_6_, p_185963_7_, d0, 684.412D, d0);
