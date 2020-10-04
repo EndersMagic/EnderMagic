@@ -1,7 +1,6 @@
 package ru.mousecray.endmagic.world;
 
 import net.minecraft.world.WorldProviderEnd;
-import net.minecraft.world.gen.ChunkGeneratorEnd;
 import net.minecraft.world.gen.IChunkGenerator;
 
 public class WorldProviderEndBiomes extends WorldProviderEnd 
