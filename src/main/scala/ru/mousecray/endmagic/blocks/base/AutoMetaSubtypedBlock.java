@@ -12,6 +12,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.model.ModelLoader;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
@@ -36,39 +37,46 @@ public abstract class AutoMetaSubtypedBlock extends AutoMetaBlock {
 
         List<IProperty> properties = properties();
 
-        if (properties.size() > 0) {
-            firstProperty = properties.get(0);
-            firstPropertyOrderedValues = ((IProperty<?>) firstProperty).getAllowedValues().stream().sorted(Comparable::compareTo).collect(toImmutableList());
-        }
+        if(properties.isEmpty())
+            throw new IllegalStateException("Implementation of AutoMetaSubtypedBlock must have at least one property");
+
+        firstProperty = properties.get(0);
+        firstPropertyOrderedValues = ((IProperty<?>) firstProperty).getAllowedValues().stream().sorted(Comparable::compareTo).collect(toImmutableList());
     }
 
-    private IProperty firstProperty;
-    private List<Comparable> firstPropertyOrderedValues;
+    @Nonnull private IProperty firstProperty;
+    @Nonnull private List<Comparable> firstPropertyOrderedValues;
 
     public String getUnlocalizedName(ItemStack itemStack) {
-        return getUnlocalizedName() + (firstProperty != null ?
+        return getUnlocalizedName() + (isPossibleDamage(itemStack.getItemDamage()) ?
                 "." + firstProperty.getName(firstPropertyOrderedValues.get(itemStack.getItemDamage())) :
                 "");
     }
 
+    private boolean isPossibleDamage(int damage) {
+        return damage >= 0 && damage < firstPropertyOrderedValues.size();
+    }
+
     public IBlockState getStateByItemStackDamage(int damage) {
-        return firstProperty != null ?
+        return isPossibleDamage(damage) ?
                 getDefaultState().withProperty(firstProperty, firstPropertyOrderedValues.get(damage)) :
                 getDefaultState();
     }
 
     @Override
+    public int damageDropped(IBlockState state) {
+        return firstPropertyOrderedValues.indexOf(state.getValue(firstProperty));
+    }
+
+    @Override
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        if (firstProperty != null)
-            for (int i = 0; i < firstPropertyOrderedValues.size(); i++)
-                items.add(new ItemStack(this, 1, i));
-        else
-            super.getSubBlocks(itemIn, items);
+        for (int i = 0; i < firstPropertyOrderedValues.size(); i++)
+            items.add(new ItemStack(this, 1, i));
     }
 
     @Override
     public void registerModels(IModelRegistration modelRegistration) {
-        for (int i = 0; i < (firstProperty != null ? firstPropertyOrderedValues.size() : 1); i++)
+        for (int i = 0; i < firstPropertyOrderedValues.size(); i++)
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i,
                     new ModelResourceLocation(getRegistryName(), i == 0 ? "inventory" : "inventory,meta=" + i));
     }
