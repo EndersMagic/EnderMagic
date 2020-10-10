@@ -12,7 +12,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -42,6 +44,7 @@ import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.RecipeParser;
+import ru.mousecray.endmagic.worldgen.EMWorldProviderEnd;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderOres;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderPlants;
 import ru.mousecray.endmagic.worldgen.WorldGenEnderTrees;
@@ -92,6 +95,11 @@ public class CommonProxy implements IGuiHandler {
 
             }
         }, PhantomAvoidingGroupCapability::new);
+
+
+         DimensionManager.unregisterDimension(1);
+         DimensionType endBiomes = DimensionType.register("End", "_end", 1, EMWorldProviderEnd.class, false);
+         DimensionManager.registerDimension(1, endBiomes);
     }
 
     private void registerBlock(Block block) {
