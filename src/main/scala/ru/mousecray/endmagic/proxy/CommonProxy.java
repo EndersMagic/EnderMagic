@@ -7,14 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -28,6 +25,7 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
+import ru.mousecray.endmagic.capability.NonSaveStorage;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.client.gui.GuiTypes;
 import ru.mousecray.endmagic.init.EMBlocks;
@@ -80,18 +78,7 @@ public class CommonProxy implements IGuiHandler {
         NetworkRegistry.INSTANCE.registerGuiHandler(EM.instance, this);
 
 
-        CapabilityManager.INSTANCE.register(PhantomAvoidingGroupCapability.class, new Capability.IStorage<PhantomAvoidingGroupCapability>() {
-            @Nullable
-            @Override
-            public NBTBase writeNBT(Capability<PhantomAvoidingGroupCapability> capability, PhantomAvoidingGroupCapability instance, EnumFacing side) {
-                return null;
-            }
-
-            @Override
-            public void readNBT(Capability<PhantomAvoidingGroupCapability> capability, PhantomAvoidingGroupCapability instance, EnumFacing side, NBTBase nbt) {
-
-            }
-        }, PhantomAvoidingGroupCapability::new);
+        CapabilityManager.INSTANCE.register(PhantomAvoidingGroupCapability.class, new NonSaveStorage<>(), PhantomAvoidingGroupCapability::new);
     }
 
     private void registerBlock(Block block) {
