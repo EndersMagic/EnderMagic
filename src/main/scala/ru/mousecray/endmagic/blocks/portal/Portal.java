@@ -1,8 +1,6 @@
 package ru.mousecray.endmagic.blocks.portal;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockPortal;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -37,7 +35,7 @@ public class Portal extends BlockWithTile<TilePortal> implements ITechnicalBlock
     @Override
     public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
         if (!world.isRemote)
-            TeleportUtils.teleportToBlockLocation(entity, tile(world, pos).distination);
+            tile(world, pos).onEntityCollidedWithBlock(entity);
     }
 
     @Override
