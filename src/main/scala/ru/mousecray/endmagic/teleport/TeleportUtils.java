@@ -5,7 +5,6 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.play.server.SPacketEntityEffect;
 import net.minecraft.network.play.server.SPacketPlayerAbilities;
 import net.minecraft.network.play.server.SPacketRespawn;
@@ -15,16 +14,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import ru.mousecray.endmagic.EM;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.LinkedList;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -36,12 +29,18 @@ import java.util.stream.Stream;
  */
 public class TeleportUtils {
 
+    private static Consumer<Entity> noAction = e -> {};
+
+    public static Entity teleportToBlockLocation(Entity entity, Location location, Consumer<Entity> postProcess) {
+        return teleportEntity(entity, location.dim, location.x + 0.5, location.y + 1, location.z + 0.5, postProcess);
+    }
+
     public static Entity teleportToBlockLocation(Entity entity, Location location) {
-        return teleportEntity(entity, location.dim, location.x + 0.5, location.y + 1, location.z + 0.5);
+        return teleportEntity(entity, location.dim, location.x + 0.5, location.y + 1, location.z + 0.5, noAction);
     }
 
     public static Entity teleportToLocation(Entity entity, Location location) {
-        return teleportEntity(entity, location.dim, location.x + 0.5, location.y, location.z + 0.5);
+        return teleportEntity(entity, location.dim, location.x + 0.5, location.y, location.z + 0.5, noAction);
     }
 
     /**
@@ -53,7 +52,7 @@ public class TeleportUtils {
      *
      * @return the entity. This may be a new instance so be sure to keep that in mind.
      */
-    public static Entity teleportEntity(Entity entity, int dimension, double xCoord, double yCoord, double zCoord, float yaw, float pitch) {
+    public static Entity teleportEntity(Entity entity, int dimension, double xCoord, double yCoord, double zCoord, float yaw, float pitch, Consumer<Entity> postProcess) {
         if (entity == null || entity.world.isRemote) {
             return entity;
         }
@@ -69,7 +68,7 @@ public class TeleportUtils {
         int sourceDim = entity.world.provider.getDimension();
 
         if (!entity.isBeingRidden() && !entity.isRiding()) {
-            return handleEntityTeleport(entity, server, sourceDim, dimension, xCoord, yCoord, zCoord, yaw, pitch);
+            return handleEntityTeleport(entity, server, sourceDim, dimension, xCoord, yCoord, zCoord, yaw, pitch, postProcess);
         }
 
         Entity rootEntity = entity.getLowestRidingEntity();
@@ -85,7 +84,7 @@ public class TeleportUtils {
             //LogHelperBC.error("RiddenEntity: This error should not be possible");
             return entity;
         }
-        passengerHelper.teleport(server, sourceDim, dimension, xCoord, yCoord, zCoord, yaw, pitch);
+        passengerHelper.teleport(server, sourceDim, dimension, xCoord, yCoord, zCoord, yaw, pitch, postProcess);
         passengerHelper.remountRiders();
         passengerHelper.updateClients();
 
@@ -107,17 +106,19 @@ public class TeleportUtils {
     /**
      * Convenience method that does not require pitch and yaw.
      */
-    public static Entity teleportEntity(Entity entity, int dimension, double xCoord, double yCoord, double zCoord) {
-        return teleportEntity(entity, dimension, xCoord, yCoord, zCoord, entity.rotationYaw, entity.rotationPitch);
+    public static Entity teleportEntity(Entity entity, int dimension, double xCoord, double yCoord, double zCoord, Consumer<Entity> postProcess) {
+        return teleportEntity(entity, dimension, xCoord, yCoord, zCoord, entity.rotationYaw, entity.rotationPitch, postProcess);
     }
 
     /**
      * This is the base teleport method that figures out how to handle the teleport and makes it happen!
      */
-    private static Entity handleEntityTeleport(Entity entity, MinecraftServer server, int sourceDim, int targetDim, double xCoord, double yCoord, double zCoord, float yaw, float pitch) {
+    private static Entity handleEntityTeleport(Entity entity, MinecraftServer server, int sourceDim, int targetDim, double xCoord, double yCoord, double zCoord, float yaw, float pitch, Consumer<Entity> postProcess) {
         if (entity == null || entity.world.isRemote) {
             return entity;
         }
+
+        postProcess.accept(entity);
 
         boolean interDimensional = sourceDim != targetDim;
 
@@ -261,20 +262,21 @@ public class TeleportUtils {
         /**
          * Recursively teleports the entity and all of its passengers after dismounting them.
          *
-         * @param server    The minecraft server.
-         * @param sourceDim The source dimension.
-         * @param targetDim The target dimension.
-         * @param xCoord    The target x position.
-         * @param yCoord    The target y position.
-         * @param zCoord    The target z position.
-         * @param yaw       The target yaw.
-         * @param pitch     The target pitch.
+         * @param server      The minecraft server.
+         * @param sourceDim   The source dimension.
+         * @param targetDim   The target dimension.
+         * @param xCoord      The target x position.
+         * @param yCoord      The target y position.
+         * @param zCoord      The target z position.
+         * @param yaw         The target yaw.
+         * @param pitch       The target pitch.
+         * @param postProcess
          */
-        public void teleport(MinecraftServer server, int sourceDim, int targetDim, double xCoord, double yCoord, double zCoord, float yaw, float pitch) {
+        public void teleport(MinecraftServer server, int sourceDim, int targetDim, double xCoord, double yCoord, double zCoord, float yaw, float pitch, Consumer<Entity> postProcess) {
             entity.removePassengers();
-            entity = handleEntityTeleport(entity, server, sourceDim, targetDim, xCoord, yCoord, zCoord, yaw, pitch);
+            entity = handleEntityTeleport(entity, server, sourceDim, targetDim, xCoord, yCoord, zCoord, yaw, pitch, postProcess);
             for (PassengerHelper passenger : passengers) {
-                passenger.teleport(server, sourceDim, targetDim, xCoord, yCoord, zCoord, yaw, pitch);
+                passenger.teleport(server, sourceDim, targetDim, xCoord, yCoord, zCoord, yaw, pitch, postProcess);
             }
         }
 
