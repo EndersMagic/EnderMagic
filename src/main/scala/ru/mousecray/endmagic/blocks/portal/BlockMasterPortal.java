@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.blocks.portal;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -29,8 +30,6 @@ public abstract class BlockMasterPortal<A extends TileMasterPortal> extends Bloc
         setSoundType(SoundType.STONE);
     }
 
-    public abstract boolean isValidDistination(Location loc, int lenght);
-
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (!worldIn.isRemote) {
@@ -57,32 +56,45 @@ public abstract class BlockMasterPortal<A extends TileMasterPortal> extends Bloc
 
     public final int limit = Configuration.portalSizeLimit;
 
-    private void openPortal(BlockPos pos, World worldIn) {
-        int length = 0;
-        BlockPos cur = pos.up();
+    protected void openPortal(BlockPos pos, World worldIn) {
+        A currentMasterTile = tile(worldIn, pos);
+        Location distination = currentMasterTile.distination;
 
-        Location distination = tile(worldIn, pos).distination;
+        List<BlockPos> portalPos = getEmptyPoses(pos.up(), worldIn);
+
+        if (!portalPos.isEmpty() && checkAndPrepareDestinition(distination, portalPos)) {
+            currentMasterTile.openPortal(portalPos);
+            portalPos.forEach(it -> setPortal(worldIn, it, pos));
+        } else
+            doError();
+    }
+
+    protected abstract boolean checkAndPrepareDestinition(Location distination, List<BlockPos> portalPos);
+
+    List<BlockPos> getEmptyPoses(BlockPos from, World world) {
+        int length = 0;
+        BlockPos cur = from;
 
         List<BlockPos> portalPos = new ArrayList<>();
 
-        while (worldIn.isAirBlock(cur) && length < limit) {
+        while (world.isAirBlock(cur) && length < limit) {
             portalPos.add(cur);
 
             cur = cur.up();
             length++;
         }
 
-        if (isValidDistination(tile(worldIn, pos).distination, length) && worldIn.getBlockState(cur).getBlock() == EMBlocks.blockTopMark && !portalPos.isEmpty())
-            portalPos.forEach(it -> setPortal(worldIn, it, distination));
+        if (world.getBlockState(cur).getBlock() == EMBlocks.blockTopMark)
+            return portalPos;
         else
-            doError();
+            return ImmutableList.of();
     }
 
-    private void doError() {
+    protected void doError() {
     }
 
-    private void setPortal(World worldIn, BlockPos cur, Location distination) {
-        worldIn.setBlockState(cur, EMBlocks.blockPortal.getDefaultState());
-        EMBlocks.blockPortal.tile(worldIn, cur).distination = distination;
+    void setPortal(World worldIn, BlockPos portalPos, BlockPos masterPos) {
+        worldIn.setBlockState(portalPos, EMBlocks.blockPortal.getDefaultState());
+        EMBlocks.blockPortal.tile(worldIn, portalPos).masterTilePos = masterPos;
     }
 }

@@ -8,28 +8,32 @@ import ru.mousecray.endmagic.teleport.Location;
 import ru.mousecray.endmagic.tileentity.portal.TileMasterDarkPortal;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockMasterDarkPortal extends BlockMasterPortal<TileMasterDarkPortal> {
-    @Override
-    public boolean isValidDistination(Location loc, int sourceLength) {
 
-        BlockPos pos = loc.toPos();
+    private boolean openPairPortal(Location distination, int sourceLength) {
+        BlockPos pos = distination.toPos();
+        World worldIn = distination.getWorld();
 
-        BlockPos cur = pos.up();
+        if (worldIn.getBlockState(pos).getBlock() == EMBlocks.blockMasterDarkPortal) {
+            TileMasterDarkPortal distinationMasterTile = tile(worldIn, pos);
 
-        World worldIn = loc.getWorld();
+            List<BlockPos> portalPos = getEmptyPoses(pos.up(), worldIn);
 
-        return worldIn.getBlockState(pos).getBlock() == EMBlocks.blockMasterDarkPortal && checkOtherBlocksOfStructure(sourceLength, cur, worldIn);
+            if (portalPos.size() == sourceLength) {
+                distinationMasterTile.openPortal(portalPos);
+                portalPos.forEach(it -> setPortal(worldIn, it, pos));
+                return true;
+            } else
+                return false;
+        } else
+            return false;
     }
 
-    private boolean checkOtherBlocksOfStructure(int sourceLength, BlockPos cur, World worldIn) {
-        int length = 0;
-        while (worldIn.isAirBlock(cur) && length < limit) {
-            cur = cur.up();
-            length++;
-        }
-
-        return worldIn.getBlockState(cur).getBlock() == EMBlocks.blockTopMark && length == sourceLength;
+    @Override
+    protected boolean checkAndPrepareDestinition(Location distination, List<BlockPos> portalPos) {
+        return openPairPortal(distination, portalPos.size());
     }
 
     @Nullable

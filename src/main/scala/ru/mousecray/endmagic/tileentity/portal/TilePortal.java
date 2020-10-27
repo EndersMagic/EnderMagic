@@ -1,20 +1,20 @@
 package ru.mousecray.endmagic.tileentity.portal;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ITickable;
-import ru.mousecray.endmagic.teleport.TeleportUtils;
+import net.minecraft.util.math.BlockPos;
+import ru.mousecray.endmagic.tileentity.EMTileEntity;
 
-public class TilePortal extends TileWithLocation implements ITickable {
-    private int tick = 0;
+import java.util.Optional;
 
-    @Override
-    public void update() {
-        tick++;
-        if (tick >= 80)
-            world.setBlockToAir(pos);
-    }
+public class TilePortal extends EMTileEntity {
+    public BlockPos masterTilePos;
 
     public void onEntityCollidedWithBlock(Entity entity) {
-        TeleportUtils.teleportToBlockLocation(entity, distination);
+        if (!world.isRemote)
+            Optional.ofNullable(masterTilePos)
+                    .map(pos -> world.getTileEntity(pos))
+                    .filter(tile -> tile instanceof TileMasterPortal)
+                    .ifPresent(tile -> ((TileMasterPortal) tile).onEntityCollidedWithPortal(entity, pos));
+
     }
 }
