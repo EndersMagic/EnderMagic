@@ -1,12 +1,12 @@
 package ru.mousecray.endmagic.tileentity.portal;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import ru.mousecray.endmagic.teleport.Location;
 import ru.mousecray.endmagic.teleport.TeleportUtils;
 
 import java.util.ArrayList;
@@ -18,11 +18,6 @@ public class TileMasterPortal extends TileWithLocation implements ITickable {
     public void openPortal(List<BlockPos> portalPoses) {
         openedPortalPoses = portalPoses;
         tick = 80;
-    }
-
-
-    public void updateDistination(Location readFromItem) {
-        distination = readFromItem;
     }
 
     private int tick;
@@ -42,7 +37,7 @@ public class TileMasterPortal extends TileWithLocation implements ITickable {
     }
 
     public void onEntityCollidedWithPortal(Entity entity, BlockPos openedPortalPos) {
-        TeleportUtils.teleportToBlockLocation(entity, distination);
+        Minecraft.getMinecraft().addScheduledTask(() -> TeleportUtils.teleportToBlockLocation(entity, distination));
     }
 
     @Override

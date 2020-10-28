@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.tileentity.portal;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -9,6 +10,7 @@ import ru.mousecray.endmagic.teleport.TeleportUtils;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class TileMasterDarkPortal extends TileMasterPortal {
     @Override
@@ -22,7 +24,11 @@ public class TileMasterDarkPortal extends TileMasterPortal {
     private Set<Entity> outerFilter = new HashSet<>();
 
     private void addEntityToFilter(Entity entity) {
-        outerFilter.add(entity);
+        getAllRidingEntities(entity.getLowestRidingEntity()).forEachOrdered(outerFilter::add);
+    }
+
+    private Stream<Entity> getAllRidingEntities(Entity rootEntity) {
+        return Stream.concat(Stream.of(rootEntity),rootEntity.getPassengers().stream().flatMap(this::getAllRidingEntities));
     }
 
     private boolean canUsePortal(Entity entity) {
@@ -38,16 +44,18 @@ public class TileMasterDarkPortal extends TileMasterPortal {
     @Override
     public void onEntityCollidedWithPortal(Entity entity, BlockPos openedPortalPos) {
         if (canUsePortal(entity)) {
-            addEntityToFilter(entity);
             TileMasterDarkPortal targetMasterTile = (TileMasterDarkPortal) distination.getWorld().getTileEntity(distination.toPos());
             if (targetMasterTile != null) {
+                targetMasterTile.addEntityToFilter(entity);
+                addEntityToFilter(entity);
+
                 BlockPos offset = openedPortalPos.subtract(pos);
                 Vec3d entityOffset = entity.getPositionVector().subtract(openedPortalPos.getX() + 0.5, openedPortalPos.getY() + 0.5, openedPortalPos.getZ() + 0.5)
                         .rotateYaw((float) Math.toRadians(180));
-                TeleportUtils.teleportEntity(entity, distination.dim,
+                Minecraft.getMinecraft().addScheduledTask(() -> TeleportUtils.teleportEntity(entity, distination.dim,
                         distination.x + offset.getX() + entityOffset.x + 0.5,
                         distination.y + offset.getY() + entityOffset.y + 1,
-                        distination.z + offset.getZ() + entityOffset.z + 0.5, targetMasterTile::addEntityToFilter);
+                        distination.z + offset.getZ() + entityOffset.z + 0.5));
             }
         }
     }

@@ -58,7 +58,7 @@ public abstract class BlockMasterPortal<A extends TileMasterPortal> extends Bloc
 
     protected void openPortal(BlockPos pos, World worldIn) {
         A currentMasterTile = tile(worldIn, pos);
-        Location distination = currentMasterTile.distination;
+        Location distination = currentMasterTile.getDistination();
 
         List<BlockPos> portalPos = getEmptyPoses(pos.up(), worldIn);
 

@@ -7,7 +7,15 @@ import ru.mousecray.endmagic.tileentity.EMTileEntity;
 import static ru.mousecray.endmagic.teleport.Location.spawn;
 
 public class TileWithLocation extends EMTileEntity {
-    public Location distination = spawn;
+    public Location getDistination() {
+        return distination;
+    }
+
+    public void updateDistination(Location readFromItem) {
+        distination = readFromItem;
+    }
+
+    protected Location distination = spawn;
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
