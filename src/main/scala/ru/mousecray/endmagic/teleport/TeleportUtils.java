@@ -66,6 +66,9 @@ public class TeleportUtils {
 
         Optional<EntityPlayerMP> maybePlayer = getPlayerInRiding(passengerHelper).findAny();
 
+        if (maybePlayer.isPresent() && maybePlayer.get() != entity)
+            return teleportEntity(maybePlayer.get(), dimension, xCoord, yCoord, zCoord, yaw, pitch);
+
         maybePlayer.ifPresent(playerMP -> playerMP.invulnerableDimensionChange = true);
 
         //if (maybePlayer.isPresent() && maybePlayer.get() != entity)
