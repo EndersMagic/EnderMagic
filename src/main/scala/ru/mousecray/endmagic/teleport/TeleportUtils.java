@@ -3,6 +3,7 @@ package ru.mousecray.endmagic.teleport;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.server.SPacketEntityEffect;
 import net.minecraft.network.play.server.SPacketPlayerAbilities;
@@ -13,14 +14,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Based on created by brandon3055 on 6/12/2016.
@@ -66,8 +64,12 @@ public class TeleportUtils {
         Entity rootEntity = entity.getLowestRidingEntity();
         PassengerHelper passengerHelper = new PassengerHelper(rootEntity);
 
-        List<Pair<EntityPlayerMP, Boolean>> playersInRiding = getPlayerInRiding(passengerHelper).map(p -> Pair.of(p, p.invulnerableDimensionChange)).collect(toList());
-        playersInRiding.forEach(p -> p.getLeft().invulnerableDimensionChange = true);
+        Optional<EntityPlayerMP> maybePlayer = getPlayerInRiding(passengerHelper).findAny();
+
+        maybePlayer.ifPresent(playerMP -> playerMP.invulnerableDimensionChange = true);
+
+        //if (maybePlayer.isPresent() && maybePlayer.get() != entity)
+        //    return entity;
 
         PassengerHelper rider = passengerHelper.getPassenger(entity);
         if (rider == null) {
@@ -78,15 +80,16 @@ public class TeleportUtils {
         passengerHelper.remountRiders();
         passengerHelper.updateClients();
 
-        playersInRiding.forEach(p -> p.getLeft().invulnerableDimensionChange = p.getRight());
+        maybePlayer.ifPresent(playerMP -> playerMP.invulnerableDimensionChange = false);
 
         return true;
     }
 
     private static Stream<EntityPlayerMP> getPlayerInRiding(PassengerHelper passengerHelper) {
-        return passengerHelper.getAllEntities()
-                .filter(e -> e instanceof EntityPlayerMP)
-                .map(e -> (EntityPlayerMP) e);
+        return Stream.concat(
+                passengerHelper.passengers.stream().filter(p -> p.entity instanceof EntityPlayerMP).map(p -> (EntityPlayerMP) p.entity),
+                passengerHelper.passengers.stream().flatMap(TeleportUtils::getPlayerInRiding)
+        );
     }
 
     /**
@@ -325,10 +328,6 @@ public class TeleportUtils {
             }
 
             return null;
-        }
-
-        public Stream<Entity> getAllEntities() {
-            return Stream.concat(Stream.of(entity), passengers.stream().flatMap(TeleportUtils::getPlayerInRiding));
         }
     }
 }
