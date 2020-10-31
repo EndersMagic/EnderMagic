@@ -306,6 +306,7 @@ public class EMEvents {
         }
     }
 
+
     @SubscribeEvent
     public static void onPressureExplosionCoal(ExplosionEvent.Start event) {
         Vec3d vec = event.getExplosion().getPosition();
@@ -324,12 +325,13 @@ public class EMEvents {
                 .map(item -> new UnexplosibleEntityItem(world, i.getX() + 0.5, i.getY() + 0.5, i.getZ() + 0.5,
                         item));
     }
+
     private static Optional<BlockPos> findPressureStructure(World world, BlockPos explosionPosition) {
-        Optional<BlockPos> coal = findCoal(world, explosionPosition);
-        Optional<Integer> obsidiancount = coal.map(coalPos ->
+        Optional<BlockPos> block = findRecipeBlock(world, explosionPosition);
+        Optional<Integer> obsidiancount = block.map(coalPos ->
                 getCountOfObsidianAround(world, explosionPosition) + getCountOfObsidianAround(world, coalPos))
                 .filter(i -> i >= 10);
-        return obsidiancount.flatMap(__ -> coal);
+        return obsidiancount.flatMap(__ -> block);
     }
 
     private static int getCountOfObsidianAround(World world, BlockPos explosionPosition) {
