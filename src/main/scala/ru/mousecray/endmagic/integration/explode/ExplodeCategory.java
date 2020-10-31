@@ -7,6 +7,7 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.gui.elements.DrawableBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import ru.mousecray.endmagic.EM;
@@ -18,7 +19,7 @@ public class ExplodeCategory implements IRecipeCategory<ExplodeCraftingWrapper>
     private final IDrawableStatic bg; // "Background"
 
     public ExplodeCategory(IGuiHelper h) {
-        bg = h.createDrawable(new ResourceLocation(EM.ID, "textures/gui/gui_explode.png"), 0, 0, 100, 34); // Объявление background'а.
+        bg = new DrawableBuilder(new ResourceLocation(EM.ID, "textures/gui/gui_explode.png"), 0, 0, 100, 34).setTextureSize(100, 34).build(); // Объявление background'а.
     }
 
     @Override
