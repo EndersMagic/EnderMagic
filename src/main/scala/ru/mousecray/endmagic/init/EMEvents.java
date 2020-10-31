@@ -334,6 +334,13 @@ public class EMEvents {
         return obsidiancount.flatMap(__ -> block);
     }
 
+    private static Optional<BlockPos> findRecipeBlock(World world, BlockPos explosionPosition) {
+        return Arrays.stream(EnumFacing.values())
+                .map(side -> explosionPosition.add(side.getDirectionVec()))
+                .filter(pos -> isRecipeBlock(world.getBlockState(pos).getBlock()))
+                .findFirst();
+    }
+
     private static int getCountOfObsidianAround(World world, BlockPos explosionPosition) {
         return (int) Arrays.stream(EnumFacing.values()).filter(side -> {
             BlockPos pos = explosionPosition.add(side.getDirectionVec());
