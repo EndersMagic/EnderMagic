@@ -54,6 +54,7 @@ import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProv
 import ru.mousecray.endmagic.entity.EntityCustomEnderEye;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
+import ru.mousecray.endmagic.integration.explode.ExplodeRecipe;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
@@ -311,19 +312,18 @@ public class EMEvents {
         World world = event.getWorld();
         findPressureStructure(world, new BlockPos(vec.x, vec.y, vec.z))
                 .flatMap(i -> {
-                    Optional<EntityItem> diamond = getDiamond(world, i);
+                    Optional<EntityItem> item = getItem(world, i);
                     world.setBlockToAir(i);
-                    return diamond;
+                    return item;
                 })
                 .ifPresent(world::spawnEntity);
     }
 
-    private static Optional<EntityItem> getDiamond(World world, BlockPos i) {
-        return Optional.ofNullable(coal2diamond.get(world.getBlockState(i).getBlock()))
+    private static Optional<EntityItem> getItem(World world, BlockPos i) {
+        return Optional.ofNullable(ExplodeRecipe.getRecipe(new ItemStack(world.getBlockState(i).getBlock())).getOutput())
                 .map(item -> new UnexplosibleEntityItem(world, i.getX() + 0.5, i.getY() + 0.5, i.getZ() + 0.5,
-                        new ItemStack(item)));
+                        item));
     }
-
     private static Optional<BlockPos> findPressureStructure(World world, BlockPos explosionPosition) {
         Optional<BlockPos> coal = findCoal(world, explosionPosition);
         Optional<Integer> obsidiancount = coal.map(coalPos ->
