@@ -5,7 +5,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import ru.mousecray.endmagic.teleport.Location;
+import ru.mousecray.endmagic.teleport.TeleportDestination;
 import ru.mousecray.endmagic.teleport.TeleportUtils;
+import ru.mousecray.endmagic.teleport.TeleportationHelper;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -28,7 +30,7 @@ public class TileMasterDarkPortal extends TileMasterPortal {
     }
 
     private Stream<Entity> getAllRidingEntities(Entity rootEntity) {
-        return Stream.concat(Stream.of(rootEntity),rootEntity.getPassengers().stream().flatMap(this::getAllRidingEntities));
+        return Stream.concat(Stream.of(rootEntity), rootEntity.getPassengers().stream().flatMap(this::getAllRidingEntities));
     }
 
     private boolean canUsePortal(Entity entity) {
@@ -52,10 +54,13 @@ public class TileMasterDarkPortal extends TileMasterPortal {
                 BlockPos offset = openedPortalPos.subtract(pos);
                 Vec3d entityOffset = entity.getPositionVector().subtract(openedPortalPos.getX() + 0.5, openedPortalPos.getY() + 0.5, openedPortalPos.getZ() + 0.5)
                         .rotateYaw((float) Math.toRadians(180));
+
+                TeleportationHelper.teleportEntityAndPassengers(entity, new TeleportDestination("test", TeleportDestination.DestinationType.BLOCKPOS, distination.dim, distination.toPos().up()));
+/*
                 Minecraft.getMinecraft().addScheduledTask(() -> TeleportUtils.teleportEntity(entity, distination.dim,
                         distination.x + offset.getX() + entityOffset.x + 0.5,
                         distination.y + offset.getY() + entityOffset.y + 1,
-                        distination.z + offset.getZ() + entityOffset.z + 0.5));
+                        distination.z + offset.getZ() + entityOffset.z + 0.5));*/
             }
         }
     }
