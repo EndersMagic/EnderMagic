@@ -30,7 +30,6 @@ die ( ) {
 cygwin=false
 msys=false
 darwin=false
-nonstop=false
 case "`uname`" in
   CYGWIN* )
     cygwin=true
@@ -40,9 +39,6 @@ case "`uname`" in
     ;;
   MINGW* )
     msys=true
-    ;;
-  NONSTOP* )
-    nonstop=true
     ;;
 esac
 
