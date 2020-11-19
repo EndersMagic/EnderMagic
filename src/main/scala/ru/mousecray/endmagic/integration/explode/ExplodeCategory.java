@@ -12,29 +12,27 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import ru.mousecray.endmagic.EM;
 
-public class ExplodeCategory implements IRecipeCategory<ExplodeCraftingWrapper>
-{
-    public static final String UID = EM.ID + ":explode"; // Сам UID рецепт.
+public class ExplodeCategory implements IRecipeCategory<ExplodeCraftingWrapper> {
+    public static final String UID = EM.ID + ":explode";
 
-    private final IDrawableStatic bg; // "Background"
+    private final IDrawableStatic bg;
 
-    public ExplodeCategory(IGuiHelper h)
-    {
-        bg = new DrawableBuilder(new ResourceLocation(EM.ID, "textures/gui/gui_explode.png"), 0, 0, 100, 34).setTextureSize(100, 34).build(); // Объявление background'а.
+    public ExplodeCategory(IGuiHelper h) {
+        bg = new DrawableBuilder(new ResourceLocation(EM.ID, "textures/gui/gui_explode.png"), 0, 0, 100, 34).setTextureSize(100, 34).build();
     }
 
     @Override
-    public String getUid() { // UID рецепта.
+    public String getUid() {
         return UID;
     }
 
     @Override
-    public String getTitle() { // Название вкладки в MC, можно использовать I18n переводчик.
+    public String getTitle() {
         return "Explode Crafting";
     }
 
     @Override
-    public String getModName() { // Название мода.
+    public String getModName() {
         return EM.NAME;
     }
 
@@ -44,20 +42,18 @@ public class ExplodeCategory implements IRecipeCategory<ExplodeCraftingWrapper>
     }
 
     @Override
-    public void drawExtras(Minecraft mc) { // Любые надписи, которые будут на каждом рецепте.
-        // Все координаты идут относительно самого рецепта. Все width и height рассчитывать не нужно.
-//        mc.fontRenderer.drawString("Block drops:", 5, 13, 0xffffffff, true);
+    public void drawExtras(Minecraft mc) {
     }
 
     @Override
     public void setRecipe(IRecipeLayout layout, ExplodeCraftingWrapper recipes, IIngredients ingredients) {
 
-        IGuiItemStackGroup isg = layout.getItemStacks(); // Группа ItemStack, которая нужна для рендера.
-        // Все координаты идут относительно самого рецепта. Все width и height рассчитывать не нужно.
+        IGuiItemStackGroup isg = layout.getItemStacks();
+
         isg.init(0, true, 8, 8);
-        isg.set(0, recipes.getInput()); // Добавляем в слот 0 входной предмет.
+        isg.set(0, recipes.getInput());
 
         isg.init(1, false, 74, 8);
-        isg.set(1, recipes.getOutput()); // Добавляем в слот 1 выходной предмет.
+        isg.set(1, recipes.getOutput());
     }
 }

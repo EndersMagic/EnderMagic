@@ -36,7 +36,7 @@ import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.init.EMRecipes;
 import ru.mousecray.endmagic.init.util.ClassFieldSource;
 import ru.mousecray.endmagic.init.util.ListSource;
-import ru.mousecray.endmagic.integration.explode.ExplodeRecipe;
+import ru.mousecray.endmagic.util.registry.ExplodeRecipe;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;

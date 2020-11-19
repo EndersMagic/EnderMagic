@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.integration.explode;
+package ru.mousecray.endmagic.util.registry;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
@@ -14,49 +14,47 @@ import java.util.List;
 public class ExplodeRecipe {
     private static List<ExplodeRecipe> recipes = new ArrayList<>(); // Лист всех рецептов.
     public static ExplodeRecipe EMPTY = new ExplodeRecipe(is(Items.AIR), is(Items.AIR));
-    public static List<ExplodeRecipe> getRecipes() { // Получатель всех рецептов.
+
+    public static List<ExplodeRecipe> getRecipes() {
         return recipes;
     }
 
-    private final ItemStack input, output; // Компоненты крафта.
+    private final ItemStack input, output;
 
-    public ExplodeRecipe(ItemStack input, ItemStack output) { // Конструктор рецепта.
+    public ExplodeRecipe(ItemStack input, ItemStack output) {
         this.input = input;
         this.output = output;
     }
 
-    public ItemStack getInput() { // Получатель входного предмета рецепта.
+    public ItemStack getInput() {
         return input;
     }
 
-    public ItemStack getOutput() { // Получатель выходного предмета рецепта.
+    public ItemStack getOutput() {
         return output.copy();
     }
 
-    public static ExplodeRecipe addRecipe(@Nonnull ItemStack input, @Nonnull ItemStack output) { // Метод добавления рецепта.
-        ExplodeRecipe recipe = new ExplodeRecipe(input, output); // Создаем рецепт.
-        //if (recipes.contains(recipe)) // Если он есть уже в рецептах - игнорим.
-       //     return null;
-       // else
-            recipes.add(recipe); // Если же нет - добавляем.
+    public static ExplodeRecipe addRecipe(@Nonnull ItemStack input, @Nonnull ItemStack output) {
+        ExplodeRecipe recipe = new ExplodeRecipe(input, output);
+        recipes.add(recipe);
         return recipe;
     }
 
-    public static ExplodeRecipe getRecipe(ItemStack is) { // Получатель рецепта через входной предмет.
+    public static ExplodeRecipe getRecipe(ItemStack is) {
         if (is == null || is.isEmpty())
             return EMPTY;
-        for (ExplodeRecipe recipe : recipes) // Проходим по списку всех рецептов.
-            if (recipe.matchesInput(is)) // Сравниваем входные элементы.
-                return recipe; // Возвращаем рецепт, если входные элементы одинаковые.
+        for (ExplodeRecipe recipe : recipes)
+            if (recipe.matchesInput(is))
+                return recipe;
         return EMPTY;
     }
 
-    public static ExplodeRecipe getRecipe(Block block) { // Получатель рецепта через входной блок.
+    public static ExplodeRecipe getRecipe(Block block) {
         if (block == null)
             return EMPTY;
-        for (ExplodeRecipe recipe : recipes) // Проходим по списку всех рецептов.
-            if (recipe.getInput().getItem() == new ItemStack(block).getItem()) // Сравниваем входные элементы.
-                return recipe; // Возвращаем рецепт, если входные элементы одинаковые.
+        for (ExplodeRecipe recipe : recipes)
+            if (recipe.getInput().getItem() == new ItemStack(block).getItem())
+                return recipe;
         return EMPTY;
     }
 
@@ -75,11 +73,11 @@ public class ExplodeRecipe {
         addRecipe(is(EMBlocks.phantomCoal), is(EMItems.phantomDiamond));
     }
 
-    private static ItemStack is(Item item) { // Побочный метод.
+    private static ItemStack is(Item item) {
         return new ItemStack(item);
     }
 
-    private static ItemStack is(Block block) { // Побочный метод.
+    private static ItemStack is(Block block) {
         return new ItemStack(block);
     }
 }

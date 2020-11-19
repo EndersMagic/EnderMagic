@@ -54,7 +54,7 @@ import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProv
 import ru.mousecray.endmagic.entity.EntityCustomEnderEye;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
-import ru.mousecray.endmagic.integration.explode.ExplodeRecipe;
+import ru.mousecray.endmagic.util.registry.ExplodeRecipe;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;

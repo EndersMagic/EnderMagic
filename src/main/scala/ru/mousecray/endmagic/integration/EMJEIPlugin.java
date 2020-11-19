@@ -12,25 +12,24 @@ import ru.mousecray.endmagic.integration.blast.BlastCategory;
 import ru.mousecray.endmagic.integration.blast.BlastCraftingWrapper;
 import ru.mousecray.endmagic.integration.explode.ExplodeCategory;
 import ru.mousecray.endmagic.integration.explode.ExplodeCraftingWrapper;
-import ru.mousecray.endmagic.integration.explode.ExplodeRecipe;
+import ru.mousecray.endmagic.util.registry.ExplodeRecipe;
 
 @JEIPlugin
-public class EMJEIPlugin implements IModPlugin
-{
+public class EMJEIPlugin implements IModPlugin {
     @Override
-    public void registerCategories(IRecipeCategoryRegistration registry) { // Регистрация категории, которая будет показываться в MC.
+    public void registerCategories(IRecipeCategoryRegistration registry) {
         registry.addRecipeCategories(new ExplodeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new BlastCategory(registry.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void register(IModRegistry registry) {
-        registry.addRecipes(ExplodeRecipe.getRecipes(), ExplodeCategory.UID); // Регистрация рецептов для Вашего UID.
-        registry.handleRecipes(ExplodeRecipe.class, ExplodeCraftingWrapper::new, ExplodeCategory.UID); // Регистрация рецептов из листа рецептов.
-        registry.addRecipeCatalyst(new ItemStack(Blocks.TNT), ExplodeCategory.UID); // Регистрация показывающихся блоков для Вашего UID.
+        registry.addRecipes(ExplodeRecipe.getRecipes(), ExplodeCategory.UID);
+        registry.handleRecipes(ExplodeRecipe.class, ExplodeCraftingWrapper::new, ExplodeCategory.UID);
+        registry.addRecipeCatalyst(new ItemStack(Blocks.TNT), ExplodeCategory.UID);
 
-        registry.addRecipes(EMBlocks.blockBlastFurnace.recipes(), BlastCategory.UID); // Регистрация рецептов для Вашего UID.
-        registry.handleRecipes(BlockBlastFurnace.BlastRecipe.class, BlastCraftingWrapper::new, BlastCategory.UID); // Регистрация рецептов из листа рецептов.
-        registry.addRecipeCatalyst(new ItemStack(EMBlocks.blockBlastFurnace), BlastCategory.UID); // Регистрация показывающихся блоков для Вашего UID.
+        registry.addRecipes(EMBlocks.blockBlastFurnace.recipes(), BlastCategory.UID);
+        registry.handleRecipes(BlockBlastFurnace.BlastRecipe.class, BlastCraftingWrapper::new, BlastCategory.UID);
+        registry.addRecipeCatalyst(new ItemStack(EMBlocks.blockBlastFurnace), BlastCategory.UID);
     }
 }
