@@ -7,6 +7,7 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.gui.elements.DrawableBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import ru.mousecray.endmagic.EM;
@@ -19,7 +20,7 @@ public class BlastCategory implements IRecipeCategory<BlastCraftingWrapper>
 
     public BlastCategory(IGuiHelper h)
     {
-        bg = h.createDrawable(new ResourceLocation(EM.ID, "textures/gui/jei_crafter.png"), 0, 0, 100, 34); // Объявление background'а.
+        bg = new DrawableBuilder(new ResourceLocation(EM.ID, "textures/gui/blast_category_2.png"), 0, 0, 100, 71).setTextureSize(100, 71).build(); // Объявление background'а.
     }
 
     @Override
@@ -58,12 +59,12 @@ public class BlastCategory implements IRecipeCategory<BlastCraftingWrapper>
     {
         IGuiItemStackGroup isg = layout.getItemStacks(); // Группа ItemStack, которая нужна для рендера.
         // Все координаты идут относительно самого рецепта. Все width и height рассчитывать не нужно.
-        isg.init(0, true, 8, 8);
+        isg.init(0, true, 15, 8);
         isg.set(0, recipes.getIron()); // Добавляем в слот 0 входной предмет.
-        isg.init(1, true, 32, 8);
+        isg.init(1, true, 15, 44);
         isg.set(1, recipes.getCoal()); // Добавляем в слот 1 входной предмет.
 
-        isg.init(2, false, 74, 8);
+        isg.init(2, false, 68, 27);
         isg.set(2, recipes.getOutput()); // Добавляем в слот 2 выходной предмет.
     }
 }

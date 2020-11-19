@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExplodeRecipe{
+public class ExplodeRecipe {
     private static List<ExplodeRecipe> recipes = new ArrayList<>(); // Лист всех рецептов.
     public static ExplodeRecipe EMPTY = new ExplodeRecipe(is(Items.AIR), is(Items.AIR));
     public static List<ExplodeRecipe> getRecipes() { // Получатель всех рецептов.

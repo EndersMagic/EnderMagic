@@ -18,7 +18,8 @@ public class ExplodeCategory implements IRecipeCategory<ExplodeCraftingWrapper>
 
     private final IDrawableStatic bg; // "Background"
 
-    public ExplodeCategory(IGuiHelper h) {
+    public ExplodeCategory(IGuiHelper h)
+    {
         bg = new DrawableBuilder(new ResourceLocation(EM.ID, "textures/gui/gui_explode.png"), 0, 0, 100, 34).setTextureSize(100, 34).build(); // Объявление background'а.
     }
 
