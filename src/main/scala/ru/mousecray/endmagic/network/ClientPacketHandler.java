@@ -11,6 +11,7 @@ import net.minecraft.world.chunk.Chunk;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
 import ru.mousecray.endmagic.capability.chunk.RunePart;
+import ru.mousecray.endmagic.capability.player.EmCapabilityProvider;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -18,7 +19,7 @@ import ru.mousecray.endmagic.client.render.model.baked.FinalisedModelEnderCompas
 import ru.mousecray.endmagic.rune.RuneIndex;
 import ru.mousecray.endmagic.util.Vec2i;
 
-import static ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider.*;
+import static ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider.runeStateCapability;
 
 public class ClientPacketHandler implements ICustomPacketHandler.IClientPacketHandler {
 
@@ -61,8 +62,12 @@ public class ClientPacketHandler implements ICustomPacketHandler.IClientPacketHa
                 RuneIndex.addRunePart(minecraft.world, packetCustom.readPos(), packetCustom.readEnumFacing(), new Vec2i(packetCustom.readInt(), packetCustom.readInt()), new RunePart(packetCustom.readByte()));
                 break;
             }
-            case REMOVE_RUNE_STATE:{
-                RuneIndex.removeRune(minecraft.world,packetCustom.readPos());
+            case REMOVE_RUNE_STATE: {
+                RuneIndex.removeRune(minecraft.world, packetCustom.readPos());
+                break;
+            }
+            case UPDATE_PLAYER_EM_CAPABILITY: {
+                EmCapabilityProvider.getCapa(minecraft.player).setEm(packetCustom.readInt());
                 break;
             }
             default:

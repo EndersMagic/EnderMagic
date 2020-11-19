@@ -31,6 +31,8 @@ import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
 import ru.mousecray.endmagic.capability.chunk.CommonRuneChunkCapability;
 import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
 import ru.mousecray.endmagic.capability.chunk.RuneStorage;
+import ru.mousecray.endmagic.capability.player.EmCapabilityStorage;
+import ru.mousecray.endmagic.capability.player.IEmCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.client.gui.GuiTypes;
 import ru.mousecray.endmagic.init.EMBlocks;
@@ -97,6 +99,7 @@ public class CommonProxy implements IGuiHandler {
         }, PhantomAvoidingGroupCapability::new);
 
         CapabilityManager.INSTANCE.register(IRuneChunkCapability.class, new RuneStorage(), CommonRuneChunkCapability::new);
+        CapabilityManager.INSTANCE.register(IEmCapability.class, new EmCapabilityStorage(), ()->null);
     }
 
     private void registerBlock(Block block) {

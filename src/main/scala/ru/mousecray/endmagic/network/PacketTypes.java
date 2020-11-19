@@ -13,7 +13,8 @@ public enum PacketTypes {
     UPDATE_PHANROM_AVOIDINCAPABILITY,
     SYNC_RUNE_CAPABILITY,
     ADDED_RUNE_PART,
-    REMOVE_RUNE_STATE;
+    REMOVE_RUNE_STATE,
+    UPDATE_PLAYER_EM_CAPABILITY;
 
     public int id = ordinal() + 1;
 

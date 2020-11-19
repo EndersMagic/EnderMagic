@@ -57,6 +57,7 @@ import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
 import ru.mousecray.endmagic.capability.chunk.Rune;
 import ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider;
+import ru.mousecray.endmagic.capability.player.EmCapabilityProvider;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -114,6 +115,12 @@ public class EMEvents {
                     .writeInt(chunk.z)
                     .writeNBTTagCompound(nbt)
                     .sendToPlayer(event.getPlayer());
+    }
+
+    @SubscribeEvent
+    public static void onCapaAttachToEntity(AttachCapabilitiesEvent<Entity> event) {
+        if (event.getObject() instanceof EntityPlayer)
+            event.addCapability(EmCapabilityProvider.name, new EmCapabilityProvider(((EntityPlayer) event.getObject())));
     }
 
     @SubscribeEvent

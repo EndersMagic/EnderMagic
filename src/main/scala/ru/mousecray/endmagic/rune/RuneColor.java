@@ -15,8 +15,8 @@ public enum RuneColor {
     Void(new Color(27, 123, 107)),
     Time(new Color(220, 198, 255)),
     Perception(new Color(181, 0, 63)),
-    Air(new Color(200, 255, 200), new ResourceLocation(EM.ID, "runes/test")),
-    Darkness(new Color(10, 10, 10), new ResourceLocation(EM.ID, "runes/test"));
+    Air(new Color(200, 255, 200)),
+    Darkness(new Color(10, 10, 10));
 
 
     public final int r;

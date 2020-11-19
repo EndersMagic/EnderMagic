@@ -46,6 +46,5 @@ public class RuneStateCapabilityProvider implements ICapabilityProvider, INBTSer
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
         runeStateCapability.readNBT(value, EnumFacing.UP, nbt);
-
     }
 }
