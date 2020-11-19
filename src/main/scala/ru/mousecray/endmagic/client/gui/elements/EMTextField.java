@@ -10,12 +10,14 @@ public class EMTextField extends GuiTextField
 {
     final GuiContainerCreative gui;
 
+    int realX;
     public EMTextField(int componentId, FontRenderer fontrendererObj, int x, int y, int width, int height, GuiContainerCreative gui)
     {
         super(componentId, fontrendererObj, x, y, width, height);
         setCanLoseFocus(true);
         setFocused(false);
         setTextColor(16777215);
+        realX = x;
         this.gui = gui;
     }
 
@@ -34,5 +36,7 @@ public class EMTextField extends GuiTextField
             setEnableBackgroundDrawing(false);
             super.drawTextBox();
         }
+        /* God forgive me for this code, but I do not know where the position changes and where to cancel it. */
+        x = gui.getSelectedTabIndex() == EM.EM_CREATIVE.getTabIndex() ? realX + 35 : realX;
     }
 }

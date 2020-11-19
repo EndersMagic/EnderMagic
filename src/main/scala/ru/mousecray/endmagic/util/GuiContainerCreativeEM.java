@@ -17,11 +17,10 @@ public class GuiContainerCreativeEM extends GuiContainerCreative {
     @Override
     public void initGui() {
         super.initGui();
-        buttonList.add(new GuiButtonSort(15, 8,  4,this, 0, () -> EMCreativeTab.tools  = !EMCreativeTab.tools));
-        buttonList.add(new GuiButtonSort(16, 20, 4,this, 1, () -> EMCreativeTab.armor  = !EMCreativeTab.armor));
-        buttonList.add(new GuiButtonSort(17, 32, 4,this, 2, () -> EMCreativeTab.blocks = !EMCreativeTab.blocks));
-        buttonList.add(new GuiButtonSort(18, 44, 4,this, 3, () -> EMCreativeTab.items  = !EMCreativeTab.items));
-        searchField = new EMTextField(searchField.getId(), Minecraft.getMinecraft().fontRenderer, searchField.x, searchField.y, searchField.width - 2, searchField.height, this);
+        buttonList.add(new GuiButtonSort(15, 8,  5,this, 0, () -> EMCreativeTab.tools  = !EMCreativeTab.tools));
+        buttonList.add(new GuiButtonSort(16, 20, 5,this, 1, () -> EMCreativeTab.blocks = !EMCreativeTab.blocks));
+        buttonList.add(new GuiButtonSort(17, 32, 5,this, 2, () -> EMCreativeTab.items  = !EMCreativeTab.items));
+        searchField = new EMTextField(searchField.getId(), Minecraft.getMinecraft().fontRenderer, searchField.x, searchField.y, searchField.width - 38, searchField.height, this);
     }
 
     @Override

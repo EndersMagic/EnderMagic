@@ -15,16 +15,16 @@ import javax.annotation.Nonnull;
 public class GuiButtonSort extends GuiButton {
     protected static final ResourceLocation[] textures =
             {
-                    ResourcesUtils.texture("gui/sort_button.png"),
-                    ResourcesUtils.texture("gui/items_button.png"),
+                    ResourcesUtils.texture("gui/tools_button.png"),
                     ResourcesUtils.texture("gui/blocks_button.png"),
-                    ResourcesUtils.texture("gui/tools_button.png")
+                    ResourcesUtils.texture("gui/items_button.png")
             };
+    //                    ResourcesUtils.texture("gui/sort_button.png"),
     final GuiContainerCreative gui;
     Action action;
     int type;
     public GuiButtonSort(int id, int xPos, int yPos, GuiContainerCreative gui, int type, Action action) {
-        super(id, gui.getGuiLeft() + gui.mc.fontRenderer.getStringWidth(I18n.format("em_cretive_tab")) + 6 - xPos, gui.getGuiTop() + yPos, 10, 10, "");
+        super(id, gui.getGuiLeft() + gui.mc.fontRenderer.getStringWidth(I18n.format(EM.EM_CREATIVE.getTranslatedTabLabel())) + xPos, gui.getGuiTop() + yPos, 10, 10, "");
         this.gui = gui;
         this.action = action;
         this.type = type;
@@ -56,6 +56,7 @@ public class GuiButtonSort extends GuiButton {
             mouseDragged(mc, mouseX, mouseY);
         }
     }
+
     @FunctionalInterface
     public interface Action
     {
