@@ -11,48 +11,47 @@ import ru.mousecray.endmagic.init.EMBlocks;
 
 import javax.annotation.Nonnull;
 
-public class EMCreativeTab extends CreativeTabs {
-    public static int Sort = 0;
+public class EMCreativeTab extends CreativeTabs
+{
+    public static boolean armor = true, items = true, blocks = true, tools = true;
 
-    public EMCreativeTab() {
+    public EMCreativeTab()
+    {
         super("em_cretive_tab");
         setBackgroundImageName("item_search.png");
     }
 
     @Nonnull
     @Override
-    public ItemStack getTabIconItem() {
+    public ItemStack getTabIconItem()
+    {
         return new ItemStack(EMBlocks.enderTallgrass);
     }
 
     @Override
-    public boolean hasSearchBar() {
+    public boolean hasSearchBar()
+    {
         return true;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> itemStacks) {
-        switch (Sort) {
-            case 0:
-                for (Item item : Item.REGISTRY)
-                    item.getSubItems(this, itemStacks);
+    public void displayAllRelevantItems(@Nonnull NonNullList<ItemStack> itemStacks)
+    {
+        if (items)
+            for (Item item : Item.REGISTRY)
+                item.getSubItems(this, itemStacks);
 
-                break;
-            case 1:
-                for (Item item : Item.REGISTRY)
-                    if (!(item instanceof ItemBlock) && !item.isDamageable()) item.getSubItems(this, itemStacks);
+        if (tools)
+            for (Item item : Item.REGISTRY)
+                if (!(item instanceof ItemBlock) && !item.isDamageable()) item.getSubItems(this, itemStacks);
 
-                break;
-            case 2:
-                for (Item item : Item.REGISTRY)
-                    if (item instanceof ItemBlock) item.getSubItems(this, itemStacks);
+        if (blocks)
+            for (Item item : Item.REGISTRY)
+                if (item instanceof ItemBlock) item.getSubItems(this, itemStacks);
 
-                break;
-            case 3:
-                for (Item item : Item.REGISTRY)
-                    if (item.isDamageable()) item.getSubItems(this, itemStacks);
-
-        }
+        if (armor)
+            for (Item item : Item.REGISTRY)
+                if (item.isDamageable()) item.getSubItems(this, itemStacks);
     }
 }

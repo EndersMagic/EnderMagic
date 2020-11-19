@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.util.EMCreativeTab;
@@ -20,10 +21,13 @@ public class GuiButtonSort extends GuiButton {
                     ResourcesUtils.texture("gui/tools_button.png")
             };
     final GuiContainerCreative gui;
-
-    public GuiButtonSort(int id, int xPos, int yPos, int width, int height, String displayString, GuiContainerCreative gui) {
-        super(id, gui.getGuiLeft() + gui.getXSize() - width - xPos, gui.getGuiTop() + yPos, width, height, displayString);
+    Action action;
+    int type;
+    public GuiButtonSort(int id, int xPos, int yPos, GuiContainerCreative gui, int type, Action action) {
+        super(id, gui.getGuiLeft() + gui.mc.fontRenderer.getStringWidth(I18n.format("em_cretive_tab")) + 6 - xPos, gui.getGuiTop() + yPos, 10, 10, "");
         this.gui = gui;
+        this.action = action;
+        this.type = type;
     }
 
     @Override
@@ -36,7 +40,7 @@ public class GuiButtonSort extends GuiButton {
     public boolean mousePressed(@Nonnull Minecraft mc, int mouseX, int mouseY) {
         boolean pressed = super.mousePressed(mc, mouseX, mouseY);
         if (pressed) {
-            EMCreativeTab.Sort = (EMCreativeTab.Sort + 1) % 4;
+            action.onClick();
             gui.updateCreativeSearch();
         }
         return pressed && gui.getSelectedTabIndex() == EM.EM_CREATIVE.getTabIndex();
@@ -45,11 +49,16 @@ public class GuiButtonSort extends GuiButton {
 
     public void drawButtonMod(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
         if (visible) {
-            mc.getTextureManager().bindTexture(textures[EMCreativeTab.Sort % 4]);
+            mc.getTextureManager().bindTexture(textures[type % 4]);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
             drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
             mouseDragged(mc, mouseX, mouseY);
         }
+    }
+    @FunctionalInterface
+    public interface Action
+    {
+        void onClick();
     }
 }
