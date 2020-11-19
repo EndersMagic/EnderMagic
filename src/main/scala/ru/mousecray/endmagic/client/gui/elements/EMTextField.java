@@ -37,6 +37,6 @@ public class EMTextField extends GuiTextField
             super.drawTextBox();
         }
         /* God forgive me for this code, but I do not know where the position changes and where to cancel it. */
-        x = gui.getSelectedTabIndex() == EM.EM_CREATIVE.getTabIndex() ? realX + 35 : realX;
+        x = gui.getSelectedTabIndex() == EM.EM_CREATIVE.getTabIndex() ? realX + 36 : realX;
     }
 }
