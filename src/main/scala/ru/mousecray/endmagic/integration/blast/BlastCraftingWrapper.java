@@ -9,7 +9,7 @@ import ru.mousecray.endmagic.blocks.BlockBlastFurnace;
 
 public class BlastCraftingWrapper implements IRecipeWrapper
 {
-    public final Item coal, iron, steel;
+    private final Item coal, iron, steel;
 
     public BlastCraftingWrapper(BlockBlastFurnace.BlastRecipe recipe)
     {
@@ -21,8 +21,8 @@ public class BlastCraftingWrapper implements IRecipeWrapper
     @Override
     public void getIngredients(IIngredients ingredients)
     {
-        ingredients.setInputs(ItemStack.class, ImmutableList.of(iron, coal)); // Входные ингридиенты.
-        ingredients.setOutput(ItemStack.class, steel); // Выходные ингридиенты.
+        ingredients.setInputs(ItemStack.class, ImmutableList.of(getIron(), getCoal())); // Входные ингридиенты.
+        ingredients.setOutput(ItemStack.class, getOutput()); // Выходные ингридиенты.
     }
 
     public ItemStack getIron()
