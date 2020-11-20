@@ -14,10 +14,10 @@ public interface BlockColored extends IExtendedProperties {
     @Override
     default void registerModels(IModelRegistration modelRegistration) {
         Block block = (Block) this;
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
-                new ModelResourceLocation(block.getRegistryName(), "inventory"));
-        modelRegistration.
-                addBakedModelOverride(block.getRegistryName(), ColoredModel.of(color()));
+
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
+
+        modelRegistration.addBakedModelOverride(block.getRegistryName(), ColoredModel.of(color()));
     }
 
     RGBA color();
