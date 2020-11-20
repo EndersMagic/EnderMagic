@@ -36,6 +36,7 @@ import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.init.EMRecipes;
 import ru.mousecray.endmagic.init.util.ClassFieldSource;
 import ru.mousecray.endmagic.init.util.ListSource;
+import ru.mousecray.endmagic.util.registry.ExplodeRecipe;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
@@ -156,6 +157,7 @@ public class CommonProxy implements IGuiHandler {
 
         //Registration Furnace Recipes
         EMRecipes.initRecipes();
+        ExplodeRecipe.initRecipes();
         //GameRegistry.addSmelting(new ItemStack(EMBlocks.enderLog, 1, EnderBlockTypes.EnderTreeType.DRAGON.ordinal()), new ItemStack(EMItems.dragonCoal), 10);
 
         //Register Craftingtable Recipes

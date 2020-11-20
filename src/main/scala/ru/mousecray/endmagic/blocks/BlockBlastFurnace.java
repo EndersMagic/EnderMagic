@@ -53,8 +53,8 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
 
     private List<BlastRecipe> recipes;
 
-    private List<BlastRecipe> recipes() {
-        if (recipes == null) {
+    public List<BlastRecipe> recipes() {
+        if (recipes == null || recipes.isEmpty()) {
             recipes = new ArrayList<>();
             addRecipe(EMItems.dragonCoal, Items.IRON_INGOT, EMItems.dragonSteel);
             addRecipe(EMItems.immortalCoal, Items.IRON_INGOT, EMItems.immortalSteel);
@@ -131,7 +131,7 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
         return steel;
     }
 
-    private class BlastRecipe {
+    public class BlastRecipe {
         public final Item coal, iron, steel;
 
         public BlastRecipe(Item coal, Item iron, Item steel) {
