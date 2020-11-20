@@ -18,8 +18,8 @@ public class ExplodeCraftingWrapper implements IRecipeWrapper {
 
     @Override
     public void getIngredients(IIngredients ingredients) {
-        ingredients.setInput(ItemStack.class, input);
-        ingredients.setOutput(ItemStack.class, output);
+        ingredients.setInput(ItemStack.class, getInput());
+        ingredients.setOutput(ItemStack.class, getOutput());
     }
 
     public ItemStack getInput() {
