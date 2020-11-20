@@ -321,7 +321,7 @@ public class EMEvents {
     }
 
     private static Optional<EntityItem> getItem(World world, BlockPos i) {
-        return Optional.ofNullable(ExplodeRecipe.getRecipe(new ItemStack(world.getBlockState(i).getBlock())).getOutput())
+        return Optional.ofNullable(ExplodeRecipe.getRecipe(world.getBlockState(i).getBlock()))
                 .map(item -> new UnexplosibleEntityItem(world, i.getX() + 0.5, i.getY() + 0.5, i.getZ() + 0.5,
                         item));
     }
@@ -342,7 +342,7 @@ public class EMEvents {
     }
 
     private static boolean isRecipeBlock(Block block) {
-        return ExplodeRecipe.getRecipe(block) != ExplodeRecipe.EMPTY;
+        return ExplodeRecipe.getRecipe(block) != ItemStack.EMPTY;
     }
 
     private static int getCountOfObsidianAround(World world, BlockPos explosionPosition) {
