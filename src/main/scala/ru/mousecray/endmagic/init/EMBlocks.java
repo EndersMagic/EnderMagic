@@ -46,6 +46,8 @@ public final class EMBlocks {
     public static final EMLeaves enderLeaves = new EMLeaves();
     public static final EMPlanks enderPlanks = new EMPlanks();
 
+    public static final BlockImmortalHeart immortalHeart = new BlockImmortalHeart();
+
     public static final EMSlab.EMSlabDouble enderWoodenSlabDouble = new EMSlab.EMSlabDouble();
     public static final EMSlab.EMSlabSingle enderWoodenSlabSingle = new EMSlab.EMSlabSingle();
 
