@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.entity;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityFallingBlock;
@@ -89,30 +90,6 @@ public class EntityEMEnderPearl extends EntityThrowable {
                     spawnEndermite(result.entityHit, false);
                     item.onImpact((EntityLivingBase) result.entityHit, factionalThrower, this);
                 }
-            }
-
-            if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
-                for (int i = -2; i < 2; ++i)
-                    for (int j = -2; j < 2; ++j) {
-                        BlockPos blockpos = result.getBlockPos().add(i, 0, j);
-                        TileEntity tileentity = world.getTileEntity(blockpos);
-                        if (tileentity == null) {
-                            EntityFallingBlock entity = new EntityFallingBlock(world, blockpos.getX(), blockpos.getY(),
-                                    blockpos.getZ(), world.getBlockState(blockpos));
-                            entity.motionY = ((double) 1 / (rand.nextInt(5) + 2));
-                            entity.motionX = 0.0D;
-                            entity.motionZ = 0.0D;
-                            entity.moveToBlockPosAndAngles(blockpos, 0F, 0F);
-
-                            entity.setHurtEntities(true);
-                            world.spawnEntity(entity);
-                        }
-                    }
-                BlockPos blockpos = result.getBlockPos();
-                for (int i = 0; i < 32; ++i)
-                    world.spawnParticle(EnumParticleTypes.PORTAL, blockpos.getX(),
-                            blockpos.getY() + rand.nextDouble() * 2.0D, blockpos.getZ(), rand.nextGaussian(), 0.0D,
-                            rand.nextGaussian());
             }
             world.setEntityState(this, (byte) 3);
             setDead();
