@@ -9,13 +9,12 @@ import ru.mousecray.endmagic.util.VectorUtil;
 
 public class ImmortalTree
 {
-    public static void generate(World world, BlockPos pos, BlockPos pos2, int length, int width)
+    public static void generate(World world, BlockPos pos, int length, int width)
     {
-        double l = length;
         Vector3d vector3d = new Vector3d();
-        vector3d.x = pos2.getX() / l;
-        vector3d.y = pos2.getY() / l;
-        vector3d.z = pos2.getZ() / l;
+        vector3d.x = 0;
+        vector3d.y = 1;
+        vector3d.z = 0;
         generateBranchRecursive(world, pos, length, width, vector3d);
     }
 
@@ -38,15 +37,15 @@ public class ImmortalTree
                     }
                 }
             }
-            if(Math.ceil(width) <= 5)
+            if (Math.ceil(width) <= 3)
             {
-                for (int x = 0; x < Math.ceil(width) * 1.5; x++)
+                for (int x = 0; x < Math.ceil(width) * 2; x++)
                 {
-                    for (int y = 0; y < Math.ceil(width) * 1.5; y++)
+                    for (int y = 0; y < Math.ceil(width) * 2; y++)
                     {
-                        for (int z = 0; z < Math.ceil(width) * 1.5; z++)
+                        for (int z = 0; z < Math.ceil(width) * 2; z++)
                         {
-                            BlockPos pos2 = newPos.add(x - Math.ceil(width) * 1.5 / 2, y - Math.ceil(width) * 1.5 / 2, z - Math.ceil(width) * 1.5 / 2);
+                            BlockPos pos2 = newPos.add(x - Math.ceil(width), y - Math.ceil(width), z - Math.ceil(width));
                             if (world.isAirBlock(pos2))
                                 world.setBlockState(pos2, Blocks.LEAVES.getDefaultState());
                         }
@@ -54,7 +53,7 @@ public class ImmortalTree
                 }
             }
 
-            if (world.rand.nextInt(length) < length / Math.abs(30F - i / length * 20 - countOfBranches) && width >= 0.4 && ((i > 0.6 * length) ^ (length <= 35)))
+            if (world.rand.nextInt(length) < length / Math.abs(30F - i / length * 20 - countOfBranches) + length * 0.5 / width && width >= 1 && ((i > 0.6 * length) ^ (length <= 35)))
             {
                 Vector3d newDir = new Vector3d();
                 newDir.x = dir.x + 0;
@@ -64,15 +63,34 @@ public class ImmortalTree
                 VectorUtil.rotateY(newDir, world.rand.nextInt(60) - 30);
                 VectorUtil.rotateZ(newDir, world.rand.nextInt(60) - 30);
 
-                if(length >= 35)
+                if (length >= 35)
                 {
                     newDir.y = Math.abs(newDir.y);
-                    newDir.y *= (1.2 - i / length) % 1;
                 }
                 countOfBranches++;
                 generateBranchRecursive(world, newPos, (int) (length * 0.8F), width * 0.7, newDir);
             }
 
+            if (world.rand.nextInt(1000) == 1 && width >= 1 && length > 10 && length < 20)
+            {
+                for (int y = 0; y < 10; ++y)
+                {
+                    world.setBlockState(newPos.add(0, -y, 0), Blocks.LOG.getDefaultState());
+                }
+
+                for (int x = 0; x < 3; x++)
+                {
+                    for (int y = 0; y < 3; y++)
+                    {
+                        for (int z = 0; z < 3; z++)
+                        {
+                            BlockPos pos2 = newPos.add(x - 2 - 1, y - 30 - 1, z - 2 - 1);
+                            if (world.isAirBlock(pos2))
+                                world.setBlockState(pos2, Blocks.GLOWSTONE.getDefaultState());
+                        }
+                    }
+                }
+            }
         }
     }
 }
