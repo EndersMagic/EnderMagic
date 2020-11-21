@@ -24,7 +24,7 @@ public class BlockImmortalHeart extends BlockWithTile<TileEntityImmortalHeart>
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        ImmortalTree.generate(worldIn, pos.up(),  new BlockPos(5, 20, 8), 50);
+        ImmortalTree.generate(worldIn, pos.up(),  new BlockPos(0, 80, 0), 80, 12);
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
     }
 
