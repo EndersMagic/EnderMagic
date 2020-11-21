@@ -14,31 +14,20 @@ import java.util.*;
 
 public class ImmortalTree
 {
-    public static HashMap<BlockPos, IBlockState> toPlace = new HashMap<>();
     public static void generate(World world, BlockPos pos, int length, int width)
     {
-        try
-        {
-            Vector3d vector3d = new Vector3d();
-            vector3d.x = 0;
-            vector3d.y = 1;
-            vector3d.z = 0;
-            generateBranchRecursive(world.rand, pos, length, width, vector3d);
-            List<Map.Entry<BlockPos, IBlockState>> entries = ImmutableList.copyOf(toPlace.entrySet());
-            for (Map.Entry<BlockPos, IBlockState> current: entries)
-            {
-                TaskManager.blocksToPlace.add(new Truple<>(world, current.getKey(), current.getValue()));
-            }
-            toPlace = new HashMap<>();
-        }
-        catch (Exception ignored)
-        {
-
-        }
+        HashMap<BlockPos, IBlockState> toPlace = new HashMap<>();
+        Vector3d vector3d = new Vector3d();
+        vector3d.x = 0;
+        vector3d.y = 1;
+        vector3d.z = 0;
+        generateBranchRecursive(toPlace, world.rand, pos, length, width, vector3d);
+        for (Map.Entry<BlockPos, IBlockState> current : ImmutableList.copyOf(toPlace.entrySet()))
+            TaskManager.blocksToPlace.add(new Truple<>(world, current.getKey(), current.getValue()));
 
     }
 
-    public static void generateBranchRecursive(Random rand, BlockPos pos, int length, double width, Vector3d dir)
+    public static void generateBranchRecursive(Map<BlockPos, IBlockState> toPlace, Random rand, BlockPos pos, int length, double width, Vector3d dir)
     {
         int countOfBranches = 0;
         for (double i = 0; i < length; ++i)
@@ -83,12 +72,10 @@ public class ImmortalTree
                 VectorUtil.rotateY(newDir, rand.nextInt(60) - 30);
                 VectorUtil.rotateZ(newDir, rand.nextInt(60) - 30);
 
-                if (length >= 35)
-                {
-                    newDir.y = Math.abs(newDir.y);
-                }
+                if (length >= 35) newDir.y = Math.abs(newDir.y);
+
                 countOfBranches++;
-                generateBranchRecursive(rand, newPos, (int) (length * 0.8F), width * 0.7, newDir);
+                generateBranchRecursive(toPlace, rand, newPos, (int) (length * 0.8F), width * 0.7, newDir);
             }
 
             if (rand.nextInt(1000) == 1 && width >= 1 && length > 10 && length < 20)
@@ -104,8 +91,7 @@ public class ImmortalTree
                     {
                         for (int z = 0; z < 3; z++)
                         {
-                            BlockPos pos2 = newPos.add(x - 2 + 1, y - 20 + 1, z - 2 + 1);
-                            toPlace.put(pos2, Blocks.GLOWSTONE.getDefaultState());
+                            toPlace.put(newPos.add(x - 2 + 1, y - 20 + 1, z - 2 + 1), Blocks.GLOWSTONE.getDefaultState());
                         }
                     }
                 }
