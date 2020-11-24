@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic.items;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -12,10 +11,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ru.mousecray.endmagic.client.gui.GuiScreenEMBook;
 import ru.mousecray.endmagic.client.render.book.ItemBookRenderer;
 import ru.mousecray.endmagic.client.render.book.TEISRModelWrapper;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
+
+import static ru.mousecray.endmagic.client.render.book.ItemBookRenderer.BookState.*;
+import static ru.mousecray.endmagic.client.render.book.ItemBookRenderer.setState;
+import static ru.mousecray.endmagic.client.render.book.ItemBookRenderer.state;
 
 public class EMBook extends Item implements ItemOneWhiteEMTextured {
 
@@ -31,7 +33,8 @@ public class EMBook extends Item implements ItemOneWhiteEMTextured {
     @Override
     @SideOnly(Side.CLIENT)
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        if (world.isRemote) Minecraft.getMinecraft().displayGuiScreen(GuiScreenEMBook.instance);
+        setState(list_right);
+        //if (world.isRemote) Minecraft.getMinecraft().displayGuiScreen(GuiScreenEMBook.instance);
         return new ActionResult<>(EnumActionResult.PASS, player.getHeldItem(hand));
     }
 
