@@ -1,9 +1,5 @@
 package ru.mousecray.endmagic.client.gui;
 
-import java.io.IOException;
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -17,6 +13,10 @@ import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.IPage;
 import ru.mousecray.endmagic.api.embook.PageContainer;
 
+import java.io.IOException;
+import java.util.Optional;
+import java.util.function.Supplier;
+
 @SideOnly(Side.CLIENT)
 public class GuiScreenEMBook extends GuiScreen {
 
@@ -24,8 +24,8 @@ public class GuiScreenEMBook extends GuiScreen {
 
     private GuiButton buttonBack;
     private NextPageButton buttonNextPage, buttonPreviousPage;
-    private static int bookFullWidth = 256;
-    private static int bookFullHeight = 192;
+    public static int bookFullWidth = 256;
+    public static int bookFullHeight = 192;
 
     public void setCurrentPage(Optional<PageContainer> currentPage) {
         this.currentPage = currentPage.orElse(BookApi.mainChapter());
@@ -122,7 +122,7 @@ public class GuiScreenEMBook extends GuiScreen {
         GlStateManager.enableRescaleNormal();
     }
 
-    private void drawPage(int i, int j, IPage page, int mouseX, int mouseY) {
+    public static void drawPage(int i, int j, IPage page, int mouseX, int mouseY) {
         GlStateManager.pushMatrix();
 
         GlStateManager.translate(i, j, 0);

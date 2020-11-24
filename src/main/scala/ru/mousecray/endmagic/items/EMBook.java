@@ -11,13 +11,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.client.render.book.ItemBookRenderer;
 import ru.mousecray.endmagic.client.render.book.TEISRModelWrapper;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 
 import static ru.mousecray.endmagic.client.render.book.ItemBookRenderer.BookState.*;
-import static ru.mousecray.endmagic.client.render.book.ItemBookRenderer.setState;
-import static ru.mousecray.endmagic.client.render.book.ItemBookRenderer.state;
+import static ru.mousecray.endmagic.client.render.book.ItemBookRenderer.*;
 
 public class EMBook extends Item implements ItemOneWhiteEMTextured {
 
@@ -33,7 +33,8 @@ public class EMBook extends Item implements ItemOneWhiteEMTextured {
     @Override
     @SideOnly(Side.CLIENT)
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        setState(list_right);
+        currentPage = BookApi.mainChapter();
+        setState(opening);
         //if (world.isRemote) Minecraft.getMinecraft().displayGuiScreen(GuiScreenEMBook.instance);
         return new ActionResult<>(EnumActionResult.PASS, player.getHeldItem(hand));
     }
