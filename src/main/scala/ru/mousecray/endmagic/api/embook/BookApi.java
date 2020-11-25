@@ -11,8 +11,8 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 
 public class BookApi {
-    public static final int pageWidth = 104;
-    public static final int pageHeight = 147;
+    public static final int pageWidth = 160;
+    public static final int pageHeight = 280;
 
     static Map<String, Set<String>> categories = new HashMap<>();
 

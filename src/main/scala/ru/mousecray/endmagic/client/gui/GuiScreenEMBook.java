@@ -37,7 +37,7 @@ public class GuiScreenEMBook extends GuiScreen {
         updateButtons();
     }
 
-    private PageContainer currentPage = BookApi.mainChapter();
+    public PageContainer currentPage = BookApi.mainChapter();
 
     private static final ResourceLocation BOOK_TEXTURES = new ResourceLocation(EM.ID, "textures/gui/book.png");
 
