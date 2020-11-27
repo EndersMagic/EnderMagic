@@ -8,6 +8,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.init.EMItems;
 
 import javax.annotation.Nonnull;
 
@@ -41,5 +42,6 @@ public class EMCreativeTab extends CreativeTabs
         if (items)  for (Item item : Item.REGISTRY) if (!(item instanceof ItemBlock) && !item.isDamageable()) item.getSubItems(this, itemStacks);
         if (blocks) for (Item item : Item.REGISTRY) if (item instanceof ItemBlock)                            item.getSubItems(this, itemStacks);
         if (tools)  for (Item item : Item.REGISTRY) if (item.isDamageable())                                  item.getSubItems(this, itemStacks);
+        EMItems.emBook.getSubItems(this, itemStacks);
     }
 }

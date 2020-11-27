@@ -1,13 +1,25 @@
 package ru.mousecray.endmagic.util;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.client.config.GuiUtils;
 import ru.mousecray.endmagic.client.gui.elements.EMTextField;
 import ru.mousecray.endmagic.client.gui.elements.GuiButtonSort;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class GuiContainerCreativeEM extends GuiContainerCreative {
     public GuiContainerCreativeEM(EntityPlayer player) {
@@ -17,10 +29,10 @@ public class GuiContainerCreativeEM extends GuiContainerCreative {
     @Override
     public void initGui() {
         super.initGui();
-        buttonList.add(new GuiButtonSort(15, 8,  4,this, 0, () -> EMCreativeTab.tools  = !EMCreativeTab.tools));
-        buttonList.add(new GuiButtonSort(16, 21, 4,this, 1, () -> EMCreativeTab.blocks = !EMCreativeTab.blocks));
-        buttonList.add(new GuiButtonSort(17, 34, 4,this, 2, () -> EMCreativeTab.items  = !EMCreativeTab.items));
         searchField = new EMTextField(searchField.getId(), Minecraft.getMinecraft().fontRenderer, searchField.x, searchField.y, searchField.width - 38, searchField.height, this);
+        buttonList.add(new GuiButtonSort(15, 54,  4,this, 0, "Tools",  () -> EMCreativeTab.tools  = !EMCreativeTab.tools));
+        buttonList.add(new GuiButtonSort(16, 68,  4,this, 1, "Blocks", () -> EMCreativeTab.blocks = !EMCreativeTab.blocks));
+        buttonList.add(new GuiButtonSort(17, 82,  4,this, 2, "Items",  () -> EMCreativeTab.items  = !EMCreativeTab.items));
     }
 
     @Override

@@ -1,16 +1,20 @@
 package ru.mousecray.endmagic.client.gui.elements;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.config.GuiUtils;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.util.EMCreativeTab;
 import ru.mousecray.endmagic.util.ResourcesUtils;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 
 public class GuiButtonSort extends GuiButton {
     protected static final ResourceLocation[] textures =
@@ -27,11 +31,13 @@ public class GuiButtonSort extends GuiButton {
     final GuiContainerCreative gui;
     Action action;
     int type;
-    public GuiButtonSort(int id, int xPos, int yPos, GuiContainerCreative gui, int type, Action action) {
-        super(id, gui.getGuiLeft() + gui.mc.fontRenderer.getStringWidth(I18n.format(EM.EM_CREATIVE.getTranslatedTabLabel())) + xPos, gui.getGuiTop() + yPos, 12, 12, "");
+    String name;
+    public GuiButtonSort(int id, int xPos, int yPos, GuiContainerCreative gui, int type, String name, Action action) {
+        super(id, xPos, gui.getGuiTop() + yPos, 12, 12, "");
         this.gui = gui;
         this.action = action;
         this.type = type;
+        this.name = name;
     }
 
     @Override
@@ -53,18 +59,30 @@ public class GuiButtonSort extends GuiButton {
 
 
     public void drawButtonMod(Minecraft mc, int mouseX, int mouseY) {
-        if (visible) {
+        if (visible){
             mc.getTextureManager().bindTexture(textures[type + (isActive ? 0 : 3)]);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
             drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
             mouseDragged(mc, mouseX, mouseY);
+            if (hovered)
+                renderSortTip();
         }
     }
+
+    protected void renderSortTip() {
+        GuiUtils.drawHoveringText(ImmutableList.of(getName()), x, y, this.width, this.height, -1, Minecraft.getMinecraft().fontRenderer);
+    }
+
 
     @FunctionalInterface
     public interface Action
     {
         void onClick();
+    }
+
+    public String getName()
+    {
+        return name;
     }
 }
