@@ -66,14 +66,10 @@ public class GuiButtonSort extends GuiButton {
             drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
             mouseDragged(mc, mouseX, mouseY);
             if (hovered)
-                renderSortTip();
+                GuiUtils.drawHoveringText(ImmutableList.of(getName()), mouseX, mouseY, this.width, this.height, -1, Minecraft.getMinecraft().fontRenderer);
+
         }
     }
-
-    protected void renderSortTip() {
-        GuiUtils.drawHoveringText(ImmutableList.of(getName()), x, y, this.width, this.height, -1, Minecraft.getMinecraft().fontRenderer);
-    }
-
 
     @FunctionalInterface
     public interface Action
