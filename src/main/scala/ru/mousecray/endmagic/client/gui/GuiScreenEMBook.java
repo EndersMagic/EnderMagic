@@ -102,7 +102,7 @@ public class GuiScreenEMBook extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-
+/*
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(BOOK_TEXTURES);
         int i = (width - bookFullWidth) / 2;
@@ -119,7 +119,7 @@ public class GuiScreenEMBook extends GuiScreen {
         GlStateManager.disableDepth();
         super.drawScreen(mouseX, mouseY, partialTicks);
         RenderHelper.enableGUIStandardItemLighting();
-        GlStateManager.enableRescaleNormal();
+        GlStateManager.enableRescaleNormal();*/
     }
 
     public static void drawPage(int i, int j, IPage page, int mouseX, int mouseY) {
