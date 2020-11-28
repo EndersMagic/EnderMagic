@@ -71,9 +71,10 @@ public class GuiButtonSort extends GuiButton {
     public void drawButtonTip(int mouseX, int mouseY) {
         if (hovered) {
             FontRenderer font = Minecraft.getMinecraft().fontRenderer;
-            GlStateManager.translate(55 + font.getStringWidth(name) / 2, mouseY, 1);
-            GuiUtils.drawHoveringText(ImmutableList.of(name), mouseX, mouseY, this.width, this.height, -1, font);
-            GlStateManager.translate(-55 - font.getStringWidth(name) / 2, -mouseY, -1);
+            int nameWidth = font.getStringWidth(name) / 2 + 4;
+            GlStateManager.translate(40, mouseY, 1);
+            GuiUtils.drawHoveringText(ImmutableList.of(name), mouseX - nameWidth, mouseY, this.width, this.height, -1, font);
+            GlStateManager.translate(-40, -mouseY, -1);
         }
     }
 
