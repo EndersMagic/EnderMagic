@@ -61,6 +61,7 @@ public class EmOverlayIndicator extends Gui {
             GlStateManager.glLineWidth(10);
             GlStateManager.disableTexture2D();
             GlStateManager.shadeModel(GL11.GL_SMOOTH);
+            
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             GlStateManager.enableAlpha();
