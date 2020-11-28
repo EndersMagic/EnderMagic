@@ -32,12 +32,13 @@ public class GuiButtonSort extends GuiButton {
     Action action;
     int type;
     String name;
+
     public GuiButtonSort(int id, int xPos, int yPos, GuiContainerCreative gui, int type, String name, Action action) {
         super(id, xPos, gui.getGuiTop() + yPos, 12, 12, "");
         this.gui = gui;
         this.action = action;
         this.type = type;
-        this.name = name;
+        this.name = I18n.format(name);
     }
 
     @Override
@@ -59,15 +60,20 @@ public class GuiButtonSort extends GuiButton {
 
 
     public void drawButtonMod(Minecraft mc, int mouseX, int mouseY) {
-        if (visible){
+        if (visible) {
             mc.getTextureManager().bindTexture(textures[type + (isActive ? 0 : 3)]);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
             drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
-            mouseDragged(mc, mouseX, mouseY);
-            if (hovered)
-                GuiUtils.drawHoveringText(ImmutableList.of(getName()), mouseX, mouseY, this.width, this.height, -1, Minecraft.getMinecraft().fontRenderer);
+        }
+    }
 
+    public void drawButtonTip(int mouseX, int mouseY) {
+        if (hovered) {
+            FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+            GlStateManager.translate(55 + font.getStringWidth(name) / 2, mouseY, 1);
+            GuiUtils.drawHoveringText(ImmutableList.of(name), mouseX, mouseY, this.width, this.height, -1, font);
+            GlStateManager.translate(-55 - font.getStringWidth(name) / 2, -mouseY, -1);
         }
     }
 
@@ -75,10 +81,5 @@ public class GuiButtonSort extends GuiButton {
     public interface Action
     {
         void onClick();
-    }
-
-    public String getName()
-    {
-        return name;
     }
 }

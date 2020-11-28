@@ -42,6 +42,7 @@ public class EMCreativeTab extends CreativeTabs
         if (items)  for (Item item : Item.REGISTRY) if (!(item instanceof ItemBlock) && !item.isDamageable()) item.getSubItems(this, itemStacks);
         if (blocks) for (Item item : Item.REGISTRY) if (item instanceof ItemBlock)                            item.getSubItems(this, itemStacks);
         if (tools)  for (Item item : Item.REGISTRY) if (item.isDamageable())                                  item.getSubItems(this, itemStacks);
-        EMItems.emBook.getSubItems(this, itemStacks);
+        if(!itemStacks.contains(new ItemStack(EMItems.emBook)))
+            EMItems.emBook.getSubItems(this, itemStacks);
     }
 }
