@@ -15,19 +15,19 @@ import javax.annotation.Nullable;
 
 public class EmCapabilityProvider implements ICapabilitySerializable<NBTTagCompound> {
 
-    @CapabilityInject(IEmCapability.class)
-    public static Capability<IEmCapability> emCapability;
-    public static ResourceLocation name = new ResourceLocation(EM.ID, NameAndTabUtils.getName(IEmCapability.class));
+    @CapabilityInject(EmCapability.class)
+    public static Capability<EmCapability> emCapability;
+    public static ResourceLocation name = new ResourceLocation(EM.ID, NameAndTabUtils.getName(EmCapability.class));
 
-    public static IEmCapability getCapa(EntityPlayer player) {
+    public static EmCapability getCapa(EntityPlayer player) {
         return player.getCapability(emCapability, EnumFacing.UP);
     }
 
 
-    private final IEmCapability value;
+    private final EmCapability value;
 
     public EmCapabilityProvider(EntityPlayer player) {
-        value = new EmCapabilityCommon(player);
+        value = new EmCapability(player);
     }
 
     @Override

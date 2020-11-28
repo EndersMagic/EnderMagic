@@ -94,7 +94,7 @@ public class EMItems {
                 ).collect(Collectors.toList());
 
         inscribers= Arrays.stream(RuneColor.values())
-                .map(BaseInscriber::new)
+                .map(runeColor -> new BaseInscriber(runeColor, 0.7))
                 .collect(Collectors.toList());
     }
 

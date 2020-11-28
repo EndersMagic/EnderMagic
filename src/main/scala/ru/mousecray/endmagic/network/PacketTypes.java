@@ -1,12 +1,7 @@
 package ru.mousecray.endmagic.network;
 
 import codechicken.lib.packet.PacketCustom;
-import net.minecraft.nbt.NBTTagCompound;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
-import ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider;
-
-import static ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider.*;
 
 public enum PacketTypes {
     UPDATE_COMPAS_TARGET,
@@ -14,7 +9,9 @@ public enum PacketTypes {
     SYNC_RUNE_CAPABILITY,
     ADDED_RUNE_PART,
     REMOVE_RUNE_STATE,
-    UPDATE_PLAYER_EM_CAPABILITY;
+    UPDATE_PLAYER_EM,
+    SYNC_PLAYER_EM_CAPABILITY,
+    ;
 
     public int id = ordinal() + 1;
 

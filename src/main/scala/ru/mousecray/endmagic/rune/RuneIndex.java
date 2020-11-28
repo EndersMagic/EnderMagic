@@ -33,7 +33,16 @@ public class RuneIndex {
 
     }
 
-    public static void addRunePart(World world, BlockPos pos, @Nonnull EnumFacing side, Vec2i coord, RunePart part) {
+    public static boolean canAddPart(World world, BlockPos pos, EnumFacing side, Vec2i coord, RunePart part) {
+        if (coord.y >= 1 && coord.y <= 14 && coord.x >= 1 && coord.x <= 14) {
+            IRuneChunkCapability capability = getCapability(world, pos);
+            RuneState runeState = capability.createRuneStateIfAbsent(pos);
+            return runeState.canAddPart(side, coord);
+        } else
+            return false;
+    }
+
+    public static void addRunePart(World world, BlockPos pos, EnumFacing side, Vec2i coord, RunePart part) {
         if (coord.y >= 1 && coord.y <= 14 && coord.x >= 1 && coord.x <= 14) {
             IRuneChunkCapability capability = getCapability(world, pos);
             RuneState runeState = capability.createRuneStateIfAbsent(pos);

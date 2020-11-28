@@ -11,11 +11,13 @@ import net.minecraft.world.chunk.Chunk;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
 import ru.mousecray.endmagic.capability.chunk.RunePart;
+import ru.mousecray.endmagic.capability.player.EmCapability;
 import ru.mousecray.endmagic.capability.player.EmCapabilityProvider;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
 import ru.mousecray.endmagic.client.render.model.baked.FinalisedModelEnderCompass;
+import ru.mousecray.endmagic.rune.RuneColor;
 import ru.mousecray.endmagic.rune.RuneIndex;
 import ru.mousecray.endmagic.util.Vec2i;
 
@@ -66,8 +68,19 @@ public class ClientPacketHandler implements ICustomPacketHandler.IClientPacketHa
                 RuneIndex.removeRune(minecraft.world, packetCustom.readPos());
                 break;
             }
-            case UPDATE_PLAYER_EM_CAPABILITY: {
-                EmCapabilityProvider.getCapa(minecraft.player).setEm(packetCustom.readInt());
+            case UPDATE_PLAYER_EM: {
+                EmCapability capa = EmCapabilityProvider.getCapa(minecraft.player);
+                RuneColor color = RuneColor.values()[packetCustom.readByte()];
+                capa.setEm(color, packetCustom.readInt());
+                capa.setMaxEm(color, packetCustom.readInt());
+                break;
+            }
+            case SYNC_PLAYER_EM_CAPABILITY: {
+                EmCapability capa = EmCapabilityProvider.getCapa(minecraft.player);
+                for (RuneColor color : RuneColor.values()) {
+                    capa.setEm(color, packetCustom.readInt());
+                    capa.setMaxEm(color, packetCustom.readInt());
+                }
                 break;
             }
             default:

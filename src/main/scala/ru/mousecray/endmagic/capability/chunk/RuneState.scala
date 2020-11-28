@@ -18,6 +18,10 @@ class RuneState {
   private val runes = new mutable.HashMap[EnumFacing, Rune]()
   EnumFacing.values().foreach(runes += _ -> new Rune)
 
+  def canAddPart(side: EnumFacing, coord: Vec2i): Boolean =
+    !runes(side).parts.contains(coord)
+
+
   /**
     * return true if rune finished
     */

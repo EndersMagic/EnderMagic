@@ -4,20 +4,28 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import ru.mousecray.endmagic.rune.RuneColor;
 
 import javax.annotation.Nullable;
 
-public class EmCapabilityStorage implements Capability.IStorage<IEmCapability> {
+public class EmCapabilityStorage implements Capability.IStorage<EmCapability> {
     @Nullable
     @Override
-    public NBTBase writeNBT(Capability<IEmCapability> capability, IEmCapability instance, EnumFacing side) {
+    public NBTBase writeNBT(Capability<EmCapability> capability, EmCapability instance, EnumFacing side) {
         NBTTagCompound r = new NBTTagCompound();
-        r.setInteger("em", instance.getEm());
+        for (RuneColor color : RuneColor.values()) {
+            r.setInteger(color.name(), instance.getEm(color));
+            r.setInteger(color.name() + "Max", instance.getMaxEm(color));
+        }
         return r;
     }
 
     @Override
-    public void readNBT(Capability<IEmCapability> capability, IEmCapability instance, EnumFacing side, NBTBase nbt) {
-        instance.setEm(((NBTTagCompound) nbt).getInteger("em"));
+    public void readNBT(Capability<EmCapability> capability, EmCapability instance, EnumFacing side, NBTBase nbt) {
+        NBTTagCompound tag = (NBTTagCompound) nbt;
+        for (RuneColor color : RuneColor.values()) {
+            instance.setEm(color, tag.getInteger(color.name()));
+            instance.setMaxEm(color, tag.getInteger(color.name() + "Max"));
+        }
     }
 }
