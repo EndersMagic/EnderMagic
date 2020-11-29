@@ -16,15 +16,14 @@ public class ImmortalTree
 {
     public static void generate(World world, BlockPos pos, int length, int width)
     {
-        HashMap<BlockPos, IBlockState> toPlace = new HashMap<>();
         Vector3d vector3d = new Vector3d();
         vector3d.x = 0;
         vector3d.y = 1;
         vector3d.z = 0;
+        HashMap<BlockPos, IBlockState> toPlace = new HashMap<>();
         generateBranchRecursive(toPlace, world.rand, pos, length, width, vector3d);
         for (Map.Entry<BlockPos, IBlockState> current : ImmutableList.copyOf(toPlace.entrySet()))
             TaskManager.blocksToPlace.add(new Truple<>(world, current.getKey(), current.getValue()));
-
     }
 
     public static void generateBranchRecursive(Map<BlockPos, IBlockState> toPlace, Random rand, BlockPos pos, int length, double width, Vector3d dir)
@@ -55,8 +54,7 @@ public class ImmortalTree
                         for (int z = 0; z < Math.ceil(width) * 2; z++)
                         {
                             BlockPos pos2 = newPos.add(x - Math.ceil(width), y - Math.ceil(width), z - Math.ceil(width));
-                            if (toPlace.get(pos2) == null)
-                                toPlace.put(pos2, Blocks.LEAVES.getDefaultState());
+                            toPlace.computeIfAbsent(pos2, k -> Blocks.LEAVES.getDefaultState());
                         }
                     }
                 }
