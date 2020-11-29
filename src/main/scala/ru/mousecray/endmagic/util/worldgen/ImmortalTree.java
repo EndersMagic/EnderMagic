@@ -35,23 +35,23 @@ public class ImmortalTree
             BlockPos newPos = pos.add(i * dir.x, i * dir.y, i * dir.z);
             for (int x = 0; x < Math.ceil(width); x++)
             {
-                for (int y = 0; y < Math.ceil(width); y++)
+                for (int z = 0; z < Math.ceil(width); z++)
                 {
-                    for (int z = 0; z < Math.ceil(width); z++)
-                    {
-                        BlockPos pos2 = newPos.add(x - Math.ceil(width) / 2, y - Math.ceil(width) / 2, z - Math.ceil(width) / 2);
-                        if (toPlace.get(pos2) == null || toPlace.get(pos2).getBlock() == Blocks.LEAVES)
-                            toPlace.put(pos2, Blocks.LOG.getDefaultState());
-                    }
+                    Vector3d position = VectorUtil.of(x, 0, z);
+                    position = VectorUtil.rotate(position, dir);
+                    BlockPos pos2 = newPos.add(position.x, position.y, position.z);
+                    if (toPlace.get(pos2) == null || toPlace.get(pos2).getBlock() == Blocks.LEAVES)
+                        toPlace.put(pos2, Blocks.LOG.getDefaultState());
                 }
+
             }
             if (Math.ceil(width) <= 3)
             {
-                for (int x = 0; x < Math.ceil(width) * 2; x++)
+                for (int x = 0; x < Math.ceil(width) * 3; x++)
                 {
-                    for (int y = 0; y < Math.ceil(width) * 2; y++)
+                    for (int y = 0; y < Math.ceil(width) * 3; y++)
                     {
-                        for (int z = 0; z < Math.ceil(width) * 2; z++)
+                        for (int z = 0; z < Math.ceil(width) * 3; z++)
                         {
                             BlockPos pos2 = newPos.add(x - Math.ceil(width), y - Math.ceil(width), z - Math.ceil(width));
                             toPlace.computeIfAbsent(pos2, k -> Blocks.LEAVES.getDefaultState());

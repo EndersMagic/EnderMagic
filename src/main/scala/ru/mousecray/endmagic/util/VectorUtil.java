@@ -35,9 +35,16 @@ public class VectorUtil
         return vec;
     }
 
-    public static Vector3d rotateX(Vector3d vec, float ang) {
-        float cos = MathHelper.cos(ang);
-        float sin = MathHelper.sin(ang);
+    public static Vector3d rotate(Vector3d vec, Vector3d angs) {
+        vec = VectorUtil.rotateX(vec, angs.x);
+        vec = VectorUtil.rotateY(vec, angs.y);
+        vec = VectorUtil.rotateZ(vec, angs.z);
+        return vec;
+    }
+
+    public static Vector3d rotateX(Vector3d vec, double ang) {
+        double cos = Math.cos(ang);
+        double sin = Math.sin(ang);
         double y = vec.y * cos - vec.z * sin;
         double z = vec.z * cos + vec.y * sin;
         vec.y = y;
@@ -45,9 +52,9 @@ public class VectorUtil
         return vec;
     }
 
-    public static Vector3d rotateY(Vector3d vec, float ang) {
-        float cos = MathHelper.cos(ang);
-        float sin = MathHelper.sin(ang);
+    public static Vector3d rotateY(Vector3d vec, double ang) {
+        double cos = Math.cos(ang);
+        double sin = Math.sin(ang);
         double x = vec.x * cos + vec.z * sin;
         double z = vec.z * cos - vec.x * sin;
         vec.x = x;
@@ -55,13 +62,22 @@ public class VectorUtil
         return vec;
     }
 
-    public static Vector3d rotateZ(Vector3d vec, float ang) {
-        float cos = MathHelper.cos(ang);
-        float sin = MathHelper.sin(ang);
+    public static Vector3d rotateZ(Vector3d vec, double ang) {
+        double cos = Math.cos(ang);
+        double sin = Math.sin(ang);
         double x = vec.x * cos - vec.y* sin;
         double y = vec.y * cos + vec.x * sin;
         vec.x = x;
         vec.y = y;
+        return vec;
+    }
+
+    public static Vector3d of(double x, double y, double z)
+    {
+        Vector3d vec = new Vector3d();
+        vec.x = x;
+        vec.y = y;
+        vec.z = z;
         return vec;
     }
 }
