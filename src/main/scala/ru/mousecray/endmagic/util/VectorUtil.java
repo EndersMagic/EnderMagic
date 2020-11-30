@@ -36,9 +36,16 @@ public class VectorUtil
     }
 
     public static Vector3d rotate(Vector3d vec, Vector3d angs) {
-        vec = VectorUtil.rotateX(vec, angs.x);
-        vec = VectorUtil.rotateY(vec, angs.y);
-        vec = VectorUtil.rotateZ(vec, angs.z);
+        VectorUtil.rotateX(vec, angs.x);
+        VectorUtil.rotateY(vec, angs.y);
+        VectorUtil.rotateZ(vec, angs.z);
+        return vec;
+    }
+
+    public static Vector3d rotate(Vector3d vec, double x, double y, double z) {
+        VectorUtil.rotateX(vec, x);
+        VectorUtil.rotateY(vec, y);
+        VectorUtil.rotateZ(vec, z);
         return vec;
     }
 
@@ -75,9 +82,9 @@ public class VectorUtil
     public static Vector3d of(double x, double y, double z)
     {
         Vector3d vec = new Vector3d();
-        vec.x = x;
-        vec.y = y;
-        vec.z = z;
+        vec.x = x + 0;
+        vec.y = y + 0;
+        vec.z = z + 0;
         return vec;
     }
 }
