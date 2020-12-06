@@ -8,16 +8,13 @@ import ru.mousecray.endmagic.EM;
 import java.awt.*;
 
 public enum RuneColor {
-    Light(new Color(255, 255, 200)),
     Fire(new Color(255, 79, 0)),
-    Water(new Color(50, 100, 255)),
     Earth(new Color(200, 170, 0)),
-    Void(new Color(27, 123, 107)),
-    Time(new Color(220, 198, 255)),
-    Perception(new Color(181, 0, 63)),
+    Cold(new Color(0, 230, 255)),
     Air(new Color(200, 255, 200)),
-    Darkness(new Color(10, 10, 10));
-
+    Void(new Color(27, 123, 107)),
+    Darkness(new Color(10, 10, 10)),
+    Time(new Color(220, 198, 255));
 
     public final int r;
     public final int g;
