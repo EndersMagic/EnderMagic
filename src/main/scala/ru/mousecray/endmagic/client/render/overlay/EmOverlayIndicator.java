@@ -4,19 +4,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import org.lwjgl.opengl.GL11;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.capability.player.EmCapability;
 import ru.mousecray.endmagic.capability.player.EmCapabilityProvider;
 import ru.mousecray.endmagic.rune.RuneColor;
+import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -55,24 +52,25 @@ public class EmOverlayIndicator extends Gui {
             int indicatorWidth = 180;
             int indicatorHeight = 7;
             int startX = i / 2 - indicatorWidth / 2;
-            int startY = j - 37;
+            int startY = 10;
 
             GlStateManager.depthMask(false);
             GlStateManager.glLineWidth(10);
             GlStateManager.disableTexture2D();
-            GlStateManager.shadeModel(GL11.GL_SMOOTH);
-            
+            //GlStateManager.shadeModel(GL11.GL_SMOOTH);
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             GlStateManager.enableAlpha();
             GlStateManager.alphaFunc(GL_GREATER, 0);
             {
-                Tessellator tessellator = Tessellator.getInstance();
-                BufferBuilder buffer = tessellator.getBuffer();
 
-                drawLineAt(capa, fullMaxEm, indicatorWidth, startX, startY, tessellator, buffer);
-                drawLineAt(capa, fullMaxEm, indicatorWidth, startX, startY + 2.5, tessellator, buffer);
-                drawLineAt(capa, fullMaxEm, indicatorWidth, startX, startY + 5, tessellator, buffer);
+
+                RuneColor[] values = RuneColor.values();
+                for (int i1 = 0; i1 < values.length; i1++) {
+                    RuneColor color = values[i1];
+                    drawRect(i1*10, 0, i1*10 + 10, capa.getMaxEm(color) / 10+2, new RGBA(color.r, color.g, color.b, 70).argb());
+                    drawRect(i1*10+1, 1, i1*10 + 9, capa.getEm(color) / 10+1, new RGBA(color.r, color.g, color.b, 256).argb());
+                }
             }
             GlStateManager.enableTexture2D();
             GlStateManager.depthMask(true);
@@ -81,20 +79,6 @@ public class EmOverlayIndicator extends Gui {
             //drawRect(startX, startY, startX + indicatorWidht * capa.getEm() / capa.getMaxEm(), startY + indicatorHeight, 0xffff00ff);
             GlStateManager.color(1, 1, 1, 1);
         }
-    }
-
-    private static void drawLineAt(EmCapability capa, int fullMaxEm, int indicatorWidth, int startX, double startY, Tessellator tessellator, BufferBuilder buffer) {
-        buffer.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-
-        int currentPos = 0;
-
-        for (RuneColor color : RuneColor.values()) {
-            int alpha = calculateRelativeValue(255, capa.getEm(color), capa.getMaxEm(color));
-            buffer.pos(startX + currentPos, startY, 0).color(color.r, color.g, color.b, alpha).endVertex();
-            currentPos += calculateRelativeValue(indicatorWidth, capa.getMaxEm(color), fullMaxEm);
-        }
-
-        tessellator.draw();
     }
 
     private static int calculateRelativeValue(int i, double current, int max) {

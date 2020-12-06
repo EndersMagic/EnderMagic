@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.capability.player;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import ru.mousecray.endmagic.rune.RuneColor;
 
 import java.util.EnumMap;
@@ -46,6 +47,7 @@ public class EmCapability {
     public boolean consumeEm(RuneColor color, int amount, boolean soft) {
         int current = em.get(color);
         int surplus = current - amount;
+        System.out.println(FMLCommonHandler.instance().getEffectiveSide() + " " + color + " " + surplus);
         if (surplus >= 0) {
             em.put(color, surplus);
             return true;

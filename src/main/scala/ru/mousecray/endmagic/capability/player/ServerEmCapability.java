@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.capability.player;
 
 import codechicken.lib.packet.PacketCustom;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -10,7 +11,7 @@ import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.network.PacketTypes;
 import ru.mousecray.endmagic.rune.RuneColor;
 
-@Mod.EventBusSubscriber(modid = EM.ID, value = Side.SERVER)
+@Mod.EventBusSubscriber(modid = EM.ID)
 public class ServerEmCapability extends EmCapability {
     public ServerEmCapability(EntityPlayer player) {
         super(player);
@@ -30,8 +31,8 @@ public class ServerEmCapability extends EmCapability {
 
     @SubscribeEvent
     public static void onPlayerEnter(EntityJoinWorldEvent event) {
-        if (event.getEntity() instanceof EntityPlayer) {
-            EmCapability capa = EmCapabilityProvider.getCapa((EntityPlayer) event.getEntity());
+        if (event.getEntity() instanceof EntityPlayerMP) {
+            EmCapability capa = EmCapabilityProvider.getCapa((EntityPlayerMP) event.getEntity());
 
             PacketCustom packet = PacketTypes.SYNC_PLAYER_EM_CAPABILITY.packet();
 
@@ -40,7 +41,7 @@ public class ServerEmCapability extends EmCapability {
                         .writeInt(capa.getEm(color))
                         .writeInt(capa.getMaxEm(color));
 
-            packet.sendToPlayer((EntityPlayer) event.getEntity());
+            packet.sendToPlayer((EntityPlayerMP) event.getEntity());
         }
     }
 }
