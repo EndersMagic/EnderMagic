@@ -11,6 +11,7 @@ import net.minecraft.world.chunk.Chunk;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
 import ru.mousecray.endmagic.capability.chunk.RunePart;
+import ru.mousecray.endmagic.capability.player.ClientEmCapability;
 import ru.mousecray.endmagic.capability.player.EmCapability;
 import ru.mousecray.endmagic.capability.player.EmCapabilityProvider;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
@@ -81,6 +82,7 @@ public class ClientPacketHandler implements ICustomPacketHandler.IClientPacketHa
                     capa.setEm(color, packetCustom.readInt());
                     capa.setMaxEm(color, packetCustom.readInt());
                 }
+                ((ClientEmCapability) capa).dismissPrevs();
                 break;
             }
             default:

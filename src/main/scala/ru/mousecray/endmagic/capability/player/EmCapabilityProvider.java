@@ -27,7 +27,7 @@ public class EmCapabilityProvider implements ICapabilitySerializable<NBTTagCompo
     private final EmCapability value;
 
     public EmCapabilityProvider(EntityPlayer player) {
-        value = new EmCapability(player);
+        value = player.world.isRemote ? new ClientEmCapability(player) : new ServerEmCapability(player);
     }
 
     @Override

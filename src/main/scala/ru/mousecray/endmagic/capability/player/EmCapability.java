@@ -25,8 +25,8 @@ public class EmCapability {
         }
     }
 
-    private Map<RuneColor, Integer> em;
-    private Map<RuneColor, Integer> maxEm;
+    Map<RuneColor, Integer> em;
+    Map<RuneColor, Integer> maxEm;
 
     public int getEm(RuneColor color) {
         return em.get(color);

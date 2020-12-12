@@ -24,8 +24,8 @@ public class EmCapabilityStorage implements Capability.IStorage<EmCapability> {
     public void readNBT(Capability<EmCapability> capability, EmCapability instance, EnumFacing side, NBTBase nbt) {
         NBTTagCompound tag = (NBTTagCompound) nbt;
         for (RuneColor color : RuneColor.values()) {
-            instance.setEm(color, tag.getInteger(color.name()));
-            instance.setMaxEm(color, tag.getInteger(color.name() + "Max"));
+            instance.em.put(color, tag.getInteger(color.name()));
+            instance.maxEm.put(color, tag.getInteger(color.name() + "Max"));
         }
     }
 }
