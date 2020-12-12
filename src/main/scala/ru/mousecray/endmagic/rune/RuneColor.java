@@ -9,7 +9,7 @@ import java.awt.*;
 
 public enum RuneColor {
     Fire(new Color(255, 79, 0)),
-    Earth(new Color(200, 170, 0)),
+    Earth(new Color(153, 191, 0)),
     Cold(new Color(0, 230, 255)),
     Air(new Color(200, 255, 200)),
     Void(new Color(27, 123, 107)),
