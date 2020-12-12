@@ -11,16 +11,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
-import java.io.IOException;
-import java.io.InputStream;
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Vector3f;
 import java.util.Map;
 
+import static net.minecraftforge.common.model.TRSRTransformation.quatFromXYZDegrees;
 import static ru.mousecray.endmagic.util.ResourcesUtils.isModelExists;
 
 public interface ItemTextured extends IExtendedProperties {
@@ -32,6 +34,10 @@ public interface ItemTextured extends IExtendedProperties {
         return Minecraft.getMinecraft().getRenderItem()
                 .getItemModelWithOverrides(new ItemStack(Items.DIAMOND), Minecraft.getMinecraft().world, null).handlePerspective(cameraTransformType).getRight();
         //return net.minecraftforge.client.ForgeHooksClient.handlePerspective(model, cameraTransformType).getRight();
+    }
+
+    default Matrix4f transformation(float translateX, float translateY, float translateZ, float rotateX, float rotateY, float rotateZ, float scaleX, float scaleY, float scaleZ) {
+        return new TRSRTransformation(new Vector3f(translateX, translateY, translateZ), quatFromXYZDegrees(new Vector3f(rotateX, rotateY, rotateZ)), new Vector3f(scaleX, scaleY, scaleZ), null).getMatrix();
     }
 
     @Override
