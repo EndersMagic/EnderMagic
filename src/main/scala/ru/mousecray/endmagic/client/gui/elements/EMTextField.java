@@ -13,8 +13,9 @@ public class EMTextField extends GuiTextField {
 
     public EMTextField(int componentId, FontRenderer fontrendererObj, int x, int y, int width, int height, GuiContainerCreative gui) {
         super(componentId, fontrendererObj, x, y, width, height);
-        setCanLoseFocus(true);
-        setFocused(false);
+        setCanLoseFocus(gui.getSelectedTabIndex() == EM.EM_CREATIVE.getTabIndex());
+        System.out.println("focused " + (gui.getSelectedTabIndex() != EM.EM_CREATIVE.getTabIndex()));
+        super.setFocused(gui.getSelectedTabIndex() != EM.EM_CREATIVE.getTabIndex());
         setTextColor(16777215);
         realX = x;
         this.gui = gui;
@@ -28,7 +29,8 @@ public class EMTextField extends GuiTextField {
 
     @Override
     public void setFocused(boolean isFocusedIn) {
-
+        if (gui.getSelectedTabIndex() != EM.EM_CREATIVE.getTabIndex())
+            super.setFocused(isFocusedIn);
     }
 
     @Override
