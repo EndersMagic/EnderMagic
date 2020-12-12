@@ -57,6 +57,7 @@ import ru.mousecray.endmagic.api.blocks.IEndSoil;
 import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
 import ru.mousecray.endmagic.capability.chunk.Rune;
 import ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider;
+import ru.mousecray.endmagic.capability.player.EmCapability;
 import ru.mousecray.endmagic.capability.player.EmCapabilityProvider;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
@@ -66,6 +67,7 @@ import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.network.PacketTypes;
+import ru.mousecray.endmagic.rune.RuneColor;
 import ru.mousecray.endmagic.rune.RuneIndex;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
@@ -282,6 +284,15 @@ public class EMEvents {
     @SubscribeEvent
     public static void onWorldTick(TickEvent.WorldTickEvent event) {
         updateWorldCapability(event.world);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (!event.player.world.isRemote) {
+            EmCapability capa = EmCapabilityProvider.getCapa(event.player);
+            for (RuneColor runeColor : RuneColor.values())
+                capa.setEm(runeColor, Math.min(capa.getMaxEm(runeColor), capa.getEm(runeColor) + 1));
+        }
     }
 
     @SubscribeEvent
