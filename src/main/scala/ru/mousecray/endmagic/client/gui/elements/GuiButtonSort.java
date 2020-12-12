@@ -6,46 +6,34 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.init.EMBlocks;
-import ru.mousecray.endmagic.init.EMItems;
-import ru.mousecray.endmagic.util.EnderBlockTypes;
+import ru.mousecray.endmagic.util.EMCreativeTab;
 import ru.mousecray.endmagic.util.ResourcesUtils;
 
 import javax.annotation.Nonnull;
-import java.util.function.Supplier;
+import java.util.List;
 
 public class GuiButtonSort extends GuiButton {
-
-    public enum SortType {
-        Tools(() -> new ItemStack(phantomPickaxe)),
-        Blocks(() -> new ItemStack(EMBlocks.enderLog, 1, EnderBlockTypes.EnderTreeType.PHANTOM.ordinal())),
-        Items(() -> new ItemStack(EMItems.blueEnderPearl));
-
-        final Supplier<ItemStack> itemForRender;
-
-        SortType(Supplier<ItemStack> itemForRender) {
-            this.itemForRender = itemForRender;
-        }
-    }
-
-    @GameRegistry.ObjectHolder(EM.ID + ":phantom_diamond_pickaxe")
-    public static Item phantomPickaxe;
+    protected static final ResourceLocation[] textures =
+            {
+                    ResourcesUtils.texture("gui/tools_button.png"),
+                    ResourcesUtils.texture("gui/blocks_button.png"),
+                    ResourcesUtils.texture("gui/items_button.png"),
+                    ResourcesUtils.texture("gui/tools_button_dis.png"),
+                    ResourcesUtils.texture("gui/blocks_button_dis.png"),
+                    ResourcesUtils.texture("gui/items_button_dis.png")
+            };
 
     boolean isActive = true;
     final GuiContainerCreative gui;
     Action action;
-    SortType type;
+    int type;
     String name;
 
-    public GuiButtonSort(int id, int xPos, int yPos, GuiContainerCreative gui, SortType type, String name, Action action) {
+    public GuiButtonSort(int id, int xPos, int yPos, GuiContainerCreative gui, int type, String name, Action action) {
         super(id, xPos, gui.getGuiTop() + yPos, 12, 12, "");
         this.gui = gui;
         this.action = action;
@@ -73,23 +61,10 @@ public class GuiButtonSort extends GuiButton {
 
     public void drawButtonMod(Minecraft mc, int mouseX, int mouseY) {
         if (visible) {
-            mc.getTextureManager().bindTexture(ResourcesUtils.texture("gui/creative_button.png"));
+            mc.getTextureManager().bindTexture(textures[type + (isActive ? 0 : 3)]);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
             drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
-
-
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(x, y, 0);
-            double scale = 0.5;
-            GlStateManager.scale(scale, scale, scale);
-            RenderHelper.enableStandardItemLighting();
-            RenderItem itemRender = mc.getRenderItem();
-            itemRender.zLevel = 90;
-            itemRender.renderItemAndEffectIntoGUI(type.itemForRender.get(), 4, 3);
-            itemRender.zLevel = 0;
-            RenderHelper.disableStandardItemLighting();
-            GlStateManager.popMatrix();
         }
     }
 
@@ -98,13 +73,14 @@ public class GuiButtonSort extends GuiButton {
             FontRenderer font = Minecraft.getMinecraft().fontRenderer;
             int nameWidth = font.getStringWidth(name) / 2 + 4;
             GlStateManager.translate(40, mouseY, 1);
-            GuiUtils.drawHoveringText(ImmutableList.of(name), mouseX + nameWidth, mouseY, width, height, -1, font);
+            GuiUtils.drawHoveringText(ImmutableList.of(name), mouseX + nameWidth, mouseY, this.width, this.height, -1, font);
             GlStateManager.translate(-40, -mouseY, -1);
         }
     }
 
     @FunctionalInterface
-    public interface Action {
+    public interface Action
+    {
         void onClick();
     }
 }
