@@ -6,13 +6,12 @@ import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.creativetab.CreativeTabs;
 import ru.mousecray.endmagic.EM;
 
-public class EMTextField extends GuiTextField
-{
+public class EMTextField extends GuiTextField {
     final GuiContainerCreative gui;
 
     int realX;
-    public EMTextField(int componentId, FontRenderer fontrendererObj, int x, int y, int width, int height, GuiContainerCreative gui)
-    {
+
+    public EMTextField(int componentId, FontRenderer fontrendererObj, int x, int y, int width, int height, GuiContainerCreative gui) {
         super(componentId, fontrendererObj, x, y, width, height);
         setCanLoseFocus(true);
         setFocused(false);
@@ -22,9 +21,8 @@ public class EMTextField extends GuiTextField
     }
 
     @Override
-    public boolean mouseClicked(int mouseX, int mouseY, int mouseButton)
-    {
-        super.setFocused(mouseX >= this.x && mouseX < this.x + this.width && mouseY >= this.y && mouseY < this.y + this.height);
+    public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        super.setFocused(mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height);
         return isFocused();
     }
 
@@ -34,10 +32,8 @@ public class EMTextField extends GuiTextField
     }
 
     @Override
-    public void drawTextBox()
-    {
-        if(CreativeTabs.CREATIVE_TAB_ARRAY[gui.getSelectedTabIndex()].hasSearchBar())
-        {
+    public void drawTextBox() {
+        if (CreativeTabs.CREATIVE_TAB_ARRAY[gui.getSelectedTabIndex()].hasSearchBar()) {
             setEnableBackgroundDrawing(false);
             super.drawTextBox();
         }
