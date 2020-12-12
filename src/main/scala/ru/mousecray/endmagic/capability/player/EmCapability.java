@@ -16,8 +16,6 @@ public class EmCapability {
     public EmCapability(EntityPlayer player) {
         this.player = player;
 
-        em = new EnumMap<>(RuneColor.class);
-        maxEm = new EnumMap<>(RuneColor.class);
         for (RuneColor runeColor : RuneColor.values()) {
             int randomMaxValue = player.world.rand.nextInt(maxStartingEm - minStartingEm) + minStartingEm;
             em.put(runeColor, randomMaxValue);
@@ -25,8 +23,8 @@ public class EmCapability {
         }
     }
 
-    Map<RuneColor, Integer> em;
-    Map<RuneColor, Integer> maxEm;
+    Map<RuneColor, Integer> em = new EnumMap<>(RuneColor.class);
+    Map<RuneColor, Integer> maxEm = new EnumMap<>(RuneColor.class);
 
     public int getEm(RuneColor color) {
         return em.get(color);
@@ -47,7 +45,7 @@ public class EmCapability {
     public boolean consumeEm(RuneColor color, int amount, boolean soft) {
         int current = em.get(color);
         int surplus = current - amount;
-        System.out.println(FMLCommonHandler.instance().getEffectiveSide() + " " + color + " " + surplus);
+        //System.out.println(FMLCommonHandler.instance().getEffectiveSide() + " " + color + " " + surplus);
         if (surplus >= 0) {
             em.put(color, surplus);
             return true;
