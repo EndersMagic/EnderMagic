@@ -3,12 +3,13 @@ package ru.mousecray.endmagic.capability.player;
 import net.minecraft.entity.player.EntityPlayer;
 import ru.mousecray.endmagic.rune.RuneColor;
 
+import java.util.EnumMap;
 import java.util.Map;
 
 public class ClientEmCapability extends EmCapability {
 
-    private Map<RuneColor, Integer> prevEm;
-    private Map<RuneColor, Integer> prevMaxEm;
+    private Map<RuneColor, Integer> prevEm = new EnumMap<>(RuneColor.class);
+    private Map<RuneColor, Integer> prevMaxEm = new EnumMap<>(RuneColor.class);
 
     public ClientEmCapability(EntityPlayer player) {
         super(player);
