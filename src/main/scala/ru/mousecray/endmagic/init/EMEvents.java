@@ -288,10 +288,10 @@ public class EMEvents {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (!event.player.world.isRemote) {
+        if (!event.player.world.isRemote && event.player.ticksExisted % 20 == 0) {
             EmCapability capa = EmCapabilityProvider.getCapa(event.player);
-            for (RuneColor runeColor : RuneColor.values())
-                capa.setEm(runeColor, Math.min(capa.getMaxEm(runeColor), capa.getEm(runeColor) + 1));
+            /*for (RuneColor runeColor : RuneColor.values())
+                capa.setEm(runeColor, Math.min(capa.getMaxEm(runeColor), capa.getEm(runeColor) + 1));*/
         }
     }
 
