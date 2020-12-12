@@ -73,7 +73,7 @@ public class GuiButtonSort extends GuiButton {
             FontRenderer font = Minecraft.getMinecraft().fontRenderer;
             int nameWidth = font.getStringWidth(name) / 2 + 4;
             GlStateManager.translate(40, mouseY, 1);
-            GuiUtils.drawHoveringText(ImmutableList.of(name), mouseX - nameWidth, mouseY, this.width, this.height, -1, font);
+            GuiUtils.drawHoveringText(ImmutableList.of(name), mouseX + nameWidth, mouseY, this.width, this.height, -1, font);
             GlStateManager.translate(-40, -mouseY, -1);
         }
     }
