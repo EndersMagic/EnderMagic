@@ -1,18 +1,22 @@
 package ru.mousecray.endmagic.items.inscribers;
 
-import com.google.common.collect.ImmutableMap;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import ru.mousecray.endmagic.EM;
+import net.minecraftforge.common.model.TRSRTransformation;
 import ru.mousecray.endmagic.capability.chunk.RunePart;
 import ru.mousecray.endmagic.capability.player.EmCapabilityProvider;
-import ru.mousecray.endmagic.items.ItemTextured;
+import ru.mousecray.endmagic.items.ItemOneWhiteEMTextured;
 import ru.mousecray.endmagic.rune.RuneColor;
 import ru.mousecray.endmagic.rune.RuneIndex;
 import ru.mousecray.endmagic.util.PlanarGeometry;
@@ -21,11 +25,11 @@ import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 
 import javax.annotation.Nullable;
-import java.util.Map;
+import javax.vecmath.Matrix4f;
 
 import static ru.mousecray.endmagic.Configuration.emPerRunePart;
 
-public class BaseInscriber extends Item implements IExtendedProperties, ItemTextured {
+public class BaseInscriber extends Item implements IExtendedProperties, ItemOneWhiteEMTextured {
 
     public RuneColor runeColor() {
         return runeColor;
@@ -63,7 +67,31 @@ public class BaseInscriber extends Item implements IExtendedProperties, ItemText
     }
 
     @Override
-    public Map<String, Integer> textures() {
-        return ImmutableMap.of(EM.ID + ":items/inscribers/" + runeColor.name().toLowerCase(), 0xffffffff);
+    public String texture() {
+        return "inscribers/" + runeColor.name().toLowerCase();
+    }
+
+    @Override
+    public Matrix4f handlePerspective(IBakedModel model, ItemCameraTransforms.TransformType cameraTransformType) {
+        //System.out.println(inUse);
+        switch (cameraTransformType) {
+            case FIRST_PERSON_LEFT_HAND:
+                return transformation(0, 0, 0, 0, 90, 48f, 1, 1, 1);
+
+            case FIRST_PERSON_RIGHT_HAND:
+                return transformation(0, 0, 0, 0, 270, 312, 1, 1, 1);
+
+            case THIRD_PERSON_LEFT_HAND:
+                return transformation(0, 0, 0, 0, 90, 20, 0.5f, 0.5f, 0.5f);
+
+            case THIRD_PERSON_RIGHT_HAND:
+                return transformation(0, 0, 0, 0, 270, 340, 0.5f, 0.5f, 0.5f);
+
+            case GROUND:
+                return transformation(0, 3, 0, 0, 0, 0, 0.5f, 0.5f, 0.5f);
+
+            default:
+                return TRSRTransformation.identity().getMatrix();
+        }
     }
 }
