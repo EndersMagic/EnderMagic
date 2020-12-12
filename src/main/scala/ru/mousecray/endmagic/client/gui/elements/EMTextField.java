@@ -24,8 +24,13 @@ public class EMTextField extends GuiTextField
     @Override
     public boolean mouseClicked(int mouseX, int mouseY, int mouseButton)
     {
-        setFocused(mouseX >= this.x && mouseX < this.x + this.width && mouseY >= this.y && mouseY < this.y + this.height);
+        super.setFocused(mouseX >= this.x && mouseX < this.x + this.width && mouseY >= this.y && mouseY < this.y + this.height);
         return isFocused();
+    }
+
+    @Override
+    public void setFocused(boolean isFocusedIn) {
+
     }
 
     @Override
