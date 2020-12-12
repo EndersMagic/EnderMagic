@@ -40,6 +40,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.GuiConfirmation;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -441,8 +442,15 @@ public class EMEvents {
     }
 
     @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public static void onGuiInit(GuiOpenEvent event) {
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onGuiInitEarly(GuiOpenEvent event) {
+        if (event.getGui() instanceof GuiContainerCreative && !(event.getGui() instanceof GuiContainerCreativeEM))
+            event.setGui(new GuiContainerCreativeEM(Minecraft.getMinecraft().player));
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onGuiInitLately(GuiOpenEvent event) {
         if (event.getGui() instanceof GuiContainerCreative && !(event.getGui() instanceof GuiContainerCreativeEM))
             event.setGui(new GuiContainerCreativeEM(Minecraft.getMinecraft().player));
     }
