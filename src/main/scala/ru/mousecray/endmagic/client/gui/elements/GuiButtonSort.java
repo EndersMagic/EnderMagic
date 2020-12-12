@@ -10,11 +10,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.util.EMCreativeTab;
 import ru.mousecray.endmagic.util.ResourcesUtils;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
 public class GuiButtonSort extends GuiButton {
     protected static final ResourceLocation[] textures =
@@ -61,9 +59,20 @@ public class GuiButtonSort extends GuiButton {
 
     public void drawButtonMod(Minecraft mc, int mouseX, int mouseY) {
         if (visible) {
-            mc.getTextureManager().bindTexture(textures[type + (isActive ? 0 : 3)]);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+
+            mc.getTextureManager().bindTexture(ResourcesUtils.texture("gui/creative_button.png"));
+
+            GlStateManager.color(1, 1, 1, 1);
+            drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
+
+            if (hovered) {
+                GlStateManager.color(1, 0, 1, 0.4f);
+                drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
+                GlStateManager.color(1, 1, 1, 1);
+            }
+
+            mc.getTextureManager().bindTexture(textures[type + (isActive ? 0 : 3)]);
             drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
         }
     }
@@ -73,14 +82,13 @@ public class GuiButtonSort extends GuiButton {
             FontRenderer font = Minecraft.getMinecraft().fontRenderer;
             int nameWidth = font.getStringWidth(name) / 2 + 4;
             GlStateManager.translate(40, mouseY, 1);
-            GuiUtils.drawHoveringText(ImmutableList.of(name), mouseX + nameWidth, mouseY, this.width, this.height, -1, font);
+            GuiUtils.drawHoveringText(ImmutableList.of(name), mouseX + nameWidth, mouseY, width, height, -1, font);
             GlStateManager.translate(-40, -mouseY, -1);
         }
     }
 
     @FunctionalInterface
-    public interface Action
-    {
+    public interface Action {
         void onClick();
     }
 }
