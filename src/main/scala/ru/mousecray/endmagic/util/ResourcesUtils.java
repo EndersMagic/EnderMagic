@@ -1,8 +1,10 @@
 package ru.mousecray.endmagic.util;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.common.Loader;
 import org.apache.commons.io.IOUtils;
+import ru.mousecray.endmagic.EM;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -11,6 +13,14 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class ResourcesUtils {
+
+    public static ResourceLocation resource(String location) {
+        return new ResourceLocation(EM.ID, location);
+    }
+
+    public static ResourceLocation texture(String location) {
+        return new ResourceLocation(EM.ID, "textures/" + location);
+    }
 
     public static List<String> listResources(String folder, Predicate<String> filter) {
         String normalizedFolder = normalize(folder);

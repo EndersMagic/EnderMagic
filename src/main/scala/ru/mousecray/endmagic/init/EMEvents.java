@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderEye;
@@ -58,6 +59,7 @@ import ru.mousecray.endmagic.util.registry.ExplodeRecipe;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
+import ru.mousecray.endmagic.util.GuiContainerCreativeEM;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -436,5 +438,12 @@ public class EMEvents {
             }
 
         return ItemStack.EMPTY;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public static void onGuiInit(GuiOpenEvent event) {
+        if (event.getGui() instanceof GuiContainerCreative && !(event.getGui() instanceof GuiContainerCreativeEM))
+            event.setGui(new GuiContainerCreativeEM(Minecraft.getMinecraft().player));
     }
 }
