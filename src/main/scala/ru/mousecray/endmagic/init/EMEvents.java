@@ -46,10 +46,12 @@ import net.minecraftforge.fml.client.GuiConfirmation;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.GradleTarget;
@@ -62,16 +64,21 @@ import ru.mousecray.endmagic.capability.player.EmCapabilityProvider;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
+import ru.mousecray.endmagic.client.render.rune.DebugModelWrapper;
+import ru.mousecray.endmagic.client.render.rune.RuneModelWrapper2;
 import ru.mousecray.endmagic.entity.EntityCustomEnderEye;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.network.PacketTypes;
-import ru.mousecray.endmagic.rune.RuneColor;
 import ru.mousecray.endmagic.rune.RuneIndex;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
+import scala.Function1;
+import scala.Option;
+import scala.collection.JavaConversions;
+import scala.collection.immutable.Set;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -92,6 +99,47 @@ import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequi
 
 @EventBusSubscriber(modid = EM.ID)
 public class EMEvents {
+
+    @SubscribeEvent
+    public static void onKeyPress(InputEvent.KeyInputEvent event) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD0))
+            updateActiveSides(Option.empty());
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD1))
+            updateActiveSides(Option.apply(EnumFacing.values()[0]));
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD2))
+            updateActiveSides(Option.apply(EnumFacing.values()[1]));
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD3))
+            updateActiveSides(Option.apply(EnumFacing.values()[2]));
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD4))
+            updateActiveSides(Option.apply(EnumFacing.values()[3]));
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD5))
+            updateActiveSides(Option.apply(EnumFacing.values()[4]));
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_NUMPAD6))
+            updateActiveSides(Option.apply(EnumFacing.values()[5]));
+    }
+
+    private static void updateActiveSides(Option<EnumFacing> side) {
+        System.out.println("turned " + side);
+        //System.out.println("randMin " + DebugModelWrapper.randMin().get() + " randMax " + DebugModelWrapper.randMax().get());
+        //JavaConversions.asJavaCollection(RuneModelWrapper2.facesSets()).forEach(set -> System.out.println("allQuads " + set));
+
+        DebugModelWrapper.activeSides_$eq(DebugModelWrapper.activeSides().updated(side, !((Boolean) DebugModelWrapper.activeSides().apply(side))));
+        EM.proxy.refreshChunk(Minecraft.getMinecraft().world, Minecraft.getMinecraft().player.getPosition());
+        EM.proxy.refreshChunk(Minecraft.getMinecraft().world, Minecraft.getMinecraft().player.getPosition().add(16, 0, 0));
+        EM.proxy.refreshChunk(Minecraft.getMinecraft().world, Minecraft.getMinecraft().player.getPosition().add(-16, 0, 0));
+        EM.proxy.refreshChunk(Minecraft.getMinecraft().world, Minecraft.getMinecraft().player.getPosition().add(16, 0, 16));
+        EM.proxy.refreshChunk(Minecraft.getMinecraft().world, Minecraft.getMinecraft().player.getPosition().add(16, 0, -16));
+        EM.proxy.refreshChunk(Minecraft.getMinecraft().world, Minecraft.getMinecraft().player.getPosition().add(-16, 0, -16));
+        EM.proxy.refreshChunk(Minecraft.getMinecraft().world, Minecraft.getMinecraft().player.getPosition().add(-16, 0, 16));
+        EM.proxy.refreshChunk(Minecraft.getMinecraft().world, Minecraft.getMinecraft().player.getPosition().add(0, 0, -16));
+        EM.proxy.refreshChunk(Minecraft.getMinecraft().world, Minecraft.getMinecraft().player.getPosition().add(0, 0, 16));
+    }
 
     private static final int teleportRadius = 40;
     private static ImmutableMap<Block, Item> coal2diamond = ImmutableMap.of(

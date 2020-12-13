@@ -34,32 +34,38 @@ class RuneModelWrapper(baseModel: IBakedModel, resource: ModelResourceLocation) 
 
 
   override def getQuads(state: IBlockState, side: EnumFacing, rand: Long): util.List[BakedQuad] = {
-    cache.getOrElseUpdate((state, side), {
+    if (true)
+      super.getQuads(state, side, rand)
+    else
+      cache.getOrElseUpdate((state, side), {
 
-      val originalGetQuads = super.getQuads _
+        val originalGetQuads = super.getQuads _
 
-      val allSideQuads = EnumFacing.values()
-        .map(v1 => v1 -> originalGetQuads(state, v1, 0).asScala)
-        .filter(_._2.nonEmpty)
-        .toMap
-        .mapValues(findEdge)
+        val allSideEdges: Map[Option[EnumFacing], BakedQuad] = (EnumFacing.values().map(Some(_)) :+ None)
+          .map(v1 => v1 -> originalGetQuads(state, v1.orNull, 0).asScala)
+          .filter(_._2.nonEmpty)
+          .toMap
+          .mapValues(findEdge)
 
 
-      val baseQuadsJava = super.getQuads(state, side, rand)
-      val baseQuads = baseQuadsJava.asScala
+        val baseQuadsJava = originalGetQuads(state, side, rand)
+        val baseQuads = baseQuadsJava.asScala
 
-      if(allSideQuads.get(side).isDefined || side==null)
-        ((if (baseQuads.nonEmpty) {
-          val edge = findEdge(baseQuads)
-          baseQuads.filter(_ != edge)
-        } else
-          baseQuads) :+ new VolumetricBakedQuad(side, allSideQuads))
-          .toList
-          .asJava
-          .asInstanceOf[util.List[BakedQuad]]
-      else
-        baseQuadsJava
-    })
+        allSideEdges.get(Option(side))
+          .map { edgeForCurrentSide =>
+            (baseQuads.filter(_ != edgeForCurrentSide) :+ new VolumetricBakedQuad(side, allSideEdges))
+              .toList
+              .asJava
+              .asInstanceOf[util.List[BakedQuad]]
+          }.getOrElse(baseQuadsJava)
+      })
   }
 
+
+  private def withoutEdge(baseQuads: mutable.Buffer[BakedQuad]) = {
+    if (baseQuads.nonEmpty)
+      baseQuads.filter(_ != findEdge(baseQuads))
+    else
+      baseQuads
+  }
 }

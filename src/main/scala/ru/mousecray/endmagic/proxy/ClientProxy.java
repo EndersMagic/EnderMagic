@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.WeightedBakedModel;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.components.ImageComponent;
@@ -39,7 +41,8 @@ import ru.mousecray.endmagic.api.embook.components.TextComponent;
 import ru.mousecray.endmagic.client.gui.GuiTypes;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
-import ru.mousecray.endmagic.client.render.rune.RuneModelWrapper;
+import ru.mousecray.endmagic.client.render.rune.DebugModelWrapper;
+import ru.mousecray.endmagic.client.render.rune.RuneModelWrapper2;
 import ru.mousecray.endmagic.client.render.rune.RuneTopLayerRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TilePhantomAvoidingBlockRenderer;
@@ -216,7 +219,11 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
 
             if (!resource.getVariant().contains("inventory")) {
-                e.getModelRegistry().putObject(resource, new RuneModelWrapper(e.getModelRegistry().getObject(resource), resource));
+                //e.getModelRegistry().putObject(resource, new RuneModelWrapper(e.getModelRegistry().getObject(resource), resource));
+                IBakedModel originalModel = e.getModelRegistry().getObject(resource);
+                e.getModelRegistry().putObject(resource, new RuneModelWrapper2(originalModel));
+                //if (originalModel instanceof WeightedBakedModel)
+                  //  System.out.println(resource+" totalWeight " + ReflectionHelper.<Integer, WeightedBakedModel>getPrivateValue(WeightedBakedModel.class, (WeightedBakedModel) originalModel, "totalWeight"));
             }
         }
     }
