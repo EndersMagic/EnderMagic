@@ -1,704 +1,703 @@
-package ru.mousecray.endmagic.util.render.endothermic
+package ru.mousecray.endmagic.util.render.endothermic.quad
 
-import ru.mousecray.endmagic.util.render.endothermic.BaseUnpackedQuad._
 import ru.mousecray.endmagic.util.render.endothermic.format.AttributeRepresentation._
-import ru.mousecray.endmagic.util.render.endothermic.format.UnpackEvaluations
-import ru.mousecray.endmagic.util.render.endothermic.ops.QuadOps
+import ru.mousecray.endmagic.util.render.endothermic.format.{AttributeId, UnpackEvaluations}
+import ru.mousecray.endmagic.util.render.endothermic.format.UnpackEvaluations.AttributeIsomorphism
+import ru.mousecray.endmagic.util.render.endothermic.quad.BaseUnpackedQuad._
+import ru.mousecray.endmagic.util.render.endothermic.quad.ops.QuadOps
 import net.minecraft.client.renderer.block.model.BakedQuad
-import net.minecraft.client.renderer.texture.TextureAtlasSprite
-import net.minecraft.client.renderer.vertex.{DefaultVertexFormats, VertexFormat, VertexFormatElement}
+import net.minecraft.client.renderer.vertex.VertexFormat
 
 trait BaseUnpackedQuad extends QuadOps {
   type Self <: BaseUnpackedQuad
 
   def toBakedQuad: BakedQuad
 
-  private[endothermic] def quad: BakedQuad
-  private[endothermic] def quadAtlas: TextureAtlasSprite
+  private[quad] def quad: BakedQuad
 
   def format: VertexFormat = quad.getFormat
 
-  val evaluations: Map[(VertexFormatElement, Int, Vertex), (BakedQuad => Float, (Float, Array[Int]) => Unit)] = UnpackEvaluations.getFormatParseRule(format)
+  val evaluations: Map[AttributeId, AttributeIsomorphism] = UnpackEvaluations.getFormatParseRule(format)
 
 
-  private[endothermic] var initFlag1: Int = 0
-  private[endothermic] var initFlag2: Int = 0
-  private[endothermic] var initFlag3: Int = 0
-  private[endothermic] var initFlag4: Int = 0
+  private[quad] var initFlag1: Int = 0
+  private[quad] var initFlag2: Int = 0
+  private[quad] var initFlag3: Int = 0
+  private[quad] var initFlag4: Int = 0
 
-  private[endothermic] var changeFlag1: Int = 0
-  private[endothermic] var changeFlag2: Int = 0
-  private[endothermic] var changeFlag3: Int = 0
-  private[endothermic] var changeFlag4: Int = 0
+  private[quad] var changeFlag1: Int = 0
+  private[quad] var changeFlag2: Int = 0
+  private[quad] var changeFlag3: Int = 0
+  private[quad] var changeFlag4: Int = 0
 
 
-  private[endothermic] var _v1_x: Float = defaultValue
+  private[quad] var _v1_x: Float = defaultValue
 
   def v1_x: Float = {
     if ((initFlag1 & (1 << x_1)) == 0) {
       initFlag1 |= (1 << x_1)
 
-      evaluations.get(x_1).foreach(i => _v1_x = i._1(quad))
+      evaluations.get(x_1).foreach(i => _v1_x = i.unpack(quad.getVertexData))
     }
     _v1_x
   }
 
 
-  private[endothermic] var _v1_y: Float = defaultValue
+  private[quad] var _v1_y: Float = defaultValue
 
   def v1_y: Float = {
     if ((initFlag1 & (1 << y_1)) == 0) {
       initFlag1 |= (1 << y_1)
 
-      evaluations.get(y_1).foreach(i => _v1_y = i._1(quad))
+      evaluations.get(y_1).foreach(i => _v1_y = i.unpack(quad.getVertexData))
     }
     _v1_y
   }
 
-  private[endothermic] var _v1_z: Float = defaultValue
+  private[quad] var _v1_z: Float = defaultValue
 
   def v1_z: Float = {
     if ((initFlag1 & (1 << z_1)) == 0) {
       initFlag1 |= (1 << z_1)
 
-      evaluations.get(z_1).foreach(i => _v1_z = i._1(quad))
+      evaluations.get(z_1).foreach(i => _v1_z = i.unpack(quad.getVertexData))
     }
     _v1_z
   }
 
-  private[endothermic] var _v1_r: Float = defaultValue
+  private[quad] var _v1_r: Float = defaultValue
 
   def v1_r: Float = {
     if ((initFlag1 & (1 << r_1)) == 0) {
       initFlag1 |= (1 << r_1)
 
-      evaluations.get(r_1).foreach(i => _v1_r = i._1(quad))
+      evaluations.get(r_1).foreach(i => _v1_r = i.unpack(quad.getVertexData))
     }
     _v1_r
   }
 
-  private[endothermic] var _v1_g: Float = defaultValue
+  private[quad] var _v1_g: Float = defaultValue
 
   def v1_g: Float = {
     if ((initFlag1 & (1 << g_1)) == 0) {
       initFlag1 |= (1 << g_1)
 
-      evaluations.get(g_1).foreach(i => _v1_g = i._1(quad))
+      evaluations.get(g_1).foreach(i => _v1_g = i.unpack(quad.getVertexData))
     }
     _v1_g
   }
 
-  private[endothermic] var _v1_b: Float = defaultValue
+  private[quad] var _v1_b: Float = defaultValue
 
   def v1_b: Float = {
     if ((initFlag1 & (1 << b_1)) == 0) {
       initFlag1 |= (1 << b_1)
 
-      evaluations.get(b_1).foreach(i => _v1_b = i._1(quad))
+      evaluations.get(b_1).foreach(i => _v1_b = i.unpack(quad.getVertexData))
     }
     _v1_b
   }
 
-  private[endothermic] var _v1_a: Float = defaultValue
+  private[quad] var _v1_a: Float = defaultValue
 
   def v1_a: Float = {
     if ((initFlag1 & (1 << a_1)) == 0) {
       initFlag1 |= (1 << a_1)
 
-      evaluations.get(a_1).foreach(i => _v1_a = i._1(quad))
+      evaluations.get(a_1).foreach(i => _v1_a = i.unpack(quad.getVertexData))
     }
     _v1_a
   }
 
-  private[endothermic] var _v1_u: Float = defaultValue
+  private[quad] var _v1_u: Float = defaultValue
 
   def v1_u: Float = {
     if ((initFlag1 & (1 << u_1)) == 0) {
       initFlag1 |= (1 << u_1)
 
-      evaluations.get(u_1).foreach(i => _v1_u = i._1(quad))
+      evaluations.get(u_1).foreach(i => _v1_u = i.unpack(quad.getVertexData))
     }
     _v1_u
   }
 
-  private[endothermic] var _v1_v: Float = defaultValue
+  private[quad] var _v1_v: Float = defaultValue
 
   def v1_v: Float = {
     if ((initFlag1 & (1 << v_1)) == 0) {
       initFlag1 |= (1 << v_1)
 
-      evaluations.get(v_1).foreach(i => _v1_v = i._1(quad))
+      evaluations.get(v_1).foreach(i => _v1_v = i.unpack(quad.getVertexData))
     }
     _v1_v
   }
 
-  private[endothermic] var _v1_lu: Float = defaultValue
+  private[quad] var _v1_lu: Float = defaultValue
 
   def v1_lu: Float = {
     if ((initFlag1 & (1 << lu_1)) == 0) {
       initFlag1 |= (1 << lu_1)
 
-      evaluations.get(lu_1).foreach(i => _v1_lu = i._1(quad))
+      evaluations.get(lu_1).foreach(i => _v1_lu = i.unpack(quad.getVertexData))
     }
     _v1_lu
   }
 
-  private[endothermic] var _v1_lv: Float = defaultValue
+  private[quad] var _v1_lv: Float = defaultValue
 
   def v1_lv: Float = {
     if ((initFlag1 & (1 << lv_1)) == 0) {
       initFlag1 |= (1 << lv_1)
 
-      evaluations.get(lv_1).foreach(i => _v1_lv = i._1(quad))
+      evaluations.get(lv_1).foreach(i => _v1_lv = i.unpack(quad.getVertexData))
     }
     _v1_lv
   }
 
-  private[endothermic] var _v1_nx: Float = defaultValue
+  private[quad] var _v1_nx: Float = defaultValue
 
   def v1_nx: Float = {
     if ((initFlag1 & (1 << nx_1)) == 0) {
       initFlag1 |= (1 << nx_1)
 
-      evaluations.get(nx_1).foreach(i => _v1_nx = i._1(quad))
+      evaluations.get(nx_1).foreach(i => _v1_nx = i.unpack(quad.getVertexData))
     }
     _v1_nx
   }
 
-  private[endothermic] var _v1_ny: Float = defaultValue
+  private[quad] var _v1_ny: Float = defaultValue
 
   def v1_ny: Float = {
     if ((initFlag1 & (1 << ny_1)) == 0) {
       initFlag1 |= (1 << ny_1)
 
-      evaluations.get(ny_1).foreach(i => _v1_ny = i._1(quad))
+      evaluations.get(ny_1).foreach(i => _v1_ny = i.unpack(quad.getVertexData))
     }
     _v1_ny
   }
 
-  private[endothermic] var _v1_nz: Float = defaultValue
+  private[quad] var _v1_nz: Float = defaultValue
 
   def v1_nz: Float = {
     if ((initFlag1 & (1 << nz_1)) == 0) {
       initFlag1 |= (1 << nz_1)
 
-      evaluations.get(nz_1).foreach(i => _v1_nz = i._1(quad))
+      evaluations.get(nz_1).foreach(i => _v1_nz = i.unpack(quad.getVertexData))
     }
     _v1_nz
   }
 
-  private[endothermic] var _v1_p: Float = defaultValue
+  private[quad] var _v1_p: Float = defaultValue
 
   def v1_p: Float = {
     if ((initFlag1 & (1 << p_1)) == 0) {
       initFlag1 |= (1 << p_1)
 
-      evaluations.get(p_1).foreach(i => _v1_p = i._1(quad))
+      evaluations.get(p_1).foreach(i => _v1_p = i.unpack(quad.getVertexData))
     }
     _v1_p
   }
 
 
-  private[endothermic] var _v2_x: Float = defaultValue
+  private[quad] var _v2_x: Float = defaultValue
 
   def v2_x: Float = {
     if ((initFlag2 & (1 << x_1)) == 0) {
       initFlag2 |= (1 << x_1)
 
-      evaluations.get(x_2).foreach(i => _v2_x = i._1(quad))
+      evaluations.get(x_2).foreach(i => _v2_x = i.unpack(quad.getVertexData))
     }
     _v2_x
   }
 
-  private[endothermic] var _v2_y: Float = defaultValue
+  private[quad] var _v2_y: Float = defaultValue
 
   def v2_y: Float = {
     if ((initFlag2 & (1 << y_1)) == 0) {
       initFlag2 |= (1 << y_1)
 
-      evaluations.get(y_2).foreach(i => _v2_y = i._1(quad))
+      evaluations.get(y_2).foreach(i => _v2_y = i.unpack(quad.getVertexData))
     }
     _v2_y
   }
 
-  private[endothermic] var _v2_z: Float = defaultValue
+  private[quad] var _v2_z: Float = defaultValue
 
   def v2_z: Float = {
     if ((initFlag2 & (1 << z_1)) == 0) {
       initFlag2 |= (1 << z_1)
 
-      evaluations.get(z_2).foreach(i => _v2_z = i._1(quad))
+      evaluations.get(z_2).foreach(i => _v2_z = i.unpack(quad.getVertexData))
     }
     _v2_z
   }
 
-  private[endothermic] var _v2_r: Float = defaultValue
+  private[quad] var _v2_r: Float = defaultValue
 
   def v2_r: Float = {
     if ((initFlag2 & (1 << r_1)) == 0) {
       initFlag2 |= (1 << r_1)
 
-      evaluations.get(r_2).foreach(i => _v2_r = i._1(quad))
+      evaluations.get(r_2).foreach(i => _v2_r = i.unpack(quad.getVertexData))
     }
     _v2_r
   }
 
-  private[endothermic] var _v2_g: Float = defaultValue
+  private[quad] var _v2_g: Float = defaultValue
 
   def v2_g: Float = {
     if ((initFlag2 & (1 << g_1)) == 0) {
       initFlag2 |= (1 << g_1)
 
-      evaluations.get(g_2).foreach(i => _v2_g = i._1(quad))
+      evaluations.get(g_2).foreach(i => _v2_g = i.unpack(quad.getVertexData))
     }
     _v2_g
   }
 
-  private[endothermic] var _v2_b: Float = defaultValue
+  private[quad] var _v2_b: Float = defaultValue
 
   def v2_b: Float = {
     if ((initFlag2 & (1 << b_1)) == 0) {
       initFlag2 |= (1 << b_1)
 
-      evaluations.get(b_2).foreach(i => _v2_b = i._1(quad))
+      evaluations.get(b_2).foreach(i => _v2_b = i.unpack(quad.getVertexData))
     }
     _v2_b
   }
 
-  private[endothermic] var _v2_a: Float = defaultValue
+  private[quad] var _v2_a: Float = defaultValue
 
   def v2_a: Float = {
     if ((initFlag2 & (1 << a_1)) == 0) {
       initFlag2 |= (1 << a_1)
 
-      evaluations.get(a_2).foreach(i => _v2_a = i._1(quad))
+      evaluations.get(a_2).foreach(i => _v2_a = i.unpack(quad.getVertexData))
     }
     _v2_a
   }
 
-  private[endothermic] var _v2_u: Float = defaultValue
+  private[quad] var _v2_u: Float = defaultValue
 
   def v2_u: Float = {
     if ((initFlag2 & (1 << u_1)) == 0) {
       initFlag2 |= (1 << u_1)
 
-      evaluations.get(u_2).foreach(i => _v2_u = i._1(quad))
+      evaluations.get(u_2).foreach(i => _v2_u = i.unpack(quad.getVertexData))
     }
     _v2_u
   }
 
-  private[endothermic] var _v2_v: Float = defaultValue
+  private[quad] var _v2_v: Float = defaultValue
 
   def v2_v: Float = {
     if ((initFlag2 & (1 << v_1)) == 0) {
       initFlag2 |= (1 << v_1)
 
-      evaluations.get(v_2).foreach(i => _v2_v = i._1(quad))
+      evaluations.get(v_2).foreach(i => _v2_v = i.unpack(quad.getVertexData))
     }
     _v2_v
   }
 
-  private[endothermic] var _v2_lu: Float = defaultValue
+  private[quad] var _v2_lu: Float = defaultValue
 
   def v2_lu: Float = {
     if ((initFlag2 & (1 << lu_1)) == 0) {
       initFlag2 |= (1 << lu_1)
 
-      evaluations.get(lu_2).foreach(i => _v2_lu = i._1(quad))
+      evaluations.get(lu_2).foreach(i => _v2_lu = i.unpack(quad.getVertexData))
     }
     _v2_lu
   }
 
-  private[endothermic] var _v2_lv: Float = defaultValue
+  private[quad] var _v2_lv: Float = defaultValue
 
   def v2_lv: Float = {
     if ((initFlag2 & (1 << lv_1)) == 0) {
       initFlag2 |= (1 << lv_1)
 
-      evaluations.get(lv_2).foreach(i => _v2_lv = i._1(quad))
+      evaluations.get(lv_2).foreach(i => _v2_lv = i.unpack(quad.getVertexData))
     }
     _v2_lv
   }
 
-  private[endothermic] var _v2_nx: Float = defaultValue
+  private[quad] var _v2_nx: Float = defaultValue
 
   def v2_nx: Float = {
     if ((initFlag2 & (1 << nx_1)) == 0) {
       initFlag2 |= (1 << nx_1)
 
-      evaluations.get(nx_2).foreach(i => _v2_nx = i._1(quad))
+      evaluations.get(nx_2).foreach(i => _v2_nx = i.unpack(quad.getVertexData))
     }
     _v2_nx
   }
 
-  private[endothermic] var _v2_ny: Float = defaultValue
+  private[quad] var _v2_ny: Float = defaultValue
 
   def v2_ny: Float = {
     if ((initFlag2 & (1 << ny_1)) == 0) {
       initFlag2 |= (1 << ny_1)
 
-      evaluations.get(ny_2).foreach(i => _v2_ny = i._1(quad))
+      evaluations.get(ny_2).foreach(i => _v2_ny = i.unpack(quad.getVertexData))
     }
     _v2_ny
   }
 
-  private[endothermic] var _v2_nz: Float = defaultValue
+  private[quad] var _v2_nz: Float = defaultValue
 
   def v2_nz: Float = {
     if ((initFlag2 & (1 << nz_1)) == 0) {
       initFlag2 |= (1 << nz_1)
 
-      evaluations.get(nz_2).foreach(i => _v2_nz = i._1(quad))
+      evaluations.get(nz_2).foreach(i => _v2_nz = i.unpack(quad.getVertexData))
     }
     _v2_nz
   }
 
-  private[endothermic] var _v2_p: Float = defaultValue
+  private[quad] var _v2_p: Float = defaultValue
 
   def v2_p: Float = {
     if ((initFlag2 & (1 << p_1)) == 0) {
       initFlag2 |= (1 << p_1)
 
-      evaluations.get(p_2).foreach(i => _v2_p = i._1(quad))
+      evaluations.get(p_2).foreach(i => _v2_p = i.unpack(quad.getVertexData))
     }
     _v2_p
   }
 
 
-  private[endothermic] var _v3_x: Float = defaultValue
+  private[quad] var _v3_x: Float = defaultValue
 
   def v3_x: Float = {
     if ((initFlag3 & (1 << x_1)) == 0) {
       initFlag3 |= (1 << x_1)
 
-      evaluations.get(x_3).foreach(i => _v3_x = i._1(quad))
+      evaluations.get(x_3).foreach(i => _v3_x = i.unpack(quad.getVertexData))
     }
     _v3_x
   }
 
-  private[endothermic] var _v3_y: Float = defaultValue
+  private[quad] var _v3_y: Float = defaultValue
 
   def v3_y: Float = {
     if ((initFlag3 & (1 << y_1)) == 0) {
       initFlag3 |= (1 << y_1)
 
-      evaluations.get(y_3).foreach(i => _v3_y = i._1(quad))
+      evaluations.get(y_3).foreach(i => _v3_y = i.unpack(quad.getVertexData))
     }
     _v3_y
   }
 
-  private[endothermic] var _v3_z: Float = defaultValue
+  private[quad] var _v3_z: Float = defaultValue
 
   def v3_z: Float = {
     if ((initFlag3 & (1 << z_1)) == 0) {
       initFlag3 |= (1 << z_1)
 
-      evaluations.get(z_3).foreach(i => _v3_z = i._1(quad))
+      evaluations.get(z_3).foreach(i => _v3_z = i.unpack(quad.getVertexData))
     }
     _v3_z
   }
 
-  private[endothermic] var _v3_r: Float = defaultValue
+  private[quad] var _v3_r: Float = defaultValue
 
   def v3_r: Float = {
     if ((initFlag3 & (1 << r_1)) == 0) {
       initFlag3 |= (1 << r_1)
 
-      evaluations.get(r_3).foreach(i => _v3_r = i._1(quad))
+      evaluations.get(r_3).foreach(i => _v3_r = i.unpack(quad.getVertexData))
     }
     _v3_r
   }
 
-  private[endothermic] var _v3_g: Float = defaultValue
+  private[quad] var _v3_g: Float = defaultValue
 
   def v3_g: Float = {
     if ((initFlag3 & (1 << g_1)) == 0) {
       initFlag3 |= (1 << g_1)
 
-      evaluations.get(g_3).foreach(i => _v3_g = i._1(quad))
+      evaluations.get(g_3).foreach(i => _v3_g = i.unpack(quad.getVertexData))
     }
     _v3_g
   }
 
-  private[endothermic] var _v3_b: Float = defaultValue
+  private[quad] var _v3_b: Float = defaultValue
 
   def v3_b: Float = {
     if ((initFlag3 & (1 << b_1)) == 0) {
       initFlag3 |= (1 << b_1)
 
-      evaluations.get(b_3).foreach(i => _v3_b = i._1(quad))
+      evaluations.get(b_3).foreach(i => _v3_b = i.unpack(quad.getVertexData))
     }
     _v3_b
   }
 
-  private[endothermic] var _v3_a: Float = defaultValue
+  private[quad] var _v3_a: Float = defaultValue
 
   def v3_a: Float = {
     if ((initFlag3 & (1 << a_1)) == 0) {
       initFlag3 |= (1 << a_1)
 
-      evaluations.get(a_3).foreach(i => _v3_a = i._1(quad))
+      evaluations.get(a_3).foreach(i => _v3_a = i.unpack(quad.getVertexData))
     }
     _v3_a
   }
 
-  private[endothermic] var _v3_u: Float = defaultValue
+  private[quad] var _v3_u: Float = defaultValue
 
   def v3_u: Float = {
     if ((initFlag3 & (1 << u_1)) == 0) {
       initFlag3 |= (1 << u_1)
 
-      evaluations.get(u_3).foreach(i => _v3_u = i._1(quad))
+      evaluations.get(u_3).foreach(i => _v3_u = i.unpack(quad.getVertexData))
     }
     _v3_u
   }
 
-  private[endothermic] var _v3_v: Float = defaultValue
+  private[quad] var _v3_v: Float = defaultValue
 
   def v3_v: Float = {
     if ((initFlag3 & (1 << v_1)) == 0) {
       initFlag3 |= (1 << v_1)
 
-      evaluations.get(v_3).foreach(i => _v3_v = i._1(quad))
+      evaluations.get(v_3).foreach(i => _v3_v = i.unpack(quad.getVertexData))
     }
     _v3_v
   }
 
-  private[endothermic] var _v3_lu: Float = defaultValue
+  private[quad] var _v3_lu: Float = defaultValue
 
   def v3_lu: Float = {
     if ((initFlag3 & (1 << lu_1)) == 0) {
       initFlag3 |= (1 << lu_1)
 
-      evaluations.get(lu_3).foreach(i => _v3_lu = i._1(quad))
+      evaluations.get(lu_3).foreach(i => _v3_lu = i.unpack(quad.getVertexData))
     }
     _v3_lu
   }
 
-  private[endothermic] var _v3_lv: Float = defaultValue
+  private[quad] var _v3_lv: Float = defaultValue
 
   def v3_lv: Float = {
     if ((initFlag3 & (1 << lv_1)) == 0) {
       initFlag3 |= (1 << lv_1)
 
-      evaluations.get(lv_3).foreach(i => _v3_lv = i._1(quad))
+      evaluations.get(lv_3).foreach(i => _v3_lv = i.unpack(quad.getVertexData))
     }
     _v3_lv
   }
 
-  private[endothermic] var _v3_nx: Float = defaultValue
+  private[quad] var _v3_nx: Float = defaultValue
 
   def v3_nx: Float = {
     if ((initFlag3 & (1 << nx_1)) == 0) {
       initFlag3 |= (1 << nx_1)
 
-      evaluations.get(nx_3).foreach(i => _v3_nx = i._1(quad))
+      evaluations.get(nx_3).foreach(i => _v3_nx = i.unpack(quad.getVertexData))
     }
     _v3_nx
   }
 
-  private[endothermic] var _v3_ny: Float = defaultValue
+  private[quad] var _v3_ny: Float = defaultValue
 
   def v3_ny: Float = {
     if ((initFlag3 & (1 << ny_1)) == 0) {
       initFlag3 |= (1 << ny_1)
 
-      evaluations.get(ny_3).foreach(i => _v3_ny = i._1(quad))
+      evaluations.get(ny_3).foreach(i => _v3_ny = i.unpack(quad.getVertexData))
     }
     _v3_ny
   }
 
-  private[endothermic] var _v3_nz: Float = defaultValue
+  private[quad] var _v3_nz: Float = defaultValue
 
   def v3_nz: Float = {
     if ((initFlag3 & (1 << nz_1)) == 0) {
       initFlag3 |= (1 << nz_1)
 
-      evaluations.get(nz_3).foreach(i => _v3_nz = i._1(quad))
+      evaluations.get(nz_3).foreach(i => _v3_nz = i.unpack(quad.getVertexData))
     }
     _v3_nz
   }
 
-  private[endothermic] var _v3_p: Float = defaultValue
+  private[quad] var _v3_p: Float = defaultValue
 
   def v3_p: Float = {
     if ((initFlag3 & (1 << p_1)) == 0) {
       initFlag3 |= (1 << p_1)
 
-      evaluations.get(p_3).foreach(i => _v3_p = i._1(quad))
+      evaluations.get(p_3).foreach(i => _v3_p = i.unpack(quad.getVertexData))
     }
     _v3_p
   }
 
 
-  private[endothermic] var _v4_x: Float = defaultValue
+  private[quad] var _v4_x: Float = defaultValue
 
   def v4_x: Float = {
     if ((initFlag4 & (1 << x_1)) == 0) {
       initFlag4 |= (1 << x_1)
 
-      evaluations.get(x_4).foreach(i => _v4_x = i._1(quad))
+      evaluations.get(x_4).foreach(i => _v4_x = i.unpack(quad.getVertexData))
     }
     _v4_x
   }
 
-  private[endothermic] var _v4_y: Float = defaultValue
+  private[quad] var _v4_y: Float = defaultValue
 
   def v4_y: Float = {
     if ((initFlag4 & (1 << y_1)) == 0) {
       initFlag4 |= (1 << y_1)
 
-      evaluations.get(y_4).foreach(i => _v4_y = i._1(quad))
+      evaluations.get(y_4).foreach(i => _v4_y = i.unpack(quad.getVertexData))
     }
     _v4_y
   }
 
-  private[endothermic] var _v4_z: Float = defaultValue
+  private[quad] var _v4_z: Float = defaultValue
 
   def v4_z: Float = {
     if ((initFlag4 & (1 << z_1)) == 0) {
       initFlag4 |= (1 << z_1)
 
-      evaluations.get(z_4).foreach(i => _v4_z = i._1(quad))
+      evaluations.get(z_4).foreach(i => _v4_z = i.unpack(quad.getVertexData))
     }
     _v4_z
   }
 
-  private[endothermic] var _v4_r: Float = defaultValue
+  private[quad] var _v4_r: Float = defaultValue
 
   def v4_r: Float = {
     if ((initFlag4 & (1 << r_1)) == 0) {
       initFlag4 |= (1 << r_1)
 
-      evaluations.get(r_4).foreach(i => _v4_r = i._1(quad))
+      evaluations.get(r_4).foreach(i => _v4_r = i.unpack(quad.getVertexData))
     }
     _v4_r
   }
 
-  private[endothermic] var _v4_g: Float = defaultValue
+  private[quad] var _v4_g: Float = defaultValue
 
   def v4_g: Float = {
     if ((initFlag4 & (1 << g_1)) == 0) {
       initFlag4 |= (1 << g_1)
 
-      evaluations.get(g_4).foreach(i => _v4_g = i._1(quad))
+      evaluations.get(g_4).foreach(i => _v4_g = i.unpack(quad.getVertexData))
     }
     _v4_g
   }
 
-  private[endothermic] var _v4_b: Float = defaultValue
+  private[quad] var _v4_b: Float = defaultValue
 
   def v4_b: Float = {
     if ((initFlag4 & (1 << b_1)) == 0) {
       initFlag4 |= (1 << b_1)
 
-      evaluations.get(b_4).foreach(i => _v4_b = i._1(quad))
+      evaluations.get(b_4).foreach(i => _v4_b = i.unpack(quad.getVertexData))
     }
     _v4_b
   }
 
-  private[endothermic] var _v4_a: Float = defaultValue
+  private[quad] var _v4_a: Float = defaultValue
 
   def v4_a: Float = {
     if ((initFlag4 & (1 << a_1)) == 0) {
       initFlag4 |= (1 << a_1)
 
-      evaluations.get(a_4).foreach(i => _v4_a = i._1(quad))
+      evaluations.get(a_4).foreach(i => _v4_a = i.unpack(quad.getVertexData))
     }
     _v4_a
   }
 
-  private[endothermic] var _v4_u: Float = defaultValue
+  private[quad] var _v4_u: Float = defaultValue
 
   def v4_u: Float = {
     if ((initFlag4 & (1 << u_1)) == 0) {
       initFlag4 |= (1 << u_1)
 
-      evaluations.get(u_4).foreach(i => _v4_u = i._1(quad))
+      evaluations.get(u_4).foreach(i => _v4_u = i.unpack(quad.getVertexData))
     }
     _v4_u
   }
 
-  private[endothermic] var _v4_v: Float = defaultValue
+  private[quad] var _v4_v: Float = defaultValue
 
   def v4_v: Float = {
     if ((initFlag4 & (1 << v_1)) == 0) {
       initFlag4 |= (1 << v_1)
 
-      evaluations.get(v_4).foreach(i => _v4_v = i._1(quad))
+      evaluations.get(v_4).foreach(i => _v4_v = i.unpack(quad.getVertexData))
     }
     _v4_v
   }
 
-  private[endothermic] var _v4_lu: Float = defaultValue
+  private[quad] var _v4_lu: Float = defaultValue
 
   def v4_lu: Float = {
     if ((initFlag4 & (1 << lu_1)) == 0) {
       initFlag4 |= (1 << lu_1)
 
-      evaluations.get(lu_4).foreach(i => _v4_lu = i._1(quad))
+      evaluations.get(lu_4).foreach(i => _v4_lu = i.unpack(quad.getVertexData))
     }
     _v4_lu
   }
 
-  private[endothermic] var _v4_lv: Float = defaultValue
+  private[quad] var _v4_lv: Float = defaultValue
 
   def v4_lv: Float = {
     if ((initFlag4 & (1 << lv_1)) == 0) {
       initFlag4 |= (1 << lv_1)
 
-      evaluations.get(lv_4).foreach(i => _v4_lv = i._1(quad))
+      evaluations.get(lv_4).foreach(i => _v4_lv = i.unpack(quad.getVertexData))
     }
     _v4_lv
   }
 
-  private[endothermic] var _v4_nx: Float = defaultValue
+  private[quad] var _v4_nx: Float = defaultValue
 
   def v4_nx: Float = {
     if ((initFlag4 & (1 << nx_1)) == 0) {
       initFlag4 |= (1 << nx_1)
 
-      evaluations.get(nx_4).foreach(i => _v4_nx = i._1(quad))
+      evaluations.get(nx_4).foreach(i => _v4_nx = i.unpack(quad.getVertexData))
     }
     _v4_nx
   }
 
-  private[endothermic] var _v4_ny: Float = defaultValue
+  private[quad] var _v4_ny: Float = defaultValue
 
   def v4_ny: Float = {
     if ((initFlag4 & (1 << ny_1)) == 0) {
       initFlag4 |= (1 << ny_1)
 
-      evaluations.get(ny_4).foreach(i => _v4_ny = i._1(quad))
+      evaluations.get(ny_4).foreach(i => _v4_ny = i.unpack(quad.getVertexData))
     }
     _v4_ny
   }
 
-  private[endothermic] var _v4_nz: Float = defaultValue
+  private[quad] var _v4_nz: Float = defaultValue
 
   def v4_nz: Float = {
     if ((initFlag4 & (1 << nz_1)) == 0) {
       initFlag4 |= (1 << nz_1)
 
-      evaluations.get(nz_4).foreach(i => _v4_nz = i._1(quad))
+      evaluations.get(nz_4).foreach(i => _v4_nz = i.unpack(quad.getVertexData))
     }
     _v4_nz
   }
 
-  private[endothermic] var _v4_p: Float = defaultValue
+  private[quad] var _v4_p: Float = defaultValue
 
   def v4_p: Float = {
     if ((initFlag4 & (1 << p_1)) == 0) {
       initFlag4 |= (1 << p_1)
 
-      evaluations.get(p_4).foreach(i => _v4_p = i._1(quad))
+      evaluations.get(p_4).foreach(i => _v4_p = i.unpack(quad.getVertexData))
     }
     _v4_p
   }
 
   /*
-  
-  private[endothermic] var _v$1_$2: Float = defaultValue
+
+  private[quad] var _v$1_$2: Float = defaultValue
 def v$1_$2:Float = {
     if ((initFlag$1 & (1 << $2)) == 0) {
       initFlag$1 |= (1 << $2)
@@ -708,7 +707,7 @@ println("v$1_$2",evaluations(flatAttributeKey($2,_$1))._2)
     _v$1_$2
   }
 
-  
+
    */
 
 
@@ -716,134 +715,134 @@ println("v$1_$2",evaluations(flatAttributeKey($2,_$1))._2)
     val result = quad.getVertexData.clone()
 
     if ((changeFlag1 & (1 << x_1)) != 0)
-      evaluations.get(x_1).foreach(i => i._2(_v1_x, result))
+      evaluations.get(x_1).foreach(i => i.pack(_v1_x, result))
     if ((changeFlag1 & (1 << y_1)) != 0)
-      evaluations.get(y_1).foreach(i => i._2(_v1_y, result))
+      evaluations.get(y_1).foreach(i => i.pack(_v1_y, result))
     if ((changeFlag1 & (1 << z_1)) != 0)
-      evaluations.get(z_1).foreach(i => i._2(_v1_z, result))
+      evaluations.get(z_1).foreach(i => i.pack(_v1_z, result))
     if ((changeFlag1 & (1 << r_1)) != 0)
-      evaluations.get(r_1).foreach(i => i._2(_v1_r, result))
+      evaluations.get(r_1).foreach(i => i.pack(_v1_r, result))
     if ((changeFlag1 & (1 << g_1)) != 0)
-      evaluations.get(g_1).foreach(i => i._2(_v1_g, result))
+      evaluations.get(g_1).foreach(i => i.pack(_v1_g, result))
     if ((changeFlag1 & (1 << b_1)) != 0)
-      evaluations.get(b_1).foreach(i => i._2(_v1_b, result))
+      evaluations.get(b_1).foreach(i => i.pack(_v1_b, result))
     if ((changeFlag1 & (1 << a_1)) != 0)
-      evaluations.get(a_1).foreach(i => i._2(_v1_a, result))
+      evaluations.get(a_1).foreach(i => i.pack(_v1_a, result))
     if ((changeFlag1 & (1 << u_1)) != 0)
-      evaluations.get(u_1).foreach(i => i._2(_v1_u, result))
+      evaluations.get(u_1).foreach(i => i.pack(_v1_u, result))
     if ((changeFlag1 & (1 << v_1)) != 0)
-      evaluations.get(v_1).foreach(i => i._2(_v1_v, result))
+      evaluations.get(v_1).foreach(i => i.pack(_v1_v, result))
     if ((changeFlag1 & (1 << lu_1)) != 0)
-      evaluations.get(lu_1).foreach(i => i._2(_v1_lu, result))
+      evaluations.get(lu_1).foreach(i => i.pack(_v1_lu, result))
     if ((changeFlag1 & (1 << lv_1)) != 0)
-      evaluations.get(lv_1).foreach(i => i._2(_v1_lv, result))
+      evaluations.get(lv_1).foreach(i => i.pack(_v1_lv, result))
     if ((changeFlag1 & (1 << nx_1)) != 0)
-      evaluations.get(nx_1).foreach(i => i._2(_v1_nx, result))
+      evaluations.get(nx_1).foreach(i => i.pack(_v1_nx, result))
     if ((changeFlag1 & (1 << ny_1)) != 0)
-      evaluations.get(ny_1).foreach(i => i._2(_v1_ny, result))
+      evaluations.get(ny_1).foreach(i => i.pack(_v1_ny, result))
     if ((changeFlag1 & (1 << nz_1)) != 0)
-      evaluations.get(nz_1).foreach(i => i._2(_v1_nz, result))
+      evaluations.get(nz_1).foreach(i => i.pack(_v1_nz, result))
     if ((changeFlag1 & (1 << p_1)) != 0)
-      evaluations.get(p_1).foreach(i => i._2(_v1_p, result))
+      evaluations.get(p_1).foreach(i => i.pack(_v1_p, result))
 
     if ((changeFlag2 & (1 << x_1)) != 0)
-      evaluations.get(x_2).foreach(i => i._2(_v2_x, result))
+      evaluations.get(x_2).foreach(i => i.pack(_v2_x, result))
     if ((changeFlag2 & (1 << y_1)) != 0)
-      evaluations.get(y_2).foreach(i => i._2(_v2_y, result))
+      evaluations.get(y_2).foreach(i => i.pack(_v2_y, result))
     if ((changeFlag2 & (1 << z_1)) != 0)
-      evaluations.get(z_2).foreach(i => i._2(_v2_z, result))
+      evaluations.get(z_2).foreach(i => i.pack(_v2_z, result))
     if ((changeFlag2 & (1 << r_1)) != 0)
-      evaluations.get(r_2).foreach(i => i._2(_v2_r, result))
+      evaluations.get(r_2).foreach(i => i.pack(_v2_r, result))
     if ((changeFlag2 & (1 << g_1)) != 0)
-      evaluations.get(g_2).foreach(i => i._2(_v2_g, result))
+      evaluations.get(g_2).foreach(i => i.pack(_v2_g, result))
     if ((changeFlag2 & (1 << b_1)) != 0)
-      evaluations.get(b_2).foreach(i => i._2(_v2_b, result))
+      evaluations.get(b_2).foreach(i => i.pack(_v2_b, result))
     if ((changeFlag2 & (1 << a_1)) != 0)
-      evaluations.get(a_2).foreach(i => i._2(_v2_a, result))
+      evaluations.get(a_2).foreach(i => i.pack(_v2_a, result))
     if ((changeFlag2 & (1 << u_1)) != 0)
-      evaluations.get(u_2).foreach(i => i._2(_v2_u, result))
+      evaluations.get(u_2).foreach(i => i.pack(_v2_u, result))
     if ((changeFlag2 & (1 << v_1)) != 0)
-      evaluations.get(v_2).foreach(i => i._2(_v2_v, result))
+      evaluations.get(v_2).foreach(i => i.pack(_v2_v, result))
     if ((changeFlag2 & (1 << lu_1)) != 0)
-      evaluations.get(lu_2).foreach(i => i._2(_v2_lu, result))
+      evaluations.get(lu_2).foreach(i => i.pack(_v2_lu, result))
     if ((changeFlag2 & (1 << lv_1)) != 0)
-      evaluations.get(lv_2).foreach(i => i._2(_v2_lv, result))
+      evaluations.get(lv_2).foreach(i => i.pack(_v2_lv, result))
     if ((changeFlag2 & (1 << nx_1)) != 0)
-      evaluations.get(nx_2).foreach(i => i._2(_v2_nx, result))
+      evaluations.get(nx_2).foreach(i => i.pack(_v2_nx, result))
     if ((changeFlag2 & (1 << ny_1)) != 0)
-      evaluations.get(ny_2).foreach(i => i._2(_v2_ny, result))
+      evaluations.get(ny_2).foreach(i => i.pack(_v2_ny, result))
     if ((changeFlag2 & (1 << nz_1)) != 0)
-      evaluations.get(nz_2).foreach(i => i._2(_v2_nz, result))
+      evaluations.get(nz_2).foreach(i => i.pack(_v2_nz, result))
     if ((changeFlag2 & (1 << p_1)) != 0)
-      evaluations.get(p_2).foreach(i => i._2(_v2_p, result))
+      evaluations.get(p_2).foreach(i => i.pack(_v2_p, result))
 
     if ((changeFlag3 & (1 << x_1)) != 0)
-      evaluations.get(x_3).foreach(i => i._2(_v3_x, result))
+      evaluations.get(x_3).foreach(i => i.pack(_v3_x, result))
     if ((changeFlag3 & (1 << y_1)) != 0)
-      evaluations.get(y_3).foreach(i => i._2(_v3_y, result))
+      evaluations.get(y_3).foreach(i => i.pack(_v3_y, result))
     if ((changeFlag3 & (1 << z_1)) != 0)
-      evaluations.get(z_3).foreach(i => i._2(_v3_z, result))
+      evaluations.get(z_3).foreach(i => i.pack(_v3_z, result))
     if ((changeFlag3 & (1 << r_1)) != 0)
-      evaluations.get(r_3).foreach(i => i._2(_v3_r, result))
+      evaluations.get(r_3).foreach(i => i.pack(_v3_r, result))
     if ((changeFlag3 & (1 << g_1)) != 0)
-      evaluations.get(g_3).foreach(i => i._2(_v3_g, result))
+      evaluations.get(g_3).foreach(i => i.pack(_v3_g, result))
     if ((changeFlag3 & (1 << b_1)) != 0)
-      evaluations.get(b_3).foreach(i => i._2(_v3_b, result))
+      evaluations.get(b_3).foreach(i => i.pack(_v3_b, result))
     if ((changeFlag3 & (1 << a_1)) != 0)
-      evaluations.get(a_3).foreach(i => i._2(_v3_a, result))
+      evaluations.get(a_3).foreach(i => i.pack(_v3_a, result))
     if ((changeFlag3 & (1 << u_1)) != 0)
-      evaluations.get(u_3).foreach(i => i._2(_v3_u, result))
+      evaluations.get(u_3).foreach(i => i.pack(_v3_u, result))
     if ((changeFlag3 & (1 << v_1)) != 0)
-      evaluations.get(v_3).foreach(i => i._2(_v3_v, result))
+      evaluations.get(v_3).foreach(i => i.pack(_v3_v, result))
     if ((changeFlag3 & (1 << lu_1)) != 0)
-      evaluations.get(lu_3).foreach(i => i._2(_v3_lu, result))
+      evaluations.get(lu_3).foreach(i => i.pack(_v3_lu, result))
     if ((changeFlag3 & (1 << lv_1)) != 0)
-      evaluations.get(lv_3).foreach(i => i._2(_v3_lv, result))
+      evaluations.get(lv_3).foreach(i => i.pack(_v3_lv, result))
     if ((changeFlag3 & (1 << nx_1)) != 0)
-      evaluations.get(nx_3).foreach(i => i._2(_v3_nx, result))
+      evaluations.get(nx_3).foreach(i => i.pack(_v3_nx, result))
     if ((changeFlag3 & (1 << ny_1)) != 0)
-      evaluations.get(ny_3).foreach(i => i._2(_v3_ny, result))
+      evaluations.get(ny_3).foreach(i => i.pack(_v3_ny, result))
     if ((changeFlag3 & (1 << nz_1)) != 0)
-      evaluations.get(nz_3).foreach(i => i._2(_v3_nz, result))
+      evaluations.get(nz_3).foreach(i => i.pack(_v3_nz, result))
     if ((changeFlag3 & (1 << p_1)) != 0)
-      evaluations.get(p_3).foreach(i => i._2(_v3_p, result))
+      evaluations.get(p_3).foreach(i => i.pack(_v3_p, result))
 
     if ((changeFlag4 & (1 << x_1)) != 0)
-      evaluations.get(x_4).foreach(i => i._2(_v4_x, result))
+      evaluations.get(x_4).foreach(i => i.pack(_v4_x, result))
     if ((changeFlag4 & (1 << y_1)) != 0)
-      evaluations.get(y_4).foreach(i => i._2(_v4_y, result))
+      evaluations.get(y_4).foreach(i => i.pack(_v4_y, result))
     if ((changeFlag4 & (1 << z_1)) != 0)
-      evaluations.get(z_4).foreach(i => i._2(_v4_z, result))
+      evaluations.get(z_4).foreach(i => i.pack(_v4_z, result))
     if ((changeFlag4 & (1 << r_1)) != 0)
-      evaluations.get(r_4).foreach(i => i._2(_v4_r, result))
+      evaluations.get(r_4).foreach(i => i.pack(_v4_r, result))
     if ((changeFlag4 & (1 << g_1)) != 0)
-      evaluations.get(g_4).foreach(i => i._2(_v4_g, result))
+      evaluations.get(g_4).foreach(i => i.pack(_v4_g, result))
     if ((changeFlag4 & (1 << b_1)) != 0)
-      evaluations.get(b_4).foreach(i => i._2(_v4_b, result))
+      evaluations.get(b_4).foreach(i => i.pack(_v4_b, result))
     if ((changeFlag4 & (1 << a_1)) != 0)
-      evaluations.get(a_4).foreach(i => i._2(_v4_a, result))
+      evaluations.get(a_4).foreach(i => i.pack(_v4_a, result))
     if ((changeFlag4 & (1 << u_1)) != 0)
-      evaluations.get(u_4).foreach(i => i._2(_v4_u, result))
+      evaluations.get(u_4).foreach(i => i.pack(_v4_u, result))
     if ((changeFlag4 & (1 << v_1)) != 0)
-      evaluations.get(v_4).foreach(i => i._2(_v4_v, result))
+      evaluations.get(v_4).foreach(i => i.pack(_v4_v, result))
     if ((changeFlag4 & (1 << lu_1)) != 0)
-      evaluations.get(lu_4).foreach(i => i._2(_v4_lu, result))
+      evaluations.get(lu_4).foreach(i => i.pack(_v4_lu, result))
     if ((changeFlag4 & (1 << lv_1)) != 0)
-      evaluations.get(lv_4).foreach(i => i._2(_v4_lv, result))
+      evaluations.get(lv_4).foreach(i => i.pack(_v4_lv, result))
     if ((changeFlag4 & (1 << nx_1)) != 0)
-      evaluations.get(nx_4).foreach(i => i._2(_v4_nx, result))
+      evaluations.get(nx_4).foreach(i => i.pack(_v4_nx, result))
     if ((changeFlag4 & (1 << ny_1)) != 0)
-      evaluations.get(ny_4).foreach(i => i._2(_v4_ny, result))
+      evaluations.get(ny_4).foreach(i => i.pack(_v4_ny, result))
     if ((changeFlag4 & (1 << nz_1)) != 0)
-      evaluations.get(nz_4).foreach(i => i._2(_v4_nz, result))
+      evaluations.get(nz_4).foreach(i => i.pack(_v4_nz, result))
     if ((changeFlag4 & (1 << p_1)) != 0)
-      evaluations.get(p_4).foreach(i => i._2(_v4_p, result))
+      evaluations.get(p_4).foreach(i => i.pack(_v4_p, result))
 
 
     result
   }
 
-  private[endothermic] def reconstructResult(): Self
+  private[quad] def reconstructResult(): Self
 
   def reconstruct(v1_x: Float = this._v1_x,
                   v1_y: Float = this._v1_y,
@@ -1216,8 +1215,10 @@ println("v$1_$2",evaluations(flatAttributeKey($2,_$1))._2)
     result
   }
 
+  def reconstructBuilder:ReconstructBuilder[Self]=ReconstructBuilder.getPooledFor[Self](this.asInstanceOf[Self])
+
   /*
-  
+
   r._v$1_x=v$1
 r._v$1_y=v$1
 r._v$1_z=v$1
@@ -1241,7 +1242,7 @@ if (v$1_$2 != _v$1_$2 || ((initFlag$1 & (1 << $2)) == 0 && v$1_$2 != defaultValu
       result._v$1_$2 = v$1_$2
     }
 
-  
+
    */
 
 }
@@ -1250,83 +1251,8 @@ object BaseUnpackedQuad {
 
   val defaultValue = Float.MinValue + 11
 
-  implicit def flagIndex(vfei: (VertexFormatElement, Int, Vertex)): Int =
+  implicit def flagIndex(vfei: AttributeId): Int =
     UnpackEvaluations.flagsIndices(vfei._1) + vfei._2
-
-  val x_1 = (DefaultVertexFormats.POSITION_3F, 0, _1)
-  val x_2 = (DefaultVertexFormats.POSITION_3F, 0, _2)
-  val x_3 = (DefaultVertexFormats.POSITION_3F, 0, _3)
-  val x_4 = (DefaultVertexFormats.POSITION_3F, 0, _4)
-
-  val y_1 = (DefaultVertexFormats.POSITION_3F, 1, _1)
-  val y_2 = (DefaultVertexFormats.POSITION_3F, 1, _2)
-  val y_3 = (DefaultVertexFormats.POSITION_3F, 1, _3)
-  val y_4 = (DefaultVertexFormats.POSITION_3F, 1, _4)
-
-  val z_1 = (DefaultVertexFormats.POSITION_3F, 2, _1)
-  val z_2 = (DefaultVertexFormats.POSITION_3F, 2, _2)
-  val z_3 = (DefaultVertexFormats.POSITION_3F, 2, _3)
-  val z_4 = (DefaultVertexFormats.POSITION_3F, 2, _4)
-
-  val r_1 = (DefaultVertexFormats.COLOR_4UB, 0, _1)
-  val r_2 = (DefaultVertexFormats.COLOR_4UB, 0, _2)
-  val r_3 = (DefaultVertexFormats.COLOR_4UB, 0, _3)
-  val r_4 = (DefaultVertexFormats.COLOR_4UB, 0, _4)
-
-  val g_1 = (DefaultVertexFormats.COLOR_4UB, 1, _1)
-  val g_2 = (DefaultVertexFormats.COLOR_4UB, 1, _2)
-  val g_3 = (DefaultVertexFormats.COLOR_4UB, 1, _3)
-  val g_4 = (DefaultVertexFormats.COLOR_4UB, 1, _4)
-
-  val b_1 = (DefaultVertexFormats.COLOR_4UB, 2, _1)
-  val b_2 = (DefaultVertexFormats.COLOR_4UB, 2, _2)
-  val b_3 = (DefaultVertexFormats.COLOR_4UB, 2, _3)
-  val b_4 = (DefaultVertexFormats.COLOR_4UB, 2, _4)
-
-  val a_1 = (DefaultVertexFormats.COLOR_4UB, 3, _1)
-  val a_2 = (DefaultVertexFormats.COLOR_4UB, 3, _2)
-  val a_3 = (DefaultVertexFormats.COLOR_4UB, 3, _3)
-  val a_4 = (DefaultVertexFormats.COLOR_4UB, 3, _4)
-
-  val u_1 = (DefaultVertexFormats.TEX_2F, 0, _1)
-  val u_2 = (DefaultVertexFormats.TEX_2F, 0, _2)
-  val u_3 = (DefaultVertexFormats.TEX_2F, 0, _3)
-  val u_4 = (DefaultVertexFormats.TEX_2F, 0, _4)
-
-  val v_1 = (DefaultVertexFormats.TEX_2F, 1, _1)
-  val v_2 = (DefaultVertexFormats.TEX_2F, 1, _2)
-  val v_3 = (DefaultVertexFormats.TEX_2F, 1, _3)
-  val v_4 = (DefaultVertexFormats.TEX_2F, 1, _4)
-
-  val lu_1 = (DefaultVertexFormats.TEX_2S, 0, _1)
-  val lu_2 = (DefaultVertexFormats.TEX_2S, 0, _2)
-  val lu_3 = (DefaultVertexFormats.TEX_2S, 0, _3)
-  val lu_4 = (DefaultVertexFormats.TEX_2S, 0, _4)
-
-  val lv_1 = (DefaultVertexFormats.TEX_2S, 1, _1)
-  val lv_2 = (DefaultVertexFormats.TEX_2S, 1, _2)
-  val lv_3 = (DefaultVertexFormats.TEX_2S, 1, _3)
-  val lv_4 = (DefaultVertexFormats.TEX_2S, 1, _4)
-
-  val nx_1 = (DefaultVertexFormats.NORMAL_3B, 0, _1)
-  val nx_2 = (DefaultVertexFormats.NORMAL_3B, 0, _2)
-  val nx_3 = (DefaultVertexFormats.NORMAL_3B, 0, _3)
-  val nx_4 = (DefaultVertexFormats.NORMAL_3B, 0, _4)
-
-  val ny_1 = (DefaultVertexFormats.NORMAL_3B, 1, _1)
-  val ny_2 = (DefaultVertexFormats.NORMAL_3B, 1, _2)
-  val ny_3 = (DefaultVertexFormats.NORMAL_3B, 1, _3)
-  val ny_4 = (DefaultVertexFormats.NORMAL_3B, 1, _4)
-
-  val nz_1 = (DefaultVertexFormats.NORMAL_3B, 2, _1)
-  val nz_2 = (DefaultVertexFormats.NORMAL_3B, 2, _2)
-  val nz_3 = (DefaultVertexFormats.NORMAL_3B, 2, _3)
-  val nz_4 = (DefaultVertexFormats.NORMAL_3B, 2, _4)
-
-  val p_1 = (DefaultVertexFormats.PADDING_1B, 0, _1)
-  val p_2 = (DefaultVertexFormats.PADDING_1B, 0, _2)
-  val p_3 = (DefaultVertexFormats.PADDING_1B, 0, _3)
-  val p_4 = (DefaultVertexFormats.PADDING_1B, 0, _4)
 
 
 }

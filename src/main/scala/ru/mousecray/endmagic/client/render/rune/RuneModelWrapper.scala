@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.block.model.{BakedQuad, IBakedModel, ModelR
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.Vec3i
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelDelegate
-import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
+import ru.mousecray.endmagic.util.render.endothermic.quad.immutable.LazyUnpackedQuad
 
 import scala.collection.mutable
 
@@ -22,7 +22,7 @@ class RuneModelWrapper(baseModel: IBakedModel, resource: ModelResourceLocation) 
 
   def findEdge(baseQuads: Seq[BakedQuad]): BakedQuad =
     baseQuads.maxBy { q: BakedQuad =>
-      val j = UnpackedQuad(q)
+      val j = LazyUnpackedQuad(q)
       vectMask(
         j.v1_x,
         j.v1_y,

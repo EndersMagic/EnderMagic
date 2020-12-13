@@ -5,8 +5,7 @@ import java.util.{LinkedHashMap, Map, function}
 import net.minecraft.client.renderer.block.model.BakedQuad
 import ru.mousecray.endmagic.capability.chunk.client._
 import ru.mousecray.endmagic.util.Java2Scala.function2Java
-import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
-import ru.mousecray.endmagic.util.render.endothermic.utils._
+import ru.mousecray.endmagic.util.render.endothermic.quad.immutable.LazyUnpackedQuad
 
 object QuadDataCache {
   private val cache = makeCache[(QuadData, BakedQuad), BakedQuad](255 * 6)
@@ -20,10 +19,12 @@ object QuadDataCache {
     }
   }
 
+  val standard_pixel = 1f / 16
+
   val computeQuad: function.Function[(QuadData, BakedQuad), BakedQuad] = function2Java({
     case (data: QuadData, baseQuad: BakedQuad) =>
       val runeFace = baseQuad.getFace
-      val richQuad = UnpackedQuad(baseQuad)
+      val richQuad = LazyUnpackedQuad(baseQuad)
       val directionVec = runeFace.getDirectionVec
       val deepX = -standard_pixel * directionVec.getX
       val deepY = -standard_pixel * directionVec.getY

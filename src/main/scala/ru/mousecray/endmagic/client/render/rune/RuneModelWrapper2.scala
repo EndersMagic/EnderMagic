@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.block.model.{BakedQuad, IBakedModel}
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.Vec3i
 import ru.mousecray.endmagic.client.render.model.baked.BakedModelDelegate
-import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
+import ru.mousecray.endmagic.util.render.endothermic.quad.immutable.LazyUnpackedQuad
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable
@@ -29,7 +29,7 @@ class RuneModelWrapper2(baseModel: IBakedModel) extends BakedModelDelegate(baseM
         allCulledQuads.toList.flatMap(_._2).groupBy(_.getFace)
 
       val allEdges: Map[EnumFacing, BakedQuad] = allQuads.mapValues(list => list.maxBy { q =>
-        val j = UnpackedQuad(q)
+        val j = LazyUnpackedQuad(q)
         vectMask(
           j.v1_x,
           j.v1_y,
@@ -37,14 +37,14 @@ class RuneModelWrapper2(baseModel: IBakedModel) extends BakedModelDelegate(baseM
           j.face.getDirectionVec)
       })
 
-      val edgesSet=allEdges.values.toSet
+      val edgesSet = allEdges.values.toSet
 
       val filteredCulledQuads = allCulledQuads.map { case (cullFace, list) => cullFace -> list.filter(!edgesSet.contains(_)) }
 
-      val finallyCulledQuads =filteredCulledQuads.updated(None,new VolumetricBakedQuad2(allEdges)::filteredCulledQuads(None)).mapValues(_.asJava)
+      val finallyCulledQuads = filteredCulledQuads.updated(None, new VolumetricBakedQuad2(allEdges) :: filteredCulledQuads(None)).mapValues(_.asJava)
 
       finallyCulledQuads
-    }).getOrElse(Option(side),ImmutableList.of())
+    }).getOrElse(Option(side), ImmutableList.of())
 
 
   def vectMask(x: Float, y: Float, z: Float, getDirectionVec: Vec3i): Float =

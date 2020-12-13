@@ -1,14 +1,15 @@
-package ru.mousecray.endmagic.util.render.endothermic.mutable
+package ru.mousecray.endmagic.util.render.endothermic.quad.mutable
 
-import ru.mousecray.endmagic.util.render.endothermic.BaseUnpackedQuad
-import ru.mousecray.endmagic.util.render.endothermic.BaseUnpackedQuad._
+import ru.mousecray.endmagic.util.render.endothermic.format.AttributeRepresentation._
+import ru.mousecray.endmagic.util.render.endothermic.quad.BaseUnpackedQuad
+import ru.mousecray.endmagic.util.render.endothermic.quad.BaseUnpackedQuad._
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.texture.TextureAtlasSprite
 import net.minecraft.util.EnumFacing
 
 
-class UnpackedQuad(
-                    private[endothermic] val quad: BakedQuad,
+class LazyUnpackedQuad private[endothermic](
+                    private[quad] val quad: BakedQuad,
                     var face: EnumFacing,
                     var atlas: TextureAtlasSprite,
                     var tint: Int,
@@ -18,9 +19,9 @@ class UnpackedQuad(
   def toBakedQuad: BakedQuad =
     new BakedQuad(toRawArray, tint, face, atlas, applyDiffuseLighting, format)
 
-  override type Self = UnpackedQuad
+  override type Self = LazyUnpackedQuad
 
-  private[endothermic] override def reconstructResult(): UnpackedQuad = this
+  private[quad] override def reconstructResult(): LazyUnpackedQuad = this
 
   def copy: Self = this.clone().asInstanceOf[Self]
 
@@ -384,16 +385,10 @@ class UnpackedQuad(
     _v4_p = v
   }
 
-  override private[endothermic] def quadAtlas = atlas
 }
 
-object UnpackedQuad {
+object LazyUnpackedQuad {
 
-  def apply(quad: BakedQuad): UnpackedQuad =
-    new UnpackedQuad(quad, quad.getFace, quad.getSprite, quad.getTintIndex, quad.shouldApplyDiffuseLighting())
-
-
-  private val unpackedQuad = UnpackedQuad(???)
-  //unpackedQuad.v2_x += 1
-  unpackedQuad.toRawArray
+  def apply(quad: BakedQuad): LazyUnpackedQuad =
+    new LazyUnpackedQuad(quad, quad.getFace, quad.getSprite, quad.getTintIndex, quad.shouldApplyDiffuseLighting())
 }

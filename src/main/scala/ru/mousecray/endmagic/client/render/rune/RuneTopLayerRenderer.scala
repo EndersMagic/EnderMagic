@@ -17,7 +17,7 @@ import ru.mousecray.endmagic.rune.{RuneColor, RuneIndex}
 import ru.mousecray.endmagic.util.Java2Scala._
 import ru.mousecray.endmagic.util.Vec2i
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA
-import ru.mousecray.endmagic.util.render.endothermic.immutable.UnpackedQuad
+import ru.mousecray.endmagic.util.render.endothermic.quad.immutable.LazyUnpackedQuad
 
 import scala.collection.JavaConverters._
 import scala.language.implicitConversions
@@ -89,7 +89,7 @@ class RuneTopLayerRenderer {
           model.getQuads(blockState, ef, 0).asScala.headOption.foreach(quad =>
             net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(
               bufferbuilder,
-              UnpackedQuad(quad)
+              LazyUnpackedQuad(quad)
                 .trivialSliceRect(
                   x.toFloat / 16, y.toFloat / 16,
                   (x + 1).toFloat / 16, (y + 1).toFloat / 16
