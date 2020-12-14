@@ -25,10 +25,10 @@ class RuneModelWrapper2(baseModel: IBakedModel) extends BakedModelDelegate(baseM
 
       val allCulledQuads: Map[Option[EnumFacing], List[BakedQuad]] = allCullFaces.map(cullFace => cullFace -> originalGetQuads(state, cullFace.orNull, rand).asScala.toList).toMap
 
-      val allQuads: Map[EnumFacing, List[BakedQuad]] =
-        allCulledQuads.toList.flatMap(_._2).groupBy(_.getFace)
+      val allQuads: Map[EnumFacing, List[(Option[EnumFacing], BakedQuad)]] =
+        allCulledQuads.toList.flatMap { case (cullFace, list) => list.map(cullFace -> _) }.groupBy(_._2.getFace)
 
-      val allEdges: Map[EnumFacing, BakedQuad] = allQuads.mapValues(list => list.maxBy { q =>
+      val allEdges: Map[EnumFacing, (Option[EnumFacing], BakedQuad)] = allQuads.mapValues(list => list.maxBy { case (_, q) =>
         val j = LazyUnpackedQuad(q)
         vectMask(
           j.v1_x,
@@ -37,11 +37,18 @@ class RuneModelWrapper2(baseModel: IBakedModel) extends BakedModelDelegate(baseM
           j.face.getDirectionVec)
       })
 
-      val edgesSet = allEdges.values.toSet
+      val allEdgesInverted: Map[Option[EnumFacing], Set[BakedQuad]] = allEdges.toSet.groupBy((i: (EnumFacing, (Option[EnumFacing], BakedQuad))) => i._2._1).mapValues(_.map(i => i._2._2))
 
-      val filteredCulledQuads = allCulledQuads.map { case (cullFace, list) => cullFace -> list.filter(!edgesSet.contains(_)) }
+      val edgesSet = allEdges.values.map(_._2).toSet
 
-      val finallyCulledQuads = filteredCulledQuads.updated(None, new VolumetricBakedQuad2(allEdges) :: filteredCulledQuads(None)).mapValues(_.asJava)
+      val filteredCulledQuads = allCulledQuads.map {
+        case p@(cullFace, list) =>
+          allEdgesInverted.get(cullFace)
+            .map(edgesForCullFace => cullFace -> (list.filter(!edgesForCullFace.contains(_)) ++ edgesForCullFace.map(e=>new VolumetricBakedQuad2(e.getFace,allEdges))))
+            .getOrElse(p)
+      }
+
+      val finallyCulledQuads = filteredCulledQuads.mapValues(_.asJava)
 
       finallyCulledQuads
     }).getOrElse(Option(side), ImmutableList.of())

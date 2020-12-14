@@ -2,7 +2,8 @@ package ru.mousecray.endmagic.util.render.endothermic.format;
 
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
-import static hohserg.endothermic.format.VertexRepr.*;
+import static ru.mousecray.endmagic.util.render.endothermic.format.VertexRepr.*;
+
 
 public class AttributeRepresentation {
     public static AttributeId x_1 = AttributeId.apply(DefaultVertexFormats.POSITION_3F, 0, _1);
