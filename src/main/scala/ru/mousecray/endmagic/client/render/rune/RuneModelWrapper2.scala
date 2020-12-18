@@ -18,40 +18,43 @@ class RuneModelWrapper2(baseModel: IBakedModel) extends BakedModelDelegate(baseM
   val cache = new mutable.OpenHashMap[IBlockState, Map[Option[EnumFacing], util.List[BakedQuad]]]()
 
   override def getQuads(state: IBlockState, side: EnumFacing, rand: Long): util.List[BakedQuad] =
-    cache.getOrElseUpdate(state, {
-      val originalGetQuads = super.getQuads _
+    if (RuneModelWrapper2.viewSwitch)
+      super.getQuads(state, side, rand)
+    else
+      cache.getOrElseUpdate(state, {
+        val originalGetQuads = super.getQuads _
 
-      val allCullFaces: List[Option[EnumFacing]] = EnumFacing.values().toList.map(Option[EnumFacing]) :+ None
+        val allCullFaces: List[Option[EnumFacing]] = EnumFacing.values().toList.map(Option[EnumFacing]) :+ None
 
-      val allCulledQuads: Map[Option[EnumFacing], List[BakedQuad]] = allCullFaces.map(cullFace => cullFace -> originalGetQuads(state, cullFace.orNull, rand).asScala.toList).toMap
+        val allCulledQuads: Map[Option[EnumFacing], List[BakedQuad]] = allCullFaces.map(cullFace => cullFace -> originalGetQuads(state, cullFace.orNull, rand).asScala.toList).toMap
 
-      val allQuads: Map[EnumFacing, List[(Option[EnumFacing], BakedQuad)]] =
-        allCulledQuads.toList.flatMap { case (cullFace, list) => list.map(cullFace -> _) }.groupBy(_._2.getFace)
+        val allQuads: Map[EnumFacing, List[(Option[EnumFacing], BakedQuad)]] =
+          allCulledQuads.toList.flatMap { case (cullFace, list) => list.map(cullFace -> _) }.groupBy(_._2.getFace)
 
-      val allEdges: Map[EnumFacing, (Option[EnumFacing], BakedQuad)] = allQuads.mapValues(list => list.maxBy { case (_, q) =>
-        val j = LazyUnpackedQuad(q)
-        vectMask(
-          j.v1_x,
-          j.v1_y,
-          j.v1_z,
-          j.face.getDirectionVec)
-      })
+        val allEdges: Map[EnumFacing, (Option[EnumFacing], BakedQuad)] = allQuads.mapValues(list => list.maxBy { case (_, q) =>
+          val j = LazyUnpackedQuad(q)
+          vectMask(
+            j.v1_x,
+            j.v1_y,
+            j.v1_z,
+            j.face.getDirectionVec)
+        })
 
-      val allEdgesInverted: Map[Option[EnumFacing], Set[BakedQuad]] = allEdges.toSet.groupBy((i: (EnumFacing, (Option[EnumFacing], BakedQuad))) => i._2._1).mapValues(_.map(i => i._2._2))
+        val allEdgesInverted: Map[Option[EnumFacing], Set[BakedQuad]] = allEdges.toSet.groupBy((i: (EnumFacing, (Option[EnumFacing], BakedQuad))) => i._2._1).mapValues(_.map(i => i._2._2))
 
-      val edgesSet = allEdges.values.map(_._2).toSet
+        val edgesSet = allEdges.values.map(_._2).toSet
 
-      val filteredCulledQuads = allCulledQuads.map {
-        case p@(cullFace, list) =>
-          allEdgesInverted.get(cullFace)
-            .map(edgesForCullFace => cullFace -> (list.filter(!edgesForCullFace.contains(_)) ++ edgesForCullFace.map(e=>new VolumetricBakedQuad2(e.getFace,allEdges))))
-            .getOrElse(p)
-      }
+        val filteredCulledQuads = allCulledQuads.map {
+          case p@(cullFace, list) =>
+            allEdgesInverted.get(cullFace)
+              .map(edgesForCullFace => cullFace -> (list.filter(!edgesForCullFace.contains(_)) ++ edgesForCullFace.map(e => new VolumetricBakedQuad2(e.getFace, allEdges))))
+              .getOrElse(p)
+        }
 
-      val finallyCulledQuads = filteredCulledQuads.mapValues(_.asJava)
+        val finallyCulledQuads = filteredCulledQuads.updated(None, filteredCulledQuads(None) :+ new VolumetricBakedQuad2(null, allEdges)).mapValues(_.asJava)
 
-      finallyCulledQuads
-    }).getOrElse(Option(side), ImmutableList.of())
+        finallyCulledQuads
+      }).getOrElse(Option(side), ImmutableList.of())
 
 
   def vectMask(x: Float, y: Float, z: Float, getDirectionVec: Vec3i): Float =
@@ -60,5 +63,6 @@ class RuneModelWrapper2(baseModel: IBakedModel) extends BakedModelDelegate(baseM
 }
 
 object RuneModelWrapper2 {
+  var viewSwitch = false
 
 }

@@ -75,10 +75,7 @@ import ru.mousecray.endmagic.rune.RuneIndex;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
-import scala.Function1;
 import scala.Option;
-import scala.collection.JavaConversions;
-import scala.collection.immutable.Set;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -125,6 +122,7 @@ public class EMEvents {
     }
 
     private static void updateActiveSides(Option<EnumFacing> side) {
+        //RuneModelWrapper2.viewSwitch_$eq(!RuneModelWrapper2.viewSwitch());
         System.out.println("turned " + side);
         //System.out.println("randMin " + DebugModelWrapper.randMin().get() + " randMax " + DebugModelWrapper.randMax().get());
         //JavaConversions.asJavaCollection(RuneModelWrapper2.facesSets()).forEach(set -> System.out.println("allQuads " + set));
