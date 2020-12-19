@@ -40,18 +40,24 @@ public class SkyRenderer {
             if (framebuffer == null)
                 framebuffer = new Framebuffer(100, 100, false);
 
-            GL11.glMatrixMode(GL11.GL_PROJECTION);
-            GlStateManager.pushMatrix();
-            GlStateManager.loadIdentity();
-
-            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-            GlStateManager.pushMatrix();
-            GlStateManager.loadIdentity();
 
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 
             //set target to framebuffer
             framebuffer.bindFramebuffer(true);
+
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+            GL11.glPushMatrix();
+            GL11.glMatrixMode(GL11.GL_PROJECTION);
+            GL11.glPushMatrix();
+
+            // setup modelview matrix
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+            GL11.glLoadIdentity();
+            GL11.glMatrixMode(GL11.GL_PROJECTION);
+            GL11.glLoadIdentity();
+
+            GL11.glOrtho(0, 100, 100, 0, -10, 10);
 
 
             //use shader
@@ -75,20 +81,22 @@ public class SkyRenderer {
             //set target to default
             mc.getFramebuffer().bindFramebuffer(true);
 
-            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-            GlStateManager.popMatrix();
+
             GL11.glMatrixMode(GL11.GL_PROJECTION);
-            GlStateManager.popMatrix();
+            GL11.glPopMatrix();
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+            GL11.glPopMatrix();
+
 
             framebuffer.bindFramebufferTexture();
             {
                 Tessellator tessellator = Tessellator.getInstance();
                 BufferBuilder bufferbuilder = tessellator.getBuffer();
-                bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
-                bufferbuilder.pos(0, 100, 0).endVertex();
-                bufferbuilder.pos(100, 100, 0).endVertex();
-                bufferbuilder.pos(100, 0, 0).endVertex();
-                bufferbuilder.pos(0, 0, 0).endVertex();
+                bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+                bufferbuilder.pos(0, 100, 0).tex(0, 1).endVertex();
+                bufferbuilder.pos(100, 100, 0).tex(1, 1).endVertex();
+                bufferbuilder.pos(100, 0, 0).tex(1, 0).endVertex();
+                bufferbuilder.pos(0, 0, 0).tex(0, 0).endVertex();
                 tessellator.draw();
             }
             framebuffer.unbindFramebufferTexture();

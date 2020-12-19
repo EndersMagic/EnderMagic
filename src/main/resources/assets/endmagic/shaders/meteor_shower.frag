@@ -21,5 +21,5 @@ void main()
 
     float y = spark(uv.x-0.5-nTime + rand(uv.y+seed)*100.0);
 
-    gl_FragColor = vec4(0.0,0.0,0.0,1.0);
+    gl_FragColor = vec4(vec3(y),1.0);
 }
