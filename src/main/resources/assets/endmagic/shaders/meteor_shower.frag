@@ -2,8 +2,8 @@ uniform float iTime;
 uniform vec2 iResolution;
 uniform float seed;
 
-const float minX = -0.25;
-const float maxX = 0.25;
+const float minX = -0.1;
+const float maxX = 0.1;
 
 float spark(float v){
     return ((1.0-abs(v/0.5))-0.5) * float(v>minX && v<maxX);
@@ -19,7 +19,7 @@ void main()
     vec2 uv = gl_FragCoord.xy/iResolution.xy;
     float  nTime = min(iTime,100.0);
 
-    float y = spark(uv.x-0.5-nTime + rand(uv.y+seed)*100.0);
+    float y = spark(uv.y-0.5-nTime + rand(uv.x+seed)*100.0);
 
     gl_FragColor = vec4(vec3(y),1.0);
 }
