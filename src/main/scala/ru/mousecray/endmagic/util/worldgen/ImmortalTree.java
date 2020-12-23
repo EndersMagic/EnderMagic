@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.Vector3d;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.util.TaskManager;
 import ru.mousecray.endmagic.util.Truple;
@@ -141,13 +142,13 @@ public class ImmortalTree
         }
     }
 
-    public static void generateGroundRootRecursive(World world, Map<BlockPos, IBlockState> toPlace, BlockPos.MutableBlockPos pos, int maxLength, double width,  Vector3d dir)
+    public static void generateGroundRootRecursive(World world, Map<BlockPos, IBlockState> toPlace, BlockPos.MutableBlockPos pos, int maxLength, double width, Vector3d dir)
     {
         maxLength = maxLength * 2;
+        BlockPos.MutableBlockPos currentPos = new BlockPos.MutableBlockPos(pos);
         for (double i = 0; i < maxLength; ++i)
         {
-            normalise(dir);
-            BlockPos currentPos = pos.add(i * dir.x, i * dir.y, i * dir.z);
+            move(currentPos, dir, (int) i);
             toPlace.computeIfAbsent(currentPos.add(1, 0, 0), k -> Blocks.LOG.getDefaultState());
             toPlace.computeIfAbsent(currentPos.add(0, 0, 1), k -> Blocks.LOG.getDefaultState());
             toPlace.computeIfAbsent(currentPos.add(1, 0, 1), k -> Blocks.LOG.getDefaultState());
@@ -155,14 +156,17 @@ public class ImmortalTree
             toPlace.computeIfAbsent(currentPos.add(0, 1, 1), k -> Blocks.LOG.getDefaultState());
             toPlace.computeIfAbsent(currentPos.add(0, 1, 0), k -> Blocks.LOG.getDefaultState());
             toPlace.computeIfAbsent(currentPos.add(1, 1, 1), k -> Blocks.LOG.getDefaultState());
-            if(world.rand.nextBoolean())
+            if (world.rand.nextBoolean())
             {
-                VectorUtil.rotate(dir, (world.rand.nextInt(30) - 15) / 100d, 0, (world.rand.nextInt(30) - 15) / 100d);
+                //VectorUtil.rotate(dir, (world.rand.nextInt(30) - 15) / 100d, 0, (world.rand.nextInt(30) - 15)/ 100d);
+                //normalise(dir);
             }
+            System.out.println(currentPos + " " + dir.x + " " + dir.y + " " + dir.z);
             while (i < maxLength && world.isAirBlock(currentPos.down()))
             {
+                System.out.println(currentPos + " " + dir.x + " " + dir.y + " " + dir.z);
                 pos.move(EnumFacing.DOWN);
-                currentPos = pos.add(i * dir.x, i * dir.y, i * dir.z);
+                move(currentPos, dir, (int) i);
                 toPlace.computeIfAbsent(currentPos, k -> Blocks.LOG.getDefaultState());
                 toPlace.computeIfAbsent(currentPos.add(1, 0, 0), k -> Blocks.LOG.getDefaultState());
                 toPlace.computeIfAbsent(currentPos.add(0, 0, 1), k -> Blocks.LOG.getDefaultState());
@@ -172,17 +176,15 @@ public class ImmortalTree
                 toPlace.computeIfAbsent(currentPos.add(0, 1, 0), k -> Blocks.LOG.getDefaultState());
                 toPlace.computeIfAbsent(currentPos.add(1, 1, 1), k -> Blocks.LOG.getDefaultState());
                 i++;
-                if(world.rand.nextBoolean())
-                    VectorUtil.rotate(dir, (world.rand.nextInt(30) - 15) / 100d, 0, (world.rand.nextInt(30) - 15) / 100d);
-                if(world.isAirBlock(currentPos.west()))
-                    pos.move(EnumFacing.WEST);
-                else if(world.isAirBlock(currentPos.east()))
-                    pos.move(EnumFacing.EAST);
-                else if(world.isAirBlock(currentPos.north()))
-                    pos.move(EnumFacing.NORTH);
-                else if(world.isAirBlock(currentPos.south()))
-                    pos.move(EnumFacing.SOUTH);
-                normalise(dir);
+                if (world.rand.nextBoolean())
+                {
+                    //VectorUtil.rotate(dir, (world.rand.nextInt(30) - 15), 0, (world.rand.nextInt(30) - 15));
+                    //normalise(dir);
+                }
+                if (world.isAirBlock(currentPos.west()))         pos.move(EnumFacing.WEST);
+                else if (world.isAirBlock(currentPos.east()))    pos.move(EnumFacing.EAST);
+                else if (world.isAirBlock(currentPos.north()))   pos.move(EnumFacing.NORTH);
+                else if (world.isAirBlock(currentPos.south()))   pos.move(EnumFacing.SOUTH);
             }
         }
     }
@@ -192,5 +194,10 @@ public class ImmortalTree
         vec.x = Math.min(Math.max(vec.x, -0.5), 0.5);
         vec.y = Math.min(Math.max(vec.y, -0.5), 0.5);
         vec.z = Math.min(Math.max(vec.z, -0.5), 0.5);
+    }
+
+    static void move(BlockPos.MutableBlockPos pos, Vector3d vec, int i)
+    {
+        pos.setPos(new Vec3i(pos.getX() + vec.x * i, pos.getY() + vec.y * i, pos.getZ() + vec.z * i));
     }
 }
