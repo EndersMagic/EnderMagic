@@ -22,7 +22,6 @@ public class TaskManager
         {
             if (event.phase == TickEvent.Phase.END)
             {
-                System.out.println(blocksToPlace.size());
                 for (int i = Math.min(4000, blocksToPlace.size()) - 1; i >= 0; --i)
                 {
                     Truple<World, BlockPos, IBlockState> c = blocksToPlace.get(i);
