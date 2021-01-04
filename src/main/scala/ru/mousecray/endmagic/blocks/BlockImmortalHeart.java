@@ -1,5 +1,6 @@
 package ru.mousecray.endmagic.blocks;
 
+import com.sun.istack.internal.Nullable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,8 +11,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.tileentity.TileEntityImmortalHeart;
 import ru.mousecray.endmagic.util.worldgen.ImmortalTree;
-
-import javax.annotation.Nullable;
 
 public class BlockImmortalHeart extends BlockWithTile<TileEntityImmortalHeart>
 {

@@ -1,6 +1,5 @@
 package ru.mousecray.endmagic.util.worldgen;
 
-import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.Vector3d;
 import net.minecraft.init.Blocks;
@@ -28,7 +27,7 @@ public class ImmortalTree
 
         generateGroundRootRecursive(world, toPlace, new BlockPos.MutableBlockPos(pos), length, width / 2.5, VectorUtil.of(world.rand.nextInt(30) / 100d, 0, world.rand.nextInt(30) / 100d));
 
-        for (Map.Entry<BlockPos, IBlockState> current : ImmutableList.copyOf(toPlace.entrySet()))
+        for (Map.Entry<BlockPos, IBlockState> current : toPlace.entrySet())
             TaskManager.blocksToPlace.add(new Truple<>(world, current.getKey(), current.getValue()));
     }
 
@@ -148,7 +147,8 @@ public class ImmortalTree
         BlockPos.MutableBlockPos currentPos = new BlockPos.MutableBlockPos(pos);
         for (double i = 0; i < maxLength; ++i)
         {
-            move(currentPos, dir, (int) i);
+            move(currentPos, dir);
+            toPlace.computeIfAbsent(currentPos,                      k -> Blocks.LOG.getDefaultState());
             toPlace.computeIfAbsent(currentPos.add(1, 0, 0), k -> Blocks.LOG.getDefaultState());
             toPlace.computeIfAbsent(currentPos.add(0, 0, 1), k -> Blocks.LOG.getDefaultState());
             toPlace.computeIfAbsent(currentPos.add(1, 0, 1), k -> Blocks.LOG.getDefaultState());
@@ -166,7 +166,7 @@ public class ImmortalTree
             {
                 System.out.println(currentPos + " " + dir.x + " " + dir.y + " " + dir.z);
                 pos.move(EnumFacing.DOWN);
-                move(currentPos, dir, (int) i);
+                move(currentPos, dir);
                 toPlace.computeIfAbsent(currentPos, k -> Blocks.LOG.getDefaultState());
                 toPlace.computeIfAbsent(currentPos.add(1, 0, 0), k -> Blocks.LOG.getDefaultState());
                 toPlace.computeIfAbsent(currentPos.add(0, 0, 1), k -> Blocks.LOG.getDefaultState());
@@ -196,8 +196,8 @@ public class ImmortalTree
         vec.z = Math.min(Math.max(vec.z, -0.5), 0.5);
     }
 
-    static void move(BlockPos.MutableBlockPos pos, Vector3d vec, int i)
+    static void move(BlockPos.MutableBlockPos pos, Vector3d vec)
     {
-        pos.setPos(new Vec3i(pos.getX() + vec.x * i, pos.getY() + vec.y * i, pos.getZ() + vec.z * i));
+        pos.setPos(new Vec3i(pos.getX() + vec.x, pos.getY() + vec.y, pos.getZ() + vec.z));
     }
 }
