@@ -1,8 +1,6 @@
 package ru.mousecray.endmagic.blocks.portal;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockPortal;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -10,7 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -21,33 +18,20 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.blocks.BlockWithTile;
-import ru.mousecray.endmagic.teleport.TeleportUtils;
 import ru.mousecray.endmagic.tileentity.portal.TilePortal;
-import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 
 import java.util.Random;
 
-public class Portal extends BlockWithTile<TilePortal> implements ITechnicalBlock {
-    public Portal() {
-        super(Material.PORTAL);
+public class BlockPortal extends BlockWithTile<TilePortal> {
+    public BlockPortal() {
+        super(Material.PORTAL, TilePortal::new);
         setBlockUnbreakable();
         setResistance(7000000);
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
-        if (!world.isRemote)
-            TeleportUtils.teleportToBlockLocation(entity, tile(world, pos).distination);
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
-        return new TilePortal();
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+        tile(worldIn, pos).onEntityCollidedWithBlock(entityIn);
     }
 
     @Override

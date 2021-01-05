@@ -5,7 +5,6 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.play.server.SPacketEntityEffect;
 import net.minecraft.network.play.server.SPacketPlayerAbilities;
 import net.minecraft.network.play.server.SPacketRespawn;
@@ -15,16 +14,12 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import ru.mousecray.endmagic.EM;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.LinkedList;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -89,13 +84,25 @@ public class TeleportUtils {
         passengerHelper.remountRiders();
         passengerHelper.updateClients();
 
-        if (entity instanceof EntityPlayerMP) {
-            ((EntityPlayerMP) entity).invulnerableDimensionChange = prevInvulnerableDimensionChange;
-        }
-
 
         return rider.entity;
     }
+
+
+    public static void teleportEntity(PassengerHelper passengerHelper, int dimension, double xCoord, double yCoord, double zCoord, float yaw, float pitch) {
+        Entity entity = passengerHelper.entity;
+        if (entity.world.isRemote) {
+            return;
+        }
+
+        MinecraftServer server = entity.getServer();
+        int sourceDim = entity.world.provider.getDimension();
+
+        passengerHelper.teleport(server, sourceDim, dimension, xCoord, yCoord, zCoord, yaw, pitch);
+        passengerHelper.remountRiders();
+        passengerHelper.updateClients();
+    }
+
 
     private static Stream<EntityPlayerMP> getPlayerInRiding(PassengerHelper passengerHelper) {
         return Stream.concat(
@@ -236,10 +243,22 @@ public class TeleportUtils {
         return entity;
     }
 
-    private static class PassengerHelper {
+    public static class PassengerHelper {
         public Entity entity;
         public LinkedList<PassengerHelper> passengers = new LinkedList<>();
         public double offsetX, offsetY, offsetZ;
+
+        boolean prevInvulnerableDimensionChange = false;
+
+        @Override
+        public int hashCode() {
+            return HashCodeBuilder.reflectionHashCode(this, "prevInvulnerableDimensionChange");
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return EqualsBuilder.reflectionEquals(this, obj, "prevInvulnerableDimensionChange");
+        }
 
         /**
          * Creates a new passenger helper for the given entity and recursively adds all of the entities passengers.
@@ -258,6 +277,16 @@ public class TeleportUtils {
             }
         }
 
+        public void iterateEntities(Consumer<Entity> f) {
+            f.accept(entity);
+            for (PassengerHelper passenger : passengers)
+                passenger.iterateEntities(f);
+        }
+
+        public void dismountRiders() {
+            iterateEntities(Entity::removePassengers);
+        }
+
         /**
          * Recursively teleports the entity and all of its passengers after dismounting them.
          *
@@ -271,11 +300,19 @@ public class TeleportUtils {
          * @param pitch     The target pitch.
          */
         public void teleport(MinecraftServer server, int sourceDim, int targetDim, double xCoord, double yCoord, double zCoord, float yaw, float pitch) {
-            entity.removePassengers();
-            entity = handleEntityTeleport(entity, server, sourceDim, targetDim, xCoord, yCoord, zCoord, yaw, pitch);
-            for (PassengerHelper passenger : passengers) {
-                passenger.teleport(server, sourceDim, targetDim, xCoord, yCoord, zCoord, yaw, pitch);
+            if (entity instanceof EntityPlayerMP) {
+                EntityPlayerMP playerMP = (EntityPlayerMP) entity;
+                prevInvulnerableDimensionChange = playerMP.invulnerableDimensionChange;
+                playerMP.invulnerableDimensionChange = true;
             }
+
+            //entity.removePassengers();
+            entity = handleEntityTeleport(entity, server, sourceDim, targetDim, xCoord, yCoord, zCoord, yaw, pitch);
+            for (PassengerHelper passenger : passengers)
+                passenger.teleport(server, sourceDim, targetDim, xCoord, yCoord, zCoord, yaw, pitch);
+
+            if (entity instanceof EntityPlayerMP)
+                ((EntityPlayerMP) entity).invulnerableDimensionChange = prevInvulnerableDimensionChange;
         }
 
         /**

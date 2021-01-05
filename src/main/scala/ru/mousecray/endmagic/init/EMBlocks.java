@@ -5,8 +5,8 @@ import ru.mousecray.endmagic.blocks.dimensional.EnderGroundGrass;
 import ru.mousecray.endmagic.blocks.dimensional.EnderGroundStone;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterDarkPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterStaticPortal;
+import ru.mousecray.endmagic.blocks.portal.BlockPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockTopMark;
-import ru.mousecray.endmagic.blocks.portal.Portal;
 import ru.mousecray.endmagic.blocks.trees.EMLeaves;
 import ru.mousecray.endmagic.blocks.trees.EMLog;
 import ru.mousecray.endmagic.blocks.trees.EMPlanks;
@@ -23,7 +23,7 @@ public final class EMBlocks {
 
     public static final BlockMasterDarkPortal blockMasterDarkPortal = new BlockMasterDarkPortal();
     public static final BlockMasterStaticPortal blockMasterStaticPortal = new BlockMasterStaticPortal();
-    public static final Portal blockPortal = new Portal();
+    public static final BlockPortal blockPortal = new BlockPortal();
     public static final BlockTopMark blockTopMark = new BlockTopMark();
 
     public static final BlockCurseBush blockCurseBush = new BlockCurseBush();

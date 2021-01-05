@@ -5,11 +5,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.tuple.Pair;
-import org.bensam.tpworks.capability.teleportation.TeleportDestination;
 import ru.mousecray.endmagic.Configuration;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.teleport.TeleportUtils;
@@ -20,12 +18,16 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class TileMasterDarkPortal extends TileWithLocation implements ITickable {
+public class TileMasterStaticPortal extends TileWithLocation implements ITickable {
     private int tickOpened = -1;
     private Set<Entity> collidedEntities = new HashSet<>();
+    private Set<Entity> forDismount = new HashSet<>();
+    private Set<TeleportUtils.PassengerHelper> forTeleport = new HashSet<>();
+    private Set<TeleportUtils.PassengerHelper> forRemount = new HashSet<>();
 
     public void addCollidedEntity(Entity entityIn) {
         collidedEntities.add(entityIn);
+        forDismount.add(entityIn);
     }
 
     public void openPortal() {
@@ -52,11 +54,7 @@ public class TileMasterDarkPortal extends TileWithLocation implements ITickable 
     }
 
     private boolean checkDistinationStructure(int portalSpace, Block capMaterial) {
-        TileEntity distinationTile = distination.getWorld().getTileEntity(distination.toPos());
-        return distinationTile instanceof TileMasterDarkPortal &&
-                ((TileMasterDarkPortal) distinationTile).checkStructure()
-                        .filter(p -> p.getLeft() == portalSpace && p.getRight() == capMaterial)
-                        .isPresent();
+        return distination.getBlockState().getBlock() == capMaterial;
     }
 
     private Optional<Pair<Integer, Block>> checkStructure() {
