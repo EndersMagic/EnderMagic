@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -24,7 +25,7 @@ import java.util.Random;
 
 public class BlockPortal extends BlockWithTile<TilePortal> {
     public BlockPortal() {
-        super(Material.PORTAL, TilePortal::new);
+        super(Material.WEB, TilePortal::new);
         setBlockUnbreakable();
         setResistance(7000000);
     }

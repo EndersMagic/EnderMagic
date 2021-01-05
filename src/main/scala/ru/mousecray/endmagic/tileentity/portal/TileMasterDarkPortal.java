@@ -4,28 +4,31 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3d;
+import ru.mousecray.endmagic.entity.EntityPortal;
 import ru.mousecray.endmagic.util.teleport.TeleportationHelper;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static ru.mousecray.endmagic.Configuration.portalOpenTime;
-
 public class TileMasterDarkPortal extends TileMasterBasePortal {
     private Set<Entity> blacklist = new HashSet<>();
 
     public void addCollidedEntity(Entity entityIn) {
+        System.out.println(entityIn);
         if (!blacklist.contains(entityIn))
             super.addCollidedEntity(entityIn);
     }
 
     @Override
     protected void finalOpening(int portalSpace) {
-        placePortalBlocks(portalSpace);
+        EntityPortal entityPortal = new EntityPortal(world, pos, portalSpace);
+        world.spawnEntity(entityPortal);
+
+        /*placePortalBlocks(portalSpace);
         tickOpened = portalOpenTime;
         TileMasterDarkPortal tileEntity = (TileMasterDarkPortal) destination.getWorld().getTileEntity(destination.toPos());
         tileEntity.placePortalBlocks(portalSpace);
-        tileEntity.tickOpened = portalOpenTime;
+        tileEntity.tickOpened = portalOpenTime;*/
     }
 
     @Override
