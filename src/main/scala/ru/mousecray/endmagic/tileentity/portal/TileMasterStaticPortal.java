@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static ru.mousecray.endmagic.Configuration.portalOpenTime;
+
 public class TileMasterStaticPortal extends TileWithLocation implements ITickable {
     private int tickOpened = -1;
     private Set<Entity> collidedEntities = new HashSet<>();
@@ -37,7 +39,7 @@ public class TileMasterStaticPortal extends TileWithLocation implements ITickabl
                 Block capMaterial = p.getRight();
                 if (checkDistinationStructure(portalSpace, capMaterial)) {
                     placePortalBlocks(portalSpace);
-                    tickOpened = 20 * 60;
+                    tickOpened = portalOpenTime;
                 }
             });
         }
@@ -103,8 +105,6 @@ public class TileMasterStaticPortal extends TileWithLocation implements ITickabl
                 closePortal();
 
             if (collidedEntities.size() > 0) {
-                System.out.println("collidedEntities:");
-                collidedEntities.forEach(e -> System.out.println("    " + e));
                 collidedEntities.forEach(e -> TeleportationHelper.teleportEntityAndPassengers(e, distination));
                 collidedEntities.clear();
             }

@@ -36,6 +36,7 @@ public class TileMasterDarkPortal extends TileWithLocation implements ITickable 
                 if (checkDistinationStructure(portalSpace, capMaterial)) {
                     placePortalBlocks(portalSpace);
                     tickOpened = 20 * 60;
+                    tickOpened = portalOpenTime;
                 }
             });
         }
