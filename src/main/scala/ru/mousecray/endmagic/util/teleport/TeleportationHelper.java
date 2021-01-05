@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.teleport;
+package ru.mousecray.endmagic.util.teleport;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

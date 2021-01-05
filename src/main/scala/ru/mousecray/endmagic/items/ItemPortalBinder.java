@@ -15,7 +15,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.teleport.Location;
+import ru.mousecray.endmagic.util.teleport.Location;
 import ru.mousecray.endmagic.tileentity.portal.TileWithLocation;
 
 import javax.annotation.Nullable;

@@ -1,7 +1,7 @@
 package ru.mousecray.endmagic.tileentity.portal;
 
 import net.minecraft.entity.Entity;
-import ru.mousecray.endmagic.teleport.TeleportationHelper;
+import ru.mousecray.endmagic.util.teleport.TeleportationHelper;
 
 import java.util.Set;
 

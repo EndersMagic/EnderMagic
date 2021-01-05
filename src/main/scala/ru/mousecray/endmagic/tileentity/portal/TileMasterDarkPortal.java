@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.Vec3d;
-import ru.mousecray.endmagic.teleport.TeleportationHelper;
+import ru.mousecray.endmagic.util.teleport.TeleportationHelper;
 
 import java.util.HashSet;
 import java.util.Set;

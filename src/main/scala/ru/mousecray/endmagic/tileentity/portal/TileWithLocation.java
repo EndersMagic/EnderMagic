@@ -1,10 +1,10 @@
 package ru.mousecray.endmagic.tileentity.portal;
 
 import net.minecraft.nbt.NBTTagCompound;
-import ru.mousecray.endmagic.teleport.Location;
+import ru.mousecray.endmagic.util.teleport.Location;
 import ru.mousecray.endmagic.tileentity.EMTileEntity;
 
-import static ru.mousecray.endmagic.teleport.Location.spawn;
+import static ru.mousecray.endmagic.util.teleport.Location.spawn;
 
 public class TileWithLocation extends EMTileEntity {
     public Location destination = spawn;
