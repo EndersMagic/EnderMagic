@@ -122,7 +122,7 @@ public class TileMasterDarkPortal extends TileWithLocation implements ITickable 
                     Vec3d currentMasterCenter = new Vec3d(pos).addVector(0.5, 0, 0.5);
                     collidedEntities.forEach(e -> {
                         Vec3d offset = e.getPositionVector().subtract(currentMasterCenter).rotateYaw((float) Math.toRadians(180));
-                        
+
                         TeleportationHelper.teleportEntityAndPassengers(e, distination.dim,
                                 distination.x + offset.x + 0.5,
                                 distination.y + offset.y,

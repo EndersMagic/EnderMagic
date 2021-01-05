@@ -10,7 +10,6 @@ import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.Configuration;
 import ru.mousecray.endmagic.init.EMBlocks;
-import ru.mousecray.endmagic.teleport.TeleportUtils;
 import ru.mousecray.endmagic.teleport.TeleportationHelper;
 
 import java.util.HashSet;
@@ -23,13 +22,9 @@ import static ru.mousecray.endmagic.Configuration.portalOpenTime;
 public class TileMasterStaticPortal extends TileWithLocation implements ITickable {
     private int tickOpened = -1;
     private Set<Entity> collidedEntities = new HashSet<>();
-    private Set<Entity> forDismount = new HashSet<>();
-    private Set<TeleportUtils.PassengerHelper> forTeleport = new HashSet<>();
-    private Set<TeleportUtils.PassengerHelper> forRemount = new HashSet<>();
 
     public void addCollidedEntity(Entity entityIn) {
         collidedEntities.add(entityIn);
-        forDismount.add(entityIn);
     }
 
     public void openPortal() {
