@@ -8,11 +8,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import org.apache.commons.lang3.tuple.Pair;
-import org.bensam.tpworks.capability.teleportation.TeleportDestination;
 import ru.mousecray.endmagic.Configuration;
 import ru.mousecray.endmagic.init.EMBlocks;
-import ru.mousecray.endmagic.teleport.TeleportUtils;
 import ru.mousecray.endmagic.teleport.TeleportationHelper;
 
 import java.util.HashSet;
@@ -20,12 +19,16 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static ru.mousecray.endmagic.Configuration.portalOpenTime;
+
 public class TileMasterDarkPortal extends TileWithLocation implements ITickable {
     private int tickOpened = -1;
     private Set<Entity> collidedEntities = new HashSet<>();
+    private Set<Entity> blacklist = new HashSet<>();
 
     public void addCollidedEntity(Entity entityIn) {
-        collidedEntities.add(entityIn);
+        if (!blacklist.contains(entityIn))
+            collidedEntities.add(entityIn);
     }
 
     public void openPortal() {
@@ -35,8 +38,8 @@ public class TileMasterDarkPortal extends TileWithLocation implements ITickable 
                 Block capMaterial = p.getRight();
                 if (checkDistinationStructure(portalSpace, capMaterial)) {
                     placePortalBlocks(portalSpace);
-                    tickOpened = 20 * 60;
                     tickOpened = portalOpenTime;
+                    ((TileMasterDarkPortal) distination.getWorld().getTileEntity(distination.toPos())).tickOpened = portalOpenTime;
                 }
             });
         }
@@ -48,7 +51,13 @@ public class TileMasterDarkPortal extends TileWithLocation implements ITickable 
             world.setBlockState(current, EMBlocks.blockPortal.getDefaultState());
             TilePortal tileEntity = (TilePortal) world.getTileEntity(current);
             tileEntity.masterTileOffset = i;
-            System.out.println(tileEntity.masterTileOffset);
+        }
+
+        for (int i = 1; i <= portalSpace; i++) {
+            BlockPos current = distination.toPos().up(i);
+            distination.getWorld().setBlockState(current, EMBlocks.blockPortal.getDefaultState());
+            TilePortal tileEntity = (TilePortal) distination.getWorld().getTileEntity(current);
+            tileEntity.masterTileOffset = i;
         }
     }
 
@@ -106,10 +115,22 @@ public class TileMasterDarkPortal extends TileWithLocation implements ITickable 
                 closePortal();
 
             if (collidedEntities.size() > 0) {
-                System.out.println("collidedEntities:");
-                collidedEntities.forEach(e -> System.out.println("    " + e));
-                collidedEntities.forEach(e -> TeleportationHelper.teleportEntityAndPassengers(e, distination));
-                collidedEntities.clear();
+                TileEntity destinationMasterTile = distination.getWorld().getTileEntity(distination.toPos());
+                if (destinationMasterTile instanceof TileMasterDarkPortal) {
+                    collidedEntities.forEach(e -> ((TileMasterDarkPortal) destinationMasterTile).blacklist.addAll(TeleportationHelper.getAllPassenges(e)));
+
+                    Vec3d currentMasterCenter = new Vec3d(pos).addVector(0.5, 0, 0.5);
+                    collidedEntities.forEach(e -> {
+                        Vec3d offset = e.getPositionVector().subtract(currentMasterCenter).rotateYaw((float) Math.toRadians(180));
+                        
+                        TeleportationHelper.teleportEntityAndPassengers(e, distination.dim,
+                                distination.x + offset.x + 0.5,
+                                distination.y + offset.y,
+                                distination.z + offset.z + 0.5);
+                    });
+                    collidedEntities.clear();
+                } else
+                    tickOpened = 0;
             }
         }
     }

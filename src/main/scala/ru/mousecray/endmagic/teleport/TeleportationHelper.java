@@ -64,21 +64,7 @@ public class TeleportationHelper {
     public static void teleportEntityAndPassengers(Entity entity, int dimension, double x, double y, double z) {
 
         // Start a list of teleporting entities and add the target entity.
-        List<Entity> teleportingEntities = new ArrayList<>();
-        teleportingEntities.add(entity);
-
-        // Add any other entity that the target entity is riding.
-        if (entity.isRiding()) {
-            teleportingEntities.add(entity.getRidingEntity());
-        }
-
-        // Add all the passengers of the entity to the list of teleporting entities.
-        for (Entity passenger : entity.getPassengers()) {
-            teleportingEntities.add(passenger);
-            for (Entity passengerOfPassenger : passenger.getPassengers()) {
-                teleportingEntities.add(passengerOfPassenger);
-            }
-        }
+        List<Entity> teleportingEntities = getAllPassenges(entity);
 
         // Check to make sure none of the teleporting entities are already at the destination.
         // (If so, the group may have already teleported this tick.)
@@ -118,6 +104,25 @@ public class TeleportationHelper {
             Entity entityRidden = riderSet.getValue();
             remountRider(rider, entityRidden);
         }
+    }
+
+    public static List<Entity> getAllPassenges(Entity entity) {
+        List<Entity> teleportingEntities = new ArrayList<>();
+        teleportingEntities.add(entity);
+
+        // Add any other entity that the target entity is riding.
+        if (entity.isRiding()) {
+            teleportingEntities.add(entity.getRidingEntity());
+        }
+
+        // Add all the passengers of the entity to the list of teleporting entities.
+        for (Entity passenger : entity.getPassengers()) {
+            teleportingEntities.add(passenger);
+            for (Entity passengerOfPassenger : passenger.getPassengers()) {
+                teleportingEntities.add(passengerOfPassenger);
+            }
+        }
+        return teleportingEntities;
     }
 
     public static HashMap<Entity, Entity> getRiders(List<Entity> list) {
