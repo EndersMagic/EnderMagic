@@ -39,7 +39,7 @@ public class ItemPortalBinder extends Item implements ItemTextured {
             storeToItem(new Location(pos, world), item);
             return EnumActionResult.SUCCESS;
         } else if (tileEntity instanceof TileWithLocation) {
-            ((TileWithLocation) tileEntity).distination = readFromItem(item);
+            ((TileWithLocation) tileEntity).destination = readFromItem(item);
 
             return EnumActionResult.SUCCESS;
         } else
@@ -48,7 +48,7 @@ public class ItemPortalBinder extends Item implements ItemTextured {
 
     private Location readFromItem(ItemStack item) {
         return Optional.ofNullable(item.getTagCompound())
-                .map(i -> i.getCompoundTag("distination"))
+                .map(i -> i.getCompoundTag("destination"))
                 .map(Location::fromNbt).orElse(Location.spawn);
     }
 
@@ -56,7 +56,7 @@ public class ItemPortalBinder extends Item implements ItemTextured {
         if (!item.hasTagCompound())
             item.setTagCompound(new NBTTagCompound());
 
-        item.getTagCompound().setTag("distination", distination.toNbt());
+        item.getTagCompound().setTag("destination", distination.toNbt());
     }
 
     @Override
