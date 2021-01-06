@@ -20,8 +20,8 @@ public class EntityPortal extends Entity {
 
     public EntityPortal(World worldIn) {
         super(worldIn);
-        ignoreFrustumCheck = true;
         setSize(1f, 1f);
+        ignoreFrustumCheck = true;
     }
 
     public EntityPortal(World worldIn, BlockPos masterPos, int height) {
@@ -36,12 +36,18 @@ public class EntityPortal extends Entity {
     @Override
     public void onUpdate() {
         super.onUpdate();
+        //System.out.println("test");
     }
-
+/*
     @Override
-    public AxisAlignedBB getEntityBoundingBox() {
-        return new AxisAlignedBB(Double.MIN_VALUE, Double.MIN_VALUE, Double.MIN_VALUE, Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-    }
+    public AxisAlignedBB getRenderBoundingBox() {
+        return new AxisAlignedBB(getMasterTilePos().up(), getMasterTilePos().up(getHeight())) {
+            @Override
+            public double getAverageEdgeLength() {
+                return super.getAverageEdgeLength();
+            }
+        };
+    }*/
 
     @Override
     protected void entityInit() {
@@ -67,9 +73,8 @@ public class EntityPortal extends Entity {
 
     @Override
     public void notifyDataManagerChange(DataParameter<?> key) {
-        if (key == HEIGHT) {
+        if (key == HEIGHT)
             setSize(1, getHeight());
-        }
     }
 
     @Override
