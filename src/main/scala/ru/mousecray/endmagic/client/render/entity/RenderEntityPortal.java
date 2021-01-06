@@ -32,8 +32,9 @@ public class RenderEntityPortal extends Render<EntityPortal> {
     @Override
     public void doRender(EntityPortal entity, double x, double y, double z, float entityYaw, float partialTicks) {
         GlStateManager.pushMatrix();
+        GlStateManager.translate(x - 0.5, y, z - 0.5);
         GlStateManager.scale(1, entity.getHeight(), 1);
-        vanilaRender.render(teEndPortal, x - 0.5, y, z - 0.5, partialTicks, 0, 1);
+        vanilaRender.render(teEndPortal, 0, 0, 0, partialTicks, 0, 1);
         GlStateManager.popMatrix();
     }
 
