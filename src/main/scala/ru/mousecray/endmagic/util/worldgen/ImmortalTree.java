@@ -7,6 +7,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import ru.mousecray.endmagic.util.AdvancedBlockPos;
 import ru.mousecray.endmagic.util.TaskManager;
 import ru.mousecray.endmagic.util.Truple;
 import ru.mousecray.endmagic.util.VectorUtil;
@@ -20,12 +21,10 @@ public class ImmortalTree
         HashMap<BlockPos, IBlockState> toPlace = new HashMap<>();
 
         //generateBranchRecursive(toPlace, world.rand, pos.add(-10, 0, 1), length, width, VectorUtil.of(0, 1, 0));
-        //generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width / 2.5D, VectorUtil.of(15 / 100f, -1, 15 / 100f));
-        //generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width / 2.5D, VectorUtil.of(-15 / 100f, -1, 15 / 100f));
-        //generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width / 2.5D, VectorUtil.of(15 / 100f, -1, -15 / 100f));
-        //generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width / 2.5D, VectorUtil.of(-15 / 100f, -1, -15 / 100f));
-
-        generateGroundRootRecursive(world, toPlace, pos, length, width / 2.5, VectorUtil.of(world.rand.nextInt(30) / 100d, 0, world.rand.nextInt(30) / 100d));
+        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width, VectorUtil.of(15 / 100f, -1, 15 / 100f));
+        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width, VectorUtil.of(-15 / 100f, -1, 15 / 100f));
+        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width, VectorUtil.of(15 / 100f, -1, -15 / 100f));
+        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width, VectorUtil.of(-15 / 100f, -1, -15 / 100f));
 
         for (Map.Entry<BlockPos, IBlockState> current : toPlace.entrySet())
             TaskManager.blocksToPlace.add(new Truple<>(world, current.getKey(), current.getValue()));
@@ -108,11 +107,13 @@ public class ImmortalTree
         boolean hasRoot = false;
         Random rand = world.rand;
         int countOfRoots = 0;
+        AdvancedBlockPos newPos = new AdvancedBlockPos(pos);
+        boolean hasRotated = false;
         for (double i = 0; i < length; ++i)
         {
             width /= 1.005;
-            BlockPos newPos = pos.add(i * dir.x, i * dir.y, i * dir.z);
-            System.out.println(newPos);
+
+            newPos.move(dir);
             for (int x = 0; x < Math.ceil(width); x++)
             {
                 for (int z = 0; z < Math.ceil(width); z++)
@@ -123,16 +124,30 @@ public class ImmortalTree
                     toPlace.computeIfAbsent(pos2, k -> Blocks.LOG.getDefaultState());
                     if (world.getBlockState(pos2).getBlock() != Blocks.AIR && !hasRoot)
                     {
-                        generateGroundRootRecursive(world, toPlace, new BlockPos.MutableBlockPos(pos.getX(), pos.getY(), pos.getZ()), 100, width * 0.8, VectorUtil.of(dir.x, 0, dir.z));
+                        generateGroundRootRecursive(world, toPlace, new BlockPos.MutableBlockPos(pos.getX(), pos.getY(), pos.getZ()), 60, width * 0.8, VectorUtil.of(dir.x,  0, dir.z));
                         hasRoot = true;
                     }
                 }
+            }
+            if(world.isAirBlock(newPos.down()) && i > length * 0.5 && !hasRotated)
+            {
+                newPos.move(0, -1, 0);
+                dir.x *= -1;
+                dir.y *= -1;
+                dir.z *= -1;
+                hasRotated = true;
+            }
+            else if (hasRotated)
+            {
+                dir.x *= -1;
+                dir.y *= -1;
+                dir.z *= -1;
             }
 
             if (rand.nextInt(length) < length / Math.abs(30F - i / length * 20 - countOfRoots) + length * 0.5 / width && width >= 1.4 && ((i > 0.6 * length) ^ (length <= 35 * 0.5f)))
             {
                 Vector3d newDir = VectorUtil.of(dir.x, dir.y, dir.z);
-                VectorUtil.rotate(newDir, rand.nextInt(30) - 15, rand.nextInt(30) - 15, rand.nextInt(40) - 15);
+                VectorUtil.rotate(newDir, rand.nextInt(30) - 15, rand.nextInt(30) - 15, rand.nextInt(30) - 15);
 
                 newDir.y = -Math.abs(newDir.y);
 
@@ -150,14 +165,16 @@ public class ImmortalTree
         {
             BlockPos currentPos = poss.add(dir.x * i, dir.y * i, dir.z * i);
             System.out.println(currentPos);
-            toPlace.computeIfAbsent(currentPos,                      k -> Blocks.LOG.getDefaultState());
-            toPlace.computeIfAbsent(currentPos.add(1, 0, 0), k -> Blocks.LOG.getDefaultState());
-            toPlace.computeIfAbsent(currentPos.add(0, 0, 1), k -> Blocks.LOG.getDefaultState());
-            toPlace.computeIfAbsent(currentPos.add(1, 0, 1), k -> Blocks.LOG.getDefaultState());
-            toPlace.computeIfAbsent(currentPos.add(1, 1, 0), k -> Blocks.LOG.getDefaultState());
-            toPlace.computeIfAbsent(currentPos.add(0, 1, 1), k -> Blocks.LOG.getDefaultState());
-            toPlace.computeIfAbsent(currentPos.add(0, 1, 0), k -> Blocks.LOG.getDefaultState());
-            toPlace.computeIfAbsent(currentPos.add(1, 1, 1), k -> Blocks.LOG.getDefaultState());
+            for (int x = 0; x < Math.ceil(width); x++)
+            {
+                for (int z = 0; z < Math.ceil(width); z++)
+                {
+                    Vector3d position = VectorUtil.of(x, 0, z);
+                    VectorUtil.rotate(position, dir);
+                    BlockPos pos2 = currentPos.add(position.x - Math.ceil(width) / 2, position.y - Math.ceil(width) / 2, position.z - Math.ceil(width) / 2);
+                    toPlace.computeIfAbsent(pos2, k -> Blocks.LOG.getDefaultState());
+                }
+            }
             if (world.rand.nextBoolean())
             {
                 //VectorUtil.rotate(dir, (world.rand.nextInt(30) - 15) / 100d, 0, (world.rand.nextInt(30) - 15)/ 100d);
@@ -165,7 +182,6 @@ public class ImmortalTree
             }
             while (i < maxLength && world.isAirBlock(currentPos.down()))
             {
-                System.out.println(currentPos + " " + dir.x + " " + dir.y + " " + dir.z);
                 poss = poss.down();
                 currentPos = poss.add(dir.x * i, dir.y * i, dir.z * i);
                 toPlace.computeIfAbsent(currentPos, k -> Blocks.LOG.getDefaultState());
