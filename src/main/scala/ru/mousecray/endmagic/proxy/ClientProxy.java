@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -28,13 +29,18 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.api.embook.BookApi;
+import ru.mousecray.endmagic.api.embook.components.ImageComponent;
 import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
+import ru.mousecray.endmagic.api.embook.components.SmeltingRecipeComponent;
+import ru.mousecray.endmagic.api.embook.components.TextComponent;
 import ru.mousecray.endmagic.client.gui.GuiTypes;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TexturedModel;
 import ru.mousecray.endmagic.client.render.tileentity.TileEntityPortalRenderer;
 import ru.mousecray.endmagic.client.render.tileentity.TilePhantomAvoidingBlockRenderer;
 import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.inventory.GuiBlastFurnace;
 import ru.mousecray.endmagic.items.ItemTextured;
@@ -47,7 +53,11 @@ import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
@@ -62,6 +72,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
@@ -73,14 +84,12 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                     Render render = null;
                     EMEntity annotation = entityEntry.getEntityClass().getAnnotation(EMEntity.class);
                     try {
-                        System.out.println("registerEntity factory " + annotation.renderClass());
                         render = annotation.renderClass().getConstructor(RenderManager.class).newInstance(manager);
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                         e.printStackTrace();
                     }
                     return render;
                 };
-                System.out.println("registerEntityRenderingHandler " + entityEntry.getEntityClass());
                 RenderingRegistry.registerEntityRenderingHandler(entityEntry.getEntityClass(), factory);
             }
         });
