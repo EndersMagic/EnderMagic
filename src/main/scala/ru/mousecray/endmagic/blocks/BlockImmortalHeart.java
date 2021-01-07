@@ -29,7 +29,7 @@ public class BlockImmortalHeart extends BlockWithTile<TileEntityImmortalHeart>
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         if(!worldIn.isRemote)
-            ImmortalTree.generate(worldIn, pos, 60, 12);
+            ImmortalTree.generate(worldIn, pos, 60, 12, 30);
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 

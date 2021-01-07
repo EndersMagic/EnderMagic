@@ -46,4 +46,13 @@ class AdvancedBlockPos(private var xD : Double, private var yD : Double, private
   }
 
   def move(vac : Vector3d): Unit = this.move(vac.x, vac.y, vac.z)
+
+  def setPos(blockPos: BlockPos): Unit =
+  {
+      this.xD = blockPos.getX
+      this.yD = blockPos.getY
+      this.zD = blockPos.getZ
+  }
+
+  override def toString: String = "AdvancedBlockPos{" + xD + " " + yD + " " + zD + "}"
 }
