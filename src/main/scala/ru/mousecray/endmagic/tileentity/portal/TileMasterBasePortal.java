@@ -24,7 +24,7 @@ import static ru.mousecray.endmagic.network.PacketTypes.REMOVE_CHUNK_PORTAL_CAPA
 
 public abstract class TileMasterBasePortal extends TileWithLocation implements ITickable {
     int tickOpened = -1;
-    int height = 0;
+    AxisAlignedBB portalArea;
 
     public void openPortal() {
         if (destination != null) {
@@ -42,7 +42,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
     protected void placePortalBlocks(int portalSpace) {
         PortalCapabilityProvider.getPortalCapability(world.getChunkFromBlockCoords(pos)).masterPosToHeight.put(pos, portalSpace);
         ADD_CHUNK_PORTAL_CAPA.packet().writePos(pos).writeByte(portalSpace).sendPacketToAllAround(pos, 256, world.provider.getDimension());
-        height = portalSpace;
+        portalArea = new AxisAlignedBB(pos.up()).expand(0, portalSpace - 1, 0);
         tickOpened = portalOpenTime;
     }
 
@@ -92,7 +92,6 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
         if (!world.isRemote) {
             if (tickOpened > 0) {
                 tickOpened--;
-                AxisAlignedBB portalArea = new AxisAlignedBB(pos).expand(0, height - 1, 0);
                 teleportEntities(world.getEntitiesWithinAABBExcludingEntity(null, portalArea));
             } else if (tickOpened == 0)
                 closePortal();
@@ -101,9 +100,9 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
 
     protected abstract void teleportEntities(Collection<Entity> collidedEntities);
 
-    private void closePortal() {
+    protected void closePortal() {
         tickOpened = -1;
-        height = 0;
+        portalArea = null;
         PortalCapabilityProvider.getPortalCapability(world.getChunkFromBlockCoords(pos)).masterPosToHeight.remove(pos);
         REMOVE_CHUNK_PORTAL_CAPA.packet().writePos(pos).sendPacketToAllAround(pos, 256, world.provider.getDimension());
     }
