@@ -9,12 +9,16 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.Configuration;
+import ru.mousecray.endmagic.capability.chunk.portal.PortalCapabilityProvider;
 import ru.mousecray.endmagic.init.EMBlocks;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static ru.mousecray.endmagic.network.PacketTypes.ADD_CHUNK_PORTAL_CAPA;
+import static ru.mousecray.endmagic.network.PacketTypes.REMOVE_CHUNK_PORTAL_CAPA;
 
 public abstract class TileMasterBasePortal extends TileWithLocation implements ITickable {
     int tickOpened = -1;
@@ -38,12 +42,8 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
     protected abstract void finalOpening(int portalSpace);
 
     protected void placePortalBlocks(int portalSpace) {
-        for (int i = 1; i <= portalSpace; i++) {
-            BlockPos current = pos.up(i);
-            world.setBlockState(current, EMBlocks.blockPortal.getDefaultState());
-            TilePortal tileEntity = (TilePortal) world.getTileEntity(current);
-            tileEntity.masterTileOffset = i;
-        }
+        PortalCapabilityProvider.getPortalCapability(world.getChunkFromBlockCoords(pos)).masterPosToHeight.put(pos, portalSpace);
+        ADD_CHUNK_PORTAL_CAPA.packet().writePos(pos).writeByte(portalSpace).sendPacketToAllAround(pos, 256, world.provider.getDimension());
     }
 
     protected boolean checkDistinationStructure(int portalSpace, Block capMaterial) {
@@ -106,14 +106,8 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
 
     private void closePortal() {
         tickOpened = -1;
-
-        int height = 0;
-        BlockPos current = pos.up();
-        while (world.getBlockState(current).getBlock() == EMBlocks.blockPortal && height < Configuration.portalSizeLimit) {
-            world.setBlockToAir(current);
-            height++;
-            current = current.up();
-        }
+        PortalCapabilityProvider.getPortalCapability(world.getChunkFromBlockCoords(pos)).masterPosToHeight.remove(pos);
+        REMOVE_CHUNK_PORTAL_CAPA.packet().writePos(pos).sendPacketToAllAround(pos, 256, world.provider.getDimension());
     }
 
     @Override
