@@ -6,27 +6,25 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.Configuration;
 import ru.mousecray.endmagic.capability.chunk.portal.PortalCapabilityProvider;
 import ru.mousecray.endmagic.init.EMBlocks;
 
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static ru.mousecray.endmagic.Configuration.portalOpenTime;
 import static ru.mousecray.endmagic.network.PacketTypes.ADD_CHUNK_PORTAL_CAPA;
 import static ru.mousecray.endmagic.network.PacketTypes.REMOVE_CHUNK_PORTAL_CAPA;
 
 public abstract class TileMasterBasePortal extends TileWithLocation implements ITickable {
     int tickOpened = -1;
-    private Set<Entity> collidedEntities = new HashSet<>();
-
-    public void addCollidedEntity(Entity entityIn) {
-        collidedEntities.add(entityIn);
-    }
+    int height = 0;
 
     public void openPortal() {
         if (destination != null) {
@@ -44,6 +42,8 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
     protected void placePortalBlocks(int portalSpace) {
         PortalCapabilityProvider.getPortalCapability(world.getChunkFromBlockCoords(pos)).masterPosToHeight.put(pos, portalSpace);
         ADD_CHUNK_PORTAL_CAPA.packet().writePos(pos).writeByte(portalSpace).sendPacketToAllAround(pos, 256, world.provider.getDimension());
+        height = portalSpace;
+        tickOpened = portalOpenTime;
     }
 
     protected boolean checkDistinationStructure(int portalSpace, Block capMaterial) {
@@ -90,22 +90,20 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
     @Override
     public void update() {
         if (!world.isRemote) {
-            if (tickOpened > 0)
+            if (tickOpened > 0) {
                 tickOpened--;
-            else if (tickOpened == 0)
+                AxisAlignedBB portalArea = new AxisAlignedBB(pos).expand(0, height - 1, 0);
+                teleportEntities(world.getEntitiesWithinAABBExcludingEntity(null, portalArea));
+            } else if (tickOpened == 0)
                 closePortal();
-
-            if (collidedEntities.size() > 0) {
-                teleportEntities(collidedEntities);
-                collidedEntities.clear();
-            }
         }
     }
 
-    protected abstract void teleportEntities(Set<Entity> collidedEntities);
+    protected abstract void teleportEntities(Collection<Entity> collidedEntities);
 
     private void closePortal() {
         tickOpened = -1;
+        height = 0;
         PortalCapabilityProvider.getPortalCapability(world.getChunkFromBlockCoords(pos)).masterPosToHeight.remove(pos);
         REMOVE_CHUNK_PORTAL_CAPA.packet().writePos(pos).sendPacketToAllAround(pos, 256, world.provider.getDimension());
     }
