@@ -19,24 +19,48 @@ import java.util.Random;
 
 public class ImmortalTree
 {
-    public static void generate(World world, BlockPos pos, int length, int width, int countOfGroundRoots)
+    public static void generate(World world, BlockPos pos, int length, double width, int countOfGroundRoots)
     {
         HashMap<BlockPos, IBlockState> toPlace = new HashMap<>();
-
-
-        //generateBranchRecursive(toPlace, world.rand, pos.add(-10, 0, 1), length, width, VectorUtil.of(0, 1, 0));
-
-        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width, VectorUtil.of(15 / 100f, -1, 15 / 100f), true);
-        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width, VectorUtil.of(-15 / 100f, -1, 15 / 100f), true);
-        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width, VectorUtil.of(15 / 100f, -1, -15 / 100f), true);
-        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width, VectorUtil.of(-15 / 100f, -1, -15 / 100f), true);
-
-
+        Random rand = world.rand;
         double angl = 180d / countOfGroundRoots;
         for (int i = 0; i < countOfGroundRoots; i++)
         {
-            generateGroundRoot(world, toPlace, pos, length, width / (2 + (double) world.rand.nextInt(3)), VectorUtil.of(Math.cos(angl * i), -1, Math.sin(angl * i)));
+            generateGroundRoot(world, toPlace, pos, length, width / (2 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angl * i), -1, Math.sin(angl * i)));
         }
+
+        int r = (int) width;
+        for (int y = 0; y < length; y++)
+        {
+            width /= 1.001;
+            for (int x = -r; x < r; x++)
+            {
+                for (int z = -r; z < r; z++)
+                {
+                    if(x * x + z * z - width * width < 2)
+                    {
+                        BlockPos pos2 = pos.add(x, y, z);
+                        toPlace.put(pos2, Blocks.LOG.getDefaultState());
+                        if(y == length - 1 && rand.nextInt(5) > 3)
+                        {
+                            generateRelief(world, toPlace, pos2, VectorUtil.of(x / (r * 10.0), -1, z / (r * 10.0)), length * 2, width / (3 + rand.nextInt(2)));
+                            if (rand.nextInt(10) > 6)
+                            {
+                                generateBranchRecursive(toPlace, rand, pos2, length, width / 2, VectorUtil.of(x / (r * 2.0), 1, z / (r * 2.0)), true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        /*
+        generateBranchRecursive(toPlace, world.rand, pos.add(-10, 0, 1), length, width * 1.3, VectorUtil.of(0, 1, 0));
+
+        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(15 / 100f, -1, 15 / 100f), true);
+        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(-15 / 100f, -1, 15 / 100f), true);
+        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(15 / 100f, -1, -15 / 100f), true);
+        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(-15 / 100f, -1, -15 / 100f), true);
+        //*/
 
         for (Map.Entry<BlockPos, IBlockState> current : toPlace.entrySet())
             TaskManager.blocksToPlace.add(new Truple<>(world, current.getKey(), current.getValue()));
@@ -125,6 +149,62 @@ public class ImmortalTree
         }
     }
 
+    public static void generateBranchRecursive(Map<BlockPos, IBlockState> toPlace, Random rand, BlockPos startPosition, int length, double width, Vector3d dir, boolean isGroundBranch)
+    {
+        int countOfBranches = 0;
+        AdvancedBlockPos pos = new AdvancedBlockPos(startPosition);
+        for (int y = 0; y < length; y++)
+        {
+            width /= 1.001;
+            if(isGroundBranch)
+                pos.move(dir.x * (1 + Math.pow(y, 0.5)), dir.y, dir.z * (1 + Math.pow(y, 0.5)));
+            else
+                pos.move(dir);
+
+            for (int x = 0; x < Math.ceil(width); x++)
+            {
+                for (int z = 0; z < Math.ceil(width); z++)
+                {
+                    Vector3d position = VectorUtil.of(x, 0, z);
+                    VectorUtil.rotate(position, dir);
+                    BlockPos pos2 = pos.add(position.x, position.y, position.z);
+                    if (toPlace.get(pos2) == null || toPlace.get(pos2).getBlock() == Blocks.LEAVES)
+                        toPlace.put(pos2, Blocks.LOG.getDefaultState());
+                }
+            }
+
+            if (Math.ceil(width) <= 3)
+            {
+                for (int x = 0; x < Math.ceil(width) * 3; x++)
+                {
+                    for (int j = 0; j < Math.ceil(width) * 3; j++)
+                    {
+                        for (int z = 0; z < Math.ceil(width) * 3; z++)
+                        {
+                            BlockPos pos2 = pos.add(x - Math.ceil(width), j - Math.ceil(width), z - Math.ceil(width));
+                            toPlace.computeIfAbsent(pos2, k -> Blocks.LEAVES.getDefaultState());
+                        }
+                    }
+                }
+            }
+
+            if(rand.nextInt(10) > 7 && countOfBranches < 8 && width > 4)
+            {
+                Vector3d newDir = new Vector3d();
+                newDir.x = dir.x + 0;
+                newDir.y = dir.y + 0;
+                newDir.z = dir.z + 0;
+                VectorUtil.rotateX(newDir, rand.nextInt(60) - 30);
+                VectorUtil.rotateY(newDir, rand.nextInt(60) - 30);
+                VectorUtil.rotateZ(newDir, rand.nextInt(60) - 30);
+
+                if (length >= 35) newDir.y = Math.abs(newDir.y);
+                countOfBranches++;
+                generateBranchRecursive(toPlace, rand, pos, (int) (length * 0.8F), width * 0.7, newDir, false);
+            }
+        }
+    }
+
     public static void generateRootRecursive(World world, Map<BlockPos, IBlockState> toPlace, BlockPos pos, int length, double width, Vector3d dir, boolean isGrandRoot)
     {
         Random rand = world.rand;
@@ -149,7 +229,7 @@ public class ImmortalTree
                     toPlace.computeIfAbsent(pos2, k -> Blocks.LOG.getDefaultState());
                 }
             }
-            if (rand.nextInt(80) > 75d - 5d * (1d - i / length))
+            if (!(rand.nextInt(80) > 75d - 5d * (1d - i / length)))
             {
                 generateGroundRoot(world, toPlace, new BlockPos.MutableBlockPos(pos.getX(), pos.getY(), pos.getZ()), 60, width,
                         VectorUtil.of(dir.x + rand.nextInt(50) / 100d - rand.nextInt(50) / 100d,  dir.y / 2, dir.z + rand.nextInt(50) / 100d - rand.nextInt(50) / 100d));
@@ -203,7 +283,8 @@ public class ImmortalTree
             /*
              * Делаем другие корни. Не спрашивайте почему такой иф.
              */
-            if (rand.nextInt(length) < length / Math.abs(30F - i / length * 20 - countOfRoots) + length * 0.5 / width && width >= 1.4 && ((i > 0.6 * length) ^ (length <= 35 * 0.5f)))
+            /*
+            if (rand.nextInt(length) < length / Math.abs(30F - i / length * 20 - countOfRoots) + length * 0.5 / width && width >= 1.4 && ((i > 0.6 * length) ^ (length <= 35 * 0.5f)) && !isGrandRoot || i > length * 0.6)
             {
                 Vector3d newDir = VectorUtil.of(dir.x, dir.y, dir.z);
                 VectorUtil.rotate(newDir, rand.nextInt(30) - 15, rand.nextInt(30) - 15, rand.nextInt(30) - 15);
@@ -212,6 +293,34 @@ public class ImmortalTree
 
                 countOfRoots++;
                 generateRootRecursive(world, toPlace, newPos, (int) (length * 0.6F), width * 0.6, newDir, false);
+            }
+             */
+        }
+    }
+
+    public static void generateRelief(World world, Map<BlockPos, IBlockState> toPlace, BlockPos startPos,  Vector3d dir, int maxLength, double width)
+    {
+        Random rand = world.rand;
+        AdvancedBlockPos pos = new AdvancedBlockPos(startPos);
+        for (int y = 0; y < maxLength; y++)
+        {
+            if (!world.isAirBlock(pos))
+            {
+                generateGroundRoot(world, toPlace, pos, maxLength - y, width, dir);
+                return;
+            }
+            pos.move(dir.x * (1 + Math.pow(y, 1.7) / (double) maxLength), dir.y, dir.z * (1 + Math.pow(y, 1.7) / (double) maxLength));
+            int r = (int) width;
+
+            for (int x = -r; x < r; x++)
+            {
+                for (int z = -r; z < r; z++)
+                {
+                    if(x * x + z * z - width * width < 1.5 + rand.nextInt(2))
+                    {
+                        toPlace.put(pos.add(x, 0, z), Blocks.LOG.getDefaultState());
+                    }
+                }
             }
         }
     }
