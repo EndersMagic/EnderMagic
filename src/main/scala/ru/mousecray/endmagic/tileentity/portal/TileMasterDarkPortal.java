@@ -49,4 +49,10 @@ public class TileMasterDarkPortal extends TileMasterBasePortal {
         } else
             tickOpened = 0;
     }
+
+    @Override
+    protected void closePortal() {
+        super.closePortal();
+        blacklist.clear();
+    }
 }
