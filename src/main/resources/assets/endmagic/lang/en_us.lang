@@ -221,3 +221,8 @@ book.chapter.text.compression_system=You can create unique diamonds using the ch
 
 book.chapter.name.teleport_construction=Teleporter Construction
 book.chapter.text.teleport_construction=Construction of either kind of teleporter has similar requirements. The Static and Dark Teleporters must both have a block placed on their North, South, East, West, and bottom faces, all of those blocks being of the same material. Then the Teleporter Top must be directly above the teleporters, with blocks of the same material on its North, South, East, West, and top faces. A Teleportation Binder is used to link the Static Teleporter with its destination Bone Block, or Dark Teleporter with another Dark Teleporter. When a redstone signal is applied, whatever is standing on the teleporter will be sent to the linked destination.
+
+##Gui
+gui.creative.button.blocks=Blocks
+gui.creative.button.items=Items
+gui.creative.button.tools=Tools

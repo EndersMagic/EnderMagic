@@ -116,6 +116,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         //Register new vanilla EndStone model
         setModel(Blocks.END_STONE, 0, new ModelResourceLocation(new ResourceLocation("minecraft", "end_stone"), "normal"));
 
+        //*
         //formatter:off
         //Add default book chapters
         BookApi.addStandartChapter("items", "ender_apple");
@@ -170,6 +171,7 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 new ImageComponent(new ResourceLocation(EM.ID, "textures/book/portal_structure_2.png"),
                         I18n.format("tile.block_master_dark_portal.name")));
         //formatter:on
+        //*/
     }
 
     private RecipeComponent recipesForItems(List<Item> items) {

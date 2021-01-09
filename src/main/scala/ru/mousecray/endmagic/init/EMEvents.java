@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.multiplayer.ChunkProviderClient;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -45,6 +46,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.GuiConfirmation;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -65,7 +67,6 @@ import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
 import ru.mousecray.endmagic.client.render.rune.DebugModelWrapper;
-import ru.mousecray.endmagic.client.render.rune.RuneModelWrapper2;
 import ru.mousecray.endmagic.entity.EntityCustomEnderEye;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
@@ -74,6 +75,8 @@ import ru.mousecray.endmagic.network.PacketTypes;
 import ru.mousecray.endmagic.rune.RuneIndex;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
+import ru.mousecray.endmagic.util.GuiContainerCreativeEM;
+import ru.mousecray.endmagic.util.registry.ExplodeRecipe;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 import scala.Option;
 
@@ -426,31 +429,43 @@ public class EMEvents {
         }
     }
 
+
     @SubscribeEvent
     public static void onPressureExplosionCoal(ExplosionEvent.Start event) {
         Vec3d vec = event.getExplosion().getPosition();
         World world = event.getWorld();
         findPressureStructure(world, new BlockPos(vec.x, vec.y, vec.z))
                 .flatMap(i -> {
-                    Optional<EntityItem> diamond = getDiamond(world, i);
+                    Optional<EntityItem> item = getItem(world, i);
                     world.setBlockToAir(i);
-                    return diamond;
+                    return item;
                 })
                 .ifPresent(world::spawnEntity);
     }
 
-    private static Optional<EntityItem> getDiamond(World world, BlockPos i) {
-        return Optional.ofNullable(coal2diamond.get(world.getBlockState(i).getBlock()))
+    private static Optional<EntityItem> getItem(World world, BlockPos i) {
+        return Optional.ofNullable(ExplodeRecipe.getRecipe(world.getBlockState(i).getBlock()))
                 .map(item -> new UnexplosibleEntityItem(world, i.getX() + 0.5, i.getY() + 0.5, i.getZ() + 0.5,
-                        new ItemStack(item)));
+                        item));
     }
 
     private static Optional<BlockPos> findPressureStructure(World world, BlockPos explosionPosition) {
-        Optional<BlockPos> coal = findCoal(world, explosionPosition);
-        Optional<Integer> obsidiancount = coal.map(coalPos ->
+        Optional<BlockPos> block = findRecipeBlock(world, explosionPosition);
+        Optional<Integer> obsidiancount = block.map(coalPos ->
                 getCountOfObsidianAround(world, explosionPosition) + getCountOfObsidianAround(world, coalPos))
                 .filter(i -> i >= 10);
-        return obsidiancount.flatMap(__ -> coal);
+        return obsidiancount.flatMap(__ -> block);
+    }
+
+    private static Optional<BlockPos> findRecipeBlock(World world, BlockPos explosionPosition) {
+        return Arrays.stream(EnumFacing.values())
+                .map(side -> explosionPosition.add(side.getDirectionVec()))
+                .filter(pos -> isRecipeBlock(world.getBlockState(pos).getBlock()))
+                .findFirst();
+    }
+
+    private static boolean isRecipeBlock(Block block) {
+        return ExplodeRecipe.getRecipe(block) != ItemStack.EMPTY;
     }
 
     private static int getCountOfObsidianAround(World world, BlockPos explosionPosition) {
@@ -544,5 +559,19 @@ public class EMEvents {
             }
 
         return ItemStack.EMPTY;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onGuiInitEarly(GuiOpenEvent event) {
+        if (event.getGui() instanceof GuiContainerCreative && !(event.getGui() instanceof GuiContainerCreativeEM))
+            event.setGui(new GuiContainerCreativeEM(Minecraft.getMinecraft().player));
+    }
+
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onGuiInitLately(GuiOpenEvent event) {
+        if (event.getGui() instanceof GuiContainerCreative && !(event.getGui() instanceof GuiContainerCreativeEM))
+            event.setGui(new GuiContainerCreativeEM(Minecraft.getMinecraft().player));
     }
 }
