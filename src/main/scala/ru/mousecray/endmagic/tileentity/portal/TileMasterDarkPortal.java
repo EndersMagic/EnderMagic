@@ -47,7 +47,7 @@ public class TileMasterDarkPortal extends TileMasterBasePortal {
                 }
             });
         } else
-            tickOpened = 0;
+            state = new PortalState.Closing();
     }
 
     @Override
