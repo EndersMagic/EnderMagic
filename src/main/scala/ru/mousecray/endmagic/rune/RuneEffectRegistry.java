@@ -37,5 +37,16 @@ public class RuneEffectRegistry {
 
     public static void addEffect(Map<Vec2i, RunePart> parts, RuneEffect effect) {
         effects.put(nailToCenter(parts), effect);
+        effects.put(nailToCenter(rotate(parts)), effect);
+        effects.put(nailToCenter(rotate(rotate(parts))), effect);
+        effects.put(nailToCenter(rotate(rotate(rotate(parts)))), effect);
+    }
+
+    private static Map<Vec2i, RunePart> rotate(Map<Vec2i, RunePart> parts) {
+        //+y -> +x
+        //+x - > -y
+        //-y -> -x
+        //-x -> +y
+        return parts.entrySet().stream().collect(toImmutableMap(p -> new Vec2i(p.getKey().y, -p.getKey().x), Map.Entry::getValue));
     }
 }
