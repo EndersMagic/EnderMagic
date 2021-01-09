@@ -12,6 +12,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.Configuration;
 import ru.mousecray.endmagic.capability.chunk.portal.PortalCapabilityProvider;
 import ru.mousecray.endmagic.init.EMBlocks;
+import ru.mousecray.endmagic.tileentity.ByBlockNotifiable;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -22,8 +23,9 @@ import static ru.mousecray.endmagic.Configuration.portalOpenTime;
 import static ru.mousecray.endmagic.network.PacketTypes.ADD_CHUNK_PORTAL_CAPA;
 import static ru.mousecray.endmagic.network.PacketTypes.REMOVE_CHUNK_PORTAL_CAPA;
 
-public abstract class TileMasterBasePortal extends TileWithLocation implements ITickable {
+public abstract class TileMasterBasePortal extends TileWithLocation implements ITickable, ByBlockNotifiable {
 
+    @Override
     public void neighborChanged() {
         if (state instanceof PortalState.Opened) {
             if (checkBottomCap() != ((PortalState.Opened) state).capMaterial)
@@ -38,6 +40,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
                 closePortal();
     }
 
+    @Override
     public void breakBlock() {
         closePortal();
     }
