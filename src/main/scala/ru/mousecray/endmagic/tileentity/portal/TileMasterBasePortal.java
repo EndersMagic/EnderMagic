@@ -38,6 +38,10 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
                 closePortal();
     }
 
+    public void breakBlock() {
+        closePortal();
+    }
+
     public interface PortalState {
         void tick(TileMasterBasePortal tile);
 
@@ -104,6 +108,8 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
         ADD_CHUNK_PORTAL_CAPA.packet().writePos(pos).writeByte(portalSpace).sendPacketToAllAround(pos, 256, world.provider.getDimension());
 
         state = new PortalState.Opened(portalOpenTime, new AxisAlignedBB(pos.up()).expand(0, portalSpace - 1, 0), capMaterial);
+
+        ((TileTopMark) world.getTileEntity(pos.up(portalSpace + 1))).masterTileOffset = portalSpace + 1;
     }
 
     protected void closePortal() {

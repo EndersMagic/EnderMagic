@@ -25,7 +25,14 @@ public class BlockMasterBasePortal<A extends TileMasterBasePortal> extends Block
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (!worldIn.isRemote)
-            tile(worldIn,pos).neighborChanged();
+            tile(worldIn, pos).neighborChanged();
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        if (!worldIn.isRemote)
+            tile(worldIn, pos).breakBlock();
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
