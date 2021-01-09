@@ -24,6 +24,20 @@ import static ru.mousecray.endmagic.network.PacketTypes.REMOVE_CHUNK_PORTAL_CAPA
 
 public abstract class TileMasterBasePortal extends TileWithLocation implements ITickable {
 
+    public void neighborChanged() {
+        if (state instanceof PortalState.Opened) {
+            if (checkBottomCap() != ((PortalState.Opened) state).capMaterial)
+                closePortal();
+        } else if (world.isBlockPowered(pos))
+            checkAndOpenPortal();
+    }
+
+    public void notifyTopCapUpdate(BlockPos pos) {
+        if (state instanceof PortalState.Opened)
+            if (!checkTopCap(pos, ((PortalState.Opened) state).capMaterial))
+                closePortal();
+    }
+
     public interface PortalState {
         void tick(TileMasterBasePortal tile);
 
@@ -32,10 +46,12 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
         class Opened implements PortalState {
             int tickOpened = -1;
             AxisAlignedBB portalArea;
+            Block capMaterial;
 
-            Opened(int tickOpened, AxisAlignedBB portalArea) {
+            Opened(int tickOpened, AxisAlignedBB portalArea, Block capMaterial) {
                 this.tickOpened = tickOpened;
                 this.portalArea = portalArea;
+                this.capMaterial = capMaterial;
             }
 
             @Override
@@ -47,22 +63,9 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
             @Override
             public PortalState nextState() {
                 if (tickOpened == 0)
-                    return new Closing();
+                    return new Closed();
                 else
                     return this;
-            }
-        }
-
-        class Closing implements PortalState {
-
-            @Override
-            public void tick(TileMasterBasePortal tile) {
-                tile.closePortal();
-            }
-
-            @Override
-            public PortalState nextState() {
-                return new Closed();
             }
         }
 
@@ -81,24 +84,37 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
 
     PortalState state = new PortalState.Closed();
 
-    public void openPortal() {
+    public void checkAndOpenPortal() {
         if (destination != null) {
             checkStructure().ifPresent(p -> {
                 int portalSpace = p.getLeft();
                 Block capMaterial = p.getRight();
                 if (checkDistinationStructure(portalSpace, capMaterial))
-                    finalOpening(portalSpace);
+                    openPortal(portalSpace, capMaterial);
             });
         }
     }
 
-    protected abstract void finalOpening(int portalSpace);
+    protected void openPortal(int portalSpace, Block capMaterial) {
+        finalOpening(portalSpace, capMaterial);
+    }
 
-    protected void placePortalBlocks(int portalSpace) {
+    protected void finalOpening(int portalSpace, Block capMaterial) {
         PortalCapabilityProvider.getPortalCapability(world.getChunkFromBlockCoords(pos)).masterPosToHeight.put(pos, portalSpace);
         ADD_CHUNK_PORTAL_CAPA.packet().writePos(pos).writeByte(portalSpace).sendPacketToAllAround(pos, 256, world.provider.getDimension());
 
-        state = new PortalState.Opened(portalOpenTime, new AxisAlignedBB(pos.up()).expand(0, portalSpace - 1, 0));
+        state = new PortalState.Opened(portalOpenTime, new AxisAlignedBB(pos.up()).expand(0, portalSpace - 1, 0), capMaterial);
+    }
+
+    protected void closePortal() {
+        finalClosing();
+    }
+
+    protected void finalClosing() {
+        PortalCapabilityProvider.getPortalCapability(world.getChunkFromBlockCoords(pos)).masterPosToHeight.remove(pos);
+        REMOVE_CHUNK_PORTAL_CAPA.packet().writePos(pos).sendPacketToAllAround(pos, 256, world.provider.getDimension());
+
+        state = new PortalState.Closed();
     }
 
     protected boolean checkDistinationStructure(int portalSpace, Block capMaterial) {
@@ -152,11 +168,6 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
 
     protected abstract void teleportEntities(Collection<Entity> collidedEntities);
 
-    protected void closePortal() {
-        PortalCapabilityProvider.getPortalCapability(world.getChunkFromBlockCoords(pos)).masterPosToHeight.remove(pos);
-        REMOVE_CHUNK_PORTAL_CAPA.packet().writePos(pos).sendPacketToAllAround(pos, 256, world.provider.getDimension());
-    }
-
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
@@ -166,11 +177,8 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
         if (stateName.equals(PortalState.Opened.class.getSimpleName().toLowerCase())) {
             state = new PortalState.Opened(
                     compound.getInteger("tickOpened"),
-                    new AxisAlignedBB(pos.up()).expand(0, compound.getInteger("height") - 1, 0)
-            );
-
-        } else if (stateName.equals(PortalState.Closing.class.getSimpleName().toLowerCase())) {
-            state = new PortalState.Closing();
+                    new AxisAlignedBB(pos.up()).expand(0, compound.getInteger("height") - 1, 0),
+                    Block.getBlockFromName(compound.getString("capMaterial")));
 
         } else if (stateName.equals(PortalState.Closed.class.getSimpleName().toLowerCase())) {
             state = new PortalState.Closed();
@@ -185,6 +193,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
             PortalState.Opened state = (PortalState.Opened) this.state;
             compound.setInteger("tickOpened", state.tickOpened);
             compound.setInteger("height", (int) (state.portalArea.maxY - state.portalArea.minY));
+            compound.setString("capMaterial", state.capMaterial.getRegistryName().toString());
         }
         return super.writeToNBT(compound);
     }

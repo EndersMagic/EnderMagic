@@ -14,14 +14,28 @@ public class TileMasterDarkPortal extends TileMasterBasePortal {
     private Set<Entity> blacklist = new HashSet<>();
 
     @Override
-    protected void finalOpening(int portalSpace) {
-        placePortalBlocks(portalSpace);
-        ((TileMasterDarkPortal) destination.getWorld().getTileEntity(destination.toPos())).placePortalBlocks(portalSpace);
+    protected void openPortal(int portalSpace, Block capMaterial) {
+        super.openPortal(portalSpace, capMaterial);
+        ((TileMasterDarkPortal) getDestinationMasterTile()).finalOpening(portalSpace, capMaterial);
+    }
+
+    @Override
+    protected void closePortal() {
+        super.closePortal();
+        TileEntity tileEntity = getDestinationMasterTile();
+        if (tileEntity instanceof TileMasterDarkPortal)
+            ((TileMasterDarkPortal) tileEntity).finalClosing();
+    }
+
+    @Override
+    protected void finalClosing() {
+        super.finalClosing();
+        blacklist.clear();
     }
 
     @Override
     protected boolean checkDistinationStructure(int portalSpace, Block capMaterial) {
-        TileEntity distinationTile = destination.getWorld().getTileEntity(destination.toPos());
+        TileEntity distinationTile = getDestinationMasterTile();
         return distinationTile instanceof TileMasterDarkPortal &&
                 ((TileMasterDarkPortal) distinationTile).checkStructure()
                         .filter(p -> p.getLeft() == portalSpace && p.getRight() == capMaterial)
@@ -30,7 +44,7 @@ public class TileMasterDarkPortal extends TileMasterBasePortal {
 
     @Override
     protected void teleportEntities(Collection<Entity> collidedEntities) {
-        TileEntity destinationMasterTile = destination.getWorld().getTileEntity(destination.toPos());
+        TileEntity destinationMasterTile = getDestinationMasterTile();
         if (destinationMasterTile instanceof TileMasterDarkPortal) {
 
             collidedEntities.forEach(e -> ((TileMasterDarkPortal) destinationMasterTile).blacklist.addAll(TeleportationHelper.getAllPassenges(e)));
@@ -47,12 +61,10 @@ public class TileMasterDarkPortal extends TileMasterBasePortal {
                 }
             });
         } else
-            state = new PortalState.Closing();
+            closePortal();
     }
 
-    @Override
-    protected void closePortal() {
-        super.closePortal();
-        blacklist.clear();
+    private TileEntity getDestinationMasterTile() {
+        return destination.getWorld().getTileEntity(destination.toPos());
     }
 }

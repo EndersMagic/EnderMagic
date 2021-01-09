@@ -25,8 +25,7 @@ public class BlockMasterBasePortal<A extends TileMasterBasePortal> extends Block
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (!worldIn.isRemote)
-            if (worldIn.isBlockPowered(pos))
-                tile(worldIn, pos).openPortal();
+            tile(worldIn,pos).neighborChanged();
     }
 
     @Override
