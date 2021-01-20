@@ -221,11 +221,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                 e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
 
             if (!resource.getVariant().contains("inventory")) {
-                //e.getModelRegistry().putObject(resource, new RuneModelWrapper(e.getModelRegistry().getObject(resource), resource));
                 IBakedModel originalModel = e.getModelRegistry().getObject(resource);
                 e.getModelRegistry().putObject(resource, new RuneModelWrapper2(originalModel));
-                //if (originalModel instanceof WeightedBakedModel)
-                  //  System.out.println(resource+" totalWeight " + ReflectionHelper.<Integer, WeightedBakedModel>getPrivateValue(WeightedBakedModel.class, (WeightedBakedModel) originalModel, "totalWeight"));
             }
         }
     }

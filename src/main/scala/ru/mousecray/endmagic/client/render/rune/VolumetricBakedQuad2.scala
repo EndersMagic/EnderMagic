@@ -19,7 +19,6 @@ class VolumetricBakedQuad2(side: EnumFacing, allEdges: Map[EnumFacing, (Option[E
 ) {
   override def pipe(consumer: IVertexConsumer): Unit = {
 
-    //if(side!=EnumFacing.UP)
     consumer match {
       case consumer: VertexLighterFlat =>
 

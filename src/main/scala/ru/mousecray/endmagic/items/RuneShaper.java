@@ -26,5 +26,6 @@ public class RuneShaper extends Item {
 
     private void println(Rune rune) {
         RuneEffectRegistry.addEffect(JavaConversions.mapAsJavaMap(rune.parts()), new RuneEffect());
+        System.out.println(rune.parts());
     }
 }

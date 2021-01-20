@@ -3,8 +3,9 @@ package ru.mousecray.endmagic.client.render.rune
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap
 import net.minecraft.client.Minecraft
 import net.minecraft.client.multiplayer.ChunkProviderClient
+import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import net.minecraft.client.renderer.{GlStateManager, Tessellator}
+import net.minecraft.client.renderer.{GlStateManager, RenderHelper, Tessellator}
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.chunk.Chunk
@@ -44,8 +45,12 @@ class RuneTopLayerRenderer {
 
     GlStateManager.pushMatrix()
     GlStateManager.translate(-doubleX, -doubleY, -doubleZ)
-    GlStateManager.alphaFunc(516, 0F)
+    //GlStateManager.alphaFunc(516, 0F)
     GlStateManager.enableBlend()
+    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
+    RenderHelper.enableStandardItemLighting()
+    //GlStateManager.disableLighting()
+    //OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xF000F0%65536f, 0xF000F0%65536f);
 
     getLoadedChunks.forEachRemaining {
       c: Chunk =>
@@ -55,7 +60,8 @@ class RuneTopLayerRenderer {
           .foreach(renderRuneTopLayer)
     }
 
-    GlStateManager.disableBlend()
+    //GlStateManager.enableLighting()
+    //GlStateManager.disableBlend()
     GlStateManager.popMatrix()
   }
 
@@ -71,7 +77,9 @@ class RuneTopLayerRenderer {
     case (pos, runeState) =>
       GlStateManager.pushMatrix()
       GlStateManager.translate(pos.getX, pos.getY, pos.getZ)
-      GlStateManager.color(1, 1, 1, 0.5f)
+      GlStateManager.color(1, 1, 1, 1)
+
+      val distToPlayer = ((Math.min(10, Math.sqrt(mc.player.getDistanceSqToCenter(pos))) / 10) - 0.1) / 1.8 + 0.5
 
       val blockState = mc.world.getBlockState(pos)
       val model = mc.getBlockRendererDispatcher.getModelForState(blockState)
@@ -80,23 +88,33 @@ class RuneTopLayerRenderer {
       val bufferbuilder = tessellator.getBuffer
       bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
 
+      val edges: Map[EnumFacing, (Option[EnumFacing], BakedQuad)] = model match {
+        case wrapper: RuneModelWrapper2 => wrapper.getAllEdges(blockState, 0).edges
+        case _ => Map()
+      }
+
       EnumFacing.values().foreach { ef =>
         val rune = runeState.getRuneAtSide(ef)
+        val headOption = edges.get(ef).map(_._2)
         rune.parts.foreach { case (coord: Vec2i, part: RunePart) =>
           val (x, y) = (coord.x, coord.y)
           val color = part.color()
 
-          model.getQuads(blockState, ef, 0).asScala.headOption.foreach(quad =>
+          headOption.foreach(quad => {
+            val partQuad = LazyUnpackedQuad(quad)
+              .trivialSliceRect(
+                x.toFloat / 16, y.toFloat / 16,
+                (x + 1).toFloat / 16, (y + 1).toFloat / 16
+              )
+              .updated(atlas = color.atlasSpriteRune())
+
             net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(
               bufferbuilder,
-              LazyUnpackedQuad(quad)
-                .trivialSliceRect(
-                  x.toFloat / 16, y.toFloat / 16,
-                  (x + 1).toFloat / 16, (y + 1).toFloat / 16
-                )
-                .updated(atlas = color.atlasSpriteRune())
+              partQuad
+                .translate(-ef.getDirectionVec.getX * 1f / 64, -ef.getDirectionVec.getY * 1f / 64, -ef.getDirectionVec.getZ * 1f / 64)
                 .toBakedQuad,
-              getColorForRune(rune, color)))
+              getColorForRune(rune, color, distToPlayer))
+          })
         }
       }
 
@@ -106,16 +124,14 @@ class RuneTopLayerRenderer {
 
   }
 
-  private def getColorForRune(rune: Rune, color: RuneColor) = {
+  private def getColorForRune(rune: Rune, color: RuneColor, distToPlayer: Double) = {
     if (rune.splashAnimation >= 0) {
       val b = (rune.splashAnimation.toFloat + Minecraft.getMinecraft.getRenderPartialTicks) / Rune.splashAnimationMax
-      println(b)
       val ib = (100 * b).toInt
       val a = new RGBA(color.r, color.g, color.b, 128 + ib)
-      //println(a)
       a.argb()
     }
     else
-      new RGBA(color.r, color.g, color.b, 128).argb()
+      new RGBA(color.r, color.g, color.b, (255 * distToPlayer).toInt).argb()
   }
 }

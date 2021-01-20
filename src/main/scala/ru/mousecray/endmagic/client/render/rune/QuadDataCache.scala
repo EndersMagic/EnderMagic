@@ -64,7 +64,7 @@ object QuadDataCache {
               (x - 1).toFloat / 16, y.toFloat / 16,
               x.toFloat / 16, (y + 1).toFloat / 16
             )
-          val temp2 = temp.reconstruct(
+          temp.reconstruct(
             v1_x = temp.v2_x + deepX,
             v4_x = temp.v3_x + deepX,
 
@@ -75,11 +75,7 @@ object QuadDataCache {
             v4_z = temp.v3_z + deepZ
           ).reverse
             .recalculateNormals
-
-
-          temp2
-              .updated(applyDiffuseLighting = false)
-            .reconstruct(v1_r = 0, v2_r = 0, v3_r = 0, v4_r = 0)
+            .updated(applyDiffuseLighting = false)
             .toBakedQuad
         case RightSideQuadData(x, y) =>
           val temp = richQuad
