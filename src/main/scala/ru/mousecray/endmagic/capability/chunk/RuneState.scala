@@ -99,28 +99,28 @@ class RuneState {
 
   def foreachRuneQuadsData(side: EnumFacing, f: (QuadData, EnumFacing) => Unit): Unit = {
     if (side == null) {
-      runes.foreach { case (sourceSide, rune) =>
-        rune.parts.keys.foreach { c =>
-          val recess = rune.recessQuadsMatrix(c.x, c.y)
-          if (recess.left != null)
-            f(recess.left, sourceSide)
-          if (recess.right != null)
-            f(recess.right, sourceSide)
-          if (recess.down != null)
-            f(recess.down, sourceSide)
-          if (recess.up != null)
-            f(recess.up, sourceSide)
-        }
-      }
     } else
       runes.get(side).foreach { rune =>
-        rune.parts.keys.foreach { c =>
-          val recess = rune.recessQuadsMatrix(c.x, c.y)
-          if (recess.bottom != null)
-            f(recess.bottom, side)
-        }
         rune.topQuadData.foreach(f(_, side))
       }
+  }
+
+  def foreachRuneQuadsDataRecess(f: (QuadData, EnumFacing) => Unit): Unit = {
+    runes.foreach { case (sourceSide, rune) =>
+      rune.parts.keys.foreach { c =>
+        val recess = rune.recessQuadsMatrix(c.x, c.y)
+        if (recess.left != null)
+          f(recess.left, sourceSide)
+        if (recess.right != null)
+          f(recess.right, sourceSide)
+        if (recess.down != null)
+          f(recess.down, sourceSide)
+        if (recess.up != null)
+          f(recess.up, sourceSide)
+        if (recess.bottom != null)
+          f(recess.bottom, sourceSide)
+      }
+    }
   }
 
 }

@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.multiplayer.ChunkProviderClient
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
-import net.minecraft.client.renderer.{GlStateManager, RenderHelper, Tessellator}
+import net.minecraft.client.renderer.{GlStateManager, Tessellator}
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.chunk.Chunk
@@ -48,9 +48,8 @@ class RuneTopLayerRenderer {
     //GlStateManager.alphaFunc(516, 0F)
     GlStateManager.enableBlend()
     GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA)
-    RenderHelper.enableStandardItemLighting()
-    //GlStateManager.disableLighting()
-    //OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xF000F0%65536f, 0xF000F0%65536f);
+    GlStateManager.disableLighting()
+    //OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0xF000F0 % 65536f, 0xF000F0 % 65536f)
 
     getLoadedChunks.forEachRemaining {
       c: Chunk =>
@@ -60,7 +59,7 @@ class RuneTopLayerRenderer {
           .foreach(renderRuneTopLayer)
     }
 
-    //GlStateManager.enableLighting()
+    GlStateManager.enableLighting()
     //GlStateManager.disableBlend()
     GlStateManager.popMatrix()
   }
@@ -86,16 +85,31 @@ class RuneTopLayerRenderer {
 
       val tessellator = Tessellator.getInstance
       val bufferbuilder = tessellator.getBuffer
-      bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
+      bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK)
 
       val edges: Map[EnumFacing, (Option[EnumFacing], BakedQuad)] = model match {
         case wrapper: RuneModelWrapper2 => wrapper.getAllEdges(blockState, 0).edges
         case _ => Map()
       }
 
+
+      runeState.foreachRuneQuadsDataRecess((data, sourceSide) => {
+        val quad = QuadDataCache.getQuadFor(data, edges(sourceSide)._2)
+        net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, quad, 0xffdddddd)
+      })
+
+      val renderTopOn = true
+
+      tessellator.draw()
+      if (renderTopOn)
+        bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM)
+
       EnumFacing.values().foreach { ef =>
+
+
         val rune = runeState.getRuneAtSide(ef)
         val headOption = edges.get(ef).map(_._2)
+
         rune.parts.foreach { case (coord: Vec2i, part: RunePart) =>
           val (x, y) = (coord.x, coord.y)
           val color = part.color()
@@ -106,19 +120,21 @@ class RuneTopLayerRenderer {
                 x.toFloat / 16, y.toFloat / 16,
                 (x + 1).toFloat / 16, (y + 1).toFloat / 16
               )
-              .updated(atlas = color.atlasSpriteRune())
+              .updated(atlas = color.atlasSpriteRune(), applyDiffuseLighting = false)
 
-            net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(
-              bufferbuilder,
-              partQuad
-                .translate(-ef.getDirectionVec.getX * 1f / 64, -ef.getDirectionVec.getY * 1f / 64, -ef.getDirectionVec.getZ * 1f / 64)
-                .toBakedQuad,
-              getColorForRune(rune, color, distToPlayer))
+            if (renderTopOn)
+              net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(
+                bufferbuilder,
+                partQuad
+                  //.translate(-ef.getDirectionVec.getX * 1f / 64, -ef.getDirectionVec.getY * 1f / 64, -ef.getDirectionVec.getZ * 1f / 64)
+                  .toBakedQuad,
+                getColorForRune(rune, color, distToPlayer))
           })
         }
       }
 
-      tessellator.draw()
+      if (renderTopOn)
+        tessellator.draw()
 
       GlStateManager.popMatrix()
 

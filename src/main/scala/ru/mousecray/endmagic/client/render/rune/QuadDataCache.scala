@@ -24,6 +24,21 @@ object QuadDataCache {
   val computeQuad: function.Function[(QuadData, BakedQuad), BakedQuad] = function2Java({
     case (data: QuadData, baseQuad: BakedQuad) =>
       val runeFace = baseQuad.getFace
+      /*
+            val newFormat = RenderUtils.getFormatWithLightMap(baseQuad.getFormat)
+
+            val builder = new UnpackedBakedQuad.Builder(newFormat)
+
+            baseQuad.pipe(builder)
+            builder.setQuadTint(baseQuad.getTintIndex)
+            builder.setQuadOrientation(baseQuad.getFace)
+            builder.setTexture(baseQuad.getSprite)
+            builder.setApplyDiffuseLighting(false)
+            val nquad = builder.build()
+            for (j <- 0 to 3)
+              nquad.getVertexData()(8 * j + 6) = 65536 * 15 * 16 + 15 * 16*/
+
+
       val richQuad = LazyUnpackedQuad(baseQuad)
       val directionVec = runeFace.getDirectionVec
       val deepX = -standard_pixel * directionVec.getX
