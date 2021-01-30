@@ -9,6 +9,8 @@ import ru.mousecray.endmagic.blocks.portal.BlockTopMark;
 import ru.mousecray.endmagic.blocks.portal.Portal;
 import ru.mousecray.endmagic.blocks.purpur_quartz.BlockPurpurQuartzBricks;
 import ru.mousecray.endmagic.blocks.purpur_quartz.BlockPurpurQuartzPillar;
+import ru.mousecray.endmagic.blocks.purpur_quartz.BlockPurpurQuartzSlab.BlockPurpurQuartzSlabDouble;
+import ru.mousecray.endmagic.blocks.purpur_quartz.BlockPurpurQuartzSlab.BlockPurpurQuartzSlabSingle;
 import ru.mousecray.endmagic.blocks.trees.EMLeaves;
 import ru.mousecray.endmagic.blocks.trees.EMLog;
 import ru.mousecray.endmagic.blocks.trees.EMPlanks;
@@ -17,6 +19,8 @@ import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
 
+    public static final BlockPurpurQuartzSlabDouble purpurSlabDouble = new BlockPurpurQuartzSlabDouble();
+    public static final BlockPurpurQuartzSlabSingle purpurSlabSingle = new BlockPurpurQuartzSlabSingle();
     public static final BlockPurpurQuartzBricks purpurQuartzBricks = new BlockPurpurQuartzBricks();
     public static final BlockPurpurQuartzPillar purpurQuartzPillar = new BlockPurpurQuartzPillar();
 

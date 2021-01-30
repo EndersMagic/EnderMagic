@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "half=bottom,variant=default": { "model": "endmagic:purpur_quartz/bottom_slab" },
+    "half=top,variant=default": { "model": "endmagic:purpur_quartz/upper_slab" },
+
+    "inventory":  { "model": "endmagic:purpur_quartz/bottom_slab" }
+  }
+}
