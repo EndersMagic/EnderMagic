@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "axis=y":  { "model": "endmagic:purpur_quartz/pillar" },
+    "axis=z":   { "model": "endmagic:purpur_quartz/pillar", "x": 90 },
+    "axis=x":   { "model": "endmagic:purpur_quartz/pillar", "x": 90, "y": 90 },
+    "inventory":  { "model": "endmagic:purpur_quartz/pillar" }
+  }
+}
+
