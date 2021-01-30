@@ -16,6 +16,7 @@ import ru.mousecray.endmagic.init.EMBlocks;
 
 import java.util.UUID;
 
+@Mod.EventBusSubscriber(modid = EM.ID)
 public class BlockPurpurQuartzBricks extends Block {
     public BlockPurpurQuartzBricks() {
         super(Material.ROCK);
@@ -26,4 +27,27 @@ public class BlockPurpurQuartzBricks extends Block {
 
     static UUID speedModifier = UUID.randomUUID();
 
+    @SubscribeEvent
+    public static void speedupPlayer(TickEvent.PlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.START && event.side.isServer()) {
+            EntityPlayer player = event.player;
+            IAttributeInstance entityAttribute = player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+            if (event.player.onGround) {
+                Block below = player.getEntityWorld().getBlockState(new BlockPos(player.posX, player.posY - (1 / 16D), player.posZ)).getBlock();
+
+                if (below == EMBlocks.purpurQuartzBricks) {
+                    if (entityAttribute.getModifier(speedModifier) == null)
+                        entityAttribute.applyModifier(new AttributeModifier(speedModifier, "speedModifier", 0.5, 2));
+                } else
+                    entityAttribute.removeModifier(speedModifier);
+
+            } else {
+                Block below1 = player.getEntityWorld().getBlockState(new BlockPos(player.posX, player.posY - 2, player.posZ)).getBlock();
+                Block below2 = player.getEntityWorld().getBlockState(new BlockPos(player.posX, player.posY - 1, player.posZ)).getBlock();
+                if (player.capabilities.isFlying || below1 != EMBlocks.purpurQuartzBricks && below2 != EMBlocks.purpurQuartzBricks)
+                    entityAttribute.removeModifier(speedModifier);
+            }
+        }
+
+    }
 }
