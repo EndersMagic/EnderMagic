@@ -12,4 +12,9 @@ public class Configuration {
     @Config.Comment("Radius for searching portal frame for ender eye flying target")
     @Config.RangeInt(min = 10)
     public static int enderPortalFrameSearchRadius = 10;
+
+
+    @Config.Comment("Modifier of walk speed on purple-quartz bricks")
+    @Config.RangeDouble(min = 1, max = 2)
+    public static double purpurQuartzBricksVelocityModifier = 1.15;
 }
