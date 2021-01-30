@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+	"parent": "block/block",
 	"textures": {
 		"2": "endmagic:blocks/purpur_quartz/pillar_bottom",
 		"end": "endmagic:blocks/purpur_quartz/pillar_top",
@@ -19,6 +20,5 @@
 				"down": {"uv": [0, 0, 16, 16], "texture": "#2"}
 			}
 		}
-	],
-	"display": {}
+	]
 }

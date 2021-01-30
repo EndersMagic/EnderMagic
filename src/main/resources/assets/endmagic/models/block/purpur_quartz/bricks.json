@@ -1,7 +1,9 @@
 {
 	"credit": "Made with Blockbench",
+	"parent": "block/block",
 	"textures": {
-		"all": "endmagic:blocks/purpur_quartz/bricks"
+		"all": "endmagic:blocks/purpur_quartz/bricks",
+		"particle": "endmagic:blocks/purpur_quartz/bricks"
 	},
 	"elements": [
 		{
