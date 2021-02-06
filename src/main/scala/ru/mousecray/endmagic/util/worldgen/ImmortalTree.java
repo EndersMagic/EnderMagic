@@ -1,6 +1,6 @@
 package ru.mousecray.endmagic.util.worldgen;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.Vector3d;
 import net.minecraft.init.Blocks;
@@ -17,18 +17,32 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import static net.minecraft.block.BlockLog.LOG_AXIS;
+
 public class ImmortalTree
 {
     public static void generate(World world, BlockPos pos, int length, double width, int countOfGroundRoots)
     {
         HashMap<BlockPos, IBlockState> toPlace = new HashMap<>();
         Random rand = world.rand;
-        double angl = 180d / countOfGroundRoots;
-        for (int i = 0; i < countOfGroundRoots; i++)
-        {
-            generateGroundRoot(world, toPlace, pos, length, width / (2 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angl * i), -1, Math.sin(angl * i)));
-        }
+        int r = (int) Math.ceil(width / 8);
 
+        double angl = 180d / countOfGroundRoots * 4;
+        int realCountOfRoots = (countOfGroundRoots + 4 - 1) / 4;
+
+        for (int i = 0; i < realCountOfRoots; i++)
+            generateGroundRoot(world, toPlace, pos, length, width / (1 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angl * i), 0, Math.sin(angl * i)));
+
+        for (int i = realCountOfRoots; i < realCountOfRoots * 2; i++)
+            generateGroundRoot(world, toPlace, pos, length, width / (1 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angl * i), 0, Math.sin(angl * i)));
+
+        for (int i = realCountOfRoots * 2; i < realCountOfRoots * 3; i++)
+            generateGroundRoot(world, toPlace, pos, length, width / (1 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angl * i), 0, Math.sin(angl * i)));
+
+        for (int i = realCountOfRoots * 3; i < realCountOfRoots * 4; i++)
+            generateGroundRoot(world, toPlace, pos, length, width / (1 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angl * i), 0, Math.sin(angl * i)));
+
+        /*
         int r = (int) width;
         for (int y = 0; y < length; y++)
         {
@@ -46,15 +60,13 @@ public class ImmortalTree
                             generateRelief(world, toPlace, pos2, VectorUtil.of(x / (r * 10.0), -1, z / (r * 10.0)), length * 2, width / (3 + rand.nextInt(2)));
                             if (rand.nextInt(10) > 6)
                             {
-                                generateBranchRecursive(toPlace, rand, pos2, length, width / 2, VectorUtil.of(x / (r * 2.0), 1, z / (r * 2.0)), true);
+                                //generateBranchRecursive(toPlace, rand, pos2, length, width / 2, VectorUtil.of(x / (r * 2.0), 1, z / (r * 2.0)), true);
                             }
                         }
                     }
                 }
             }
         }
-        /*
-        generateBranchRecursive(toPlace, world.rand, pos.add(-10, 0, 1), length, width * 1.3, VectorUtil.of(0, 1, 0));
 
         generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(15 / 100f, -1, 15 / 100f), true);
         generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(-15 / 100f, -1, 15 / 100f), true);
@@ -66,7 +78,7 @@ public class ImmortalTree
             TaskManager.blocksToPlace.add(new Truple<>(world, current.getKey(), current.getValue()));
     }
 
-    public static void generateBranchRecursive(Map<BlockPos, IBlockState> toPlace, Random rand, BlockPos pos, int length, double width, Vector3d dir)
+    private static void generateBranchRecursive(Map<BlockPos, IBlockState> toPlace, Random rand, BlockPos pos, int length, double width, Vector3d dir)
     {
         int countOfBranches = 0;
         for (double i = 0; i < length; ++i)
@@ -81,10 +93,11 @@ public class ImmortalTree
                 for (int z = 0; z < Math.ceil(width); z++)
                 {
                     Vector3d position = VectorUtil.of(x, 0, z);
-                    VectorUtil.rotate(position, dir);
+                    VectorUtil.rotateFromDirs(position, dir);
                     BlockPos pos2 = newPos.add(position.x, position.y, position.z);
-                    if (toPlace.get(pos2) == null || toPlace.get(pos2).getBlock() == Blocks.LEAVES)
-                        toPlace.put(pos2, Blocks.LOG.getDefaultState());
+                    IBlockState state = toPlace.get(pos2);
+                    if (state == null || state.getBlock() == Blocks.LEAVES)
+                        toPlace.put(pos2, getLogWithDir(dir));
                 }
             }
 
@@ -132,7 +145,7 @@ public class ImmortalTree
             {
                 for (int y = 0; y < 20; ++y)
                 {
-                    toPlace.put(newPos.add(0, -y, 0), Blocks.LOG.getDefaultState());
+                    toPlace.put(newPos.add(0, -y, 0),getLogWithDir(dir));
                 }
 
                 for (int x = 0; x < 3; x++)
@@ -149,7 +162,7 @@ public class ImmortalTree
         }
     }
 
-    public static void generateBranchRecursive(Map<BlockPos, IBlockState> toPlace, Random rand, BlockPos startPosition, int length, double width, Vector3d dir, boolean isGroundBranch)
+    private static void generateBranchRecursive(Map<BlockPos, IBlockState> toPlace, Random rand, BlockPos startPosition, int length, double width, Vector3d dir, boolean isGroundBranch)
     {
         int countOfBranches = 0;
         AdvancedBlockPos pos = new AdvancedBlockPos(startPosition);
@@ -169,7 +182,7 @@ public class ImmortalTree
                     VectorUtil.rotate(position, dir);
                     BlockPos pos2 = pos.add(position.x, position.y, position.z);
                     if (toPlace.get(pos2) == null || toPlace.get(pos2).getBlock() == Blocks.LEAVES)
-                        toPlace.put(pos2, Blocks.LOG.getDefaultState());
+                        toPlace.put(pos2, getLogWithDir(dir));
                 }
             }
 
@@ -205,7 +218,7 @@ public class ImmortalTree
         }
     }
 
-    public static void generateRootRecursive(World world, Map<BlockPos, IBlockState> toPlace, BlockPos pos, int length, double width, Vector3d dir, boolean isGrandRoot)
+    private static void generateRootRecursive(World world, Map<BlockPos, IBlockState> toPlace, BlockPos pos, int length, double width, Vector3d dir, boolean isGrandRoot)
     {
         Random rand = world.rand;
         int countOfRoots = 0;
@@ -224,9 +237,9 @@ public class ImmortalTree
                 {
 
                     Vector3d position = VectorUtil.of(x, 0, z);
-                    VectorUtil.rotate(position, dir);
+                    VectorUtil.rotateFromDirs(position, dir);
                     BlockPos pos2 = newPos.add(position.x - Math.ceil(width) / 2, position.y - Math.ceil(width) / 2, position.z - Math.ceil(width) / 2);
-                    toPlace.computeIfAbsent(pos2, k -> Blocks.LOG.getDefaultState());
+                    toPlace.computeIfAbsent(pos2, k -> getLogWithDir(dir));
                 }
             }
             if (!(rand.nextInt(80) > 75d - 5d * (1d - i / length)))
@@ -273,9 +286,9 @@ public class ImmortalTree
                         for (int z = 0; z < Math.ceil(width); z++)
                         {
                             Vector3d position = VectorUtil.of(x, 0, z);
-                            VectorUtil.rotate(position, dir);
+                            VectorUtil.rotateFromDirs(position, dir);
                             BlockPos pos2 = newPos.add(position.x - Math.ceil(width) / 2, position.y - Math.ceil(width) / 2, position.z - Math.ceil(width) / 2);
-                            toPlace.computeIfAbsent(pos2, k -> Blocks.LOG.getDefaultState());
+                            toPlace.computeIfAbsent(pos2, k -> getLogWithDir(dir));
                         }
                     }
                 }
@@ -298,7 +311,7 @@ public class ImmortalTree
         }
     }
 
-    public static void generateRelief(World world, Map<BlockPos, IBlockState> toPlace, BlockPos startPos,  Vector3d dir, int maxLength, double width)
+    private static void generateRelief(World world, Map<BlockPos, IBlockState> toPlace, BlockPos startPos,  Vector3d dir, int maxLength, double width)
     {
         Random rand = world.rand;
         AdvancedBlockPos pos = new AdvancedBlockPos(startPos);
@@ -306,7 +319,7 @@ public class ImmortalTree
         {
             if (!world.isAirBlock(pos))
             {
-                generateGroundRoot(world, toPlace, pos, maxLength - y, width, dir);
+                generateGroundRoot(world,toPlace, pos, maxLength - y, width, dir);
                 return;
             }
             pos.move(dir.x * (1 + Math.pow(y, 1.7) / (double) maxLength), dir.y, dir.z * (1 + Math.pow(y, 1.7) / (double) maxLength));
@@ -318,49 +331,37 @@ public class ImmortalTree
                 {
                     if(x * x + z * z - width * width < 1.5 + rand.nextInt(2))
                     {
-                        toPlace.put(pos.add(x, 0, z), Blocks.LOG.getDefaultState());
+                        toPlace.put(pos.add(x, 0, z), getLogWithDir(dir));
                     }
                 }
             }
         }
     }
 
-    public static void generateGroundRoot(World world, Map<BlockPos, IBlockState> toPlace, BlockPos posIn, int maxLength, double width, Vector3d dir)
+    private static void generateGroundRoot(World world, Map<BlockPos, IBlockState> toPlace, BlockPos posIn, int maxLength, double width, Vector3d dir)
     {
+        Vector3d dirDown = VectorUtil.of(0, -1, 0);
         Random rand = world.rand;
         maxLength = maxLength * 2;
         AdvancedBlockPos poss = new AdvancedBlockPos(posIn);
-
         for (double i = 0; i < maxLength; ++i)
         {
+            dir.y = 0;
             width /= 1.01 + Math.sqrt(i) / 1000;
-            poss.move(dir.x, 0, dir.z);
+            poss.move(dir.x, dir.y, dir.z);
             int r = (int) Math.ceil(width / 2);
-
-            for (int x = -r; x < r; x++)
-            {
-                for (int y = 0; y < r * 2; y++)
-                {
-                    for (int z = -r; z < r; z++)
-                    {
-                        toPlace.computeIfAbsent(poss.add(x, y, z), k -> Blocks.LOG.getDefaultState());
-                    }
-                }
-            }
 
             /*
              * Если висим над воздухом, то идем вниз, ползая по стенам, пока не будет камень
              */
             int downHeight = 0;
-            double oldDir = dir.y;
-            while (i < maxLength && world.isAirBlock(poss.down()))
+            while (i < maxLength && needGoDown(world.getBlockState(poss.down())))
             {
-                dir.y = -1;
+                i++;
                 width /= 1.01 + Math.sqrt(i) / 1000;
                 downHeight++;
-                //dir.y = -downHeight / (double) maxLength;
                 poss.move(EnumFacing.DOWN);
-                i++;
+
                 ArrayList<BlockPos> poses = new ArrayList<>();
                 poses.add(poss.west());
                 poses.add(poss.east());
@@ -370,45 +371,85 @@ public class ImmortalTree
                 poses.add(poss.add(1, 0, -1));
                 poses.add(poss.add(-1, 0, 1));
                 poses.add(poss.add(-1, 0, -1));
-
+                int oldSize = poses.size();
                 poses.removeIf(pos -> !world.isAirBlock(pos));
 
-                if(poses.size() != 8 && poses.size() > 0)
+                if(poses.size() != oldSize && poses.size() > 0)
                 {
                     int random = Math.abs(rand.nextInt(poses.size()));
                     poss.setPos(poses.get(random));
                 }
-
-                for (int x = -r; x < r; x++)
+                r = (int) Math.ceil(width / 2);
+                for (int x = -r; x <= r; x++)
                 {
-                    for (int y = 0; y < 2 * r; y++)
+                    for (int z = -r; z <= r; z++)
                     {
-                        for (int z = -r; z < r; z++)
+                        if (x * x + z * z - r * r < 0.4)
                         {
-                            toPlace.computeIfAbsent(poss.add(x, y, z), k -> Blocks.LOG.getDefaultState());
+                            Vector3d position = VectorUtil.of(x, 0, z);
+                            VectorUtil.rotateFromDirs(position, dirDown);
+                            BlockPos pos2 = poss.add(position.x, position.y, position.z);
+                            toPlace.put(pos2, getLogWithDir(dirDown));
                         }
                     }
                 }
                 if(downHeight > 15)
                     return;
             }
-            dir.y = oldDir;
+
+            for (int x = -r; x <= r; x++)
+            {
+                for (int z = -r; z <= r; z++)
+                {
+                    if (x * x + z * z - r * r < 0.4)
+                    {
+                        Vector3d position = VectorUtil.of(x, 0, z);
+                        VectorUtil.rotateFromDirs(position, dir);
+                        toPlace.put(poss.add(position.x, position.y, position.z), getLogWithDir(dir));
+                    }
+                }
+            }
 
             if(world.rand.nextInt(maxLength) > maxLength * 0.8)
             {
-                dir = VectorUtil.of(dir.x + rand.nextDouble() - rand.nextDouble(), dir.y + rand.nextDouble() - rand.nextDouble(), dir.z + rand.nextDouble() - rand.nextDouble());
-                /*
-                dir.x = Math.max(Math.min(dir.x, 1), -1);
-                dir.y = Math.max(Math.min(dir.y, 1), -1);
-                dir.z = Math.max(Math.min(dir.z, 1), -1);
+                dir = VectorUtil.of(dir.x + rand.nextDouble() - rand.nextDouble(), 0, dir.z + rand.nextDouble() - rand.nextDouble());
 
-                 */
+                dir.x = inNormalRange(dir.x);
+                dir.z = inNormalRange(dir.z);
             }
         }
     }
 
-    private double inRange(double val, double min, double max)
+    private static boolean needGoDown(IBlockState state)
     {
-        return  Math.max(Math.min(val, max), min);
+        return state.getBlock() == Blocks.LOG || state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.LEAVES;
+    }
+
+    private static IBlockState getLogWithDir(Vector3d dir)
+    {
+        double x = Math.abs(dir.x), y = Math.abs(dir.y), z = Math.abs(dir.z);
+        if(x > y)
+        {
+            if (x > z)
+                return Blocks.LOG.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.X);
+            else
+                return Blocks.LOG.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.Z);
+        }
+        else if(y > x)
+        {
+            if(y > z)
+                return Blocks.LOG.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.Y);
+            else
+                return Blocks.LOG.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.Z);
+        }
+        else
+        {
+            return Blocks.LOG.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.Z);
+        }
+    }
+
+    private static double inNormalRange(double val)
+    {
+        return Math.max(Math.min(val, 1), -1);
     }
 }

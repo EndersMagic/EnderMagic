@@ -1,10 +1,46 @@
 package ru.mousecray.endmagic.util;
 
 import net.minecraft.client.renderer.Vector3d;
-import net.minecraft.util.math.MathHelper;
 
 public class VectorUtil
 {
+
+    public static void rotateFromDirs(Vector3d vec, Vector3d angs)
+    {
+        if(angs.x == 0)
+            angs.x = 0.001;
+        if(angs.y == 0)
+            angs.y = 0.001;
+        if(angs.z == 0)
+            angs.z = 0.001;
+
+        VectorUtil.rotateX(vec, findAngleIfCisHypotenuse(angs.x, angs.z));
+        VectorUtil.rotateY(vec, findAngleIfCisHypotenuse(angs.x, angs.y));
+    }
+
+    //returns angle between a and b
+    private static double findAngle(double a, double b, double c)
+    {
+        return Math.acos((a * a + b * b - c * c) / (2 * a * b));
+    }
+
+
+    //returns angle between a and b if c is hypotenuse
+    private static double findAngleIfCisHypotenuse(double a, double b)
+    {
+        double c = Math.sqrt(Math.abs(a * a + b * b));
+
+        return findAngle(a, b, c);
+    }
+
+    //returns angle between a and b if c is hypotenuse
+    private static double findAngleIfCisNotHypotenuse(double a, double b)
+    {
+        double c = Math.sqrt(Math.abs(a * a - b * b));
+
+        return findAngle(a, b, c);
+    }
+
     public static Vector3d rotate(Vector3d vec, Vector3d angs) {
         VectorUtil.rotateX(vec, angs.x);
         VectorUtil.rotateY(vec, angs.y);
@@ -52,9 +88,9 @@ public class VectorUtil
     public static Vector3d of(double x, double y, double z)
     {
         Vector3d vec = new Vector3d();
-        vec.x = x + 0;
-        vec.y = y + 0;
-        vec.z = z + 0;
+        vec.x = x + 0.000001;
+        vec.y = y + 0.000001;
+        vec.z = z + 0.000001;
         return vec;
     }
 }
