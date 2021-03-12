@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.util.ResourcesUtils;
 
 import java.awt.*;
 
@@ -43,5 +44,9 @@ public enum RuneColor {
     @Override
     public String toString() {
         return name() + "(" + r + ", " + g + ", " + b + ")";
+    }
+
+    public ResourceLocation getBackgroundTexture(double count) {
+        return ResourcesUtils.texture("gui/indication/" + name() + "/" + ((int) count * 10) + ".png");
     }
 }

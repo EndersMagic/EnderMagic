@@ -24,16 +24,10 @@ import scala.collection.JavaConverters._
 import scala.language.implicitConversions
 
 class RuneTopLayerRenderer {
-  private val chunkMapping = {
-    val field = classOf[ChunkProviderClient].getDeclaredField("chunkMapping")
-    field.setAccessible(true)
-    field
-  }
-
   private val mc: Minecraft = Minecraft.getMinecraft
 
   private def getLoadedChunks =
-    chunkMapping.get(mc.world.getChunkProvider).asInstanceOf[Long2ObjectMap[Chunk]].values().iterator()
+    mc.world.getChunkProvider.chunkMapping.values().iterator()
 
   @SubscribeEvent
   def onWorldRender(e: RenderWorldLastEvent): Unit = {

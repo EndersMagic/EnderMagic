@@ -2,7 +2,9 @@ package ru.mousecray.endmagic.capability.player;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.rune.RuneColor;
 
 import java.util.EnumMap;
