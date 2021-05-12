@@ -57,7 +57,6 @@ public class BlockPurpurQuartzBricks extends Block {
                         player.motionX *= sprintJumpModifier;
                         player.motionZ *= sprintJumpModifier;
                     }
-                    System.out.println("result speed " + Math.sqrt(player.motionX * player.motionX + player.motionZ * player.motionZ));
                 }
             }
     }
