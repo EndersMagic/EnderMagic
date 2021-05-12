@@ -18,6 +18,7 @@ import ru.mousecray.endmagic.blocks.trees.EMSapling;
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
+    public static final BlockPolishedObsidian polishedObsidian = new BlockPolishedObsidian();
 
     public static final BlockPurpurQuartzSlabDouble purpurSlabDouble = new BlockPurpurQuartzSlabDouble();
     public static final BlockPurpurQuartzSlabSingle purpurSlabSingle = new BlockPurpurQuartzSlabSingle();

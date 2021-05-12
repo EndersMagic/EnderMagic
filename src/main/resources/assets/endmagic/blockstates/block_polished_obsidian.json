@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "normal": { "model": "endmagic:block_polished_obsidian" },
+        "inventory": { "model": "endmagic:block_polished_obsidian" }
+    }
+}
