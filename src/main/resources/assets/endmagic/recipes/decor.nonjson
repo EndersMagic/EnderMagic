@@ -1,0 +1,30 @@
+id_map{
+
+    IQI| minecraft:quartz_block:2
+    Q| minecraft:quartz_block
+    _Q_| minecraft:stone_slab:7
+    P| minecraft:purpur_block
+    _P_| minecraft:purpur_slab
+    IPI| minecraft:purpur_pillar
+    q| minecraft:quartz
+    p| minecraft:chorus_fruit_popped
+    pqB| endmagic:block_purpur_quartz_bricks
+    _pqB_| endmagic:block_purpur_quartz_slab_single
+
+}
+decor {
+    6x endmagic:block_purpur_quartz_pillar| shaped(q,IPI,q;
+                                                   p,IQI,p;
+                                                   q,IPI,q)
+
+    4x endmagic:block_purpur_quartz_bricks| shaped(P,Q;
+                                                  Q,P)
+
+    endmagic:block_purpur_quartz_bricks| shaped(_pqB_;
+                                                _pqB_)
+
+    6x endmagic:block_purpur_quartz_slab_single| shaped(pqB,pqB,pqB)
+
+    4x endmagic:block_purpur_quartz_slab_single| shaped(_P_,_Q_;
+                                                        _Q_,_P_)
+}
