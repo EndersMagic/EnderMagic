@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.blocks.purpur_quartz;
+package ru.mousecray.endmagic.blocks.decorative.purpur.quartz;
 
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.SoundType;

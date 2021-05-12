@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.blocks;
+package ru.mousecray.endmagic.blocks.decorative.polished.obsidian;
 
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.SoundType;

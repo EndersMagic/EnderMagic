@@ -10,6 +10,9 @@ id_map{
     p| minecraft:chorus_fruit_popped
     pqB| endmagic:block_purpur_quartz_bricks
     _pqB_| endmagic:block_purpur_quartz_slab_single
+    O| minecraft:obsidian
+    U| endmagic:block_polished_obsidian
+    E| minecraft:end_stone
 
 }
 decor {
@@ -27,4 +30,10 @@ decor {
 
     4x endmagic:block_purpur_quartz_slab_single| shaped(_P_,_Q_;
                                                         _Q_,_P_)
+
+    4x endmagic:block_polished_obsidian| shaped(O,O;
+                                                O,O)
+
+    4x endmagic:block_polished_obsidian_endstone_bricks| shaped(U,E;
+                                                                E,U)
 }

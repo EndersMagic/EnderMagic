@@ -1,16 +1,18 @@
 package ru.mousecray.endmagic.init;
 
 import ru.mousecray.endmagic.blocks.*;
+import ru.mousecray.endmagic.blocks.decorative.polished.obsidian.BlockPolishedObsidian;
+import ru.mousecray.endmagic.blocks.decorative.polished.obsidian.BlockPolishedObsidianEndstoneBricks;
+import ru.mousecray.endmagic.blocks.decorative.purpur.quartz.BlockPurpurQuartzBricks;
+import ru.mousecray.endmagic.blocks.decorative.purpur.quartz.BlockPurpurQuartzPillar;
+import ru.mousecray.endmagic.blocks.decorative.purpur.quartz.BlockPurpurQuartzSlab.BlockPurpurQuartzSlabDouble;
+import ru.mousecray.endmagic.blocks.decorative.purpur.quartz.BlockPurpurQuartzSlab.BlockPurpurQuartzSlabSingle;
 import ru.mousecray.endmagic.blocks.dimensional.EnderGroundGrass;
 import ru.mousecray.endmagic.blocks.dimensional.EnderGroundStone;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterDarkPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterStaticPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockTopMark;
 import ru.mousecray.endmagic.blocks.portal.Portal;
-import ru.mousecray.endmagic.blocks.purpur_quartz.BlockPurpurQuartzBricks;
-import ru.mousecray.endmagic.blocks.purpur_quartz.BlockPurpurQuartzPillar;
-import ru.mousecray.endmagic.blocks.purpur_quartz.BlockPurpurQuartzSlab.BlockPurpurQuartzSlabDouble;
-import ru.mousecray.endmagic.blocks.purpur_quartz.BlockPurpurQuartzSlab.BlockPurpurQuartzSlabSingle;
 import ru.mousecray.endmagic.blocks.trees.EMLeaves;
 import ru.mousecray.endmagic.blocks.trees.EMLog;
 import ru.mousecray.endmagic.blocks.trees.EMPlanks;
@@ -19,6 +21,7 @@ import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
     public static final BlockPolishedObsidian polishedObsidian = new BlockPolishedObsidian();
+    public static final BlockPolishedObsidianEndstoneBricks polishedObsidianEndstoneBricks = new BlockPolishedObsidianEndstoneBricks();
 
     public static final BlockPurpurQuartzSlabDouble purpurSlabDouble = new BlockPurpurQuartzSlabDouble();
     public static final BlockPurpurQuartzSlabSingle purpurSlabSingle = new BlockPurpurQuartzSlabSingle();

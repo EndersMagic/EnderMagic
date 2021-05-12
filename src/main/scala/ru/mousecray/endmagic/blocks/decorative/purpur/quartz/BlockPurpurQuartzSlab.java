@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.blocks.purpur_quartz;
+package ru.mousecray.endmagic.blocks.decorative.purpur.quartz;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPurpurSlab;
@@ -9,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSlab;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.EM;

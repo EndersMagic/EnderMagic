@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "normal": { "model": "endmagic:block_polished_obsidian_endstone_bricks" },
+    "inventory": { "model": "endmagic:block_polished_obsidian_endstone_bricks" }
+  }
+}
