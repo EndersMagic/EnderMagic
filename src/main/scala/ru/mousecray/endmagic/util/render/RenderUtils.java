@@ -1,9 +1,15 @@
 package ru.mousecray.endmagic.util.render;
 
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.VanillaLoaderLens;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fml.client.FMLClientHandler;
+
+import java.util.Optional;
 
 public final class RenderUtils {
 
@@ -26,5 +32,14 @@ public final class RenderUtils {
             return result;
         }
         return format;
+    }
+
+    public static IBakedModel loadJsonModel(ResourceLocation modelLocation) {
+        try {
+            return VanillaLoaderLens.get().loadModel(modelLocation)
+                    .bake(___ -> Optional.empty(), DefaultVertexFormats.BLOCK, ModelLoader.defaultTextureGetter());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
