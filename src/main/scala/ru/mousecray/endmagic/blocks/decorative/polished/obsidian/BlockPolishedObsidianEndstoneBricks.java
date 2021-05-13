@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.blocks.decorative.polished.obsidian;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
 import ru.mousecray.endmagic.EM;
@@ -13,7 +14,7 @@ public class BlockPolishedObsidianEndstoneBricks extends BlockPolishedObsidian i
 
     @Override
     public void registerModels(IModelRegistration modelRegistration) {
-        modelRegistration.addBakedModelOverride(getRegistryName(), SeparatedRenderLayersBakedModel.apply(ImmutableMap.of(
+        modelRegistration.addBakedModelOverride(new ModelResourceLocation(getRegistryName(), "normal"), SeparatedRenderLayersBakedModel.apply(ImmutableMap.of(
                 BlockRenderLayer.SOLID, new ResourceLocation(EM.ID, "models/block/block_polished_obsidian_endstone_bricks_solid"),
                 BlockRenderLayer.TRANSLUCENT, new ResourceLocation(EM.ID, "models/block/block_polished_obsidian_endstone_bricks_translucent")
         ), BlockRenderLayer.SOLID));
