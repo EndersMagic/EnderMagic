@@ -39,9 +39,8 @@ import static ru.mousecray.endmagic.blocks.decorative.polished.obsidian.RenderSi
 import static ru.mousecray.endmagic.blocks.decorative.polished.obsidian.RenderSideParts2.HorizontalFaceVisibility.invisible_top;
 import static ru.mousecray.endmagic.blocks.decorative.polished.obsidian.RenderSideParts2.PROPERTY;
 
-public abstract class BlockPolishedObsidianEndstoneSlab extends BlockPurpurSlab implements ITechnicalBlock, IPolishedObsidian {
-
-    public BlockPolishedObsidianEndstoneSlab() {
+public abstract class BlockPolishedObsidianSlab extends BlockPurpurSlab implements ITechnicalBlock, IPolishedObsidian {
+    public BlockPolishedObsidianSlab() {
         super();
         try {
             EnumHelper.setFailsafeFieldValue(Block.class.getDeclaredField("blockMaterial"), this, Material.ICE);
@@ -54,23 +53,19 @@ public abstract class BlockPolishedObsidianEndstoneSlab extends BlockPurpurSlab 
         setLightOpacity(20);
     }
 
-    public static class BlockPolishedObsidianEndstoneSlabDouble extends BlockPolishedObsidianEndstoneSlab {
+    public static class BlockPolishedObsidianSlabDouble extends BlockPolishedObsidianSlab {
         public boolean isDouble() {
             return true;
         }
 
         @Override
-        public void registerModels(IModelRegistration modelRegistration) {
-            modelRegistration.addBakedModelOverride(getRegistryName(),
-                    __ -> new SeparatedRenderLayersBakedModel(ImmutableMap.of(
-                            BlockRenderLayer.SOLID, RenderUtils.loadEMJsonModel("models/block/polished_obsidian/bricks/solid"),
-                            BlockRenderLayer.TRANSLUCENT, new TranslucentPartsModel(RenderUtils.loadEMJsonModel("models/block/polished_obsidian/bricks/translucent"))
-                    ), BlockRenderLayer.SOLID));
+        public RenderSideParts2 getObsidianParts(IBlockState state) {
+            return RenderSideParts2.apply(VerticalFaceVisibility.visible_all, VerticalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all);
         }
 
         @Override
-        public RenderSideParts2 getObsidianParts(IBlockState state) {
-            return RenderSideParts2.apply(VerticalFaceVisibility.visible_all, VerticalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all);
+        public void registerModels(IModelRegistration modelRegistration) {
+            modelRegistration.addBakedModelOverride(getRegistryName(), TranslucentPartsModel::new);
         }
 
         @Override
@@ -94,7 +89,7 @@ public abstract class BlockPolishedObsidianEndstoneSlab extends BlockPurpurSlab 
         }
     }
 
-    public static class BlockPolishedObsidianEndstoneSlabSingle extends BlockPolishedObsidianEndstoneSlab {
+    public static class BlockPolishedObsidianSlabSingle extends BlockPolishedObsidianSlab {
         public boolean isDouble() {
             return false;
         }
@@ -107,22 +102,16 @@ public abstract class BlockPolishedObsidianEndstoneSlab extends BlockPurpurSlab 
 
         @Override
         public ItemBlock getCustomItemBlock(Block block) {
-            return new ItemSlab(EMBlocks.polishedObsidianEndstoneSlabSingle, EMBlocks.polishedObsidianEndstoneSlabSingle, EMBlocks.polishedObsidianEndstoneSlabDouble);
+            return new ItemSlab(EMBlocks.polishedObsidianSlabSingle, EMBlocks.polishedObsidianSlabSingle, EMBlocks.polishedObsidianSlabDouble);
         }
 
         @Override
         public void registerModels(IModelRegistration modelRegistration) {
             modelRegistration.addBakedModelOverride(new ModelResourceLocation(getRegistryName(), "half=bottom,render_side_parts=default,variant=default"),
-                    __ -> new SeparatedRenderLayersBakedModel(ImmutableMap.of(
-                            BlockRenderLayer.SOLID, RenderUtils.loadEMJsonModel("models/block/polished_obsidian/bricks/slab/bottom_solid"),
-                            BlockRenderLayer.TRANSLUCENT, new TranslucentPartsModel(RenderUtils.loadEMJsonModel("models/block/polished_obsidian/bricks/slab/bottom_translucent"))
-                    ), BlockRenderLayer.SOLID));
+                    TranslucentPartsModel::new);
 
             modelRegistration.addBakedModelOverride(new ModelResourceLocation(getRegistryName(), "half=top,render_side_parts=default,variant=default"),
-                    __ -> new SeparatedRenderLayersBakedModel(ImmutableMap.of(
-                            BlockRenderLayer.SOLID, RenderUtils.loadEMJsonModel("models/block/polished_obsidian/bricks/slab/top_solid"),
-                            BlockRenderLayer.TRANSLUCENT, new TranslucentPartsModel(RenderUtils.loadEMJsonModel("models/block/polished_obsidian/bricks/slab/top_translucent"))
-                    ), BlockRenderLayer.SOLID));
+                    TranslucentPartsModel::new);
         }
 
         @Override
@@ -188,7 +177,7 @@ public abstract class BlockPolishedObsidianEndstoneSlab extends BlockPurpurSlab 
 
     @Override
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-        return layer == BlockRenderLayer.TRANSLUCENT || layer == BlockRenderLayer.SOLID;
+        return layer == BlockRenderLayer.TRANSLUCENT;
     }
 
     @Override
@@ -204,12 +193,12 @@ public abstract class BlockPolishedObsidianEndstoneSlab extends BlockPurpurSlab 
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Item.getItemFromBlock(EMBlocks.polishedObsidianEndstoneSlabSingle);
+        return Item.getItemFromBlock(EMBlocks.polishedObsidianSlabSingle);
     }
 
     @Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-        return new ItemStack(EMBlocks.polishedObsidianEndstoneSlabSingle);
+        return new ItemStack(EMBlocks.polishedObsidianSlabSingle);
     }
 
     @Override

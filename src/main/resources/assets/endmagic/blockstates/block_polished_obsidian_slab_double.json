@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "variant=default": { "model": "endmagic:polished_obsidian/full" },
+    "render_side_parts=default,variant=default": { "model": "endmagic:polished_obsidian/full" },
+    "inventory": { "model": "endmagic:polished_obsidian/full" }
+  }
+}

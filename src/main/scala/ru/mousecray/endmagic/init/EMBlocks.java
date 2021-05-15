@@ -5,6 +5,8 @@ import ru.mousecray.endmagic.blocks.decorative.polished.obsidian.BlockPolishedOb
 import ru.mousecray.endmagic.blocks.decorative.polished.obsidian.BlockPolishedObsidianEndstoneBricks;
 import ru.mousecray.endmagic.blocks.decorative.polished.obsidian.BlockPolishedObsidianEndstoneSlab.BlockPolishedObsidianEndstoneSlabDouble;
 import ru.mousecray.endmagic.blocks.decorative.polished.obsidian.BlockPolishedObsidianEndstoneSlab.BlockPolishedObsidianEndstoneSlabSingle;
+import ru.mousecray.endmagic.blocks.decorative.polished.obsidian.BlockPolishedObsidianSlab.BlockPolishedObsidianSlabDouble;
+import ru.mousecray.endmagic.blocks.decorative.polished.obsidian.BlockPolishedObsidianSlab.BlockPolishedObsidianSlabSingle;
 import ru.mousecray.endmagic.blocks.decorative.purpur.quartz.BlockPurpurQuartzBricks;
 import ru.mousecray.endmagic.blocks.decorative.purpur.quartz.BlockPurpurQuartzPillar;
 import ru.mousecray.endmagic.blocks.decorative.purpur.quartz.BlockPurpurQuartzSlab.BlockPurpurQuartzSlabDouble;
@@ -23,6 +25,8 @@ import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
     public static final BlockPolishedObsidian polishedObsidian = new BlockPolishedObsidian();
+    public static final BlockPolishedObsidianSlabDouble polishedObsidianSlabDouble = new BlockPolishedObsidianSlabDouble();
+    public static final BlockPolishedObsidianSlabSingle polishedObsidianSlabSingle = new BlockPolishedObsidianSlabSingle();
     public static final BlockPolishedObsidianEndstoneBricks polishedObsidianEndstoneBricks = new BlockPolishedObsidianEndstoneBricks();
     public static final BlockPolishedObsidianEndstoneSlabDouble polishedObsidianEndstoneSlabDouble = new BlockPolishedObsidianEndstoneSlabDouble();
     public static final BlockPolishedObsidianEndstoneSlabSingle polishedObsidianEndstoneSlabSingle = new BlockPolishedObsidianEndstoneSlabSingle();
