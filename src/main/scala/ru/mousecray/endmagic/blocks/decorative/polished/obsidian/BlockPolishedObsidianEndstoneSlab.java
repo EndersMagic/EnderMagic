@@ -11,6 +11,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import ru.mousecray.endmagic.blocks.base.TranslucentSlab;
+import ru.mousecray.endmagic.blocks.decorative.polished.obsidian.RenderSidePartsHolder.RenderSideParts;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.SeparatedRenderLayersBakedModel;
 import ru.mousecray.endmagic.client.render.model.baked.TranslucentPartsModel;
@@ -44,8 +45,8 @@ public abstract class BlockPolishedObsidianEndstoneSlab extends TranslucentSlab 
         }
 
         @Override
-        public RenderSideParts2 getObsidianParts(IBlockState state) {
-            return RenderSideParts2.allSidesIsFull;
+        public RenderSideParts getObsidianParts(IBlockState state) {
+            return RenderSideParts.allSidesIsFull();
         }
 
         @Override
@@ -75,7 +76,7 @@ public abstract class BlockPolishedObsidianEndstoneSlab extends TranslucentSlab 
         }
 
         @Override
-        public RenderSideParts2 getObsidianParts(IBlockState state) {
+        public RenderSideParts getObsidianParts(IBlockState state) {
             return getObsidianSlabParts(state);
         }
 
@@ -97,6 +98,6 @@ public abstract class BlockPolishedObsidianEndstoneSlab extends TranslucentSlab 
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return isDouble() ? new BlockStateContainer(this, VARIANT, RenderSideParts2.PROPERTY) : new BlockStateContainer(this, HALF, VARIANT, RenderSideParts2.PROPERTY);
+        return isDouble() ? new BlockStateContainer(this, VARIANT, RenderSideParts.PROPERTY) : new BlockStateContainer(this, HALF, VARIANT, RenderSideParts.PROPERTY);
     }
 }

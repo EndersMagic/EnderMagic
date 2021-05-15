@@ -8,12 +8,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import ru.mousecray.endmagic.blocks.base.TranslucentBlock;
+import ru.mousecray.endmagic.blocks.decorative.polished.obsidian.RenderSidePartsHolder.RenderSideParts;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TranslucentPartsModel;
 import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
-import static ru.mousecray.endmagic.blocks.decorative.polished.obsidian.RenderSideParts2.HorizontalFaceVisibility.visible_all;
-import static ru.mousecray.endmagic.blocks.decorative.polished.obsidian.RenderSideParts2.PROPERTY;
 import static ru.mousecray.endmagic.blocks.decorative.polished.obsidian.Utils.getActualObsidianFullState;
 
 public class BlockPolishedObsidian extends TranslucentBlock implements IPolishedObsidian, IExtendedProperties {
@@ -33,7 +32,7 @@ public class BlockPolishedObsidian extends TranslucentBlock implements IPolished
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, PROPERTY);
+        return new BlockStateContainer(this, RenderSideParts.PROPERTY);
     }
 
     @Override
@@ -47,8 +46,8 @@ public class BlockPolishedObsidian extends TranslucentBlock implements IPolished
     }
 
     @Override
-    public RenderSideParts2 getObsidianParts(IBlockState state) {
-        return RenderSideParts2.allSidesIsFull;
+    public RenderSideParts getObsidianParts(IBlockState state) {
+        return RenderSideParts.allSidesIsFull();
     }
 
     @Override

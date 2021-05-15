@@ -11,11 +11,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.EnumHelper;
 import ru.mousecray.endmagic.blocks.base.TranslucentSlab;
+import ru.mousecray.endmagic.blocks.decorative.polished.obsidian.RenderSidePartsHolder.RenderSideParts;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
 import ru.mousecray.endmagic.client.render.model.baked.TranslucentPartsModel;
 import ru.mousecray.endmagic.init.EMBlocks;
 
-import static ru.mousecray.endmagic.blocks.decorative.polished.obsidian.RenderSideParts2.HorizontalFaceVisibility.visible_all;
 import static ru.mousecray.endmagic.blocks.decorative.polished.obsidian.Utils.*;
 
 public abstract class BlockPolishedObsidianSlab extends TranslucentSlab implements IPolishedObsidian {
@@ -38,8 +38,8 @@ public abstract class BlockPolishedObsidianSlab extends TranslucentSlab implemen
         }
 
         @Override
-        public RenderSideParts2 getObsidianParts(IBlockState state) {
-            return RenderSideParts2.allSidesIsFull;
+        public RenderSideParts getObsidianParts(IBlockState state) {
+            return RenderSideParts.allSidesIsFull();
         }
 
         @Override
@@ -68,7 +68,7 @@ public abstract class BlockPolishedObsidianSlab extends TranslucentSlab implemen
         }
 
         @Override
-        public RenderSideParts2 getObsidianParts(IBlockState state) {
+        public RenderSideParts getObsidianParts(IBlockState state) {
             return getObsidianSlabParts(state);
         }
 
@@ -85,7 +85,7 @@ public abstract class BlockPolishedObsidianSlab extends TranslucentSlab implemen
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return isDouble() ? new BlockStateContainer(this, VARIANT, RenderSideParts2.PROPERTY) : new BlockStateContainer(this, HALF, VARIANT, RenderSideParts2.PROPERTY);
+        return isDouble() ? new BlockStateContainer(this, VARIANT, RenderSideParts.PROPERTY) : new BlockStateContainer(this, HALF, VARIANT, RenderSideParts.PROPERTY);
     }
 
 }
