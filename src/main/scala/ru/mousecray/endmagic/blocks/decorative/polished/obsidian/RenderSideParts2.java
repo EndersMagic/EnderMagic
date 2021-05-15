@@ -2,14 +2,9 @@ package ru.mousecray.endmagic.blocks.decorative.polished.obsidian;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyHelper;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.init.Bootstrap;
-import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraft.util.EnumFacing;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -19,38 +14,39 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Function;
 
+import static ru.mousecray.endmagic.blocks.decorative.polished.obsidian.RenderSideParts2.HorizontalFaceVisibility.visible_all;
+
 public class RenderSideParts2 implements Comparable<RenderSideParts2> {
 
-    public final VerticalFaceVisibility up, down;
+    public static final RenderSideParts2 allSidesIsFull = RenderSideParts2.apply(visible_all, visible_all, visible_all, visible_all, visible_all, visible_all);
+
+    public final HorizontalFaceVisibility up, down;
     public final HorizontalFaceVisibility east, south, west, north;
 
-    public static RenderSideParts2 apply(VerticalFaceVisibility up, VerticalFaceVisibility down, HorizontalFaceVisibility east, HorizontalFaceVisibility south, HorizontalFaceVisibility west, HorizontalFaceVisibility north) {
+    public static RenderSideParts2 apply(HorizontalFaceVisibility up, HorizontalFaceVisibility down, HorizontalFaceVisibility east, HorizontalFaceVisibility south, HorizontalFaceVisibility west, HorizontalFaceVisibility north) {
         return originals.computeIfAbsent(new RenderSideParts2(up, down, east, south, west, north), Function.identity());
+    }
+
+    public static RenderSideParts2 apply(Map<EnumFacing, HorizontalFaceVisibility> values) {
+        return apply(
+                values.get(EnumFacing.UP),
+                values.get(EnumFacing.DOWN),
+                values.get(EnumFacing.EAST),
+                values.get(EnumFacing.SOUTH),
+                values.get(EnumFacing.WEST),
+                values.get(EnumFacing.NORTH)
+        );
     }
 
     private static Map<RenderSideParts2, RenderSideParts2> originals = new HashMap<>(325);
 
-    private RenderSideParts2(VerticalFaceVisibility up, VerticalFaceVisibility down, HorizontalFaceVisibility east, HorizontalFaceVisibility south, HorizontalFaceVisibility west, HorizontalFaceVisibility north) {
+    private RenderSideParts2(HorizontalFaceVisibility up, HorizontalFaceVisibility down, HorizontalFaceVisibility east, HorizontalFaceVisibility south, HorizontalFaceVisibility west, HorizontalFaceVisibility north) {
         this.up = up;
         this.down = down;
         this.east = east;
         this.south = south;
         this.west = west;
         this.north = north;
-    }
-
-    public enum VerticalFaceVisibility implements Invertable<VerticalFaceVisibility> {
-        visible_all {
-            @Override
-            public VerticalFaceVisibility invert() {
-                return invisible_all;
-            }
-        }, invisible_all {
-            @Override
-            public VerticalFaceVisibility invert() {
-                return visible_all;
-            }
-        }
     }
 
     public enum HorizontalFaceVisibility implements Invertable<HorizontalFaceVisibility> {
@@ -74,11 +70,38 @@ public class RenderSideParts2 implements Comparable<RenderSideParts2> {
             public HorizontalFaceVisibility invert() {
                 return visible_all;
             }
+        };
+
+        public static HorizontalFaceVisibility[] verticalValues() {
+            return new HorizontalFaceVisibility[]{visible_all, invisible_all};
+        }
+
+        public static HorizontalFaceVisibility[] horizontalValues() {
+            return values();
         }
     }
 
     public interface Invertable<Self extends Invertable> {
         Self invert();
+    }
+
+    public HorizontalFaceVisibility get(EnumFacing side) {
+        switch (side) {
+            case DOWN:
+                return down;
+            case UP:
+                return up;
+            case NORTH:
+                return north;
+            case SOUTH:
+                return south;
+            case WEST:
+                return west;
+            case EAST:
+                return east;
+            default:
+                throw new IllegalArgumentException("Unsupported value of EnumFacing: " + side);
+        }
     }
 
     @Override
@@ -114,15 +137,6 @@ public class RenderSideParts2 implements Comparable<RenderSideParts2> {
                 .build();
     }
 
-    public static void main(String[] a) {
-        System.out.println(new RenderSideParts2(VerticalFaceVisibility.visible_all, VerticalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all)
-                .equals(new RenderSideParts2(VerticalFaceVisibility.visible_all, VerticalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all)));
-        ReflectionHelper.setPrivateValue(Bootstrap.class, null, true, "alreadyRegistered");
-        SoundEvent.registerSounds();
-        BlockStateContainer blockStateContainer = new BlockStateContainer(new Block(Material.ROCK), PROPERTY);
-        System.out.println(blockStateContainer.getBaseState().withProperty(PROPERTY, RenderSideParts2.apply(VerticalFaceVisibility.visible_all, VerticalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all, HorizontalFaceVisibility.visible_all)));
-    }
-
     @Override
     public int compareTo(RenderSideParts2 o) {
         return 0;
@@ -134,14 +148,14 @@ public class RenderSideParts2 implements Comparable<RenderSideParts2> {
 
         {
             ImmutableSet.Builder<RenderSideParts2> builder = ImmutableSet.builder();
-            for (VerticalFaceVisibility up : VerticalFaceVisibility.values())
-                for (VerticalFaceVisibility down : VerticalFaceVisibility.values())
-                    for (HorizontalFaceVisibility east : HorizontalFaceVisibility.values())
-                        for (HorizontalFaceVisibility south : HorizontalFaceVisibility.values())
-                            for (HorizontalFaceVisibility west : HorizontalFaceVisibility.values())
-                                for (HorizontalFaceVisibility north : HorizontalFaceVisibility.values())
+            for (HorizontalFaceVisibility up : HorizontalFaceVisibility.verticalValues())
+                for (HorizontalFaceVisibility down : HorizontalFaceVisibility.verticalValues())
+                    for (HorizontalFaceVisibility east : HorizontalFaceVisibility.horizontalValues())
+                        for (HorizontalFaceVisibility south : HorizontalFaceVisibility.horizontalValues())
+                            for (HorizontalFaceVisibility west : HorizontalFaceVisibility.horizontalValues())
+                                for (HorizontalFaceVisibility north : HorizontalFaceVisibility.horizontalValues())
                                     builder.add(RenderSideParts2.apply(up, down, east, south, west, north));
-            allowedValues = new PrettyToStringWithManyElementsCollection(builder.build());
+            allowedValues = new PrettyToStringWithManyElementsCollection<>(builder.build());
         }
 
         @Override
