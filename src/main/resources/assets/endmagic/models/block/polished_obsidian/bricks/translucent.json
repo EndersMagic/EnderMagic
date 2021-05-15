@@ -1,0 +1,61 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/leaves",
+	"textures": {
+		"0": "endmagic:blocks/block_polished_obsidian_endstone_bricks",
+		"particle": "endmagic:blocks/block_polished_obsidian_endstone_bricks"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [8, 8, 8],
+			"faces": {
+				"north": {"uv": [0, 0, 8, 8], "texture": "#0","cullface": "north","side_part": "invisible_top"},
+				"west": {"uv": [0, 0, 8, 8], "texture": "#0","cullface": "west","side_part": "invisible_top"},
+				"down": {"uv": [0, 0, 8, 8], "texture": "#0","cullface": "down","side_part": "visible_all"}
+			}
+		},
+		{
+			"from": [8, 0, 8],
+			"to": [16, 8, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 8, 16]},
+			"faces": {
+				"east": {"uv": [0, 0, 8, 8], "texture": "#0","cullface": "east","side_part": "invisible_top"},
+				"south": {"uv": [0, 0, 8, 8], "texture": "#0","cullface": "south","side_part": "invisible_top"},
+				"down": {"uv": [0, 0, 8, 8], "texture": "#0","cullface": "down","side_part": "visible_all"}
+			}
+		},
+		{
+			"from": [8, 8, 0],
+			"to": [16, 16, 8],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 16, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 8, 8], "texture": "#0","cullface": "north","side_part": "invisible_bottom"},
+				"east": {"uv": [0, 0, 8, 8], "texture": "#0","cullface": "east","side_part": "invisible_bottom"},
+				"up": {"uv": [0, 0, 8, 8], "texture": "#0","cullface": "up","side_part": "visible_all"}
+			}
+		},
+		{
+			"from": [0, 8, 8],
+			"to": [8, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 16, 16]},
+			"faces": {
+				"south": {"uv": [0, 0, 8, 8], "texture": "#0","cullface": "south","side_part": "invisible_bottom"},
+				"west": {"uv": [0, 0, 8, 8], "texture": "#0","cullface": "west","side_part": "invisible_bottom"},
+				"up": {"uv": [0, 0, 8, 8], "texture": "#0","cullface": "up","side_part": "visible_all"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "bottom",
+			"origin": [8, 8, 8],
+			"children": [0, 1]
+		},
+		{
+			"name": "top",
+			"origin": [8, 8, 8],
+			"children": [2, 3]
+		}
+	]
+}

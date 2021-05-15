@@ -1,6 +1,0 @@
-{
-    "parent": "block/leaves",
-    "textures": {
-        "all": "endmagic:blocks/block_polished_obsidian"
-    }
-}

@@ -1,0 +1,30 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/half_slab",
+	"textures": {
+		"1": "endmagic:blocks/block_polished_obsidian_endstone_bricks"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [8, 8, 8],
+			"faces": {
+				"north": {"uv": [0, 0, 8, 8], "texture": "#1","side_part": "invisible_top"},
+				"west": {"uv": [0, 0, 8, 8], "texture": "#1","side_part": "invisible_top"},
+				"up": {"uv": [0, 0, 8, 8], "texture": "#1","side_part": "visible_all"},
+				"down": {"uv": [0, 0, 8, 8], "texture": "#1","side_part": "visible_all"}
+			}
+		},
+		{
+			"from": [8, 0, 8],
+			"to": [16, 8, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 8, 16]},
+			"faces": {
+				"east": {"uv": [8, 8, 16, 16], "texture": "#1","side_part": "invisible_top"},
+				"south": {"uv": [8, 8, 16, 16], "texture": "#1","side_part": "invisible_top"},
+				"up": {"uv": [8, 8, 16, 16], "texture": "#1","side_part": "visible_all"},
+				"down": {"uv": [8, 8, 16, 16], "texture": "#1","side_part": "visible_all"}
+			}
+		}
+	]
+}

@@ -271,7 +271,6 @@ public class EMEvents {
 
     public static void loadLastWorld(GuiOpenEvent event) throws InvocationTargetException, IllegalAccessException {
         if (!alreadyEnteredInWorldAutomaticaly) {
-            System.out.println(event.getGui());
             Minecraft mc = Minecraft.getMinecraft();
             if (event.getGui() instanceof GuiMainMenu) {
                 mainMenu = (GuiMainMenu) event.getGui();

@@ -1,8 +1,8 @@
 {
   "variants": {
-    "half=bottom,variant=default": { "model": "endmagic:polished_obsidian_endstone_bottom_slab" },
-    "half=top,variant=default": { "model": "endmagic:polished_obsidian_endstone_upper_slab" },
+    "half=bottom,render_side_parts=default,variant=default": { "model": "endmagic:polished_obsidian/bricks/slab/bottom" },
+    "half=top,render_side_parts=default,variant=default": { "model": "endmagic:polished_obsidian/bricks/slab/top" },
 
-    "inventory":  { "model": "endmagic:polished_obsidian_endstone_bottom_slab" }
+    "inventory":  { "model": "endmagic:polished_obsidian/bricks/slab/bottom" }
   }
 }

@@ -1,0 +1,31 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/leaves",
+	"textures": {
+		"all": "endmagic:blocks/polished_obsidian"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 8, 16],
+			"faces": {
+				"north": {"uv": [0, 8, 16, 16], "texture": "#all","side_part": "invisible_top"},
+				"east": {"uv": [0, 8, 16, 16], "texture": "#all","side_part": "invisible_top"},
+				"south": {"uv": [0, 8, 16, 16], "texture": "#all","side_part": "invisible_top"},
+				"west": {"uv": [0, 8, 16, 16], "texture": "#all","side_part": "invisible_top"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#all","side_part": "visible_all"}
+			}
+		},
+		{
+			"from": [0, 8, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 8], "texture": "#all","side_part": "invisible_bottom"},
+				"east": {"uv": [0, 0, 16, 8], "texture": "#all","side_part": "invisible_bottom"},
+				"south": {"uv": [0, 0, 16, 8], "texture": "#all","side_part": "invisible_bottom"},
+				"west": {"uv": [0, 0, 16, 8], "texture": "#all","side_part": "invisible_bottom"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#all","side_part": "visible_all"}
+			}
+		}
+	]
+}

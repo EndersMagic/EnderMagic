@@ -8,9 +8,12 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.util.EnumHelper;
+import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.util.render.RenderUtils;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -31,7 +34,18 @@ public class SeparatedRenderLayersBakedModel extends BakedModelDelegate {
         return iBakedModel == null ? ImmutableList.of() : iBakedModel.getQuads(state, side, rand);
     }
 
-    public static Function<IBakedModel, IBakedModel> apply(Map<BlockRenderLayer, ResourceLocation> parts, BlockRenderLayer primaryPart) {
-        return __ -> new SeparatedRenderLayersBakedModel(parts.entrySet().stream().collect(toMap(e -> e.getKey(), e -> RenderUtils.loadJsonModel(e.getValue()))), primaryPart);
+    public static Function<IBakedModel, IBakedModel> apply(Map<BlockRenderLayer, String> parts, BlockRenderLayer primaryPart) {
+        return __ -> new SeparatedRenderLayersBakedModel(parts.entrySet().stream().collect(toMap(e -> e.getKey(), e -> RenderUtils.loadJsonModel(new ResourceLocation(EM.ID, e.getValue())))), primaryPart);
+    }
+
+    public static void main(String[] args){
+
+        System.out.println(Arrays.toString(Test.values()));
+        EnumHelper.addEnum(Test.class,"D",new Class[0]);
+        System.out.println(Arrays.toString(Test.values()));
+        System.out.println(Test.valueOf("D"));
+    }
+    public static enum Test{
+        A,B,C
     }
 }
