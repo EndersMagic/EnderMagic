@@ -13,6 +13,9 @@ id_map{
     O| minecraft:obsidian
     U| endmagic:block_polished_obsidian
     E| minecraft:end_stone
+    ueB| endmagic:block_polished_obsidian_endstone_bricks
+    _ueB_| endmagic:block_polished_obsidian_endstone_slab_single
+    _U_| endmagic:block_polished_obsidian_slab_single
 
 }
 decor {
@@ -21,7 +24,7 @@ decor {
                                                    q,IPI,q)
 
     4x endmagic:block_purpur_quartz_bricks| shaped(P,Q;
-                                                  Q,P)
+                                                   Q,P)
 
     endmagic:block_purpur_quartz_bricks| shaped(_pqB_;
                                                 _pqB_)
@@ -36,4 +39,14 @@ decor {
 
     4x endmagic:block_polished_obsidian_endstone_bricks| shaped(U,E;
                                                                 E,U)
+
+    6x endmagic:block_polished_obsidian_endstone_slab_single| shaped(ueB,ueB,ueB)
+
+    endmagic:block_polished_obsidian_endstone_bricks| shaped(_ueB_;
+                                                             _ueB_)
+
+    6x endmagic:block_polished_obsidian_slab_single| shaped(U,U,U)
+
+    endmagic:block_polished_obsidian| shaped(_U_;
+                                                             _U_)
 }
