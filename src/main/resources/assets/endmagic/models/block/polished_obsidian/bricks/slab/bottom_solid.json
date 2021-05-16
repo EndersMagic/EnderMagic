@@ -2,7 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/half_slab",
 	"textures": {
-		"1": "endmagic:blocks/block_polished_obsidian_endstone_bricks"
+		"1": "endmagic:blocks/block_polished_obsidian_endstone_bricks",
+		"particle": "endmagic:blocks/block_polished_obsidian_endstone_bricks"
 	},
 	"elements": [
 		{
