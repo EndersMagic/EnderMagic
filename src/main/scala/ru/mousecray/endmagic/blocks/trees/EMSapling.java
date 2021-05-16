@@ -9,23 +9,31 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProviderEnd;
+import net.minecraft.world.end.DragonFightManager;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.api.EMUtils;
 import ru.mousecray.endmagic.api.blocks.EndSoilType;
 import ru.mousecray.endmagic.blocks.base.BaseTreeBlock;
 import ru.mousecray.endmagic.util.EnderBlockTypes;
+import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 import ru.mousecray.endmagic.worldgen.trees.WorldGenEnderTree;
+import ru.mousecray.endmagic.worldgen.trees.world.WorldGenDragonTreeWorld;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static net.minecraft.block.BlockSapling.SAPLING_AABB;
 import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
@@ -80,7 +88,34 @@ public class EMSapling extends BaseTreeBlock implements IGrowable {
 
     @Override
     public boolean canGrow(World world, BlockPos pos, IBlockState state, boolean isClient) {
-        return true;
+        if (world.provider instanceof WorldProviderEnd && WorldGenDragonTreeWorld.isInCentralIsland(pos.getX() >> 4, pos.getZ() >> 4))
+            return !ReflectionHelper.<Boolean, DragonFightManager>getPrivateValue(DragonFightManager.class, ((WorldProviderEnd) world.provider).getDragonFightManager(), "dragonKilled");
+        else {
+            AtomicBoolean dragonPowerSourceExists = new AtomicBoolean(false);
+            WorldGenUtils.generateInAreaBreakly(pos.add(-5, -5, -5), pos.add(5, 5, 5), p -> {
+                if (isDragonPowerSource(world, p)) {
+                    dragonPowerSourceExists.set(true);
+                    return false;
+                } else
+                    return true;
+            });
+            return dragonPowerSourceExists.get();
+        }
+    }
+
+    private boolean isDragonPowerSource(World world, BlockPos p) {
+        IBlockState blockState = world.getBlockState(p);
+        Block block = blockState.getBlock();
+        if (block == Blocks.DRAGON_EGG)
+            return true;
+        else if (block == Blocks.SKULL) {
+            TileEntity tile = world.getTileEntity(p);
+            if (tile instanceof TileEntitySkull)
+                return ((TileEntitySkull) tile).getSkullType() == 5;
+            else
+                return false;
+        } else
+            return false;
     }
 
     @Override

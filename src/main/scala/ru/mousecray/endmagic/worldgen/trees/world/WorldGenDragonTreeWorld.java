@@ -17,7 +17,7 @@ public class WorldGenDragonTreeWorld {
     //3;minecraft:bedrock,2*minecraft:dirt,minecraft:end_portal;1;
 
     public void generateWorld(Random random, int chunkX, int chunkZ, World world) {
-        if (chunkX * chunkX + chunkZ * chunkZ < centralIslandSize * centralIslandSize) {
+        if (isInCentralIsland(chunkX, chunkZ)) {
             Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
             if (!chunk.isEmpty()) {
                 int startX = chunkX << 4;
@@ -35,6 +35,10 @@ public class WorldGenDragonTreeWorld {
                 );
             }
         }
+    }
+
+    public static boolean isInCentralIsland(int chunkX, int chunkZ) {
+        return chunkX * chunkX + chunkZ * chunkZ < centralIslandSize * centralIslandSize;
     }
 
 
