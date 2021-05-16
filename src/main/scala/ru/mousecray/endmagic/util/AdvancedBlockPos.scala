@@ -5,14 +5,11 @@ import net.minecraft.entity.Entity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.{BlockPos, Vec3i}
 
-class AdvancedBlockPos(private var xD : Double, private var yD : Double, private var zD : Double) extends BlockPos.MutableBlockPos
-{
+class AdvancedBlockPos(private var xD : Double, private var yD : Double, private var zD : Double) extends BlockPos.MutableBlockPos {
   def this(pos : BlockPos) = this(pos.getX, pos.getY, pos.getZ)
 
   override def getX: Int = xD.toInt
-
   override def getY: Int = yD.toInt
-
   override def getZ: Int = zD.toInt
 
   override def setPos(xIn: Int, yIn: Int, zIn: Int) : BlockPos.MutableBlockPos = {
@@ -47,8 +44,7 @@ class AdvancedBlockPos(private var xD : Double, private var yD : Double, private
 
   def move(vac : Vector3d): Unit = this.move(vac.x, vac.y, vac.z)
 
-  def setPos(blockPos: BlockPos): Unit =
-  {
+  def setPos(blockPos: BlockPos): Unit = {
       this.xD = blockPos.getX
       this.yD = blockPos.getY
       this.zD = blockPos.getZ

@@ -1,14 +1,10 @@
 package ru.mousecray.endmagic.blocks;
 
-import com.sun.istack.internal.Nullable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.tileentity.TileEntityImmortalHeart;
@@ -33,7 +29,6 @@ public class BlockImmortalHeart extends BlockWithTile<TileEntityImmortalHeart>
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
     }
 
-    @Nullable
     @Override
     public TileEntity createNewTileEntity(World world, int i)
     {

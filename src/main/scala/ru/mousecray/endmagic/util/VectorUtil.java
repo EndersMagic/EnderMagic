@@ -4,8 +4,7 @@ import net.minecraft.client.renderer.Vector3d;
 
 public class VectorUtil
 {
-
-    public static void rotateFromDirs(Vector3d vec, Vector3d angs)
+    public static void rotateFromDirs(Vector3d vec, final Vector3d angs)
     {
         if(angs.x == 0)
             angs.x = 0.001;
@@ -29,14 +28,6 @@ public class VectorUtil
     private static double findAngleIfCisHypotenuse(double a, double b)
     {
         double c = Math.sqrt(Math.abs(a * a + b * b));
-
-        return findAngle(a, b, c);
-    }
-
-    //returns angle between a and b if c is hypotenuse
-    private static double findAngleIfCisNotHypotenuse(double a, double b)
-    {
-        double c = Math.sqrt(Math.abs(a * a - b * b));
 
         return findAngle(a, b, c);
     }

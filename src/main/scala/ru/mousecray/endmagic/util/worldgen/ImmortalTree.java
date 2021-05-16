@@ -21,27 +21,26 @@ import static net.minecraft.block.BlockLog.LOG_AXIS;
 
 public class ImmortalTree
 {
-    public static void generate(World world, BlockPos pos, int length, double width, int countOfGroundRoots)
+    public static void generate(World world, BlockPos pos, int length, double width, double countOfGroundRoots)
     {
         HashMap<BlockPos, IBlockState> toPlace = new HashMap<>();
         Random rand = world.rand;
-        int r = (int) Math.ceil(width / 8);
 
-        double angl = 180d / countOfGroundRoots * 4;
-        int realCountOfRoots = (countOfGroundRoots + 4 - 1) / 4;
-
+        double angle = 180d / countOfGroundRoots * 4;
+        int realCountOfRoots = (int) ((countOfGroundRoots + 4 - 1) / 4);
+        /*
         for (int i = 0; i < realCountOfRoots; i++)
-            generateGroundRoot(world, toPlace, pos, length, width / (1 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angl * i), 0, Math.sin(angl * i)));
+            generateGroundRoot(world, toPlace, pos, length, width / (1 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angle * i), 0, Math.sin(angle * i)));
 
         for (int i = realCountOfRoots; i < realCountOfRoots * 2; i++)
-            generateGroundRoot(world, toPlace, pos, length, width / (1 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angl * i), 0, Math.sin(angl * i)));
+            generateGroundRoot(world, toPlace, pos, length, width / (1 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angle * i), 0, Math.sin(angle * i)));
 
         for (int i = realCountOfRoots * 2; i < realCountOfRoots * 3; i++)
-            generateGroundRoot(world, toPlace, pos, length, width / (1 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angl * i), 0, Math.sin(angl * i)));
+            generateGroundRoot(world, toPlace, pos, length, width / (1 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angle * i), 0, Math.sin(angle * i)));
 
         for (int i = realCountOfRoots * 3; i < realCountOfRoots * 4; i++)
-            generateGroundRoot(world, toPlace, pos, length, width / (1 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angl * i), 0, Math.sin(angl * i)));
-
+            generateGroundRoot(world, toPlace, pos, length, width / (1 + (double) rand.nextInt(3)), VectorUtil.of(Math.cos(angle * i), 0, Math.sin(angle * i)));
+        //*/
         /*
         int r = (int) width;
         for (int y = 0; y < length; y++)
@@ -60,19 +59,19 @@ public class ImmortalTree
                             generateRelief(world, toPlace, pos2, VectorUtil.of(x / (r * 10.0), -1, z / (r * 10.0)), length * 2, width / (3 + rand.nextInt(2)));
                             if (rand.nextInt(10) > 6)
                             {
-                                //generateBranchRecursive(toPlace, rand, pos2, length, width / 2, VectorUtil.of(x / (r * 2.0), 1, z / (r * 2.0)), true);
+                                generateBranchRecursive(toPlace, rand, pos2, length, width / 2, VectorUtil.of(x / (r * 2.0), 1, z / (r * 2.0)), true);
                             }
                         }
                     }
                 }
             }
         }
-
-        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(15 / 100f, -1, 15 / 100f), true);
-        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(-15 / 100f, -1, 15 / 100f), true);
-        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(15 / 100f, -1, -15 / 100f), true);
-        generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(-15 / 100f, -1, -15 / 100f), true);
         //*/
+        generateRootRecursive(world, toPlace, pos.add(0, (int) (length * 0.6), 0), length, width * 1.1, VectorUtil.of(0, -1, 0), true);
+        //generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(-15 / 100f, -1, 15 / 100f), true);
+        //generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(15 / 100f, -1, -15 / 100f), true);
+        //generateRootRecursive(world, toPlace, pos.add(1, (int) (length * 0.6), -2), length, width * 1.1, VectorUtil.of(-15 / 100f, -1, -15 / 100f), true);
+
 
         for (Map.Entry<BlockPos, IBlockState> current : toPlace.entrySet())
             TaskManager.blocksToPlace.add(new Truple<>(world, current.getKey(), current.getValue()));
@@ -218,30 +217,31 @@ public class ImmortalTree
         }
     }
 
-    private static void generateRootRecursive(World world, Map<BlockPos, IBlockState> toPlace, BlockPos pos, int length, double width, Vector3d dir, boolean isGrandRoot)
+    private static void generateRootRecursive(World world, Map<BlockPos, IBlockState> toPlace, BlockPos pos, int length, double width, final Vector3d dir, boolean isGrandRoot)
     {
-        Random rand = world.rand;
-        int countOfRoots = 0;
         AdvancedBlockPos newPos = new AdvancedBlockPos(pos);
         for (double i = 0; i < length; ++i)
         {
             width /= 1.005;
-
-            newPos.move(dir);
+            System.out.println(dir.x + " " + dir.y + " " +  dir.z);
+            newPos.move(dir.x, dir.y, dir.z);
             /*
              * Это поворот плоскасти, установка блоков и создание ползущих корней.
              */
-            for (int x = 0; x < Math.ceil(width); x++)
+            int r = (int) Math.ceil(width / 2);
+            for (int x = -r; x <= r; x++)
             {
-                for (int z = 0; z < Math.ceil(width); z++)
+                for (int z = -r; z <= r; z++)
                 {
-
-                    Vector3d position = VectorUtil.of(x, 0, z);
-                    VectorUtil.rotateFromDirs(position, dir);
-                    BlockPos pos2 = newPos.add(position.x - Math.ceil(width) / 2, position.y - Math.ceil(width) / 2, position.z - Math.ceil(width) / 2);
-                    toPlace.computeIfAbsent(pos2, k -> getLogWithDir(dir));
+                    if (x * x + z * z - r * r < 0.4)
+                    {
+                        Vector3d position = VectorUtil.of(x, 0, z);
+                        VectorUtil.rotateFromDirs(position, dir);
+                        toPlace.put(newPos.add(position.x, position.y, position.z), getLogWithDir(dir));
+                    }
                 }
             }
+            /*
             if (!(rand.nextInt(80) > 75d - 5d * (1d - i / length)))
             {
                 generateGroundRoot(world, toPlace, new BlockPos.MutableBlockPos(pos.getX(), pos.getY(), pos.getZ()), 60, width,
@@ -294,7 +294,7 @@ public class ImmortalTree
                 }
             }
             /*
-             * Делаем другие корни. Не спрашивайте почему такой иф.
+             * Делаем другие корни. И не спрашивайте почему такой иф.
              */
             /*
             if (rand.nextInt(length) < length / Math.abs(30F - i / length * 20 - countOfRoots) + length * 0.5 / width && width >= 1.4 && ((i > 0.6 * length) ^ (length <= 35 * 0.5f)) && !isGrandRoot || i > length * 0.6)
@@ -347,7 +347,7 @@ public class ImmortalTree
         for (double i = 0; i < maxLength; ++i)
         {
             dir.y = 0;
-            width /= 1.01 + Math.sqrt(i) / 1000;
+            width /= 1.01 + Math.sqrt(i / 10);
             poss.move(dir.x, dir.y, dir.z);
             int r = (int) Math.ceil(width / 2);
 
@@ -425,7 +425,7 @@ public class ImmortalTree
         return state.getBlock() == Blocks.LOG || state.getBlock() == Blocks.AIR || state.getBlock() == Blocks.LEAVES;
     }
 
-    private static IBlockState getLogWithDir(Vector3d dir)
+    private static IBlockState getLogWithDir(final Vector3d dir)
     {
         double x = Math.abs(dir.x), y = Math.abs(dir.y), z = Math.abs(dir.z);
         if(x > y)

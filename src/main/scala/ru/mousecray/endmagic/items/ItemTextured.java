@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.client.render.model.IModelRegistration;
+import ru.mousecray.endmagic.util.ModelUtils;
 import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
 import java.io.IOException;
@@ -37,22 +38,10 @@ public interface ItemTextured extends IExtendedProperties {
         textures().keySet().forEach(t -> modelRegistration.registerTexture(new ResourceLocation(t)));
 
         Item item = (Item) this;
-        if (isModelExists(item.getRegistryName()))
+        if (ModelUtils.isModelExists(item.getRegistryName()))
             ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
         else
             ModelLoader.setCustomModelResourceLocation(item, 0, companion.simpletexturemodel);
-    }
-
-    static boolean isModelExists(ResourceLocation modelResourceLocation) {
-        InputStream inputStream = ItemTextured.class.getResourceAsStream("/assets/" + modelResourceLocation.getResourceDomain() + "/models/item/" + modelResourceLocation.getResourcePath() + ".json");
-        if (inputStream != null) {
-            try {
-                inputStream.close();
-            } catch (IOException ignored) {
-            }
-            return true;
-        } else
-            return false;
     }
 
     class companion {
