@@ -73,8 +73,8 @@ public class WorldGenNaturalTree extends WorldGenEnderTree {
 		leaves.add(leaves3);
 	}
 
-	private IBlockState enderLog = EMBlocks.enderLog.getDefaultState().withProperty(TREE_TYPE,EnderBlockTypes.EnderTreeType.NATURAL);
-	private IBlockState enderLeaves = EMBlocks.enderLeaves.getDefaultState().withProperty(TREE_TYPE,EnderBlockTypes.EnderTreeType.NATURAL);
+	private IBlockState enderLog = EMBlocks.naturalLog.getDefaultState();
+	private IBlockState enderLeaves = EMBlocks.naturalLeaves.getDefaultState();
 
 	public WorldGenNaturalTree(boolean notify) {
 		super(notify, areaRequirementsMin, areaRequirementsMax);

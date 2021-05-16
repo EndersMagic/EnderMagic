@@ -17,7 +17,7 @@ public class EnderBlockTypes {
     public static final PropertyEnum<EnderTreeType> TREE_TYPE = PropertyEnum.create("type", EnderTreeType.class);
     public static final PropertyEnum<EnderGroundType> GROUND_TYPE = PropertyEnum.create("type", EnderGroundType.class);
 
-    public static enum EnderTreeType implements IStringSerializable {
+    public enum EnderTreeType implements IStringSerializable {
         DRAGON(MapColor.PURPLE, WorldGenDragonTree.class),
         NATURAL(MapColor.BROWN, WorldGenNaturalTree.class),
         IMMORTAL(MapColor.EMERALD, null),
@@ -56,7 +56,7 @@ public class EnderBlockTypes {
         }
     }
 
-    public static enum EnderGroundType implements IStringSerializable {
+    public enum EnderGroundType implements IStringSerializable {
         LIVE(MapColor.BLUE, SoundType.GROUND),
         DEAD(MapColor.GRAY, SoundType.SAND),
         FROZEN(MapColor.DIAMOND, SoundType.SNOW);

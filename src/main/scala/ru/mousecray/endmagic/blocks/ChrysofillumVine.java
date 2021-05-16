@@ -12,11 +12,8 @@ import net.minecraftforge.common.EnumPlantType;
 import ru.mousecray.endmagic.api.blocks.EMBlockBush;
 import ru.mousecray.endmagic.api.blocks.EnderPlantType;
 import ru.mousecray.endmagic.init.EMBlocks;
-import ru.mousecray.endmagic.util.EnderBlockTypes;
 
 import java.util.Random;
-
-import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 
 public class ChrysofillumVine extends EMBlockBush {
 
@@ -41,7 +38,7 @@ public class ChrysofillumVine extends EMBlockBush {
 
     @Override
     protected boolean canSustainBush(IBlockState state) {
-        return state.getBlock() == EMBlocks.chrysVine || (state.getBlock() == EMBlocks.enderLog && state.getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.NATURAL);
+        return state.getBlock() == EMBlocks.chrysVine || state.getBlock() == EMBlocks.naturalLog;
     }
 
     @Override

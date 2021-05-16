@@ -7,10 +7,6 @@ import ru.mousecray.endmagic.blocks.portal.BlockMasterDarkPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockMasterStaticPortal;
 import ru.mousecray.endmagic.blocks.portal.BlockTopMark;
 import ru.mousecray.endmagic.blocks.portal.Portal;
-import ru.mousecray.endmagic.blocks.trees.EMLeaves;
-import ru.mousecray.endmagic.blocks.trees.EMLog;
-import ru.mousecray.endmagic.blocks.trees.EMPlanks;
-import ru.mousecray.endmagic.blocks.trees.EMSapling;
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 public final class EMBlocks {
@@ -41,10 +37,26 @@ public final class EMBlocks {
     public static final BlockNamed enderite = new BlockNamed("enderite");
     public static final EnderOre enderOre = new EnderOre("ender_ore");
 
-    public static final EMLog enderLog = new EMLog();
-    public static final EMSapling enderSapling = new EMSapling();
-    public static final EMLeaves enderLeaves = new EMLeaves();
-    public static final EMPlanks enderPlanks = new EMPlanks();
+    public static final ru.mousecray.endmagic.blocks.trees.dragon.Leaves dragonLeaves = new ru.mousecray.endmagic.blocks.trees.dragon.Leaves();
+    public static final ru.mousecray.endmagic.blocks.trees.immortal.Leaves immortalLeaves = new ru.mousecray.endmagic.blocks.trees.immortal.Leaves();
+    public static final ru.mousecray.endmagic.blocks.trees.natural.Leaves naturalLeaves = new ru.mousecray.endmagic.blocks.trees.natural.Leaves();
+    public static final ru.mousecray.endmagic.blocks.trees.phantom.Leaves phantomLeaves = new ru.mousecray.endmagic.blocks.trees.phantom.Leaves();
+
+    public static final ru.mousecray.endmagic.blocks.trees.dragon.Log dragonLog = new ru.mousecray.endmagic.blocks.trees.dragon.Log();
+    public static final ru.mousecray.endmagic.blocks.trees.immortal.Log immortalLog = new ru.mousecray.endmagic.blocks.trees.immortal.Log();
+    public static final ru.mousecray.endmagic.blocks.trees.natural.Log naturalLog = new ru.mousecray.endmagic.blocks.trees.natural.Log();
+    public static final ru.mousecray.endmagic.blocks.trees.phantom.Log phantomLog = new ru.mousecray.endmagic.blocks.trees.phantom.Log();
+
+    public static final ru.mousecray.endmagic.blocks.trees.dragon.Sapling dragonSapling = new ru.mousecray.endmagic.blocks.trees.dragon.Sapling();
+    public static final ru.mousecray.endmagic.blocks.trees.immortal.Sapling immortalSapling = new ru.mousecray.endmagic.blocks.trees.immortal.Sapling();
+    public static final ru.mousecray.endmagic.blocks.trees.natural.Sapling naturalSapling = new ru.mousecray.endmagic.blocks.trees.natural.Sapling();
+    public static final ru.mousecray.endmagic.blocks.trees.phantom.Sapling phantomSapling = new ru.mousecray.endmagic.blocks.trees.phantom.Sapling();
+
+
+    public static final ru.mousecray.endmagic.blocks.trees.dragon.Planks dragonPlanks = new ru.mousecray.endmagic.blocks.trees.dragon.Planks();
+    public static final ru.mousecray.endmagic.blocks.trees.immortal.Planks immortalPlanks = new ru.mousecray.endmagic.blocks.trees.immortal.Planks();
+    public static final ru.mousecray.endmagic.blocks.trees.natural.Planks naturalPlanks = new ru.mousecray.endmagic.blocks.trees.natural.Planks();
+    public static final ru.mousecray.endmagic.blocks.trees.phantom.Planks phantomPlanks = new ru.mousecray.endmagic.blocks.trees.phantom.Planks();
 
     public static final EMSlab.EMSlabDouble enderWoodenSlabDouble = new EMSlab.EMSlabDouble();
     public static final EMSlab.EMSlabSingle enderWoodenSlabSingle = new EMSlab.EMSlabSingle();

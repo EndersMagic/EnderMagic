@@ -24,7 +24,7 @@ public abstract class WorldGenEnderTree extends WorldGenAbstractTree {
     boolean canGenerateThereAvaiable(World worldIn, BlockPos position) {
         return canGenerateThere(worldIn, position) &&
                 WorldGenUtils.areaAvailable(worldIn, position.add(areaRequirementsMin), position.add(areaRequirementsMax),
-                        ImmutableSet.of(Blocks.AIR, EMBlocks.enderSapling));
+                        ImmutableSet.of(Blocks.AIR, EMBlocks.dragonSapling, EMBlocks.immortalSapling, EMBlocks.naturalSapling, EMBlocks.phantomSapling));
     }
 
     private boolean canGenerateThere(World worldIn, BlockPos position) {

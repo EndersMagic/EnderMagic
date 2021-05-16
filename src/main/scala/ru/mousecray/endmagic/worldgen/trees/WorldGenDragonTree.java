@@ -1,35 +1,32 @@
 package ru.mousecray.endmagic.worldgen.trees;
 
-import static net.minecraft.block.BlockLog.LOG_AXIS;
-import static net.minecraft.init.Blocks.AIR;
-import static net.minecraft.init.Blocks.END_STONE;
-import static ru.mousecray.endmagic.util.worldgen.WorldGenUtils.generateInArea;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
+import java.util.*;
+
+import static net.minecraft.block.BlockLog.LOG_AXIS;
+import static net.minecraft.init.Blocks.AIR;
+import static net.minecraft.init.Blocks.END_STONE;
+import static ru.mousecray.endmagic.util.worldgen.WorldGenUtils.generateInArea;
+
 public class WorldGenDragonTree extends WorldGenEnderTree {
+
+    public static int maxTrunkLen = 3;
+
     public WorldGenDragonTree(boolean notify) {
-        super(notify,null,null);
+        super(notify, null, null);
     }
 
-    private IBlockState enderLog = EMBlocks.enderLog.getDefaultState();
-    private IBlockState enderLeaves = EMBlocks.enderLeaves.getDefaultState();
+    private IBlockState enderLog = EMBlocks.dragonLog.getDefaultState();
+    private IBlockState enderLeaves = EMBlocks.dragonLeaves.getDefaultState();
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
@@ -40,12 +37,12 @@ public class WorldGenDragonTree extends WorldGenEnderTree {
         EnumFacing direction = logDirection(world, pos).getOpposite();
         BlockLog.EnumAxis value = BlockLog.EnumAxis.fromFacingAxis(direction.getAxis());
         if (value != BlockLog.EnumAxis.Y) {
-        	BlockPos of = pos.offset(direction);
-            if (EMBlocks.enderSapling.canPlaceBlockAt(world, pos) && (check ? aroundBlocks(world, pos, AIR, 77, alreadyChecked) : true)) {
+            BlockPos of = pos.offset(direction);
+            if (EMBlocks.dragonSapling.canPlaceBlockAt(world, pos) && (check ? aroundBlocks(world, pos, AIR, 77, alreadyChecked) : true)) {
 
-                int lvl = 2 + random.nextInt(3);
+                int lvl = 2 + random.nextInt(maxTrunkLen);
                 for (int i = -1; i < lvl; i++)
-                	setBlockAndNotifyAdequately(world, pos.offset(direction, i), enderLog.withProperty(LOG_AXIS, value));
+                    setBlockAndNotifyAdequately(world, pos.offset(direction, i), enderLog.withProperty(LOG_AXIS, value));
 
                 generateLeavesAround(world, pos.offset(direction), lvl);
                 return true;
@@ -124,9 +121,9 @@ public class WorldGenDragonTree extends WorldGenEnderTree {
 
     private EnumFacing logDirection(World world, BlockPos pos) {
         return Arrays.stream(EnumFacing.values())
-                        .filter((i -> world.getBlockState(pos.offset(i)).getBlock() == END_STONE))
-                        .findAny()
-                        .orElse(EnumFacing.UP);
+                .filter((i -> world.getBlockState(pos.offset(i)).getBlock() == END_STONE))
+                .findAny()
+                .orElse(EnumFacing.UP);
     }
 
     public static boolean aroundBlocks(World world, BlockPos pos, Block air, int n, Set<BlockPos> alreadyChecked) {

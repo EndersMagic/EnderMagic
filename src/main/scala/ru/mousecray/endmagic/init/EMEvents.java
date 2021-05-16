@@ -56,11 +56,10 @@ import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProv
 import ru.mousecray.endmagic.entity.EntityCustomEnderEye;
 import ru.mousecray.endmagic.entity.EntityEnderArrow;
 import ru.mousecray.endmagic.entity.UnexplosibleEntityItem;
-import ru.mousecray.endmagic.util.registry.ExplodeRecipe;
 import ru.mousecray.endmagic.items.EnderArrow;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
-import ru.mousecray.endmagic.util.EnderBlockTypes;
 import ru.mousecray.endmagic.util.GuiContainerCreativeEM;
+import ru.mousecray.endmagic.util.registry.ExplodeRecipe;
 import ru.mousecray.endmagic.util.worldgen.WorldGenUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -70,12 +69,11 @@ import java.util.Random;
 
 import static ru.mousecray.endmagic.Configuration.enderPortalFrameSearchRadius;
 import static ru.mousecray.endmagic.api.Target.Debug;
-import static ru.mousecray.endmagic.init.EMBlocks.enderLeaves;
-import static ru.mousecray.endmagic.init.EMBlocks.enderLog;
+import static ru.mousecray.endmagic.init.EMBlocks.phantomLeaves;
+import static ru.mousecray.endmagic.init.EMBlocks.phantomLog;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_COMPAS_TARGET;
 import static ru.mousecray.endmagic.network.PacketTypes.UPDATE_PHANROM_AVOIDINCAPABILITY;
 import static ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase.maxAvoidTicks;
-import static ru.mousecray.endmagic.util.EnderBlockTypes.TREE_TYPE;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMax;
 import static ru.mousecray.endmagic.worldgen.trees.WorldGenPhantomTree.areaRequirementsMin;
 
@@ -100,8 +98,7 @@ public class EMEvents {
         World world = event.getEntityPlayer().world;
         BlockPos pos = event.getPos();
         IBlockState blockState = world.getBlockState(pos);
-        if (/*!event.getEntityPlayer().world.isRemote && */(blockState.getBlock() == enderLog || blockState.getBlock() == enderLeaves) &&
-                blockState.getValue(TREE_TYPE) == EnderBlockTypes.EnderTreeType.PHANTOM) {
+        if (/*!event.getEntityPlayer().world.isRemote && */(blockState.getBlock() == phantomLog || blockState.getBlock() == phantomLeaves)) {
             PhantomAvoidingGroupCapability capability = world.getCapability(PhantomAvoidingGroupCapabilityProvider.avoidingGroupCapability, null);
             if (capability != null) {
                 PhantomAvoidingGroup tree = capability.groupAtPos.get(event.getPos());

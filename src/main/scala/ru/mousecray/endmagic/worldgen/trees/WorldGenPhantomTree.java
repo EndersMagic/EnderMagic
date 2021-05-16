@@ -60,8 +60,8 @@ public class WorldGenPhantomTree extends WorldGenEnderTree {
         super(notify, areaRequirementsMin, areaRequirementsMax);
     }
 
-    private IBlockState phantomLog = EMBlocks.enderLog.getDefaultState().withProperty(TREE_TYPE, EnderBlockTypes.EnderTreeType.PHANTOM);
-    private IBlockState phantomLeaves = EMBlocks.enderLeaves.getDefaultState().withProperty(TREE_TYPE, EnderBlockTypes.EnderTreeType.PHANTOM);
+    private IBlockState phantomLog = EMBlocks.phantomLog.getDefaultState();
+    private IBlockState phantomLeaves = EMBlocks.phantomLeaves.getDefaultState();
     private IBlockState air = Blocks.AIR.getDefaultState();
 
     @SuppressWarnings("unused")

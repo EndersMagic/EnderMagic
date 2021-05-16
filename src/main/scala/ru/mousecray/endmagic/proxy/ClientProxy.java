@@ -53,11 +53,7 @@ import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
@@ -72,7 +68,6 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         addBakedModelOverride(ItemTextured.companion.simpletexturemodel, TexturedModel::new);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
@@ -127,10 +122,10 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
                         new ItemStack(EMItems.immortalCoal),
                         new ItemStack(EMItems.phantomCoal)),
                         ImmutableList.of(
-                                new ItemStack(EMBlocks.enderLog, 1, 0),
-                                new ItemStack(EMBlocks.enderLog, 1, 1),
-                                new ItemStack(EMBlocks.enderLog, 1, 2),
-                                new ItemStack(EMBlocks.enderLog, 1, 3)
+                                new ItemStack(EMBlocks.dragonLog),
+                                new ItemStack(EMBlocks.naturalLog),
+                                new ItemStack(EMBlocks.immortalLog),
+                                new ItemStack(EMBlocks.phantomLog)
                         ), "test"),
                 new TextComponent("book.chapter.text.carbonic_materials.2"),
                 recipesForItems(EMItems.steelToolsAndArmor()),

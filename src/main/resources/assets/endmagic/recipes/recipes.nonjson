@@ -19,14 +19,14 @@ id_map{
 
     E| endmagic:enderite
     e| endmagic:raw_enderite
-    DL| endmagic:ender_tree_log:0
-    IL| endmagic:ender_tree_log:1
-    NL| endmagic:ender_tree_log:2
-    PL| endmagic:ender_tree_log:3
-    DP| endmagic:ender_tree_planks:0
-    IP| endmagic:ender_tree_planks:1
-    NP| endmagic:ender_tree_planks:2
-    PP| endmagic:ender_tree_planks:3
+    DL| endmagic:ender_tree_dragon_log
+    IL| endmagic:ender_tree_immortal_log
+    NL| endmagic:ender_tree_natural_log
+    PL| endmagic:ender_tree_phantom_log
+    DP| endmagic:ender_tree_dragon_planks
+    IP| endmagic:ender_tree_immortal_planks
+    NP| endmagic:ender_tree_natural_planks
+    PP| endmagic:ender_tree_phantom_planks
 
 }
 
@@ -44,10 +44,10 @@ id_map{
                                     EB,compass, EB;
                                     e,    EB,   e)
 
-    4x endmagic:ender_tree_planks| shapeless(DL)
-    4x endmagic:ender_tree_planks:1| shapeless(IL)
-    4x endmagic:ender_tree_planks:2| shapeless(NL)
-    4x endmagic:ender_tree_planks:3| shapeless(PL)
+    4x endmagic:ender_tree_dragon_planks| shapeless(DL)
+    4x endmagic:ender_tree_immortal_planks| shapeless(IL)
+    4x endmagic:ender_tree_natural_planks| shapeless(NL)
+    4x endmagic:ender_tree_phantom_planks| shapeless(PL)
 
     6x endmagic:ender_tree_slab| shaped(DP,DP,DP)
     6x endmagic:ender_tree_slab:1| shaped(IP,IP,IP)
