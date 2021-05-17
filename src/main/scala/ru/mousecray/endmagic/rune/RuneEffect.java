@@ -15,7 +15,7 @@ public class RuneEffect {
     }
 
     public double calculateRunePower(long inscribingTimeMillis) {
-        return 1000d * 60 / inscribingTimeMillis; // 60 sec - 1 power
+        return 1000d * 60 * 2 / inscribingTimeMillis; // 2 min - 1 power
     }
 
     public void onInscribed(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {
