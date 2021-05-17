@@ -24,6 +24,7 @@ public class EMItems {
     public static final ItemNamed rawEnderite = new ItemNamed("raw_enderite");
     public static final Item enderCompass = new EnderCompass();
     public static final RuneShaper runeShaper = new RuneShaper();
+    public static final RuneEraser runeEraser = new RuneEraser();
     public static final ItemPortalBinder itemPortalBinder = new ItemPortalBinder();
     public static final Item purpleEnderPearl = new PurpleEnderPearl();
     public static final Item blueEnderPearl = new BlueEnderPearl();
