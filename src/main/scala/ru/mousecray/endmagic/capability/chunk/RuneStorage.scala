@@ -43,7 +43,7 @@ class RuneStorage extends Capability.IStorage[IRuneChunkCapability] {
               )
               newRune.averageCreatingTime = runeNbt.getLong("averageCreatingTime")
               newRune.startingTime = runeNbt.getLong("startingTime")
-              newRune.runeEffect = RuneEffectRegistry.instance.getByName(runeNbt.getString("runeEffect"))
+              newRune.runeEffect = RuneEffectRegistry.instance.getByName(runeNbt.getString("runeEffect")).getRight
               newRune.runePower = runeNbt.getDouble("runePower")
           }
         }

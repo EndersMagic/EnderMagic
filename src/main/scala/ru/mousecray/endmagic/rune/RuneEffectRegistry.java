@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.rune;
 
 import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.capability.chunk.RunePart;
 import ru.mousecray.endmagic.rune.effects.LightRuneEffect;
 import ru.mousecray.endmagic.util.Vec2i;
@@ -52,14 +53,14 @@ public enum RuneEffectRegistry {
     }
 
     private Map<Map<Vec2i, RunePart>, RuneEffect> effects = new HashMap<>();
-    private Map<String, RuneEffect> effectByName = new HashMap<>();
+    private Map<String, Pair<Map<Vec2i, RunePart>, RuneEffect>> effectByName = new HashMap<>();
 
     public RuneEffect findEffect(Map<Vec2i, RunePart> parts) {
         return effects.getOrDefault(nailToCenter(parts), EmptyEffect);
     }
 
-    public RuneEffect getByName(String name) {
-        return effectByName.getOrDefault(name, EmptyEffect);
+    public Pair<Map<Vec2i, RunePart>, RuneEffect> getByName(String name) {
+        return effectByName.getOrDefault(name, Pair.of(null, EmptyEffect));
     }
 
     private Map<Vec2i, RunePart> nailToCenter(Map<Vec2i, RunePart> parts) {
@@ -85,7 +86,7 @@ public enum RuneEffectRegistry {
         effects.put(nailToCenter(rotate(parts)), effect);
         effects.put(nailToCenter(rotate(rotate(parts))), effect);
         effects.put(nailToCenter(rotate(rotate(rotate(parts)))), effect);
-        effectByName.put(effect.getName(), effect);
+        effectByName.put(effect.getName(), Pair.of(parts, effect));
     }
 
     private Map<Vec2i, RunePart> rotate(Map<Vec2i, RunePart> parts) {

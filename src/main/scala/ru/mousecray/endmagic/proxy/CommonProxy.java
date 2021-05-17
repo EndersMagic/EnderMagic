@@ -41,10 +41,11 @@ import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.init.EMRecipes;
 import ru.mousecray.endmagic.init.util.ClassFieldSource;
 import ru.mousecray.endmagic.init.util.ListSource;
-import ru.mousecray.endmagic.util.registry.ExplodeRecipe;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
+import ru.mousecray.endmagic.rune.RuneEffectRegistry;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
+import ru.mousecray.endmagic.util.registry.ExplodeRecipe;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.RecipeParser;
@@ -100,7 +101,7 @@ public class CommonProxy implements IGuiHandler {
         }, PhantomAvoidingGroupCapability::new);
 
         CapabilityManager.INSTANCE.register(IRuneChunkCapability.class, new RuneStorage(), CommonRuneChunkCapability::new);
-        CapabilityManager.INSTANCE.register(EmCapability.class, new EmCapabilityStorage(), ()->null);
+        CapabilityManager.INSTANCE.register(EmCapability.class, new EmCapabilityStorage(), () -> null);
     }
 
     private void registerBlock(Block block) {
@@ -186,6 +187,8 @@ public class CommonProxy implements IGuiHandler {
         GameRegistry.registerWorldGenerator(new WorldGenEnderTrees(), 10);
         GameRegistry.registerWorldGenerator(new WorldGenEnderPlants(), 5);
         GameRegistry.registerWorldGenerator(new WorldGenEnderOres(), 5);
+
+        RuneEffectRegistry.values();
     }
 
     public void postInit(FMLPostInitializationEvent event) {
