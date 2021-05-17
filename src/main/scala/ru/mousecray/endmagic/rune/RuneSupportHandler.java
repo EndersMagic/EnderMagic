@@ -62,7 +62,7 @@ public class RuneSupportHandler {
 
     private static void notifyRuneAboutNeighborChange(RuneState runeState, World world, BlockPos runePos, EnumFacing runeSide) {
         Rune rune = runeState.getRuneAtSide(runeSide);
-        rune.runeEffect().onNeighborChange(world, runePos, runeSide, rune.runePower());
+        rune.runeEffect().onNeighborChange(world, runePos, runeSide, RuneIndex.getRuneTarget(runeState, runePos, runeSide), rune.runePower());
     }
 
     @SubscribeEvent
@@ -78,7 +78,7 @@ public class RuneSupportHandler {
                         for (EnumFacing facing : EnumFacing.values()) {
                             Rune runeAtSide = runeState.getRuneAtSide(facing);
                             if (runeAtSide.runeEffect() != RuneEffect.EmptyEffect)
-                                runeAtSide.runeEffect().onUpdate(event.world, pos, facing, runeAtSide.runePower());
+                                runeAtSide.runeEffect().onUpdate(event.world, pos, facing, RuneIndex.getRuneTarget(runeState, pos, facing), runeAtSide.runePower());
                         }
                     }
                 }

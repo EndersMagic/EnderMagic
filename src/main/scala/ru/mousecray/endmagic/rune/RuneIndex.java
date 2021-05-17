@@ -51,7 +51,7 @@ public class RuneIndex {
                 Rune runeAtSide = runeState.getRuneAtSide(side);
                 double runePower = runeAtSide.runeEffect().calculateRunePower(runeAtSide.averageCreatingTime());
                 runeAtSide.runePower_$eq(runePower);
-                runeAtSide.runeEffect().onInscribed(world, pos, side, runePower);
+                runeAtSide.runeEffect().onInscribed(world, pos, side, getRuneTarget(runeState, pos, side), runePower);
             }
             EM.proxy.refreshChunk(world, pos);
             if (!world.isRemote)
@@ -80,5 +80,9 @@ public class RuneIndex {
 
     public static IRuneChunkCapability getCapability(Chunk chunk) {
         return chunk.getCapability(runeStateCapability, EnumFacing.UP);
+    }
+
+    public static BlockPos getRuneTarget(RuneState runeState, BlockPos runePos, EnumFacing runeSide) {
+        return runePos.offset(runeSide);
     }
 }
