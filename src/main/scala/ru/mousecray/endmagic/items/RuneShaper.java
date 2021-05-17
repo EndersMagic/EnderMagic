@@ -8,10 +8,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.capability.chunk.Rune;
-import ru.mousecray.endmagic.rune.RuneEffect;
-import ru.mousecray.endmagic.rune.RuneEffectRegistry;
+import ru.mousecray.endmagic.capability.chunk.RunePart;
 import ru.mousecray.endmagic.rune.RuneIndex;
+import ru.mousecray.endmagic.util.Vec2i;
 import scala.collection.JavaConversions;
+
+import java.util.Map;
 
 public class RuneShaper extends Item {
     @Override
@@ -21,7 +23,10 @@ public class RuneShaper extends Item {
     }
 
     private void println(Rune rune) {
-        RuneEffectRegistry.instance.addEffect(JavaConversions.mapAsJavaMap(rune.parts()), new RuneEffect());
-        System.out.println(rune.parts());
+        Map<Vec2i, RunePart> parts = JavaConversions.mapAsJavaMap(rune.parts());
+        StringBuilder useful = new StringBuilder("ImmutableMap.build()\n");
+        parts.forEach((coord, part) -> useful.append(".add(new Vec2i(" + coord.x + ", " + coord.y + "), new RunePart(" + part.color() + "))\n"));
+        useful.append(".build()\n");
+        System.out.println(useful.toString());
     }
 }
