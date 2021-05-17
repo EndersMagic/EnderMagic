@@ -1,7 +1,6 @@
 package ru.mousecray.endmagic.rune;
 
 import ru.mousecray.endmagic.capability.chunk.RunePart;
-import ru.mousecray.endmagic.rune.effects.*;
 import ru.mousecray.endmagic.util.Vec2i;
 
 import java.util.Collections;
@@ -43,6 +42,8 @@ public enum RuneEffectRegistry {
     }
 
     public void addEffect(Map<Vec2i, RunePart> parts, RuneEffect effect) {
+        if (parts.isEmpty())
+            throw new IllegalArgumentException("Parts of rune must have at least of one part");
         effects.put(nailToCenter(parts), effect);
         effects.put(nailToCenter(rotate(parts)), effect);
         effects.put(nailToCenter(rotate(rotate(parts))), effect);
