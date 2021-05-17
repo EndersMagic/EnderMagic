@@ -33,8 +33,8 @@ public class HeatCatalystEffect extends RuneEffect {
             if (tile.isBurning() && canSmelt(tile))
                 setCookTime(tile, Math.min(getCookTime(tile) + (int) (runePower * 10), getTotalCookTime(tile)));
         } else if (world.rand.nextInt(10) == 0)
-            world.spawnParticle(EnumParticleTypes.FLAME,
-                    runePos.getX() + 0.5, runePos.getY() + 0.5, runePos.getZ() + 0.5,
+            world.spawnParticle(EnumParticleTypes.LAVA,
+                    runePos.getX() + 0.5, runePos.getY() + 0.9, runePos.getZ() + 0.5,
                     world.rand.nextGaussian() / 10, 1, world.rand.nextGaussian() / 10);
     }
 
