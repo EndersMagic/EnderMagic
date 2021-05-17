@@ -18,7 +18,36 @@ public enum RuneEffectRegistry {
     instance;
 
     RuneEffectRegistry() {
-        //addEffect(new HashMap<>(), new LightRuneEffect());
+        addEffect(ImmutableMap.<Vec2i, RunePart>builder()
+                .put(new Vec2i(2, 9), new RunePart(Fire))
+                .put(new Vec2i(11, 8), new RunePart(Fire))
+                .put(new Vec2i(3, 8), new RunePart(Fire))
+                .put(new Vec2i(4, 7), new RunePart(Fire))
+                .put(new Vec2i(5, 6), new RunePart(Fire))
+                .put(new Vec2i(9, 7), new RunePart(Fire))
+                .put(new Vec2i(8, 8), new RunePart(Fire))
+                .put(new Vec2i(8, 11), new RunePart(Fire))
+                .put(new Vec2i(14, 7), new RunePart(Fire))
+                .put(new Vec2i(8, 5), new RunePart(Fire))
+                .put(new Vec2i(11, 4), new RunePart(Fire))
+                .put(new Vec2i(1, 9), new RunePart(Fire))
+                .put(new Vec2i(13, 5), new RunePart(Fire))
+                .put(new Vec2i(6, 9), new RunePart(Fire))
+                .put(new Vec2i(7, 5), new RunePart(Fire))
+                .put(new Vec2i(14, 6), new RunePart(Fire))
+                .put(new Vec2i(6, 6), new RunePart(Fire))
+                .put(new Vec2i(11, 12), new RunePart(Fire))
+                .put(new Vec2i(10, 4), new RunePart(Fire))
+                .put(new Vec2i(12, 11), new RunePart(Fire))
+                .put(new Vec2i(13, 10), new RunePart(Fire))
+                .put(new Vec2i(10, 7), new RunePart(Fire))
+                .put(new Vec2i(10, 10), new RunePart(Fire))
+                .put(new Vec2i(9, 11), new RunePart(Fire))
+                .put(new Vec2i(9, 5), new RunePart(Fire))
+                .put(new Vec2i(5, 9), new RunePart(Fire))
+                .put(new Vec2i(12, 4), new RunePart(Fire))
+                .put(new Vec2i(7, 10), new RunePart(Fire))
+                .build(), new LightRuneEffect());
         //addEffect(new HashMap<>(), new HeatCatalystEffect());
     }
 
