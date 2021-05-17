@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.Side
 import ru.mousecray.endmagic.capability.chunk.Rune.Recess
 import ru.mousecray.endmagic.capability.chunk.client._
-import ru.mousecray.endmagic.rune.RuneEffectRegistry
+import ru.mousecray.endmagic.rune.{RuneEffect, RuneEffectRegistry}
 import ru.mousecray.endmagic.util.Vec2i
 
 import scala.collection.JavaConverters._
@@ -29,7 +29,7 @@ class RuneState {
     val rune = runes(side)
     if (!rune.parts.contains(coord)) {
       rune.parts += (coord -> runePart)
-      rune.runeEffect = RuneEffectRegistry.findEffect(rune.parts.asJava)
+      rune.runeEffect = RuneEffectRegistry.instance.findEffect(rune.parts.asJava)
 
       if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT) {
         incrementTopQuadsData(rune, coord, runePart)

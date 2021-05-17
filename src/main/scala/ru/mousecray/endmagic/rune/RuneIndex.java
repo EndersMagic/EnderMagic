@@ -47,8 +47,12 @@ public class RuneIndex {
             IRuneChunkCapability capability = getCapability(world, pos);
             RuneState runeState = capability.createRuneStateIfAbsent(pos);
             boolean isRuneFinished = runeState.addRunePart(side, coord, part, System.currentTimeMillis(), AddPartReason.INSCRIBING);
-            if (isRuneFinished)
-                runeState.getRuneAtSide(side).runeEffect().onInscribed(world, pos, side);
+            if (isRuneFinished) {
+                Rune runeAtSide = runeState.getRuneAtSide(side);
+                double runePower = runeAtSide.runeEffect().calculateRunePower(runeAtSide.averageCreatingTime());
+                runeAtSide.runePower_$eq(runePower);
+                runeAtSide.runeEffect().onInscribed(world, pos, side, runePower);
+            }
             EM.proxy.refreshChunk(world, pos);
             if (!world.isRemote)
                 PacketTypes.ADDED_RUNE_PART.packet()

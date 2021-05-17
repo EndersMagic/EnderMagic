@@ -3,8 +3,9 @@ package ru.mousecray.endmagic.capability.chunk
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.Side
 import ru.mousecray.endmagic.capability.chunk.Rune.Recess
-import ru.mousecray.endmagic.capability.chunk.RuneEffect.EmptyEffect
 import ru.mousecray.endmagic.capability.chunk.client._
+import ru.mousecray.endmagic.rune.RuneEffect
+import ru.mousecray.endmagic.rune.RuneEffect.EmptyEffect
 import ru.mousecray.endmagic.util.Vec2i
 
 import scala.collection.mutable
@@ -12,6 +13,7 @@ import scala.collection.mutable
 class Rune {
   val parts = new mutable.HashMap[Vec2i, RunePart]
   var runeEffect: RuneEffect = EmptyEffect
+  var runePower: Double = 0
   var averageCreatingTime: Long = Long.MaxValue
   var startingTime: Long = -1
   private val recessQuadsMatrix: Array[Array[Recess]] = new Array[Array[Recess]](16).map(_ => new Array[Recess](16))

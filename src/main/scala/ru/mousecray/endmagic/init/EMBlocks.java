@@ -28,6 +28,8 @@ public final class EMBlocks {
 
     public static final BlockCurseBush blockCurseBush = new BlockCurseBush();
 
+    public static final BlockLight blockLight = new BlockLight();
+
     public static final BlockEnderCoal dragonCoal = new BlockEnderCoal("dragon_coal_block", RGBA.fromRGB(0xff00ff));
     public static final BlockEnderCoal naturalCoal = new BlockEnderCoal("natural_coal_block", RGBA.fromRGB(0xffaa00));
     public static final BlockEnderCoal phantomCoal = new BlockEnderCoal("phantom_coal_block", RGBA.fromRGBA(0x0000ffaa));

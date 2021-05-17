@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.Side
+import ru.mousecray.endmagic.rune.RuneEffect
 import ru.mousecray.endmagic.util.Java2Scala._
 import ru.mousecray.endmagic.util.Vec2i
 
