@@ -1,8 +1,6 @@
 package ru.mousecray.endmagic.client.render.rune
 
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap
 import net.minecraft.client.Minecraft
-import net.minecraft.client.multiplayer.ChunkProviderClient
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats
 import net.minecraft.client.renderer.{GlStateManager, Tessellator}
@@ -26,8 +24,7 @@ import scala.language.implicitConversions
 class RuneTopLayerRenderer {
   private val mc: Minecraft = Minecraft.getMinecraft
 
-  private def getLoadedChunks =
-    mc.world.getChunkProvider.chunkMapping.values().iterator()
+  private def getLoadedChunks = mc.world.getChunkProvider.chunkMapping.values().iterator()
 
   @SubscribeEvent
   def onWorldRender(e: RenderWorldLastEvent): Unit = {

@@ -46,7 +46,9 @@ public enum RuneColor {
         return name() + "(" + r + ", " + g + ", " + b + ")";
     }
 
-    public ResourceLocation getBackgroundTexture(double count) {
-        return ResourcesUtils.texture("gui/indication/" + name() + "/" + ((int) count * 10) + ".png");
+    public ResourceLocation getBackgroundTexture(double count, double maxCount) {
+        count *= 10;
+        count /= maxCount;
+        return new ResourceLocation(EM.ID, "textures/gui/indication/" + name() + "/" + ((int) count) + ".png");
     }
 }

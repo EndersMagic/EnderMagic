@@ -26,6 +26,7 @@ import ru.mousecray.endmagic.util.ResourcesUtils;
 import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -195,40 +196,28 @@ public class EmOverlayIndicator extends Gui {
 
     }
 
-    private static void renderIndicator(float colorAlpha) {
-        ScaledResolution scaledresolution = new ScaledResolution(mc());
-        int screenWidth = scaledresolution.getScaledWidth();
-        int screenHeight = scaledresolution.getScaledHeight();
-        FontRenderer fontrenderer = mc().fontRenderer;
+    private static final double[] scaleToSize = { 64, 64 * 1.5, 128, 128 * 1.5, 256 };
+
+    private static void renderIndicator(float colorAlpha)
+    {
+        int screenWidth = new ScaledResolution(mc()).getScaledWidth();
 
         EmCapability capa = EmCapabilityProvider.getCapa(mc().player);
 
-        GlStateManager.depthMask(false);
-        GlStateManager.glLineWidth(10);
-        GlStateManager.disableTexture2D();
-        //GlStateManager.shadeModel(GL11.GL_SMOOTH);
         GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        GlStateManager.enableAlpha();
-        GlStateManager.alphaFunc(GL_GREATER, 0);
+        int size = (int) (scaleToSize[mc().gameSettings.guiScale] * screenWidth / 1920.0);
 
-        int size = (int) (150.0 * screenWidth / 1920.0);
-        /*
-        for (RuneColor color : RuneColor.values()) {
-            manager.bindTexture(color.getBackgroundTexture(capa.getEm(color) / (double) capa.getMaxEm(color)));
-            Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, size, size, 64, 64);
-        }
-        */
+        //for (RuneColor color : RuneColor.values()) {
+        //    mc().getTextureManager().bindTexture(color.getBackgroundTexture(capa.getEm(color) / (double) capa.getMaxEm(color)));
+        //    Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, size, size, size, size);
+        //}
 
         RuneColor color = RuneColor.Cold;
-        Minecraft.getMinecraft().getTextureManager().bindTexture(color.getBackgroundTexture(capa.getEm(color) / (double) capa.getMaxEm(color)));
+        Minecraft.getMinecraft().getTextureManager().bindTexture(color.getBackgroundTexture(capa.getEm(color), capa.getMaxEm(color)));
         drawModalRectWithCustomSizedTexture(0, 0, 0, 0, size, size, size, size);
 
-        Minecraft.getMinecraft().getTextureManager().bindTexture(ResourcesUtils.texture("gui/indication/active_" + color.name() + ".png"));
-        drawModalRectWithCustomSizedTexture(size + 10, 0, 0, 0, size, size, size, size);
-
-        GlStateManager.enableTexture2D();
-        GlStateManager.depthMask(true);
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(EM.ID, "textures/gui/indication/active_cold.png"));
+        drawModalRectWithCustomSizedTexture(0, 0, 0, 0, size, size, size, size);
     }
 
     private static Minecraft mc() {
