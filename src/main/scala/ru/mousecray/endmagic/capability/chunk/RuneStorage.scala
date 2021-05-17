@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.Side
-import ru.mousecray.endmagic.rune.RuneEffect
+import ru.mousecray.endmagic.rune.{RuneEffect, RuneEffectRegistry}
 import ru.mousecray.endmagic.util.Java2Scala._
 import ru.mousecray.endmagic.util.Vec2i
 
@@ -37,13 +37,14 @@ class RuneStorage extends Capability.IStorage[IRuneChunkCapability] {
               val nbtParts = runeNbt.getCompoundTag("parts")
               nbtParts.getKeySet.asScala.foreach(key =>
                 if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
-                  newState.addRunePart(side, string2vec2i(key), nbtToTunePart(nbtParts.getByte(key)), 0,AddPartReason.LOADING)
+                  newState.addRunePart(side, string2vec2i(key), nbtToTunePart(nbtParts.getByte(key)), 0, AddPartReason.LOADING)
                 else
                   newRune.parts += string2vec2i(key) -> nbtToTunePart(nbtParts.getByte(key))
               )
               newRune.averageCreatingTime = runeNbt.getLong("averageCreatingTime")
               newRune.startingTime = runeNbt.getLong("startingTime")
-              newRune.runeEffect = nbtToRuneEffect(runeNbt.getTag("runeEffect"))
+              newRune.runeEffect = RuneEffectRegistry.instance.getByName(runeNbt.getString("runeEffect"))
+              newRune.runePower = runeNbt.getDouble("runePower")
           }
         }
       case _ =>
@@ -55,7 +56,8 @@ class RuneStorage extends Capability.IStorage[IRuneChunkCapability] {
 
     nbt.setLong("averageCreatingTime", rune.averageCreatingTime)
     nbt.setLong("startingTime", rune.startingTime)
-    nbt.setString("runeEffect", rune.runeEffect.toString)
+    nbt.setString("runeEffect", rune.runeEffect.getName)
+    nbt.setDouble("runePower", rune.runePower)
 
     val partsNBT = new NBTTagCompound
     rune.parts.foreach { case (coord, part) => partsNBT.setTag(vec2i2string(coord), runePartToNBT(part)) }
