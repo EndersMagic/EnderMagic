@@ -6,12 +6,11 @@ import net.minecraft.item.ItemStack;
 import ru.mousecray.endmagic.EM;
 
 import java.util.Map;
-import java.util.Optional;
 
 public class ShiningQuartz extends Item implements ItemTextured {
     @Override
     public Map<String, Integer> textures() {
-        return ImmutableMap.of(EM.ID + ":items/shining_quartz", 0xffffffff, EM.ID + ":items/shining_quartz_shine", 0x3cffffff);
+        return ImmutableMap.of(EM.ID + ":items/shining_quartz", 0x3cffffff);
     }
 
 
