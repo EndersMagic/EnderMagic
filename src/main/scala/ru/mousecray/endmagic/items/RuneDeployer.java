@@ -11,18 +11,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.rune.RuneEffectRegistry;
 import ru.mousecray.endmagic.rune.RuneIndex;
+import ru.mousecray.endmagic.rune.effects.HeatCatalystEffect;
+import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 
 public class RuneDeployer extends Item {
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
             if (player.isSneaking()) {
+                RuneEffectRegistry.instance.getByName(NameAndTabUtils.getName(HeatCatalystEffect.class)).getLeft()
+                        .forEach((coord, part) -> RuneIndex.addRunePart(world, pos, facing, coord, part));
+            } else {
                 ItemStack item = player.getHeldItem(hand);
                 if (!item.hasTagCompound())
                     item.setTagCompound(new NBTTagCompound());
-            } else {
-                RuneEffectRegistry.instance.getByName("heat_catalyst_effect").getLeft()
-                        .forEach((coord, part) -> RuneIndex.addRunePart(world, pos, facing, coord, part));
             }
         }
         return EnumActionResult.SUCCESS;
