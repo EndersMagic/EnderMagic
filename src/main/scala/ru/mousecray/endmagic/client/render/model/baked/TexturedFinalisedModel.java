@@ -68,7 +68,10 @@ public class TexturedFinalisedModel extends BakedModelDelegate {
 
     @Override
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-        return getQuads();
+        if (side == null)
+            return getQuads();
+        else
+            return ImmutableList.of();
     }
 
     @Override
