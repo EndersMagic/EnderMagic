@@ -1,6 +1,7 @@
 package ru.mousecray.endmagic.rune;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.init.Items;
 import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.capability.chunk.RunePart;
 import ru.mousecray.endmagic.rune.effects.LightRuneEffect;
