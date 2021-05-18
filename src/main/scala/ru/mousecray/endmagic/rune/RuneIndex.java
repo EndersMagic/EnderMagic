@@ -46,7 +46,7 @@ public class RuneIndex {
         if (coord.y >= 1 && coord.y <= 14 && coord.x >= 1 && coord.x <= 14) {
             IRuneChunkCapability capability = getCapability(world, pos);
             RuneState runeState = capability.createRuneStateIfAbsent(pos);
-            boolean isRuneFinished = runeState.addRunePart(side, coord, part, System.currentTimeMillis(), AddPartReason.INSCRIBING);
+            boolean isRuneFinished = runeState.addRunePart(side, coord, part, System.currentTimeMillis());
             if (isRuneFinished) {
                 Rune runeAtSide = runeState.getRuneAtSide(side);
                 double runePower = runeAtSide.runeEffect().calculateRunePower(runeAtSide.averageCreatingTime());

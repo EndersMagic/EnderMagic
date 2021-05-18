@@ -25,33 +25,36 @@ class RuneState {
   /**
     * return true if rune finished
     */
-  def addRunePart(side: EnumFacing, coord: Vec2i, runePart: RunePart, currentTimeMillis: Long, reason: AddPartReason): Boolean = {
+  def addRunePart(side: EnumFacing, coord: Vec2i, runePart: RunePart, currentTimeMillis: Long): Boolean = {
     val rune = runes(side)
     if (!rune.parts.contains(coord)) {
       rune.parts += (coord -> runePart)
-      rune.runeEffect = RuneEffectRegistry.instance.findEffect(rune.parts.asJava)
+      val foundEffect = RuneEffectRegistry.instance.findEffect(rune.parts.asJava)
+      //if(foundEffect.isValidTarget())
+      rune.runeEffect = foundEffect
 
-      if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT) {
-        incrementTopQuadsData(rune, coord, runePart)
+      if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
         incrementQuadsData(rune, coord, runePart)
-      }
 
       if (rune.parts.size == 1)
         rune.startingTime = currentTimeMillis
       else if (rune.runeEffect != RuneEffect.EmptyEffect) {
         rune.averageCreatingTime = (currentTimeMillis - rune.startingTime) / rune.parts.size
-        if (reason == AddPartReason.INSCRIBING) {
-          if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
-            rune.splashAnimation = 0
-          return true
-        }
+        if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
+          rune.splashAnimation = 0
+        return true
       }
     }
     false
   }
 
+  def incrementQuadsData(rune: Rune, coord: Vec2i, runePart: RunePart): Unit = {
+    incrementTopQuadsData(rune, coord, runePart)
+    incrementRecessQuadsData(rune, coord, runePart)
+  }
 
-  def incrementTopQuadsData(rune: Rune, vec2i: Vec2i, part: RunePart): Unit = {
+
+  private def incrementTopQuadsData(rune: Rune, vec2i: Vec2i, part: RunePart): Unit = {
     val prevTopPiece = rune.topQuadMatrix(vec2i.x)(vec2i.y)
     val newTopPieces = prevTopPiece.splitBy(vec2i)
     newTopPieces.foreach(piece =>
@@ -64,7 +67,7 @@ class RuneState {
     rune.topQuadData ++= newTopPieces
   }
 
-  def incrementQuadsData(rune: Rune, vec2i: Vec2i, part: RunePart): Unit = {
+  private def incrementRecessQuadsData(rune: Rune, vec2i: Vec2i, part: RunePart): Unit = {
     val (x, y) = (vec2i.x, vec2i.y)
 
     val targetRecess = new Recess

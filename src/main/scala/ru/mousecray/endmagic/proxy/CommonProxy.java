@@ -100,7 +100,7 @@ public class CommonProxy implements IGuiHandler {
             }
         }, PhantomAvoidingGroupCapability::new);
 
-        CapabilityManager.INSTANCE.register(IRuneChunkCapability.class, new RuneStorage(), CommonRuneChunkCapability::new);
+        CapabilityManager.INSTANCE.register(IRuneChunkCapability.class, new RuneStorage(), () -> null);
         CapabilityManager.INSTANCE.register(EmCapability.class, new EmCapabilityStorage(), () -> null);
     }
 

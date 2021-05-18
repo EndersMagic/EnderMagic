@@ -35,12 +35,13 @@ class RuneStorage extends Capability.IStorage[IRuneChunkCapability] {
               val runeNbt = runeStateNbt.getCompoundTag(sideName)
               val newRune = newState.getRuneAtSide(side)
               val nbtParts = runeNbt.getCompoundTag("parts")
-              nbtParts.getKeySet.asScala.foreach(key =>
+              nbtParts.getKeySet.asScala.foreach { key =>
+                val coord = string2vec2i(key)
+                val runePart = nbtToTunePart(nbtParts.getByte(key))
+                newRune.parts += coord -> runePart
                 if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
-                  newState.addRunePart(side, string2vec2i(key), nbtToTunePart(nbtParts.getByte(key)), 0, AddPartReason.LOADING)
-                else
-                  newRune.parts += string2vec2i(key) -> nbtToTunePart(nbtParts.getByte(key))
-              )
+                  newState.incrementQuadsData(newRune, coord, runePart)
+              }
               newRune.averageCreatingTime = runeNbt.getLong("averageCreatingTime")
               newRune.startingTime = runeNbt.getLong("startingTime")
               newRune.runeEffect = RuneEffectRegistry.instance.getByName(runeNbt.getString("runeEffect")).getRight
