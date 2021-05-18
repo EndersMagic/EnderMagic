@@ -14,12 +14,13 @@ public class RuneEffect {
         return true;
     }
 
-    public double calculateRunePower(long inscribingTimeMillis) {
-        return 1000d * 60 * 2 / inscribingTimeMillis; // 2 min - 1 power
+    public double calculateRunePower(long averageInscribingTimeMillis) {
+        System.out.println("inscribingTimeMillis " + averageInscribingTimeMillis);
+        return 1d / averageInscribingTimeMillis;
     }
 
     public void onInscribed(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {
-        System.out.println("Rune inscribed!");
+        System.out.println("Rune inscribed! Power: " + runePower);
     }
 
     public void onNeighborChange(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {

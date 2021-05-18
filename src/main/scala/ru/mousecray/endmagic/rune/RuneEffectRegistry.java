@@ -3,7 +3,7 @@ package ru.mousecray.endmagic.rune;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.capability.chunk.RunePart;
-import ru.mousecray.endmagic.rune.effects.LightRuneEffect;
+import ru.mousecray.endmagic.rune.effects.HeatCatalystEffect;
 import ru.mousecray.endmagic.util.Vec2i;
 
 import java.util.Collections;
@@ -48,8 +48,8 @@ public enum RuneEffectRegistry {
                 .put(new Vec2i(5, 9), new RunePart(Fire))
                 .put(new Vec2i(12, 4), new RunePart(Fire))
                 .put(new Vec2i(7, 10), new RunePart(Fire))
-                .build(), new LightRuneEffect());
-        //addEffect(new HashMap<>(), new HeatCatalystEffect());
+                .build(), new HeatCatalystEffect());
+        //addEffect(new HashMap<>(), new LightRuneEffect());
     }
 
     private Map<Map<Vec2i, RunePart>, RuneEffect> effects = new HashMap<>();

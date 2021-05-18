@@ -13,6 +13,9 @@ import ru.mousecray.endmagic.rune.RuneEffect;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class HeatCatalystEffect extends RuneEffect {
 
 
@@ -30,8 +33,11 @@ public class HeatCatalystEffect extends RuneEffect {
     public void onUpdate(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {
         if (!world.isRemote) {
             TileEntityFurnace tile = (TileEntityFurnace) world.getTileEntity(runePos);
-            if (tile.isBurning() && canSmelt(tile))
-                setCookTime(tile, Math.min(getCookTime(tile) + (int) (runePower * 10), getTotalCookTime(tile)));
+            if (tile.isBurning() && canSmelt(tile)) {
+                int newTotalCookTime = max(1, (int) (tile.getCookTime(tile.getStackInSlot(0)) / (runePower * 200 + 1)));
+                setTotalCookTime(tile, newTotalCookTime);
+                setCookTime(tile, min(getCookTime(tile), newTotalCookTime - 1));
+            }
         } else if (world.rand.nextInt(10) == 0)
             world.spawnParticle(EnumParticleTypes.LAVA,
                     runePos.getX() + 0.5, runePos.getY() + 0.9, runePos.getZ() + 0.5,
@@ -44,6 +50,10 @@ public class HeatCatalystEffect extends RuneEffect {
 
     private int getCookTime(TileEntityFurnace tile) {
         return tile.getField(2);
+    }
+
+    private void setTotalCookTime(TileEntityFurnace tile, int totalCookTime) {
+        tile.setField(3, totalCookTime);
     }
 
     private int getTotalCookTime(TileEntityFurnace tile) {
