@@ -1,6 +1,8 @@
 package ru.mousecray.endmagic.capability.chunk
 
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.Side
 import ru.mousecray.endmagic.capability.chunk.Rune.Recess
@@ -25,13 +27,14 @@ class RuneState {
   /**
     * return true if rune finished
     */
-  def addRunePart(side: EnumFacing, coord: Vec2i, runePart: RunePart, currentTimeMillis: Long): Boolean = {
+  def addRunePart(side: EnumFacing, coord: Vec2i, runePart: RunePart, currentTimeMillis: Long, world: World, pos: BlockPos): Boolean = {
     val rune = runes(side)
     if (!rune.parts.contains(coord)) {
       rune.parts += (coord -> runePart)
       val foundEffect = RuneEffectRegistry.instance.findEffect(rune.parts.asJava)
-      //if(foundEffect.isValidTarget())
-      rune.runeEffect = foundEffect
+      val block = world.getBlockState(pos)
+      if (foundEffect.isValidTarget(block, world, pos))
+        rune.runeEffect = foundEffect
 
       if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
         incrementQuadsData(rune, coord, runePart)
