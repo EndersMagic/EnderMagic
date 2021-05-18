@@ -29,6 +29,10 @@ public interface ItemTextured extends IExtendedProperties {
 
     Map<String, Integer> textures();
 
+    default int glintMultiplier() {
+        return 1;
+    }
+
     @SideOnly(Side.CLIENT)
     default javax.vecmath.Matrix4f handlePerspective(IBakedModel model, ItemCameraTransforms.TransformType cameraTransformType) {
         return Minecraft.getMinecraft().getRenderItem()

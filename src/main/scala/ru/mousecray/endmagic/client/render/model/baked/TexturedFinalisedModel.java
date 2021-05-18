@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class TexturedFinalisedModel extends BakedModelDelegate {
     private final ItemTextured item;
@@ -56,6 +57,7 @@ public class TexturedFinalisedModel extends BakedModelDelegate {
                                                 v.setPos(v.getPos().scale(1 + index * decalConstant).addVector(0, 0, index * -decalConstant / 2));
                                             }))
                                     .map(quad -> quad.pack(DefaultVertexFormats.ITEM))
+                                    .flatMap(quad -> Stream.generate(() -> quad).limit(item.glintMultiplier()))
                     )
                             .flatMap(i -> i)
                             .collect(ImmutableList.toImmutableList());

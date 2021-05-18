@@ -8,21 +8,23 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.Pair;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.items.ItemTextured;
 
-import javax.vecmath.Matrix3d;
-import javax.vecmath.Matrix3f;
 import javax.vecmath.Matrix4f;
 import java.util.Map;
 
 public interface ItemTexturedTool extends ItemTextured {
     @Override
-	default Map<String, Integer> textures() {
+    default Map<String, Integer> textures() {
         return ImmutableMap.of(
                 stick(), 0xffffffff,
                 EM.ID + ":items/tools/colorless_" + toolType(), color());
+    }
+
+    @Override
+    default int glintMultiplier() {
+        return 7;
     }
 
     @SideOnly(Side.CLIENT)
