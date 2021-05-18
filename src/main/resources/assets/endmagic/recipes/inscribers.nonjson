@@ -1,0 +1,49 @@
+id_map{
+    f| minecraft:blaze_rod
+    e| minecraft:obsidian
+    a| endmagic:shining_quartz
+    c| minecraft:packed_ice
+    d| minecraft:skull:1
+    v| endmagic:phantom_diamond
+    eb| minecraft:experience_bottle
+    q| minecraft:quartz
+    E| endmagic:raw_enderite
+    g| minecraft:gold_nugget
+    G| minecraft:gold_ingot
+    D| minecraft:diamond
+    C| endmagic:conductive_core
+}
+
+inscribers{
+    endmagic:conductive_core| shaped(E,g,E;
+                                     g,D,E;
+                                     E,g,g)
+
+    endmagic:shining_quartz| shapeless(q,eb)
+
+
+    endmagic:base_inscriber_fire| shaped(_,E,G;
+                                         E,C,E;
+                                         f,E,_)
+
+    endmagic:base_inscriber_earth| shaped(_,E,G;
+                                         E,C,E;
+                                         e,E,_)
+
+    endmagic:base_inscriber_air| shaped(_,E,G;
+                                         E,C,E;
+                                         a,E,_)
+
+    endmagic:base_inscriber_cold| shaped(_,E,G;
+                                         E,C,E;
+                                         c,E,_)
+
+    endmagic:base_inscriber_darkness| shaped(_,E,G;
+                                             E,C,E;
+                                             d,E,_)
+
+    endmagic:base_inscriber_void| shaped(_,E,G;
+                                         E,C,E;
+                                         v,E,_)
+
+}
