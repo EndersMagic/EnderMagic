@@ -21,7 +21,6 @@ import ru.mousecray.endmagic.util.registry.IExtendedProperties;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
 import java.util.Map;
-import java.util.Optional;
 
 import static net.minecraftforge.common.model.TRSRTransformation.quatFromXYZDegrees;
 import static ru.mousecray.endmagic.util.ResourcesUtils.isModelExists;
@@ -29,10 +28,6 @@ import static ru.mousecray.endmagic.util.ResourcesUtils.isModelExists;
 public interface ItemTextured extends IExtendedProperties {
 
     Map<String, Integer> textures();
-
-    default Optional<String> glintTexturre() {
-        return Optional.empty();
-    }
 
     @SideOnly(Side.CLIENT)
     default javax.vecmath.Matrix4f handlePerspective(IBakedModel model, ItemCameraTransforms.TransformType cameraTransformType) {

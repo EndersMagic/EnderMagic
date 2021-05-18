@@ -14,10 +14,6 @@ public class ShiningQuartz extends Item implements ItemTextured {
         return ImmutableMap.of(EM.ID + ":items/shining_quartz", 0xffffffff, EM.ID + ":items/shining_quartz_shine", 0x3cffffff);
     }
 
-    @Override
-    public Optional<String> glintTexturre() {
-        return Optional.of(EM.ID + ":items/shining_quartz_glint_shape");
-    }
 
     @Override
     public boolean hasEffect(ItemStack stack) {
