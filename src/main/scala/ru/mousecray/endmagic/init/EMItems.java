@@ -32,6 +32,7 @@ public class EMItems {
     public static final Item enderApple = new EnderApple();
     public static final Item emBook = new EMBook();
     public static final Item test = new Test();
+    public static final ShiningQuartz shiningQuartz = new ShiningQuartz();
     //TODO: add custom end grass and remove STONE from this
     public static final Item enderSeeds = new EMSeeds(() -> EMBlocks.enderCrops, "ender_seeds", "tooltip.ender_seeds", EndSoilType.STONE, EndSoilType.GRASS);
     //@formatter:off
