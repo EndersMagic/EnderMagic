@@ -9,11 +9,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import ru.mousecray.endmagic.rune.RuneEffect;
+import ru.mousecray.endmagic.rune.RuneIndex;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 public class HeatCatalystEffect extends RuneEffect {
@@ -34,9 +34,11 @@ public class HeatCatalystEffect extends RuneEffect {
         if (!world.isRemote) {
             TileEntityFurnace tile = (TileEntityFurnace) world.getTileEntity(runePos);
             if (tile.isBurning() && canSmelt(tile)) {
-                int newTotalCookTime = max(1, (int) (tile.getCookTime(tile.getStackInSlot(0)) / (runePower * 200 + 1)));
+                int newTotalCookTime = tile.getCookTime(tile.getStackInSlot(0)) * 100;
+                int progressAddend = (int) (runePower * 1000);
+                int newCookProgress = min(getCookProgress(tile) + progressAddend + (isNeedStandardAddend(world, runePos, side) ? 99 : 0), newTotalCookTime - 1);
                 setTotalCookTime(tile, newTotalCookTime);
-                setCookTime(tile, min(getCookTime(tile), newTotalCookTime - 1));
+                setCookProgress(tile, newCookProgress);
             }
         } else if (world.rand.nextInt(10) == 0)
             world.spawnParticle(EnumParticleTypes.LAVA,
@@ -44,11 +46,18 @@ public class HeatCatalystEffect extends RuneEffect {
                     world.rand.nextGaussian() / 10, 1, world.rand.nextGaussian() / 10);
     }
 
-    private void setCookTime(TileEntityFurnace tile, int cookTime) {
+    private boolean isNeedStandardAddend(World world, BlockPos runePos, EnumFacing side) {
+        for (int i = side.ordinal() + 1; i < EnumFacing.values().length; i++)
+            if (RuneIndex.getRune(world, runePos, EnumFacing.values()[i]).filter(rune -> rune.runeEffect() == this).isPresent())
+                return false;
+        return true;
+    }
+
+    private void setCookProgress(TileEntityFurnace tile, int cookTime) {
         tile.setField(2, cookTime);
     }
 
-    private int getCookTime(TileEntityFurnace tile) {
+    private int getCookProgress(TileEntityFurnace tile) {
         return tile.getField(2);
     }
 
