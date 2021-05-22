@@ -33,8 +33,8 @@ public class HeatCatalystEffect extends RuneEffect {
     public void onUpdate(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {
         if (!world.isRemote) {
             TileEntityFurnace tile = (TileEntityFurnace) world.getTileEntity(runePos);
-            if (tile.isBurning() && canSmelt(tile)) {
-                int newTotalCookTime = max(1, (int) (tile.getCookTime(tile.getStackInSlot(0)) / (runePower * 200 + 1)));
+            if (isFurnaceStartSmelting(tile)) {
+                int newTotalCookTime = max(1, (int) (getTotalCookTime(tile) / (runePower * 200 + 1)));
                 setTotalCookTime(tile, newTotalCookTime);
                 setCookTime(tile, min(getCookTime(tile), newTotalCookTime - 1));
             }
@@ -42,6 +42,10 @@ public class HeatCatalystEffect extends RuneEffect {
             world.spawnParticle(EnumParticleTypes.LAVA,
                     runePos.getX() + 0.5, runePos.getY() + 0.9, runePos.getZ() + 0.5,
                     world.rand.nextGaussian() / 10, 1, world.rand.nextGaussian() / 10);
+    }
+
+    public boolean isFurnaceStartSmelting(TileEntityFurnace tile) {
+        return tile.isBurning() && canSmelt(tile) && getCookTime(tile)==1;
     }
 
     private void setCookTime(TileEntityFurnace tile, int cookTime) {
