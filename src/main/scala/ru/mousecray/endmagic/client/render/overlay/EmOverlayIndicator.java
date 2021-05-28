@@ -191,10 +191,9 @@ public class EmOverlayIndicator extends Gui {
 
     }
 
-    private static final double[] scaleToSize = { 64, 64 * 1.5, 128, 128 * 1.5, 256 };
+    private static final double[] scaleToSize = { 64 * 1.5, 128, 128 * 1.5, 256, 256 * 1.5 };
 
-    private static void renderIndicator(float colorAlpha)
-    {
+    private static void renderIndicator(float colorAlpha) {
         int screenWidth = new ScaledResolution(mc()).getScaledWidth();
 
         EmCapability capa = EmCapabilityProvider.getCapa(mc().player);
@@ -206,10 +205,6 @@ public class EmOverlayIndicator extends Gui {
             mc().getTextureManager().bindTexture(color.getBackgroundTexture(capa.getEm(color), capa.getMaxEm(color)));
             Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, size, size, size, size);
         }
-
-        RuneColor color = RuneColor.Cold;
-        Minecraft.getMinecraft().getTextureManager().bindTexture(color.getBackgroundTexture(capa.getEm(color), capa.getMaxEm(color)));
-        drawModalRectWithCustomSizedTexture(0, 0, 0, 0, size, size, size, size);
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(EM.ID, "textures/gui/indication/usori.png"));
         drawModalRectWithCustomSizedTexture(0, 0, 0, 0, size, size, size, size);
