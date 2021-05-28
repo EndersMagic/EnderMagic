@@ -1,13 +1,11 @@
 package ru.mousecray.endmagic.client.render.overlay;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -22,11 +20,8 @@ import ru.mousecray.endmagic.capability.player.EmCapability;
 import ru.mousecray.endmagic.capability.player.EmCapabilityProvider;
 import ru.mousecray.endmagic.items.inscribers.BaseInscriber;
 import ru.mousecray.endmagic.rune.RuneColor;
-import ru.mousecray.endmagic.util.ResourcesUtils;
-import ru.mousecray.endmagic.util.render.elix_x.ecomms.color.RGBA;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -207,16 +202,19 @@ public class EmOverlayIndicator extends Gui {
         GlStateManager.enableBlend();
         int size = (int) (scaleToSize[mc().gameSettings.guiScale] * screenWidth / 1920.0);
 
-        //for (RuneColor color : RuneColor.values()) {
-        //    mc().getTextureManager().bindTexture(color.getBackgroundTexture(capa.getEm(color) / (double) capa.getMaxEm(color)));
-        //    Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, size, size, size, size);
-        //}
+        for (RuneColor color : RuneColor.values()) {
+            mc().getTextureManager().bindTexture(color.getBackgroundTexture(capa.getEm(color), capa.getMaxEm(color)));
+            Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, size, size, size, size);
+        }
 
         RuneColor color = RuneColor.Cold;
         Minecraft.getMinecraft().getTextureManager().bindTexture(color.getBackgroundTexture(capa.getEm(color), capa.getMaxEm(color)));
         drawModalRectWithCustomSizedTexture(0, 0, 0, 0, size, size, size, size);
 
-        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(EM.ID, "textures/gui/indication/active_cold.png"));
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(EM.ID, "textures/gui/indication/usori.png"));
+        drawModalRectWithCustomSizedTexture(0, 0, 0, 0, size, size, size, size);
+
+        Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(EM.ID, "textures/gui/indication/active_" + activeColor.name() +  ".png"));
         drawModalRectWithCustomSizedTexture(0, 0, 0, 0, size, size, size, size);
     }
 
