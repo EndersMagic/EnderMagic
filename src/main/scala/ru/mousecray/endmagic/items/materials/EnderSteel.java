@@ -6,11 +6,13 @@ import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.items.ItemNamed;
 
 public class EnderSteel extends ItemNamed implements MaterialProvider {
+    private final int color;
     private final ToolMaterial material;
     private final ItemArmor.ArmorMaterial armorMaterial;
 
     public EnderSteel(String name, int color, ToolMaterial material, ItemArmor.ArmorMaterial armorMaterial) {
-        super(name, ImmutableMap.of(EM.ID + ":items/colorless_steel", color | 0xff000000));
+        super(name + "_steel", ImmutableMap.of(EM.ID + ":items/colorless_steel", color | 0xff000000));
+        this.color = color;
         this.material = material;
         this.armorMaterial = armorMaterial;
     }
@@ -24,5 +26,10 @@ public class EnderSteel extends ItemNamed implements MaterialProvider {
     @Override
     public ItemArmor.ArmorMaterial armorMaterial() {
         return armorMaterial;
+    }
+
+    @Override
+    public int color() {
+        return color;
     }
 }
