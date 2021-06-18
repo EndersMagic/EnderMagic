@@ -7,4 +7,6 @@ public interface MaterialProvider {
     Item.ToolMaterial material();
 
     ItemArmor.ArmorMaterial armorMaterial();
+
+    int color();
 }
