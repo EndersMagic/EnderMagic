@@ -43,7 +43,7 @@ public class EMItems {
     public static final ItemNamed naturalCoal = new EnderCoal("natural", naturalColor);
     public static final ItemNamed naturalSteel = new EnderSteel("natural", naturalColor, EMMaterials.NATURAL_STEEL_TOOL_MATERIAL, EMMaterials.NATURAL_STEEL_ARMOR_MATERIAL);
     public static final ItemNamed naturalDiamond = new EnderDiamond("natural", naturalColor, EMMaterials.NATURAL_DIAMOND_TOOL_MATERIAL);
-    private static final int phantomColor = new Color(0xA825CBB5,true).getRGB();
+    private static final int phantomColor = new Color(0xFF25B8CB,true).getRGB();
     public static final ItemNamed phantomCoal = new EnderCoal("phantom", phantomColor);
     public static final ItemNamed phantomSteel = new EnderSteel("phantom", phantomColor, EMMaterials.PHANTOM_STEEL_TOOL_MATERIAL, EMMaterials.PHANTOM_STEEL_ARMOR_MATERIAL);
     public static final ItemNamed phantomDiamond = new EnderDiamond("phantom", phantomColor, EMMaterials.PHANTOM_DIAMOND_TOOL_MATERIAL);
