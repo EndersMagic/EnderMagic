@@ -50,6 +50,8 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
 
         PortalState nextState();
 
+        String name();
+
         class Opened implements PortalState {
             int tickOpened;
             AxisAlignedBB portalArea;
@@ -74,6 +76,13 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
                 else
                     return this;
             }
+
+            public static final String name = "Opened";
+
+            @Override
+            public String name() {
+                return name;
+            }
         }
 
         PortalState Closed = new PortalState() {
@@ -85,6 +94,11 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
             @Override
             public PortalState nextState() {
                 return this;
+            }
+
+            @Override
+            public String name() {
+                return "Closed";
             }
         };
     }
@@ -183,21 +197,21 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
 
 
         String stateName = compound.getString("state");
-        if (stateName.equals(PortalState.Opened.class.getSimpleName().toLowerCase())) {
+        if (stateName.equals(PortalState.Opened.name)) {
             state = new PortalState.Opened(
                     compound.getInteger("tickOpened"),
                     new AxisAlignedBB(pos.up()).expand(0, compound.getInteger("height") - 1, 0),
                     Block.getBlockFromName(compound.getString("capMaterial")));
 
-        } else if (stateName.equals(PortalState.Closed.class.getSimpleName().toLowerCase())) {
-            state = new PortalState.Closed();
+        } else if (stateName.equals(PortalState.Closed.name())) {
+            state = PortalState.Closed;
         } else
             throw new IllegalArgumentException(String.format("unsupported state in nbt \"%s\"", stateName));
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        compound.setString("state", state.getClass().getSimpleName().toLowerCase());
+        compound.setString("state", state.name());
         if (state instanceof PortalState.Opened) {
             PortalState.Opened state = (PortalState.Opened) this.state;
             compound.setInteger("tickOpened", state.tickOpened);
