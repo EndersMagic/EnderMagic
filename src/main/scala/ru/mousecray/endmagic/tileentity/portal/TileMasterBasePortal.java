@@ -28,7 +28,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
     @Override
     public void neighborChanged() {
         if (state instanceof PortalState.Opened) {
-            if (checkBottomCap() != ((PortalState.Opened) state).capMaterial)
+            if (getkBottomCap() != ((PortalState.Opened) state).capMaterial)
                 closePortal();
         } else if (world.isBlockPowered(pos))
             checkAndOpenPortal();
@@ -36,7 +36,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
 
     public void notifyTopCapUpdate(BlockPos pos) {
         if (state instanceof PortalState.Opened)
-            if (!checkTopCap(pos, ((PortalState.Opened) state).capMaterial))
+            if (!isTopCapValid(pos, ((PortalState.Opened) state).capMaterial))
                 closePortal();
     }
 
@@ -131,7 +131,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
     }
 
     protected Optional<Pair<Integer, Block>> checkStructure() {
-        Block material = checkBottomCap();
+        Block material = getkBottomCap();
         if (material != Blocks.AIR) {
             int height = 0;
             BlockPos current = pos.up();
@@ -140,7 +140,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
                 current = current.up();
             }
 
-            if (world.getBlockState(current).getBlock() == EMBlocks.blockTopMark && checkTopCap(current, material))
+            if (world.getBlockState(current).getBlock() == EMBlocks.blockTopMark && isTopCapValid(current, material))
                 return Optional.of(Pair.of(height, material));
             else
                 return Optional.empty();
@@ -148,7 +148,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
             return Optional.empty();
     }
 
-    protected boolean checkTopCap(BlockPos topPos, Block material) {
+    protected boolean isTopCapValid(BlockPos topPos, Block material) {
         Set<Block> collect =
                 ImmutableList.of(topPos.up(), topPos.east(), topPos.south(), topPos.west(), topPos.north()).stream()
                         .map(p -> world.getBlockState(p).getBlock())
@@ -156,7 +156,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
         return collect.size() == 1 && collect.iterator().next() == material;
     }
 
-    protected Block checkBottomCap() {
+    protected Block getkBottomCap() {
         Set<Block> collect =
                 ImmutableList.of(pos.down(), pos.east(), pos.south(), pos.west(), pos.north()).stream()
                         .map(p -> world.getBlockState(p).getBlock())
