@@ -26,4 +26,13 @@ public class Configuration {
 
     @Config.Comment("How many Em need to inscribe one rune piece")
     public static int emPerRunePart = 10;
+
+    @Config.Comment("Runes will require reload by Em potion if this parameter is true")
+    public static boolean exhaustibleRuneResource = false;
+
+    @Config.Comment("How many times can be used rune with one part or how many minutes will be active. Full count of used or minutes is proportional to count of rune parts")
+    public static int emResourcePerPart = 1000;
+
+    @Config.Comment("How many Em resource will be restored by using Em potion")
+    public static int emResourcePerPotion = 1000*15;
 }

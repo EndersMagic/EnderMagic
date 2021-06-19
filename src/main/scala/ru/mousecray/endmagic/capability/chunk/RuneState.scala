@@ -5,6 +5,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.Side
+import ru.mousecray.endmagic.Configuration.emResourcePerPart
 import ru.mousecray.endmagic.capability.chunk.Rune.Recess
 import ru.mousecray.endmagic.capability.chunk.client._
 import ru.mousecray.endmagic.rune.{RuneEffect, RuneEffectRegistry}
@@ -43,6 +44,7 @@ class RuneState {
         rune.startingTime = currentTimeMillis
       else if (rune.runeEffect != RuneEffect.EmptyEffect) {
         rune.averageCreatingTime = (currentTimeMillis - rune.startingTime) / rune.parts.size
+        rune.emResource = rune.parts.size * emResourcePerPart
         if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
           rune.splashAnimation = 0
         return true

@@ -10,6 +10,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import ru.mousecray.endmagic.Configuration;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
 import ru.mousecray.endmagic.capability.chunk.Rune;
@@ -65,9 +66,18 @@ public class RuneSupportHandler {
         rune.runeEffect().onNeighborChange(world, runePos, runeSide, RuneIndex.getRuneTarget(runeState, runePos, runeSide), rune.runePower());
     }
 
+    private static int ticks = 0;
+
     @SubscribeEvent
     public static void onRuneUpdate(TickEvent.WorldTickEvent event) {
         if (event.world.getChunkProvider() instanceof ChunkProviderServer) {
+
+            if (Configuration.exhaustibleRuneResource) {
+                ticks++;
+                if (ticks >= 20 * 60)
+                    ticks = 0;
+            }
+
             ChunkProviderServer chunkProvider = (ChunkProviderServer) event.world.getChunkProvider();
             for (Chunk loadedChunk : chunkProvider.getLoadedChunks()) {
                 Map<BlockPos, RuneState> runes = RuneIndex.getCapability(loadedChunk).existingRunes();
@@ -77,8 +87,11 @@ public class RuneSupportHandler {
                         BlockPos pos = entry.getKey();
                         for (EnumFacing facing : EnumFacing.values()) {
                             Rune runeAtSide = runeState.getRuneAtSide(facing);
-                            if (runeAtSide.runeEffect() != RuneEffect.EmptyEffect)
+                            if (runeAtSide.runeEffect() != RuneEffect.EmptyEffect && runeAtSide.emResource() > 0) {
                                 runeAtSide.runeEffect().onUpdate(event.world, pos, facing, RuneIndex.getRuneTarget(runeState, pos, facing), runeAtSide.runePower());
+                                if (Configuration.exhaustibleRuneResource && ticks == 0)
+                                    runeAtSide.emResource_$eq(runeAtSide.emResource() - 1);
+                            }
                         }
                     }
                 }
