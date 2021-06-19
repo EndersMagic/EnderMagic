@@ -1,4 +1,4 @@
-package ru.mousecray.endmagic.teleport;
+package ru.mousecray.endmagic.util.teleport;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;

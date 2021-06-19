@@ -28,6 +28,8 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.blocks.vanilla.BlockVanillaEndstone;
+import ru.mousecray.endmagic.capability.chunk.portal.PortalCapability;
+import ru.mousecray.endmagic.capability.chunk.portal.PortalCapabilityStorage;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.client.gui.GuiTypes;
 import ru.mousecray.endmagic.init.EMBlocks;
@@ -36,10 +38,10 @@ import ru.mousecray.endmagic.init.EMItems;
 import ru.mousecray.endmagic.init.EMRecipes;
 import ru.mousecray.endmagic.init.util.ClassFieldSource;
 import ru.mousecray.endmagic.init.util.ListSource;
-import ru.mousecray.endmagic.util.registry.ExplodeRecipe;
 import ru.mousecray.endmagic.inventory.ContainerBlastFurnace;
 import ru.mousecray.endmagic.network.ServerPacketHandler;
 import ru.mousecray.endmagic.tileentity.TilePhantomAvoidingBlockBase;
+import ru.mousecray.endmagic.util.registry.ExplodeRecipe;
 import ru.mousecray.endmagic.util.registry.ITechnicalBlock;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 import ru.mousecray.endmagic.util.registry.RecipeParser;
@@ -93,6 +95,8 @@ public class CommonProxy implements IGuiHandler {
 
             }
         }, PhantomAvoidingGroupCapability::new);
+
+        CapabilityManager.INSTANCE.register(PortalCapability.class, new PortalCapabilityStorage(), () -> null);
     }
 
     private void registerBlock(Block block) {

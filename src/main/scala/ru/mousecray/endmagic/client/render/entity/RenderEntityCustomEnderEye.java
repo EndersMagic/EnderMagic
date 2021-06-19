@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static ru.mousecray.endmagic.util.render.RenderUtils.translateToZeroCoord;
+
 public class RenderEntityCustomEnderEye extends RenderSnowball<EntityCustomEnderEye> {
     public RenderEntityCustomEnderEye(RenderManager renderManagerIn) {
         super(renderManagerIn, Items.ENDER_EYE, Minecraft.getMinecraft().getRenderItem());
@@ -37,14 +39,6 @@ public class RenderEntityCustomEnderEye extends RenderSnowball<EntityCustomEnder
         super.doRender(entity, vec.x, vec.y, vec.z, entityYaw, partialTicks);
 
         GlStateManager.popMatrix();
-    }
-
-    private void translateToZeroCoord(float partialTicks) {
-        Entity player = Minecraft.getMinecraft().player;
-        double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
-        double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
-        double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
-        GlStateManager.translate(-x, -y, -z);
     }
 
     private void drawPolyChain(List<Vec3d> path, Color color) {
