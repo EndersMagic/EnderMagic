@@ -51,7 +51,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
         PortalState nextState();
 
         class Opened implements PortalState {
-            int tickOpened = -1;
+            int tickOpened;
             AxisAlignedBB portalArea;
             Block capMaterial;
 
