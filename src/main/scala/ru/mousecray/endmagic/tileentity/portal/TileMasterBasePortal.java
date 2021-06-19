@@ -70,13 +70,13 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
             @Override
             public PortalState nextState() {
                 if (tickOpened == 0)
-                    return new Closed();
+                    return Closed;
                 else
                     return this;
             }
         }
 
-        class Closed implements PortalState {
+        PortalState Closed = new PortalState() {
 
             @Override
             public void tick(TileMasterBasePortal tile) {
@@ -86,10 +86,10 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
             public PortalState nextState() {
                 return this;
             }
-        }
+        };
     }
 
-    PortalState state = new PortalState.Closed();
+    PortalState state = PortalState.Closed;
 
     public void checkAndOpenPortal() {
         if (destination != null) {
@@ -123,7 +123,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
         PortalCapabilityProvider.getPortalCapability(world.getChunkFromBlockCoords(pos)).masterPosToHeight.remove(pos);
         REMOVE_CHUNK_PORTAL_CAPA.packet().writePos(pos).sendPacketToAllAround(pos, 256, world.provider.getDimension());
 
-        state = new PortalState.Closed();
+        state = PortalState.Closed;
     }
 
     protected boolean checkDistinationStructure(int portalSpace, Block capMaterial) {

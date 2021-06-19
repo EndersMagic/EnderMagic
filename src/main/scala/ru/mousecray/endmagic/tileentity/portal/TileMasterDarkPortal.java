@@ -34,7 +34,7 @@ public class TileMasterDarkPortal extends TileMasterBasePortal {
     }
 
     @Override
-    protected boolean checkDistinationStructure(int portalSpace, Block capMaterial) {
+    protected boolean checkDestinationStructure(int portalSpace, Block capMaterial) {
         TileEntity distinationTile = getDestinationMasterTile();
         return distinationTile instanceof TileMasterDarkPortal &&
                 ((TileMasterDarkPortal) distinationTile).checkStructure()
