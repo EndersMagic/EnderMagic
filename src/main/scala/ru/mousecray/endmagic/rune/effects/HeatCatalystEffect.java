@@ -2,13 +2,16 @@ package ru.mousecray.endmagic.rune.effects;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import ru.mousecray.endmagic.init.EMBlocks;
 import ru.mousecray.endmagic.rune.RuneEffect;
+import ru.mousecray.endmagic.tileentity.TileBlastFurnace;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -21,7 +24,7 @@ public class HeatCatalystEffect extends RuneEffect {
 
     @Override
     public boolean isValidTarget(IBlockState state, World world, BlockPos pos) {
-        return state.getBlock() == Blocks.FURNACE || state.getBlock() == Blocks.LIT_FURNACE;
+        return state.getBlock() == Blocks.FURNACE || state.getBlock() == Blocks.LIT_FURNACE || state.getBlock() == EMBlocks.blockBlastFurnace;
     }
 
     @Override
@@ -30,22 +33,26 @@ public class HeatCatalystEffect extends RuneEffect {
     }
 
     @Override
-    public void onUpdate(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {
+    public void onUpdate(World world, BlockPos runePos, EnumFacing side, double runePower) {
         if (!world.isRemote) {
-            TileEntityFurnace tile = (TileEntityFurnace) world.getTileEntity(runePos);
-            if (isFurnaceStartSmelting(tile)) {
-                int newTotalCookTime = max(1, (int) (getTotalCookTime(tile) / (runePower * 200 + 1)));
-                setTotalCookTime(tile, newTotalCookTime);
-                setCookTime(tile, min(getCookTime(tile), newTotalCookTime - 1));
+            TileEntity tileEntity = world.getTileEntity(runePos);
+            if (tileEntity instanceof TileEntityFurnace) {
+                TileEntityFurnace tile = (TileEntityFurnace) tileEntity;
+                if (isFurnaceStartSmelting(tile)) {
+                    int newTotalCookTime = max(1, (int) (getTotalCookTime(tile) / (runePower * 200 + 1)));
+                    setTotalCookTime(tile, newTotalCookTime);
+                    setCookTime(tile, min(getCookTime(tile), newTotalCookTime - 1));
+                }
+            } else if (tileEntity instanceof TileBlastFurnace) {
+                TileBlastFurnace tile = (TileBlastFurnace) tileEntity;
+                if (tile.isBurning())
+                    tile.boost();
             }
-        } else if (world.rand.nextInt(10) == 0)
-            world.spawnParticle(EnumParticleTypes.LAVA,
-                    runePos.getX() + 0.5, runePos.getY() + 0.9, runePos.getZ() + 0.5,
-                    world.rand.nextGaussian() / 10, 1, world.rand.nextGaussian() / 10);
+        }
     }
 
     public boolean isFurnaceStartSmelting(TileEntityFurnace tile) {
-        return tile.isBurning() && canSmelt(tile) && getCookTime(tile)==1;
+        return tile.isBurning() && canSmelt(tile) && getCookTime(tile) == 1;
     }
 
     private void setCookTime(TileEntityFurnace tile, int cookTime) {
