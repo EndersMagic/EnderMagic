@@ -7,7 +7,15 @@ import ru.mousecray.endmagic.tileentity.EMTileEntity;
 import static ru.mousecray.endmagic.util.teleport.Location.spawn;
 
 public class TileWithLocation extends EMTileEntity {
-    public Location destination = spawn;
+    public Location getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Location destination) {
+        this.destination = destination;
+    }
+
+    private Location destination = spawn;
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {

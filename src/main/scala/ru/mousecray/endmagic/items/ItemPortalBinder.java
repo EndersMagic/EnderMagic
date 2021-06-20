@@ -39,7 +39,7 @@ public class ItemPortalBinder extends Item implements ItemTextured {
             storeToItem(new Location(pos, world), item);
             return EnumActionResult.SUCCESS;
         } else if (tileEntity instanceof TileWithLocation) {
-            ((TileWithLocation) tileEntity).destination = readFromItem(item);
+            ((TileWithLocation) tileEntity).setDestination(readFromItem(item));
 
             return EnumActionResult.SUCCESS;
         } else

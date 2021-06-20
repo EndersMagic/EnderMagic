@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 public class Location {
 
@@ -37,6 +38,20 @@ public class Location {
         r.setInteger("z", z);
         r.setInteger("dim", dim);
         return r;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Location) {
+            Location b = (Location) obj;
+            return new EqualsBuilder()
+                    .append(x, b.x)
+                    .append(y, b.y)
+                    .append(z, b.z)
+                    .append(dim, b.dim)
+                    .build();
+        } else
+            return false;
     }
 
     public IBlockState getBlockState() {
