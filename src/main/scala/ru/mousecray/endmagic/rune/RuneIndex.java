@@ -6,20 +6,27 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.capability.chunk.*;
+import ru.mousecray.endmagic.capability.chunk.IRuneChunkCapability;
+import ru.mousecray.endmagic.capability.chunk.Rune;
+import ru.mousecray.endmagic.capability.chunk.RunePart;
+import ru.mousecray.endmagic.capability.chunk.RuneState;
 import ru.mousecray.endmagic.network.PacketTypes;
 import ru.mousecray.endmagic.util.Vec2i;
 
-import javax.annotation.Nonnull;
 import java.util.Optional;
 
 import static ru.mousecray.endmagic.capability.chunk.RuneStateCapabilityProvider.runeStateCapability;
 
 public class RuneIndex {
-    public static Optional<Rune> getRune(World world, BlockPos pos, @Nonnull EnumFacing side) {
+    public static Optional<Rune> getRune(World world, BlockPos pos, EnumFacing side) {
         return getCapability(world, pos)
                 .getRuneState(pos)
                 .map(rs -> rs.getRuneAtSide(side));
+    }
+
+    public static Optional<RuneState> getRuneState(World world, BlockPos pos) {
+        return getCapability(world, pos)
+                .getRuneState(pos);
     }
 
     public static void removeRune(World world, BlockPos pos) {
@@ -46,12 +53,12 @@ public class RuneIndex {
         if (coord.y >= 1 && coord.y <= 14 && coord.x >= 1 && coord.x <= 14) {
             IRuneChunkCapability capability = getCapability(world, pos);
             RuneState runeState = capability.createRuneStateIfAbsent(pos);
-            boolean isRuneFinished = runeState.addRunePart(side, coord, part, System.currentTimeMillis(), world,pos);
+            boolean isRuneFinished = runeState.addRunePart(side, coord, part, System.currentTimeMillis(), world, pos);
             if (isRuneFinished) {
                 Rune runeAtSide = runeState.getRuneAtSide(side);
                 double runePower = runeAtSide.runeEffect().calculateRunePower(runeAtSide.averageCreatingTime());
                 runeAtSide.runePower_$eq(runePower);
-                runeAtSide.runeEffect().onInscribed(world, pos, side, getRuneTarget(runeState, pos, side), runePower);
+                runeAtSide.runeEffect().onInscribed(world, getActualPos(runeState, pos, side), side, runePower);
             }
             EM.proxy.refreshChunk(world, pos);
             if (!world.isRemote)
@@ -82,7 +89,7 @@ public class RuneIndex {
         return chunk.getCapability(runeStateCapability, EnumFacing.UP);
     }
 
-    public static BlockPos getRuneTarget(RuneState runeState, BlockPos runePos, EnumFacing runeSide) {
-        return runePos.offset(runeSide);
+    public static BlockPos getActualPos(RuneState runeState, BlockPos runePos, EnumFacing runeSide) {
+        return runePos;
     }
 }

@@ -19,6 +19,8 @@ import ru.mousecray.endmagic.capability.chunk.RuneState;
 import java.util.Collection;
 import java.util.Map;
 
+import static ru.mousecray.endmagic.rune.RuneIndex.getActualPos;
+
 @Mod.EventBusSubscriber(modid = EM.ID)
 public class RuneSupportHandler {
 
@@ -63,7 +65,7 @@ public class RuneSupportHandler {
 
     private static void notifyRuneAboutNeighborChange(RuneState runeState, World world, BlockPos runePos, EnumFacing runeSide) {
         Rune rune = runeState.getRuneAtSide(runeSide);
-        rune.runeEffect().onNeighborChange(world, runePos, runeSide, RuneIndex.getRuneTarget(runeState, runePos, runeSide), rune.runePower());
+        rune.runeEffect().onNeighborChange(world, getActualPos(runeState, runePos, runeSide), runeSide, rune.runePower());
     }
 
     private static int ticks = 0;
@@ -88,7 +90,7 @@ public class RuneSupportHandler {
                         for (EnumFacing facing : EnumFacing.values()) {
                             Rune runeAtSide = runeState.getRuneAtSide(facing);
                             if (runeAtSide.runeEffect() != RuneEffect.EmptyEffect && runeAtSide.emResource() > 0) {
-                                runeAtSide.runeEffect().onUpdate(event.world, pos, facing, RuneIndex.getRuneTarget(runeState, pos, facing), runeAtSide.runePower());
+                                runeAtSide.runeEffect().onUpdate(event.world, getActualPos(runeState, pos, facing), facing, runeAtSide.runePower());
                                 if (Configuration.exhaustibleRuneResource && ticks == 0)
                                     runeAtSide.emResource_$eq(runeAtSide.emResource() - 1);
                             }

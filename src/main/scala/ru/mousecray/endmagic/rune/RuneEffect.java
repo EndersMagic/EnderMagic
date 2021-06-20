@@ -19,15 +19,28 @@ public class RuneEffect {
         return 1d / averageInscribingTimeMillis;
     }
 
+    public void onInscribed(World world, BlockPos runePos, EnumFacing side, double runePower) {
+        onInscribed(world, runePos, side, runePos.offset(side), runePower);
+    }
+
     public void onInscribed(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {
         System.out.println("Rune inscribed! Power: " + runePower);
     }
 
+    public void onNeighborChange(World world, BlockPos runePos, EnumFacing side, double runePower) {
+        onNeighborChange(world, runePos, side, runePos.offset(side), runePower);
+    }
+
     public void onNeighborChange(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {
+
     }
 
     public boolean isTickable() {
         return false;
+    }
+
+    public void onUpdate(World world, BlockPos runePos, EnumFacing side, double runePower) {
+        onUpdate(world, runePos, side, runePos.offset(side), runePower);
     }
 
     public void onUpdate(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {
