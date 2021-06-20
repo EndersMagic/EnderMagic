@@ -57,6 +57,17 @@ tile.ender_ground_stone.live.name=Цветущий эндерняк
 tile.ender_ground_stone.dead.name=Мёртвый эндерняк
 tile.ender_ground_stone.frozen.name=Замёрзший эндерняк
 
+tile.block_polished_obsidian.name=Полированный Обсидиан
+tile.block_polished_obsidian_endstone_bricks.name=Кирпичи из Полированного Обясдиана с Эндерняком
+tile.block_polished_obsidian_endstone_slab_single.name=Плита из Полированного Обясдиана с Эндерняком
+tile.block_polished_obsidian_endstone_slab_double.name=Плита из Полированного Обясдиана с Эндерняком
+tile.block_polished_obsidian_slab_single.name=Плита из Полированного Обясдиана
+tile.block_polished_obsidian_slab_double.name=Плита из Полированного Обясдиана
+tile.block_purpur_quartz_bricks.name=Пурпуровые Кирпичи с Кварцем
+tile.block_purpur_quartz_pillar.name=Пурпуровая Колонна с Кварцем
+tile.block_purpur_quartz_slab_single.name=Пурпуровая Плита с Кварцем
+tile.block_purpur_quartz_slab_double.name=Пурпуровая Плита с Кварцем
+
 item.ender_seeds.name=Семена пурпурного жемчуга
 item.purple_ender_pearl.name=Пурпурная Жемчужина
 item.blue_ender_pearl.name=Голубая Жемчужина

@@ -13,7 +13,12 @@ public class Configuration {
     @Config.RangeInt(min = 10)
     public static int enderPortalFrameSearchRadius = 10;
 
+    @Config.Comment("Modifier of walk speed on purple-quartz bricks")
+    @Config.RangeDouble(min = 1, max = 2)
+    public static double purpurQuartzBricksVelocityModifier = 1.15;
+
     @Config.Comment("How long the portal will be opened. In ticks")
     @Config.RangeInt(min = 3)
     public static int portalOpenTime = 20 * 60;
+
 }

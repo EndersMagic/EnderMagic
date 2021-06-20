@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "variant=default":  { "model": "endmagic:purpur_quartz/bricks" },
+
+    "inventory":  { "model": "endmagic:purpur_quartz/bottom_slab_dragon" }
+  }
+}

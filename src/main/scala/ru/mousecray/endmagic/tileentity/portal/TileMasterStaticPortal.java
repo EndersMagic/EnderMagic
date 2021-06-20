@@ -8,6 +8,6 @@ import java.util.Collection;
 public class TileMasterStaticPortal extends TileMasterBasePortal {
     @Override
     protected void teleportEntities(Collection<Entity> collidedEntities) {
-        collidedEntities.forEach(e -> TeleportationHelper.teleportEntityAndPassengers(e, destination));
+        collidedEntities.forEach(e -> TeleportationHelper.teleportEntityAndPassengers(e, getDestination()));
     }
 }

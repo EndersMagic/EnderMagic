@@ -1,0 +1,57 @@
+package ru.mousecray.endmagic.blocks.decorative.polished.obsidian;
+
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import ru.mousecray.endmagic.blocks.base.TranslucentBlock;
+import ru.mousecray.endmagic.blocks.decorative.polished.obsidian.RenderSidePartsHolder.RenderSideParts;
+import ru.mousecray.endmagic.client.render.model.IModelRegistration;
+import ru.mousecray.endmagic.client.render.model.baked.TranslucentPartsModel;
+import ru.mousecray.endmagic.util.registry.IExtendedProperties;
+
+import static ru.mousecray.endmagic.blocks.decorative.polished.obsidian.Utils.getActualObsidianFullState;
+
+public class BlockPolishedObsidian extends TranslucentBlock implements IPolishedObsidian, IExtendedProperties {
+
+    public BlockPolishedObsidian() {
+        super(Material.ICE, MapColor.PURPLE);
+        setSoundType(SoundType.STONE);
+        setHardness(50);
+        setResistance(2000);
+        setLightOpacity(20);
+    }
+
+    @Override
+    public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, net.minecraft.entity.EntityLiving.SpawnPlacementType type) {
+        return true;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, RenderSideParts.PROPERTY);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        return getActualObsidianFullState(state, worldIn, pos);
+    }
+
+    @Override
+    public RenderSideParts getObsidianParts(IBlockState state) {
+        return RenderSideParts.allSidesIsFull();
+    }
+
+    @Override
+    public void registerModels(IModelRegistration modelRegistration) {
+        modelRegistration.addBakedModelOverride(getRegistryName(), TranslucentPartsModel::new);
+    }
+}

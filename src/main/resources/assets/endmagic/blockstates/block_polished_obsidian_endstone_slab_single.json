@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "half=bottom,render_side_parts=default,variant=default": { "model": "endmagic:polished_obsidian/bricks/slab/bottom" },
+    "half=top,render_side_parts=default,variant=default": { "model": "endmagic:polished_obsidian/bricks/slab/top" },
+
+    "inventory":  { "model": "endmagic:polished_obsidian/bricks/slab/bottom" }
+  }
+}

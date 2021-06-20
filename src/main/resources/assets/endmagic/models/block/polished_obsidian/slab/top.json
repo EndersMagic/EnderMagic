@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/leaves",
+	"textures": {
+		"0": "endmagic:blocks/polished_obsidian",
+		"1": "endmagic:blocks/polished_obsidian_slab",
+		"particle": "endmagic:blocks/polished_obsidian"
+	},
+	"elements": [
+		{
+			"from": [0, 8, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 4, 16, 12], "texture": "#1","side_part": "invisible_bottom"},
+				"east": {"uv": [0, 4, 16, 12], "texture": "#1","side_part": "invisible_bottom"},
+				"south": {"uv": [0, 4, 16, 12], "texture": "#1","side_part": "invisible_bottom"},
+				"west": {"uv": [0, 4, 16, 12], "texture": "#1","side_part": "invisible_bottom"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#0","side_part": "visible_all"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#0","side_part": "visible_all"}
+			}
+		}
+	]
+}

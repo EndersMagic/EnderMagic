@@ -106,7 +106,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
     PortalState state = PortalState.Closed;
 
     public void checkAndOpenPortal() {
-        if (destination != null) {
+        if (getDestination() != null) {
             checkStructure().ifPresent(p -> {
                 int portalSpace = p.getLeft();
                 Block capMaterial = p.getRight();
@@ -141,7 +141,7 @@ public abstract class TileMasterBasePortal extends TileWithLocation implements I
     }
 
     protected boolean checkDestinationStructure(int portalSpace, Block capMaterial) {
-        return destination.getBlockState().getBlock() == capMaterial;
+        return getDestination().getBlockState().getBlock() == capMaterial;
     }
 
     protected Optional<Pair<Integer, Block>> checkStructure() {

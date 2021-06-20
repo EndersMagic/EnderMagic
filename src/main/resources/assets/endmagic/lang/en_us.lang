@@ -57,6 +57,17 @@ tile.ender_ground_stone.live.name=Live End Stone
 tile.ender_ground_stone.dead.name=Dead End Stone
 tile.ender_ground_stone.frozen.name=Frozen End Stone
 
+tile.block_polished_obsidian.name=Polished Obsidian
+tile.block_polished_obsidian_endstone_bricks.name=Polished Obsidian with Endstone Bricks
+tile.block_polished_obsidian_endstone_slab_single.name=Polished Obsidian with Endstone Bricks Slab
+tile.block_polished_obsidian_endstone_slab_double.name=Polished Obsidian with Endstone Bricks Slab
+tile.block_polished_obsidian_slab_single.name=Polished Obsidian Slab
+tile.block_polished_obsidian_slab_double.name=Polished Obsidian Slab
+tile.block_purpur_quartz_bricks.name=Purpur with Quartz Bricks
+tile.block_purpur_quartz_pillar.name=Purpur with Quartz Pillar
+tile.block_purpur_quartz_slab_single.name=Purpur with Quartz Bricks Slab
+tile.block_purpur_quartz_slab_double.name=Purpur with Quartz Bricks Slab
+
 item.ender_seeds.name=Purple Pearl Seeds
 item.purple_ender_pearl.name=Purple Pearl
 item.blue_ender_pearl.name=Blue Pearl

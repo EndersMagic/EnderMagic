@@ -23,6 +23,9 @@ import static java.util.stream.Collectors.toList;
 import static net.minecraft.item.ItemStack.EMPTY;
 
 public class RecipeParser {
+
+    private static long uniqueRecipeCounter = 0;
+
     private static ItemStack apple = new ItemStack(Items.APPLE);
     private static ItemStack stick = new ItemStack(Items.STICK);
     public static Map<String, List<List<ItemStack>>> fill_shapes = ImmutableMap.<String, List<List<ItemStack>>>builder()
@@ -97,8 +100,6 @@ public class RecipeParser {
                         ItemStack result = itemStack_newI.getLeft();
                         i = itemStack_newI.getRight();
 
-                        String recipeRegistryName = result.getItem().getRegistryName().toString() + "@" + result.getItemDamage();
-
                         i++;
                         Token token = tokens.get(i);
                         if (!token.textFragment.equals("|"))
@@ -127,6 +128,11 @@ public class RecipeParser {
 
                         if (ingredients.stream().allMatch(j -> j.apply(EMPTY)))
                             throw new IllegalArgumentException("Invalid recipe, all ingredients are empty: " + recipe.stream().map(j -> j.textFragment).collect(Collectors.joining()));
+
+
+                        String recipeRegistryName = result.getItem().getRegistryName().toString() + "@" + result.getItemDamage() + "#" + uniqueRecipeCounter;
+                        uniqueRecipeCounter++;
+
 
                         switch (recipeType) {
                             case "shaped":
