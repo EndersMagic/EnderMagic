@@ -204,10 +204,8 @@ public class ClientProxy extends CommonProxy implements IModelRegistration {
         for (ModelResourceLocation resource : e.getModelRegistry().getKeys()) {
             ResourceLocation key = new ResourceLocation(resource.getResourceDomain(), resource.getResourcePath());
 
-            if (bakedModelOverridesR.containsKey(key)) {
-                System.out.println("Overriding model " + key);
+            if (bakedModelOverridesR.containsKey(key))
                 e.getModelRegistry().putObject(resource, bakedModelOverridesR.get(key).apply(e.getModelRegistry().getObject(resource)));
-            }
         }
     }
 
