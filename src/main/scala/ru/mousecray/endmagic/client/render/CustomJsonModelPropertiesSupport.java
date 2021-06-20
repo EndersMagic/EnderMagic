@@ -4,8 +4,7 @@ import net.minecraft.client.renderer.block.model.CustomPropertiesBlockPartFaceDe
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelBlock;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderAccessor;
+import net.minecraftforge.client.model.ModelLoaderLens;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.client.NotifiableByModelLoader_FMLClientHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -60,7 +59,7 @@ public class CustomJsonModelPropertiesSupport {
 
     private static void replaceFaceBakery() {
         try {
-            ReflectionHelper.setPrivateValue(ModelBakery.class, ModelLoaderAccessor.get(), new MarkingFaceBakery(), "faceBakery");
+            ReflectionHelper.setPrivateValue(ModelBakery.class, ModelLoaderLens.get(), new MarkingFaceBakery(), "faceBakery");
             System.out.println("Successfully to replace ModelBakery#faceBakery");
         } catch (Exception e1) {
             System.out.println("Failed to replace ModelBakery#faceBakery");
