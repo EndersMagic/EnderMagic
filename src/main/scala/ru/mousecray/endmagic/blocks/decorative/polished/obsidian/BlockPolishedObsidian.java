@@ -18,7 +18,7 @@ import static ru.mousecray.endmagic.blocks.decorative.polished.obsidian.Utils.ge
 public class BlockPolishedObsidian extends TranslucentBlock implements IPolishedObsidian, IExtendedProperties {
 
     public BlockPolishedObsidian() {
-        super(Material.ICE, MapColor.PURPLE, IPolishedObsidian.class);
+        super(Material.ICE, MapColor.PURPLE);
         setSoundType(SoundType.STONE);
         setHardness(50);
         setResistance(2000);

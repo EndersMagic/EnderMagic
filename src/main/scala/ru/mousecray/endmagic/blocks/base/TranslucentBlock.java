@@ -12,11 +12,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TranslucentBlock extends Block {
-    private final Class<?> extendedInterfaceMarker;
 
-    public TranslucentBlock(Material blockMaterialIn, MapColor blockMapColorIn, Class<?> extendedInterfaceMarker) {
+    public TranslucentBlock(Material blockMaterialIn, MapColor blockMapColorIn) {
         super(blockMaterialIn, blockMapColorIn);
-        this.extendedInterfaceMarker = extendedInterfaceMarker;
     }
 
     @Override
