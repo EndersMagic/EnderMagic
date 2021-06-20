@@ -1,8 +1,12 @@
 package ru.mousecray.endmagic.util.render;
 
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.VanillaLoaderLens;
@@ -15,6 +19,14 @@ import java.util.Optional;
 public final class RenderUtils {
 
     private static final VertexFormat ITEM_FORMAT_WITH_LIGHTMAP = new VertexFormat(DefaultVertexFormats.ITEM).addElement(DefaultVertexFormats.TEX_2S);
+
+    public static void translateToZeroCoord(float partialTicks) {
+        Entity player = Minecraft.getMinecraft().player;
+        double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
+        double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
+        double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
+        GlStateManager.translate(-x, -y, -z);
+    }
 
     public static boolean isLightMapDisabled() {
         return FMLClientHandler.instance().hasOptifine() || !ForgeModContainer.forgeLightPipelineEnabled;

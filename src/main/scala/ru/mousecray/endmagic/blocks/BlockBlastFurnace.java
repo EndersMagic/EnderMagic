@@ -74,7 +74,7 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
     private Set<Item> steel;
 
     public BlockBlastFurnace() {
-        super(Material.ROCK);
+        super(Material.ROCK,TileBlastFurnace::new);
         setResistance(8.0F);
         setHardness(4.0F);
         setSoundType(SoundType.STONE);
@@ -98,12 +98,6 @@ public class BlockBlastFurnace extends BlockWithTile<TileBlastFurnace> {
             InventoryHelper.dropInventoryItems(worldIn, pos, furnace.inv);
         }
         super.breakBlock(worldIn, pos, state);
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileBlastFurnace();
     }
 
     private Set<Item> getCollect(Function<BlastRecipe, Item> p) {

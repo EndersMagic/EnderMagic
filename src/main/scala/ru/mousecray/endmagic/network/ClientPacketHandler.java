@@ -5,6 +5,10 @@ import codechicken.lib.packet.PacketCustom;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.network.play.INetHandlerPlayClient;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import ru.mousecray.endmagic.capability.chunk.portal.PortalCapability;
+import ru.mousecray.endmagic.capability.chunk.portal.PortalCapabilityProvider;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroup;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapability;
 import ru.mousecray.endmagic.capability.world.PhantomAvoidingGroupCapabilityProvider;
@@ -37,6 +41,27 @@ public class ClientPacketHandler implements ICustomPacketHandler.IClientPacketHa
                     }
                 }
                 break;
+            case SYNC_CHUNK_PORTAL_CAPA: {
+                PortalCapability capability = PortalCapabilityProvider.getPortalCapability(Minecraft.getMinecraft().world.getChunkFromChunkCoords(packetCustom.readInt(), packetCustom.readInt()));
+                if (capability != null)
+                    PortalCapabilityProvider.portalCapability.readNBT(capability, EnumFacing.UP, packetCustom.readNBTTagCompound().getTag("value"));
+
+            }
+            break;
+            case ADD_CHUNK_PORTAL_CAPA: {
+                BlockPos pos = packetCustom.readPos();
+                PortalCapability capability = PortalCapabilityProvider.getPortalCapability(Minecraft.getMinecraft().world.getChunkFromBlockCoords(pos));
+                if (capability != null)
+                    capability.masterPosToHeight.put(pos, (int) packetCustom.readByte());
+            }
+            break;
+            case REMOVE_CHUNK_PORTAL_CAPA: {
+                BlockPos pos = packetCustom.readPos();
+                PortalCapability capability = PortalCapabilityProvider.getPortalCapability(Minecraft.getMinecraft().world.getChunkFromBlockCoords(pos));
+                if (capability != null)
+                    capability.masterPosToHeight.remove(pos);
+            }
+            break;
             default:
                 break;
         }
