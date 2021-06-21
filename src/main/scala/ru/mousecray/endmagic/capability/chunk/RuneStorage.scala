@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.fml.common.FMLCommonHandler
 import net.minecraftforge.fml.relauncher.Side
-import ru.mousecray.endmagic.rune.{RuneEffect, RuneEffectRegistry}
+import ru.mousecray.endmagic.rune.RuneEffectRegistry
 import ru.mousecray.endmagic.util.Java2Scala._
 import ru.mousecray.endmagic.util.Vec2i
 
@@ -66,8 +66,6 @@ class RuneStorage extends Capability.IStorage[IRuneChunkCapability] {
 
     nbt
   }
-
-  def nbtToRuneEffect(base: NBTBase): RuneEffect = RuneEffect.EmptyEffect
 
   def runePartToNBT(part: RunePart): NBTBase = new NBTTagByte(part.color)
 

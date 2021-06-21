@@ -56,9 +56,7 @@ public class RuneIndex {
             boolean isRuneFinished = runeState.addRunePart(side, coord, part, System.currentTimeMillis(), world, pos);
             if (isRuneFinished) {
                 Rune runeAtSide = runeState.getRuneAtSide(side);
-                double runePower = runeAtSide.runeEffect().calculateRunePower(runeAtSide.averageCreatingTime());
-                runeAtSide.runePower_$eq(runePower);
-                runeAtSide.runeEffect().onInscribed(world, getActualPos(runeState, pos, side), side, runePower);
+                ((RuneEffect<Object>) runeAtSide.runeEffect()).onInscribed(world, getActualPos(runeState, pos, side), side, runeAtSide.runePower(), runeAtSide.effectData());
             }
             EM.proxy.refreshChunk(world, pos);
             if (!world.isRemote)

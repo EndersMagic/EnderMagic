@@ -21,7 +21,7 @@ public class FrozingEffect extends RuneEffect {
     }
 
     @Override
-    public void onUpdate(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {
+    public void onUpdate(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower, Object data) {
         if (world.rand.nextInt(Math.max(1, (int) (200 / runePower))) == 0) {
             Block targetBlock = world.getBlockState(targetPos).getBlock();
             if (targetBlock == Blocks.WATER)

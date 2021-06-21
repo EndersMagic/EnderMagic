@@ -29,6 +29,8 @@ public class RuneSupportHandler {
         World world = event.getWorld();
         BlockPos changedPos = event.getPos();
 
+        System.out.println("onBlockChangeBreak " + event.getWorld() + " " + event.getState() + " " + event.getForceRedstoneUpdate() + " " + event.getNotifiedSides());
+
         Collection<IRuneChunkCapability> near = getRuneCapaAroundPos(world, changedPos);
 
         for (IRuneChunkCapability runeChunkCapability : near) {
@@ -65,7 +67,7 @@ public class RuneSupportHandler {
 
     private static void notifyRuneAboutNeighborChange(RuneState runeState, World world, BlockPos runePos, EnumFacing runeSide) {
         Rune rune = runeState.getRuneAtSide(runeSide);
-        rune.runeEffect().onNeighborChange(world, getActualPos(runeState, runePos, runeSide), runeSide, rune.runePower());
+        ((RuneEffect<Object>) rune.runeEffect()).onNeighborChange(world, getActualPos(runeState, runePos, runeSide), runeSide, rune.runePower(), rune.effectData());
     }
 
     private static int ticks = 0;
@@ -90,7 +92,7 @@ public class RuneSupportHandler {
                         for (EnumFacing facing : EnumFacing.values()) {
                             Rune runeAtSide = runeState.getRuneAtSide(facing);
                             if (runeAtSide.runeEffect() != RuneEffect.EmptyEffect && runeAtSide.emResource() > 0) {
-                                runeAtSide.runeEffect().onUpdate(event.world, getActualPos(runeState, pos, facing), facing, runeAtSide.runePower());
+                                ((RuneEffect<Object>) runeAtSide.runeEffect()).onUpdate(event.world, getActualPos(runeState, pos, facing), facing, runeAtSide.runePower(), runeAtSide.effectData());
                                 if (Configuration.exhaustibleRuneResource && ticks == 0)
                                     runeAtSide.emResource_$eq(runeAtSide.emResource() - 1);
                             }

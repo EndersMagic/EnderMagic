@@ -12,11 +12,14 @@ import scala.collection.mutable
 
 class Rune {
   val parts = new mutable.HashMap[Vec2i, RunePart]
-  var runeEffect: RuneEffect = EmptyEffect
+  var runeEffect: RuneEffect[_] = EmptyEffect
   var runePower: Double = 0
   var emResource: Long = 0
   var averageCreatingTime: Long = Long.MaxValue
   var startingTime: Long = -1
+
+  var effectData: Any = _
+
   private val recessQuadsMatrix: Array[Array[Recess]] = new Array[Array[Recess]](16).map(_ => new Array[Recess](16))
 
   var splashAnimation = -1

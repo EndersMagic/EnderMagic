@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 
-public class RuneEffect {
+public class RuneEffect<A> {
 
     public static RuneEffect EmptyEffect = new RuneEffect("empty");
 
@@ -19,19 +19,23 @@ public class RuneEffect {
         return 1d / averageInscribingTimeMillis;
     }
 
-    public void onInscribed(World world, BlockPos runePos, EnumFacing side, double runePower) {
-        onInscribed(world, runePos, side, runePos.offset(side), runePower);
+    public A createData(World world, BlockPos runePos, EnumFacing side, double runePower) {
+        return null;
     }
 
-    public void onInscribed(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {
+    public void onInscribed(World world, BlockPos runePos, EnumFacing side, double runePower, A data) {
+        onInscribed(world, runePos, side, runePos.offset(side), runePower, data);
+    }
+
+    public void onInscribed(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower, A data) {
         System.out.println("Rune inscribed! Power: " + runePower);
     }
 
-    public void onNeighborChange(World world, BlockPos runePos, EnumFacing side, double runePower) {
-        onNeighborChange(world, runePos, side, runePos.offset(side), runePower);
+    public void onNeighborChange(World world, BlockPos runePos, EnumFacing side, double runePower, A data) {
+        onNeighborChange(world, runePos, side, runePos.offset(side), runePower, data);
     }
 
-    public void onNeighborChange(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {
+    public void onNeighborChange(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower, A data) {
 
     }
 
@@ -39,11 +43,11 @@ public class RuneEffect {
         return false;
     }
 
-    public void onUpdate(World world, BlockPos runePos, EnumFacing side, double runePower) {
-        onUpdate(world, runePos, side, runePos.offset(side), runePower);
+    public void onUpdate(World world, BlockPos runePos, EnumFacing side, double runePower, A data) {
+        onUpdate(world, runePos, side, runePos.offset(side), runePower, data);
     }
 
-    public void onUpdate(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower) {
+    public void onUpdate(World world, BlockPos runePos, EnumFacing side, BlockPos targetPos, double runePower, A data) {
     }
 
     private String name;
@@ -58,9 +62,5 @@ public class RuneEffect {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

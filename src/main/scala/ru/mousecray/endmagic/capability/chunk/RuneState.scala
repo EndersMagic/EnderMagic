@@ -44,6 +44,11 @@ class RuneState {
         rune.startingTime = currentTimeMillis
       else if (rune.runeEffect != RuneEffect.EmptyEffect) {
         rune.averageCreatingTime = (currentTimeMillis - rune.startingTime) / rune.parts.size
+
+        rune.runePower = rune.runeEffect.calculateRunePower(rune.averageCreatingTime)
+
+        rune.effectData = rune.runeEffect.createData(world, pos, side, rune.runePower)
+
         rune.emResource = rune.parts.size * emResourcePerPart
         if (FMLCommonHandler.instance().getEffectiveSide == Side.CLIENT)
           rune.splashAnimation = 0

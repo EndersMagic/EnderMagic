@@ -5,7 +5,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -33,7 +32,7 @@ public class HeatCatalystEffect extends RuneEffect {
     }
 
     @Override
-    public void onUpdate(World world, BlockPos runePos, EnumFacing side, double runePower) {
+    public void onUpdate(World world, BlockPos runePos, EnumFacing side, double runePower, Object data) {
         if (!world.isRemote) {
             TileEntity tileEntity = world.getTileEntity(runePos);
             if (tileEntity instanceof TileEntityFurnace) {
