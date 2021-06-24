@@ -46,6 +46,7 @@ public class BaseInscriber extends Item implements IExtendedProperties, ItemOneW
     public BaseInscriber(RuneColor runeColor, double efficiency) {
         this.runeColor = runeColor;
         this.efficiency = efficiency;
+        this.maxStackSize = 1;
     }
 
     @Override
