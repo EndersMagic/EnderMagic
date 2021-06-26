@@ -2,8 +2,8 @@ package ru.mousecray.endmagic.client.render.book
 
 import net.minecraft.client.shader.Framebuffer
 import ru.mousecray.endmagic.api.embook.PageContainer
-import ru.mousecray.endmagic.client.render.book.Refs._
 import ru.mousecray.endmagic.client.render.book.PageRenderer._
+import ru.mousecray.endmagic.client.render.book.Refs._
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer

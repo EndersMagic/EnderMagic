@@ -38,15 +38,18 @@ object PageRenderer {
   }
 
   def drawPageContainerContent(): Unit = {
-    //mc.fontRenderer.drawString("Testlol", 100, 100, 0xff00ff)
 
+    GlStateManager.disableTexture2D()
     val buffer = Tessellator.getInstance.getBuffer
     buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR)
-    buffer.pos(0, 0, 0).color(255, 0, 255, 255).endVertex()
-    buffer.pos(0, 50, 0).color(255, 0, 255, 255).endVertex()
-    buffer.pos(50, 50, 0).color(255, 0, 255, 255).endVertex()
-    buffer.pos(50, 0, 0).color(255, 0, 255, 255).endVertex()
+    buffer.pos(0, 0, 0).color(0, 0, 255, 255).endVertex()
+    buffer.pos(0, 50, 0).color(0, 0, 255, 255).endVertex()
+    buffer.pos(50, 50, 0).color(0, 0, 255, 255).endVertex()
+    buffer.pos(50, 0, 0).color(0, 0, 255, 255).endVertex()
     Tessellator.getInstance.draw()
+
+    GlStateManager.enableTexture2D()
+    mc.fontRenderer.drawString("Абв Testlol", 10, 10, 0xff00ff)
   }
 
   val w = 260
@@ -74,25 +77,25 @@ object PageRenderer {
     Tessellator.getInstance.draw()
   }
 
-  private def setupProjectionArea(): Unit = {
+  def setupProjectionArea(): Unit = {
     GL11.glOrtho(0, w, h, 0, -10, 10)
   }
 
-  private def identityMatrices(): Unit = {
+  def identityMatrices(): Unit = {
     GL11.glMatrixMode(GL11.GL_MODELVIEW)
     GL11.glLoadIdentity()
     GL11.glMatrixMode(GL11.GL_PROJECTION)
     GL11.glLoadIdentity()
   }
 
-  private def saveMatrices(): Unit = {
+  def saveMatrices(): Unit = {
     GL11.glMatrixMode(GL11.GL_MODELVIEW)
     GL11.glPushMatrix()
     GL11.glMatrixMode(GL11.GL_PROJECTION)
     GL11.glPushMatrix()
   }
 
-  private def restoreMatrices(): Unit = {
+  def restoreMatrices(): Unit = {
     GL11.glMatrixMode(GL11.GL_PROJECTION)
     GL11.glPopMatrix()
     GL11.glMatrixMode(GL11.GL_MODELVIEW)

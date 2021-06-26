@@ -2,6 +2,7 @@ package ru.mousecray.endmagic.client.render.book;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
@@ -11,22 +12,50 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 import ru.mousecray.endmagic.EM;
-import ru.mousecray.endmagic.api.embook.BookApi;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static ru.mousecray.endmagic.client.render.book.PageRenderer.*;
+import static ru.mousecray.endmagic.client.render.book.Refs.*;
 
 @Mod.EventBusSubscriber(modid = EM.ID)
 public class TestOverlay {
 
+    private static Framebuffer fbo;
+
     @SubscribeEvent
     public static void onRenderTest(RenderGameOverlayEvent.Pre event) {
-        PageTextureHolder.freeTexture(BookApi.mainChapter());
-        Framebuffer texture = PageTextureHolder.getTexture(BookApi.mainChapter());
-        drawPageContainerRect(texture);
+        if (fbo == null)
+            fbo = new Framebuffer(pageContainerWidth(), pageHeight(), false);
+        fbo.createBindFramebuffer(pageContainerWidth(), pageHeight());
+        /*if (mc().displayWidth != fbo.framebufferWidth
+                || mc().displayHeight != fbo.framebufferHeight)
+            fbo.createBindFramebuffer(mc().displayWidth, mc().displayHeight);*/
 
-        //PageRenderer.drawPageContainerBackRect();
-        //PageRenderer.drawPageContainerContent();
-        //drawPageContainerRectOriginal();
+
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableLighting();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableBlend();
+        GlStateManager.disableDepth();
+
+        fbo.bindFramebuffer(true);
+
+        saveMatrices();
+
+        identityMatrices();
+
+        setupProjectionArea();
+
+        drawPageContainerBackRect();
+        drawPageContainerContent();
+
+        restoreMatrices();
+
+        mc().getFramebuffer().bindFramebuffer(true);
+
+        GlStateManager.enableTexture2D();
+        drawPageContainerRect(fbo);
+
     }
 
     static int x = 10;
@@ -37,6 +66,7 @@ public class TestOverlay {
     private static void drawPageContainerRect(Framebuffer framebuffer) {
         int current = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 
+        //mc().getTextureManager().bindTexture(new ResourceLocation(EM.ID, "textures/models/book/page2.png"));
         framebuffer.bindFramebufferTexture();
         {
 

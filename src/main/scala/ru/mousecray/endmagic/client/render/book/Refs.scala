@@ -1,7 +1,7 @@
 package ru.mousecray.endmagic.client.render.book
 
 object Refs {
-  val pageContainerWidth = 260
-  val pageHeight = 208
+  val pageContainerWidth = 520
+  val pageHeight = 416
 
 }
