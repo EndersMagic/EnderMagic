@@ -20,6 +20,13 @@ object PageTextureHolder {
     })
   }
 
+  def freeAll(): Unit =
+    textures.foreach {
+      case (pageContainer, fb) =>
+        textures -= pageContainer
+        freeTextures += fb
+    }
+
   def freeTexture(pageContainer: PageContainer): Unit = {
     textures.get(pageContainer).foreach {
       fb =>

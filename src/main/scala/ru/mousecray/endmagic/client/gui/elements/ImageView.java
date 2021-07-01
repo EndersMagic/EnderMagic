@@ -33,6 +33,7 @@ public class ImageView extends GuiScreen implements IStructuralGuiElement {
     @Override
     public void render(int mouseX, int mouseY) {
         GlStateManager.color(1, 1, 1, 1);
+        GlStateManager.enableTexture2D();
         mc().getTextureManager().bindTexture(texture);
         drawInscribedCustomSizeModalRect(rectangle.getX(), rectangle.getY(),
                 rectangle.getWidth(), rectangle.getHeight(),

@@ -48,13 +48,20 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
     }
 
     public void drawItemStack(ItemStack stack, int x, int y) {
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, 0);
+        double scale = 0.8;
+        GlStateManager.scale(scale, scale, scale);
         RenderHelper.enableStandardItemLighting();
         RenderItem itemRender = mc().getRenderItem();
-        GlStateManager.translate(0.0F, 0.0F, 32.0F);
+        //GlStateManager.translate(0, 0, 32.0F);
         itemRender.zLevel = 90;
-        itemRender.renderItemAndEffectIntoGUI(stack, x, y);
+        itemRender.renderItemAndEffectIntoGUI(stack, 0, 0);
         itemRender.zLevel = 0;
+        //GlStateManager.translate(0, 0, -32);
         RenderHelper.disableStandardItemLighting();
+        GlStateManager.popMatrix();
     }
 
     //Source is https://github.com/Vazkii/Botania/blob/master/src/main/java/vazkii/botania/client/core/helper/RenderHelper.java

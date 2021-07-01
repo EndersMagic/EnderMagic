@@ -16,6 +16,8 @@ import ru.mousecray.endmagic.EM;
 import ru.mousecray.endmagic.api.embook.BookApi;
 import ru.mousecray.endmagic.api.embook.IPage;
 import ru.mousecray.endmagic.api.embook.PageContainer;
+import ru.mousecray.endmagic.client.render.book.PageRenderer;
+import ru.mousecray.endmagic.client.render.book.Refs;
 
 @SideOnly(Side.CLIENT)
 public class GuiScreenEMBook extends GuiScreen {
@@ -24,8 +26,8 @@ public class GuiScreenEMBook extends GuiScreen {
 
     private GuiButton buttonBack;
     private NextPageButton buttonNextPage, buttonPreviousPage;
-    private static int bookFullWidth = 256;
-    private static int bookFullHeight = 192;
+    private static int bookFullWidth = Refs.w();
+    private static int bookFullHeight = Refs.h();
 
     public void setCurrentPage(Optional<PageContainer> currentPage) {
         this.currentPage = currentPage.orElse(BookApi.mainChapter());
@@ -103,11 +105,12 @@ public class GuiScreenEMBook extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
+        GlStateManager.disableLighting();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         mc.getTextureManager().bindTexture(BOOK_TEXTURES);
         int i = (width - bookFullWidth) / 2;
         int j = (height - bookFullHeight) / 2;
-        drawTexturedModalRect(i, j, 0, 0, bookFullWidth, bookFullHeight);
+        //drawTexturedModalRect(i, j, 0, 0, bookFullWidth, bookFullHeight);
 
         drawPage(i + 20, j + 15, currentPage.page1, mouseX, mouseY);
         drawPage(i + bookFullWidth / 2 + 4, j + 15, currentPage.page2, mouseX, mouseY);
@@ -117,9 +120,9 @@ public class GuiScreenEMBook extends GuiScreen {
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableLighting();
         GlStateManager.disableDepth();
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        RenderHelper.enableGUIStandardItemLighting();
-        GlStateManager.enableRescaleNormal();
+        //super.drawScreen(mouseX, mouseY, partialTicks);
+        //RenderHelper.enableGUIStandardItemLighting();
+        //GlStateManager.enableRescaleNormal();
     }
 
     private void drawPage(int i, int j, IPage page, int mouseX, int mouseY) {

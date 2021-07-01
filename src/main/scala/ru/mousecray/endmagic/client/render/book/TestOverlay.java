@@ -6,62 +6,68 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import ru.mousecray.endmagic.EM;
+import ru.mousecray.endmagic.api.embook.BookApi;
+import ru.mousecray.endmagic.api.embook.PageContainer;
+import ru.mousecray.endmagic.api.embook.components.ImageComponent;
+import ru.mousecray.endmagic.api.embook.components.RecipeComponent;
+import ru.mousecray.endmagic.api.embook.components.TextComponent;
+import ru.mousecray.endmagic.init.EMBlocks;
+
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static ru.mousecray.endmagic.client.render.book.PageRenderer.*;
-import static ru.mousecray.endmagic.client.render.book.Refs.*;
 
 @Mod.EventBusSubscriber(modid = EM.ID)
 public class TestOverlay {
 
-    private static Framebuffer fbo;
-
     @SubscribeEvent
     public static void onRenderTest(RenderGameOverlayEvent.Pre event) {
-        if (fbo == null)
-            fbo = new Framebuffer(pageContainerWidth(), pageHeight(), false);
-        fbo.createBindFramebuffer(pageContainerWidth(), pageHeight());
-        /*if (mc().displayWidth != fbo.framebufferWidth
-                || mc().displayHeight != fbo.framebufferHeight)
-            fbo.createBindFramebuffer(mc().displayWidth, mc().displayHeight);*/
+        //Test.test();
 
+        PageContainer page = testPage();//cycleElementOf(BookApi.allPages, BookApi.mainChapter());
 
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableLighting();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableBlend();
-        GlStateManager.disableDepth();
-
-        fbo.bindFramebuffer(true);
-
-        saveMatrices();
-
-        identityMatrices();
-
-        setupProjectionArea();
-
-        drawPageContainerBackRect();
-        drawPageContainerContent();
-
-        restoreMatrices();
-
-        mc().getFramebuffer().bindFramebuffer(true);
+        PageTextureHolder.freeAll();
+        Framebuffer fbo = PageTextureHolder.getTexture(page);
 
         GlStateManager.enableTexture2D();
         drawPageContainerRect(fbo);
 
+        //System.out.println(Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT);
+
+    }
+
+    private static PageContainer testPage;
+
+    public static PageContainer testPage() {
+        if (testPage == null || Keyboard.isKeyDown(Keyboard.KEY_H))
+            testPage = new PageContainer(
+                    new RecipeComponent(new ItemStack(EMBlocks.blockMasterStaticPortal)).pages().get(0),
+                    new TextComponent("book.chapter.text.teleport_construction").pages().get(0));
+        //new TextComponent("book.chapter.text.teleport_construction").pages().get(0),
+        //new TextComponent("book.chapter.text.teleport_construction").pages().get(0));
+        //new ImageComponent(new ResourceLocation(EM.ID, "textures/book/compression_system_2.png"), "").pages().get(0)
+        return testPage;
+    }
+
+    static <A> A cycleElementOf(List<A> list, A defaultValue) {
+        if ((list.size() > 0))
+            return list.get((int) (System.currentTimeMillis() / 1000L % list.size()));
+        else
+            return defaultValue;
     }
 
     static int x = 10;
     static int y = 10;
-    static int w = 260;
-    static int h = 208;
+    static int w = Refs.pageContainerWidth()/Refs.resolutionMultiplier();
+    static int h = Refs.pageHeight()/Refs.resolutionMultiplier();
 
     private static void drawPageContainerRect(Framebuffer framebuffer) {
         int current = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);

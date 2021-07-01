@@ -9,16 +9,20 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
+import static ru.mousecray.endmagic.client.render.book.Refs.contentHeight;
+import static ru.mousecray.endmagic.client.render.book.Refs.contentWidth;
 
 public class BookApi {
-    public static final int pageWidth = 104;
-    public static final int pageHeight = 147;
+    public static final int pageWidth = contentWidth();
+    public static final int pageHeight = contentHeight();
 
     static Map<String, Set<String>> categories = new HashMap<>();
 
     static Map<String, PageContainer> pageByName = new HashMap<>();
 
     static Map<Object, PageContainer> links = new HashMap<>();
+
+    public static List<PageContainer> allPages = new ArrayList<>(100);
 
     private static boolean dirty = true;
 
@@ -106,6 +110,7 @@ public class BookApi {
             groupedPairs.get(i).left = getMaybePage.apply(i - 1);
             groupedPairs.get(i).right = getMaybePage.apply(i + 1);
         }
+        allPages.addAll(groupedPairs);
         return groupedPairs;
     }
 
