@@ -51,7 +51,7 @@ public class ItemStackView implements IStructuralGuiElement, IClickable {
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 0);
-        double scale = 0.8;
+        double scale = 0.65;
         GlStateManager.scale(scale, scale, scale);
         RenderHelper.enableStandardItemLighting();
         RenderItem itemRender = mc().getRenderItem();

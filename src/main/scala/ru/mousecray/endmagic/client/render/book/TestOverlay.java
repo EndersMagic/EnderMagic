@@ -32,7 +32,7 @@ public class TestOverlay {
     public static void onRenderTest(RenderGameOverlayEvent.Pre event) {
         //Test.test();
 
-        PageContainer page = testPage();//cycleElementOf(BookApi.allPages, BookApi.mainChapter());
+        /*PageContainer page = testPage();//cycleElementOf(BookApi.allPages, BookApi.mainChapter());
 
         PageTextureHolder.freeAll();
         Framebuffer fbo = PageTextureHolder.getTexture(page);
@@ -40,7 +40,7 @@ public class TestOverlay {
         GlStateManager.enableTexture2D();
         drawPageContainerRect(fbo);
 
-        //System.out.println(Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT);
+        //System.out.println(Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT);*/
 
     }
 

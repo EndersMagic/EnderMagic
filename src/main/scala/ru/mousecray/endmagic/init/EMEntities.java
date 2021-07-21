@@ -4,10 +4,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
-import ru.mousecray.endmagic.entity.EntityCurseBush;
-import ru.mousecray.endmagic.entity.EntityCustomEnderEye;
-import ru.mousecray.endmagic.entity.EntityEMEnderPearl;
-import ru.mousecray.endmagic.entity.EntityEnderArrow;
+import ru.mousecray.endmagic.entity.*;
 import ru.mousecray.endmagic.util.registry.NameAndTabUtils;
 
 @MethodsReturnNonnullByDefault
@@ -18,6 +15,7 @@ public class EMEntities {
     public static final EntityEntry curseBush = createEntityEntry(EntityCurseBush.class, 128, 1, true);
     public static final EntityEntry EnderArrow = createEntityEntry(EntityEnderArrow.class, 128, 1, true);
     public static final EntityEntry customEnderEye = createEntityEntry(EntityCustomEnderEye.class, 128, 1, true);
+    public static final EntityEntry emBook = createEntityEntry(EntityEMBook.class, 128, 1, true);
 
     private static EntityEntry createEntityEntry(Class<? extends Entity> clazz, int range, int updateFrequency, boolean sendVelocityUpdate) {
         return createEntityEntry(clazz, NameAndTabUtils.getName(clazz, string -> string.substring(6)), range, updateFrequency, sendVelocityUpdate);
