@@ -18,11 +18,14 @@ object PageRenderer {
   lazy val mc = Minecraft.getMinecraft
 
   def drawPageTo(pageContainer: PageContainer, framebuffer: Framebuffer): Unit = {
+
     GlStateManager.enableTexture2D()
     GlStateManager.disableLighting()
     GlStateManager.enableAlpha()
     GlStateManager.enableBlend()
     GlStateManager.disableDepth()
+    GlStateManager.disableFog()
+    GlStateManager.color(1, 1, 1, 1)
 
     framebuffer.bindFramebuffer(true)
 
@@ -33,13 +36,49 @@ object PageRenderer {
     setupProjectionArea()
 
     GL11.glMatrixMode(GL11.GL_MODELVIEW)
-    drawPageContainerBackRect(pageContainer)
-    drawPageContainerContent(pageContainer)
+
+    GlStateManager.clearColor(1, 1, 1, 1)
+    GlStateManager.clear(GL11.GL_COLOR_BUFFER_BIT)
+    GlStateManager.translate(0, 0, -2000)
+
+    if (true) {
+      drawPageContainerBackRect(pageContainer)
+      drawPageContainerContent(pageContainer)
+    }
+
+
+    if (false) {
+      GlStateManager.disableTexture2D()
+
+      val buffer = Tessellator.getInstance.getBuffer
+      buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR)
+      buffer.pos(0, 0, 0).color(255, 0, 0, 255).endVertex()
+      buffer.pos(0, h, 0).color(255, 0, 0, 255).endVertex()
+      buffer.pos(w, h, 0).color(255, 0, 0, 255).endVertex()
+      buffer.pos(w, 0, 0).color(255, 0, 0, 255).endVertex()
+      Tessellator.getInstance.draw()
+    }
 
     restoreMatrices()
 
     mc.getFramebuffer.bindFramebuffer(true)
 
+    GlStateManager.enableDepth()
+
+  }
+
+  def enableStates(): Unit = {
+    GlStateManager.disableFog()
+    GlStateManager.disableAlpha()
+    GlStateManager.disableBlend()
+    GlStateManager.disableDepth()
+    GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f)
+    GL11.glDepthMask(false)
+  }
+
+  def disableStates(): Unit = {
+    GL11.glDepthMask(true)
+    GlStateManager.enableDepth()
   }
 
   def drawPageContainerContent(pageContainer: PageContainer): Unit = {
@@ -98,7 +137,7 @@ object PageRenderer {
   }
 
   def setupProjectionArea(): Unit = {
-    GL11.glOrtho(0, w, h, 0, -300, 300)
+    GL11.glOrtho(0, w, h, 0, -300, 3000)
   }
 
   def identityMatrices(): Unit = {

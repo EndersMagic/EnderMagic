@@ -2,10 +2,9 @@ package ru.mousecray.endmagic.util.render.endothermic.format
 
 import java.util.function
 
-import ru.mousecray.endmagic.util.render.endothermic.format.AttributeId
-import ru.mousecray.endmagic.util.render.endothermic.quad.mutable.LazyUnpackedQuad
 import net.minecraft.client.renderer.block.model.BakedQuad
 import net.minecraft.client.renderer.vertex.{DefaultVertexFormats, VertexFormat, VertexFormatElement}
+import ru.mousecray.endmagic.util.render.endothermic.quad.mutable.LazyUnpackedQuad
 
 import scala.collection.JavaConverters._
 

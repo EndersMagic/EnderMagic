@@ -32,9 +32,10 @@ public class TestOverlay {
     public static void onRenderTest(RenderGameOverlayEvent.Pre event) {
         //Test.test();
 
-        /*PageContainer page = testPage();//cycleElementOf(BookApi.allPages, BookApi.mainChapter());
-
         PageTextureHolder.freeAll();
+/*
+        PageContainer page = testPage();//cycleElementOf(BookApi.allPages, BookApi.mainChapter());
+
         Framebuffer fbo = PageTextureHolder.getTexture(page);
 
         GlStateManager.enableTexture2D();
@@ -72,9 +73,11 @@ public class TestOverlay {
     private static void drawPageContainerRect(Framebuffer framebuffer) {
         int current = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
 
-        //mc().getTextureManager().bindTexture(new ResourceLocation(EM.ID, "textures/models/book/page2.png"));
+        //Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(EM.ID, "textures/models/book/page2.png"));
         framebuffer.bindFramebufferTexture();
         {
+
+            //FBODumper.dump();
 
             BufferBuilder buffer = Tessellator.getInstance().getBuffer();
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
