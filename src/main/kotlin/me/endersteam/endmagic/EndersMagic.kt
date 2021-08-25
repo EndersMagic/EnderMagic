@@ -1,5 +1,8 @@
 package me.endersteam.endmagic
 
+import me.endersteam.endmagic.init.EmBlocks
+import me.endersteam.endmagic.init.EmItems
+import me.endersteam.endmagic.init.EmTiles
 import net.minecraftforge.fml.common.Mod
 
 /*
@@ -10,4 +13,10 @@ internal const val modId = "endmagic"
 @Mod(modId)
 object EndersMagic
 {
+    init
+    {
+        EmBlocks.register()
+        EmItems.register()
+        EmTiles.register()
+    }
 }
