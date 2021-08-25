@@ -20,6 +20,6 @@ object EmBlocks : AutoRegisterer<Block>(ForgeRegistries.BLOCKS)
 
     val blastFurnace : Block by register("blast_furnace", BlastFurnaceBlock)
 
-    fun defaultCoalBlock() = Block(AbstractBlock.Properties.create(Material.ROCK).hardnessAndResistance(6f))
-    fun defaultSteelBlock() = Block(AbstractBlock.Properties.create(Material.IRON).hardnessAndResistance(9f))
+    private fun defaultCoalBlock() = Block(AbstractBlock.Properties.create(Material.ROCK).hardnessAndResistance(6f))
+    private fun defaultSteelBlock() = Block(AbstractBlock.Properties.create(Material.IRON).hardnessAndResistance(9f))
 }
