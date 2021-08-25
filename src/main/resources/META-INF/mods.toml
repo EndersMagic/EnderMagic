@@ -1,0 +1,26 @@
+modLoader="kotlinforforge"
+loaderVersion="[1.14,)"
+
+license='GNU GPL v3'
+
+[[mods]]
+    modId="endmagic"
+    version="${file.jarVersion}"
+    displayName="Ender's Magic"
+    displayURL="https://www.curseforge.com/minecraft/mc-mods/enders-magic"
+    credits="FTB_lag, KaedenCraft, MrZarak"
+    authors="mousecray, hohserg, GoogleTan, "
+    description=''''''
+logoFile="endersmagic-logo.png"
+[[dependencies.endmagic]]
+    modId="forge"
+    mandatory=true
+    versionRange="[31.2,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.endmagic]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5]"
+    ordering="NONE"
+    side="BOTH"
