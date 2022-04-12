@@ -19,7 +19,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'tech.justagod:cutter:2.0.1'
+        //classpath 'tech.justagod:cutter:2.0.1'
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
@@ -34,6 +34,7 @@ jar {
 }
 
 apply plugin: 'net.minecraftforge.gradle.forge'
+/*
 apply plugin: 'cutter'
 cutter {
     annotation = "ru.mousecray.endmagic.api.GradleTarget"
@@ -63,7 +64,7 @@ cutter {
     }
 
 }
-
+*/
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 

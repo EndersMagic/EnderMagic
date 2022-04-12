@@ -25,7 +25,7 @@ class RenderEntityEMBook(renderManagerIn: RenderManager) extends Render[EntityEM
     GlStateManager.translate(x, y + 0.5, z)
     GlStateManager.enableTexture2D()
 
-    val openProgress = 1 //(Math.sin(ClientTickHandler.fullTicks() / 100).toFloat + 1) / 2
+    val openProgress = (Math.sin(ClientTickHandler.fullTicks() / 100).toFloat + 1) / 2
 
     Minecraft.getMinecraft.getTextureManager.bindTexture(cover)
     model.renderCover(entity, ClientTickHandler.fullTicks() / 100, openProgress, 0)

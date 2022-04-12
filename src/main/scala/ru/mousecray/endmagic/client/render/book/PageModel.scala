@@ -20,6 +20,8 @@ class PageModel(isLeft: Boolean) {
 
   def render()(implicit scale: Scale): Unit = {
 
+    GlStateManager.disableLighting()
+
     GlStateManager.pushMatrix()
     GlStateManager.translate(rotationPointX * scale, 0, 0)
 
@@ -27,24 +29,26 @@ class PageModel(isLeft: Boolean) {
       GlStateManager.rotate(rotateAngleY * (180F / Math.PI.toFloat), 0.0F, 1.0F, 0.0F)
 
     val buffer = BufferWrapper(Tessellator.getInstance().getBuffer)
-    buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL)
+    buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR)
 
     if (isLeft) {
-      buffer.pos(x, y + h, z).tex(u2, v2).color(255, 255, 255, 255).normal(0, 0, nz).endVertex()
-      buffer.pos(x + w, y + h, z).tex(u1, v2).color(255, 255, 255, 255).normal(0, 0, nz).endVertex()
-      buffer.pos(x + w, y, z).tex(u1, v1).color(255, 255, 255, 255).normal(0, 0, nz).endVertex()
-      buffer.pos(x, y, z).tex(u2, v1).color(255, 255, 255, 255).normal(0, 0, nz).endVertex()
+      buffer.pos(x, y + h, z).tex(u2, v2).color(255, 255, 255, 255).endVertex()
+      buffer.pos(x + w, y + h, z).tex(u1, v2).color(255, 255, 255, 255).endVertex()
+      buffer.pos(x + w, y, z).tex(u1, v1).color(255, 255, 255, 255).endVertex()
+      buffer.pos(x, y, z).tex(u2, v1).color(255, 255, 255, 255).endVertex()
 
     } else {
-      buffer.pos(x, y, z).tex(u1, v1).color(255, 255, 255, 255).normal(0, 0, nz).endVertex()
-      buffer.pos(x + w, y, z).tex(u2, v1).color(255, 255, 255, 255).normal(0, 0, nz).endVertex()
-      buffer.pos(x + w, y + h, z).tex(u2, v2).color(255, 255, 255, 255).normal(0, 0, nz).endVertex()
-      buffer.pos(x, y + h, z).tex(u1, v2).color(255, 255, 255, 255).normal(0, 0, nz).endVertex()
+      buffer.pos(x, y, z).tex(u1, v1).color(255, 255, 255, 255).endVertex()
+      buffer.pos(x + w, y, z).tex(u2, v1).color(255, 255, 255, 255).endVertex()
+      buffer.pos(x + w, y + h, z).tex(u2, v2).color(255, 255, 255, 255).endVertex()
+      buffer.pos(x, y + h, z).tex(u1, v2).color(255, 255, 255, 255).endVertex()
     }
 
     Tessellator.getInstance().draw()
 
     GlStateManager.popMatrix()
+
+    GlStateManager.enableLighting()
 
   }
 
